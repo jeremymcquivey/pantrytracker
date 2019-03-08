@@ -38,12 +38,10 @@ namespace RecipeAPI.Helpers
                     Type = "apiKey"
                 });
 
-                // Must explicitly tell Swagger to add the header into the request as of Swagger 2.0.
-                // https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/603
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>()
-                    {
-                        { "Bearer", Enumerable.Empty<string>() }
-                    });
+                {
+                    { "Bearer", Enumerable.Empty<string>() }
+                });
 
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "RecipeAPI.xml"));
             });
@@ -63,10 +61,7 @@ namespace RecipeAPI.Helpers
                 appName += $" ({env.EnvironmentName})";
             }
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", appName);

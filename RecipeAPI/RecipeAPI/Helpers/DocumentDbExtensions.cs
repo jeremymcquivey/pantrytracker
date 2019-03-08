@@ -1,7 +1,9 @@
-﻿using Microsoft.Azure.Documents;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using RecipeAPI.Model;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -12,6 +14,9 @@ namespace RecipeAPI.Helpers
     /// </summary>
     public static class DocumentDbExtensions
     {
+        /// <summary>
+        /// Deserializes a document into the specified template object type
+        /// </summary>
         public static async Task<T> ReadDocument<T>(this DocumentClient client, string databaseName, string collectionName, string documentId)
             where T : IDocument
         {
@@ -36,18 +41,23 @@ namespace RecipeAPI.Helpers
                 }
                 else
                 {
-                    // TODO: Log to app insights.
+                    new TelemetryClient().LogCustomEvent(de.GetType().FullName,
+                                                         new KeyValuePair<string, string>("Message", de.Message));
                     return default(T);
                 }
             }
             catch(InvalidCastException ex)
             {
-                // TODO: Log to app insights.
+                new TelemetryClient().LogCustomEvent(ex.GetType().FullName,
+                                                     new KeyValuePair<string, string>("Message", ex.Message),
+                                                     new KeyValuePair<string,string>("StackTrace", ex.StackTrace));
                 return default(T);
             }
             catch (Exception ex)
             {
-                // TODO: Log to app insights.
+                new TelemetryClient().LogCustomEvent(ex.GetType().FullName,
+                                                     new KeyValuePair<string, string>("Message", ex.Message),
+                                                     new KeyValuePair<string, string>("StackTrace", ex.StackTrace));
                 return default(T);
             }
         }
@@ -82,13 +92,16 @@ namespace RecipeAPI.Helpers
                 }
                 else
                 {
-                    // TODO: Log to app insights.
+                    new TelemetryClient().LogCustomEvent(de.GetType().FullName,
+                                                         new KeyValuePair<string, string>("Message", de.Message));
                     throw;
                 }
             }
             catch (Exception ex)
             {
-                // TODO: Log to app insights.
+                new TelemetryClient().LogCustomEvent(ex.GetType().FullName,
+                                                     new KeyValuePair<string, string>("Message", ex.Message),
+                                                     new KeyValuePair<string, string>("StackTrace", ex.StackTrace));
                 return null;
             }
 
