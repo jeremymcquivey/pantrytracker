@@ -18,7 +18,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: ".NET build"
   inputs:
-    projects: '**/**API.csproj'
+    projects: '**/RecipeAPI.csproj'
     arguments: --configuration $(BuildConfiguration)
 
 #- task: DotNetCoreCLI@2
@@ -32,7 +32,9 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: ".NET publish package"
   inputs:
-    command: publish
+    command: publish 
+    projects: '**/RecipeAPI.csproj'
+    publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) --no-restore --output $(Build.ArtifactStagingDirectory)/app/pkg'
 
 # Publish your web project deployment packages as named artifact 'app'
