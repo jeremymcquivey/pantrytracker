@@ -18,7 +18,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: ".NET build"
   inputs:
-    projects: '**/RecipeAPI.csproj'
+    projects: '**/NotificationAPI.csproj'
     arguments: --configuration $(BuildConfiguration)
 
 #- task: DotNetCoreCLI@2
@@ -33,7 +33,7 @@ steps:
   displayName: ".NET publish package"
   inputs:
     command: publish 
-    projects: '**/RecipeAPI.csproj'
+    projects: '**/NotificationAPI.csproj'
     publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) --no-restore --output $(Build.ArtifactStagingDirectory)/app/pkg'
 
