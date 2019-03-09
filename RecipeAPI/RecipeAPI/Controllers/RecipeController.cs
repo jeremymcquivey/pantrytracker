@@ -21,9 +21,10 @@ namespace RecipeAPI.Controllers
 
         private readonly DocumentClient _documents;
 
-#pragma warning disable 1591
+        /// <summary>
+        /// Something awesome.
+        /// </summary>
         public RecipeController(IOptions<AppSettings> config)
-#pragma warning restore 1591
         {
             _documents = new DocumentClient(new System.Uri(config.Value.ConnectionStrings.CosmosConnection),
                                                            config.Value.ConnectionStrings.CosmosPassword);
@@ -97,7 +98,7 @@ namespace RecipeAPI.Controllers
         /// Updates an existing recipe within the current user's collection.
         /// </summary>
         //[Authorize]
-        //[HttpPatch]
+        [HttpPatch]
         public async Task<IActionResult> Update([FromBody]Recipe recipe)
         {
             //TODO: Validate model. -- This needs to have an ID, and it needs to belong to the correct owner.
