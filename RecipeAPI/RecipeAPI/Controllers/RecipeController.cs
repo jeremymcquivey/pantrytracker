@@ -21,10 +21,9 @@ namespace RecipeAPI.Controllers
 
         private readonly DocumentClient _documents;
 
-        /// <summary>
-        /// Something awesome.
-        /// </summary>
+#pragma warning disable 1591
         public RecipeController(IOptions<AppSettings> config)
+#pragma warning restore 1591
         {
             _documents = new DocumentClient(new System.Uri(config.Value.ConnectionStrings.CosmosConnection),
                                                            config.Value.ConnectionStrings.CosmosPassword);
