@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.ParseTree", "Sample.ParseTree\Sample.ParseTree.csproj", "{E02A9397-A134-4735-B8AE-808B35E081B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.ParseTree.Tests", "Sample.ParseTree.Tests\Sample.ParseTree.Tests.csproj", "{1FC574BA-FF06-451A-A0CB-A55A42224DCF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E02A9397-A134-4735-B8AE-808B35E081B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E02A9397-A134-4735-B8AE-808B35E081B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E02A9397-A134-4735-B8AE-808B35E081B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E02A9397-A134-4735-B8AE-808B35E081B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FC574BA-FF06-451A-A0CB-A55A42224DCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FC574BA-FF06-451A-A0CB-A55A42224DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FC574BA-FF06-451A-A0CB-A55A42224DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FC574BA-FF06-451A-A0CB-A55A42224DCF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

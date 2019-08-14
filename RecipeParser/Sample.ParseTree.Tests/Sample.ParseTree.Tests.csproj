@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sample.ParseTree\Sample.ParseTree.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SampleFiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Sample Files\JalapenoCheddarPorkChops.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SampleFiles\JalapenoCheddarPorkChops.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

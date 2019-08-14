@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="Input Files\" />
+    <Folder Include="Rules\" />
+    <Folder Include="Rules\WordRules\" />
+    <Folder Include="Rules\SentenceRules\" />
+    <Folder Include="Rules\RecipeRules\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Input Files\JalapenoCheddarPorkChops.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Input Files\JalapenoCheddarPorkChops.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
