@@ -1,4 +1,4 @@
-﻿namespace RecipeAPI.Model
+﻿namespace PantryTracker.Model.Recipe
 {
     /// <summary>
     /// Statuses that define the state of a shared (or private) recipe.

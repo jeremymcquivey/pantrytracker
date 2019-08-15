@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RecipeAPI.Model
+namespace PantryTracker.Model.Recipe
 {
     /// <summary>
     /// Defines the POCO for a user review

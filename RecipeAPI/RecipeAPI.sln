@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeAPI", "RecipeAPI\RecipeAPI.csproj", "{B3E70A85-4F06-4D04-8366-0AD3242755FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PantryTracker.Model.Recipe", "Model\PantryTracker.Model.Recipe\PantryTracker.Model.Recipe.csproj", "{D37EDECD-ED14-476B-A87D-8CFF815C9E17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PantryTracker.RecipeReader.Tests", "Tests\PantryTracker.RecipeReader.Tests\PantryTracker.RecipeReader.Tests.csproj", "{6824D076-451E-4197-A2E2-596255F9736E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PantryTracker.RecipeReader", "Data Import\PantryTracker.RecipeReader\PantryTracker.RecipeReader.csproj", "{096CDA3F-3100-48D3-94D9-AB3DD389BB21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,11 +21,25 @@ Global
 		{B3E70A85-4F06-4D04-8366-0AD3242755FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3E70A85-4F06-4D04-8366-0AD3242755FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3E70A85-4F06-4D04-8366-0AD3242755FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D37EDECD-ED14-476B-A87D-8CFF815C9E17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D37EDECD-ED14-476B-A87D-8CFF815C9E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D37EDECD-ED14-476B-A87D-8CFF815C9E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D37EDECD-ED14-476B-A87D-8CFF815C9E17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6824D076-451E-4197-A2E2-596255F9736E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6824D076-451E-4197-A2E2-596255F9736E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6824D076-451E-4197-A2E2-596255F9736E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6824D076-451E-4197-A2E2-596255F9736E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{096CDA3F-3100-48D3-94D9-AB3DD389BB21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{096CDA3F-3100-48D3-94D9-AB3DD389BB21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{096CDA3F-3100-48D3-94D9-AB3DD389BB21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{096CDA3F-3100-48D3-94D9-AB3DD389BB21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B358201B-3FAB-4983-B6AF-5C552C0F0A4A}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

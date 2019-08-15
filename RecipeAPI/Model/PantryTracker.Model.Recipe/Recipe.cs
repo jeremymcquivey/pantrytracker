@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RecipeAPI.Model
+namespace PantryTracker.Model.Recipe
 {
     /// <summary>
     /// Defines the POCO for a recipe object
@@ -47,5 +47,21 @@ namespace RecipeAPI.Model
         /// Reviews given for a recipe by app users
         /// </summary>
         public List<Review> Reviews { get; set; }
+
+        /// <summary>
+        /// Raw text from imported recipe
+        /// </summary>
+        public string RawText { get; set; }
+
+        /// <summary>
+        /// Prep Time
+        /// </summary>
+        public string PrepTime { get; set; }
+
+        public virtual IEnumerable<Ingredient> Ingredients { get; } =
+            new List<Ingredient>();
+
+        public virtual IEnumerable<string> Directions { get; } =
+            new List<string>();
     }
 }

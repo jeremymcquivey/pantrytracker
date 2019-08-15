@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="Rules\" />
+    <Folder Include="Rules\RecipeRules\" />
+    <Folder Include="Rules\SentenceRules\" />
+    <Folder Include="Rules\WordRules\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Model\PantryTracker.Model.Recipe\PantryTracker.Model.Recipe.csproj" />
+  </ItemGroup>
+</Project>

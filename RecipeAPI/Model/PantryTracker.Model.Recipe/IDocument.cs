@@ -1,4 +1,4 @@
-﻿namespace RecipeAPI.Model
+﻿namespace PantryTracker.Model.Recipe
 {
     /// <summary>
     /// Defines the base contract for movement between the application and the document store.
