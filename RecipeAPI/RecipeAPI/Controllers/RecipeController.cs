@@ -2,8 +2,8 @@
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Options;
+using PantryTracker.Model.Recipe;
 using RecipeAPI.Helpers;
-using RecipeAPI.Model;
 using System.Linq;
 using System.Threading.Tasks;
 

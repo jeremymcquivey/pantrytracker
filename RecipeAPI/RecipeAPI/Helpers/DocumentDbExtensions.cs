@@ -1,7 +1,7 @@
 ﻿using Microsoft.ApplicationInsights;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
-using RecipeAPI.Model;
+using PantryTracker.Model.Recipe;
 using System;
 using System.Collections.Generic;
 using System.Net;
