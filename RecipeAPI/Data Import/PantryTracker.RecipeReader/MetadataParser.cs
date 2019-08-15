@@ -19,8 +19,6 @@ namespace PantryTracker.RecipeReader
             };
             
             var currentLineNumber = 0;
-            //detect a prep time
-            //numeric followed by time unit
             foreach(var sentence in input)
             {
                 currentLineNumber++;

@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Options;
 using PantryTracker.Model.Recipe;
-using RecipeAPI.Helpers;
-using System.Linq;
+using PantryTracker.RecipeReader;
+using System;
 using System.Threading.Tasks;
 
 namespace RecipeAPI.Controllers
@@ -16,17 +15,11 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     public class RecipeController : BaseController
     {
-        private const string RecipeDatabase = "PT_RecipeAPI";
-        private const string RecipeCollection = "PT_Recipes";
-
-        private readonly DocumentClient _documents;
 
 #pragma warning disable 1591
         public RecipeController(IOptions<AppSettings> config)
 #pragma warning restore 1591
         {
-            _documents = new DocumentClient(new System.Uri(config.Value.ConnectionStrings.CosmosConnection),
-                                                           config.Value.ConnectionStrings.CosmosPassword);
         }
 
         /// <summary>
@@ -38,12 +31,7 @@ namespace RecipeAPI.Controllers
         {
             return await Task.Run(() =>
             {
-                var collectionLink = UriFactory.CreateDocumentCollectionUri(RecipeDatabase, RecipeCollection);
-                var result = _documents.CreateDocumentQuery<Recipe>(collectionLink)
-                                       .Where(so => so.OwnerId == AuthenticatedUser)
-                                       .AsEnumerable();
-
-                return Ok(result);
+                return Ok();
             });
         }
 
@@ -57,20 +45,40 @@ namespace RecipeAPI.Controllers
         {
             try
             {
-                var doc = await _documents.ReadDocument<Recipe>(RecipeDatabase, RecipeCollection, id);
-
-                if(doc?.OwnerId != AuthenticatedUser)
+                return await Task.Run(() =>
                 {
-                    return NotFound();
-                }
-
-                return Ok(doc);
+                    return Ok();
+                });
             }
             catch (DocumentClientException ex)
             {
                 //TODO: Log to app insights.
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Creates a recipe from a raw text block (preview only)
+        /// </summary>
+        /// <param name="rawText"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("preview")]
+        public async Task<IActionResult> Preview([FromBody]string rawText)
+        {
+            if(string.IsNullOrEmpty(rawText))
+            {
+                new Recipe();
+            }
+
+            var parser = new MetadataParser();
+            var lines = rawText.Split('\n');
+            var output = parser.ExtractRecipe(lines);
+
+            // Returns just the object representation of the recipe. 
+            // Future feature: return a list of possible "duplicates" of this recipe.
+            // i.e. similar ingredients/ratios.
+            return Ok(output);
         }
 
         /// <summary>
@@ -83,8 +91,10 @@ namespace RecipeAPI.Controllers
             //TODO: Validate model.
             try
             {
-                recipe.OwnerId = AuthenticatedUser;
-                return Ok(await _documents.AddOrUpdateDocument(RecipeDatabase, RecipeCollection, recipe));
+                return await Task.Run(() =>
+                {
+                    return Ok();
+                });
             }
             catch(DocumentClientException ex)
             {
