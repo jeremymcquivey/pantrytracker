@@ -18,6 +18,7 @@ namespace Sample.Grammar
                               .CombineFractions()
                               .FindUnits(_unitsOfMeasure)
                               .DetectSubquantities()
+                              .DetectRanges()
                               .DefineNames()
                               .RemoveUnwantedWords();
 

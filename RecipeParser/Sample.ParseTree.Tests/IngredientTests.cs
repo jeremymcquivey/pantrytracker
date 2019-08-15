@@ -52,7 +52,8 @@ namespace Sample.ParseTree.Tests
 
             Assert.AreEqual(string.Empty, ingredient.SubQuantity);
             Assert.AreEqual("2", ingredient.Quantity);
-            Assert.AreEqual("all-purpose flour", ingredient.Name);
+            //Removes hyphens from words. i.e. all-purpose. Eventually this should be smart enough to look beyond this.
+            Assert.AreEqual("all purpose flour", ingredient.Name);
             Assert.AreEqual("tablespoons", ingredient.Unit);
         }
 
@@ -129,7 +130,8 @@ namespace Sample.ParseTree.Tests
 
             Assert.AreEqual("2", ingredient.Quantity);
             Assert.AreEqual(null, ingredient.SubQuantity);
-            Assert.AreEqual("bone-in pork chops", ingredient.Name);
+            //Removes hyphens from words. i.e. bone-in. Eventually this should be smart enough to look beyond this.
+            Assert.AreEqual("bone in pork chops", ingredient.Name);
         }
 
         [TestMethod]

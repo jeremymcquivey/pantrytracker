@@ -16,14 +16,35 @@
     <ProjectReference Include="..\Sample.ParseTree\Sample.ParseTree.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SampleFiles\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Sample Files\JalapenoCheddarPorkChops.txt" />
+    <None Remove="SampleFiles\CinnamonRolls.txt" />
+    <None Remove="SampleFiles\PizzaCrust.txt" />
+    <None Remove="SampleFiles\PotatoBaconCheddarSoup.txt" />
+    <None Remove="SampleFiles\RootBeer.txt" />
+    <None Remove="SampleFiles\Tortillas.txt" />
+    <None Remove="SampleFiles\WholeWheatBread.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SampleFiles\CinnamonRolls.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SampleFiles\JalapenoCheddarPorkChops.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\PizzaCrust.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\PotatoBaconCheddarSoup.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\RootBeer.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\Tortillas.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\WholeWheatBread.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 </Project>

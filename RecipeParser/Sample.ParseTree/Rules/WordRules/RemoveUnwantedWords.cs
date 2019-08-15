@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Sample.Grammar;
 using Sample.ParseTree.Model;
 
 namespace Sample.ParseTree.Rules
@@ -10,12 +8,14 @@ namespace Sample.ParseTree.Rules
     {
         internal static IEnumerable<Word> RemoveUnwantedWords(this IEnumerable<Word> wordList)
         {
-            var maxPosition = wordList.Where(w => w.PartOfSpeech != PartOfSpeech.Name)
+            var nonWords = wordList.Where(w => w.PartOfSpeech != PartOfSpeech.Name);
+
+            var maxPosition = nonWords.Any() ? nonWords
                                       .Select(w => w.Position)
-                                      .Max();
+                                      .Min() : 0;
 
             return wordList.Where(x => x.PartOfSpeech != PartOfSpeech.Name ||
-                                           x.Position > maxPosition)
+                                           x.Position >= maxPosition)
                             .ToList()
                             .Reposition();
         }

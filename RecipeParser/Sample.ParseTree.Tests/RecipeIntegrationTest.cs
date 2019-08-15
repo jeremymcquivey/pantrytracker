@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Sample.ParseTree.Tests
@@ -12,32 +11,14 @@ namespace Sample.ParseTree.Tests
         [TestMethod]
         public void Method1()
         {
-            var stuff = @"Jalapeno Cheddar Pork Chops
-50 minutes
-Source: https://www.allrecipes.com/recipe/273630/jalapeno-cheddar-pork-chops/?internalSource=rotd&referringContentType=Homepage&clickId=cardslot%201
-
-1 egg
-2 tablespoons all-purpose flour
-1 pinch ground black pepper
-1/4 cup shredded Cheddar cheese
-1/4 cup crushed jalapeno potato chips
-1 1/2 teaspoons grated lime zest
-2 bone-in pork chops
-2 teaspoons olive oil
-1 teaspoon margarine
-
-Preheat the oven to 400 degrees F (200 degrees C).
-Whisk egg in a shallow bowl. Combine flour and pepper in another shallow bowl. Mix Cheddar cheese, jalapeno chips, and lime zest in a third bowl.
-Toss pork chops in the flour to coat. Shake off excess, then dunk in egg. Coat chops in the chip and cheese mixture.
-Heat oil and margarine in a medium skillet over medium-high heat. Fry each pork chop until browned on the outside, 2 minutes per side. Transfer chops to a baking dish or foil-lined baking pan.
-Bake in the preheated oven until pork is no longer pink in the center, about 25 minutes. An instant-read thermometer inserted into the center should read 145 degrees F (63 degrees C).";
+            var filename = Path.Combine(Environment.CurrentDirectory, "SampleFiles", "JalapenoCheddarPorkChops.txt");
+            if (!File.Exists(filename))
+            {
+                Assert.Fail($"File {filename} does not exist.");
+            }
 
             var parser = new MetadataParser();
-
-            var lines = stuff.Split(
-                new[] { Environment.NewLine },
-                StringSplitOptions.None
-            );
+            var lines = File.ReadAllLines(filename);
 
             var recipe = parser.ExtractRecipe(lines);
 
@@ -69,6 +50,232 @@ Bake in the preheated oven until pork is no longer pink in the center, about 25 
 
             Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("margarine")).Quantity);
             Assert.AreEqual("teaspoon", recipe.Ingredients.Single(x => x.Name.Contains("margarine")).Unit);
+        }
+
+        [TestMethod]
+        public void Method2()
+        {
+            var filename = Path.Combine(Environment.CurrentDirectory, "SampleFiles", "WholeWheatBread.txt");
+
+            if(!File.Exists(filename))
+            {
+                Assert.Fail($"File {filename} does not exist.");
+            }
+
+            var parser = new MetadataParser();
+            var lines = File.ReadAllLines(filename);
+            var recipe = parser.ExtractRecipe(lines);
+
+            Assert.AreEqual(6, recipe.Ingredients.Count());
+
+            Assert.AreEqual("6", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+
+            Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Quantity);
+            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Unit);
+
+            Assert.AreEqual("2/3", recipe.Ingredients.Single(x => x.Name.Contains("oil")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("oil")).Unit);
+
+            Assert.AreEqual("2/3", recipe.Ingredients.Single(x => x.Name.Contains("honey")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("honey")).Unit);
+
+            Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Quantity);
+            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Unit);
+
+            Assert.AreEqual("15", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
+        }
+
+        [TestMethod]
+        public void Method3()
+        {
+            var filename = Path.Combine(Environment.CurrentDirectory, "SampleFiles", "CinnamonRolls.txt");
+
+            if (!File.Exists(filename))
+            {
+                Assert.Fail($"File {filename} does not exist.");
+            }
+
+            var parser = new MetadataParser();
+            var lines = File.ReadAllLines(filename);
+            var recipe = parser.ExtractRecipe(lines);
+
+            Assert.AreEqual(15, recipe.Ingredients.Count());
+
+            Assert.AreEqual("3", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Quantity);
+            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Unit);
+
+            Assert.AreEqual("2", recipe.Ingredients.First(x => x.Name.Contains("milk")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.First(x => x.Name.Contains("milk")).Unit);
+
+            Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+
+            Assert.AreEqual("5", recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Unit);
+
+            Assert.AreEqual("2/3", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Unit);
+
+            Assert.AreEqual("1", recipe.Ingredients.First(x => x.Name.Contains("sugar")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.First(x => x.Name.Contains("sugar")).Unit);
+
+            Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Quantity);
+            Assert.AreEqual("tsp.", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Unit);
+
+            Assert.AreEqual("12", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
+
+            Assert.AreEqual(string.Empty, recipe.Ingredients.First(x => x.Name.Contains("butter")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.First(x => x.Name.Contains("butter")).Unit);
+
+            Assert.AreEqual(string.Empty, recipe.Ingredients.Single(x => x.Name.Contains("cinnamon")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("cinnamon")).Unit);
+
+            Assert.AreEqual(string.Empty, recipe.Ingredients.Single(x => x.Name.Contains("brown sugar")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("brown sugar")).Unit);
+
+            Assert.AreEqual(string.Empty, recipe.Ingredients.Single(x => x.Name.Contains("cream cheese")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("cream cheese")).Unit);
+
+            Assert.AreEqual("1", recipe.Ingredients.Last(x => x.Name.Contains("butter")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Last(x => x.Name.Contains("butter")).Unit);
+
+            Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("powdered sugar")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("powdered sugar")).Unit);
+
+            Assert.AreEqual(string.Empty, recipe.Ingredients.Last(x => x.Name.Contains("milk")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Last(x => x.Name.Contains("milk")).Unit);
+        }
+
+        [TestMethod]
+        public void Method4()
+        {
+            var filename = Path.Combine(Environment.CurrentDirectory, "SampleFiles", "PizzaCrust.txt");
+
+            if (!File.Exists(filename))
+            {
+                Assert.Fail($"File {filename} does not exist.");
+            }
+
+            var parser = new MetadataParser();
+            var lines = File.ReadAllLines(filename);
+            var recipe = parser.ExtractRecipe(lines);
+
+            Assert.AreEqual(7, recipe.Ingredients.Count());
+
+            Assert.AreEqual("1 1/3", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+
+            Assert.AreEqual("1/4", recipe.Ingredients.Single(x => x.Name.Contains("powdered milk")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("powdered milk")).Unit);
+
+            Assert.AreEqual("1/2", recipe.Ingredients.Single(x => x.Name.Contains("Salt")).Quantity);
+            Assert.AreEqual("tsp.", recipe.Ingredients.Single(x => x.Name.Contains("Salt")).Unit);
+
+            Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("Flour")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("Flour")).Unit);
+
+            Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("SuGAr")).Quantity);
+            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("SuGAr")).Unit);
+
+            Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Quantity);
+            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Unit);
+
+            Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("vegetable oil")).Quantity);
+            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("vegetable oil")).Unit);
+        }
+
+        [TestMethod]
+        public void Method5()
+        {
+            var filename = Path.Combine(Environment.CurrentDirectory, "SampleFiles", "Tortillas.txt");
+
+            if (!File.Exists(filename))
+            {
+                Assert.Fail($"File {filename} does not exist.");
+            }
+
+            var parser = new MetadataParser();
+            var lines = File.ReadAllLines(filename);
+            var recipe = parser.ExtractRecipe(lines);
+
+            Assert.AreEqual(4, recipe.Ingredients.Count());
+
+            Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
+
+            Assert.AreEqual("1/4", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Quantity);
+            Assert.AreEqual("tsp.", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Unit);
+
+            Assert.AreEqual("1/4", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Unit);
+
+            Assert.AreEqual("1 1/2", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+        }
+
+        [TestMethod]
+        public void Method6()
+        {
+            var filename = Path.Combine(Environment.CurrentDirectory, "SampleFiles", "PotatoBaconCheddarSoup.txt");
+
+            if (!File.Exists(filename))
+            {
+                Assert.Fail($"File {filename} does not exist.");
+            }
+
+            var parser = new MetadataParser();
+            var lines = File.ReadAllLines(filename);
+            var recipe = parser.ExtractRecipe(lines);
+
+            Assert.AreEqual(5, recipe.Ingredients.Count());
+
+            Assert.AreEqual("5-8", recipe.Ingredients.Single(x => x.Name.Contains("potatoes")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("potatoes")).Unit);
+
+            Assert.AreEqual("3", recipe.Ingredients.Single(x => x.Name.Contains("celery")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("celery")).Unit);
+
+            Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("bacon")).Quantity);
+            Assert.AreEqual("pound", recipe.Ingredients.Single(x => x.Name.Contains("bacon")).Unit);
+
+            Assert.AreEqual("1 1/2", recipe.Ingredients.Single(x => x.Name.Contains("milk")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("milk")).Unit);
+
+            Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("cheddar cheese")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("cheddar cheese")).Unit);
+        }
+
+        [TestMethod]
+        public void Method7()
+        {
+            var filename = Path.Combine(Environment.CurrentDirectory, "SampleFiles", "RootBeer.txt");
+
+            if (!File.Exists(filename))
+            {
+                Assert.Fail($"File {filename} does not exist.");
+            }
+
+            var parser = new MetadataParser();
+            var lines = File.ReadAllLines(filename);
+            var recipe = parser.ExtractRecipe(lines);
+
+            Assert.AreEqual(4, recipe.Ingredients.Count());
+
+            Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("root beer extract")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("root beer extract")).Unit);
+
+            Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Quantity);
+            Assert.AreEqual("2 1/2", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).SubQuantity);
+            Assert.AreEqual("lb.", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Unit);
+
+            Assert.AreEqual("5", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
+            Assert.AreEqual("gallons", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+
+            Assert.AreEqual("5", recipe.Ingredients.Single(x => x.Name.Contains("dry ice")).Quantity);
+            Assert.AreEqual("lb.", recipe.Ingredients.Single(x => x.Name.Contains("dry ice")).Unit);
         }
     }
 }

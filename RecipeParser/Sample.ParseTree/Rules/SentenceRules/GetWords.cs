@@ -9,7 +9,7 @@ namespace Sample.ParseTree.Rules
         public static IEnumerable<Word> GetWords(this string sentence)
         {
             var index = 0;
-            return sentence?.Split(" ")
+            return sentence?.Split(new char[] { ' ', '-' })
                             .Select(word => new Word
                             {
                                 Position = index++,
