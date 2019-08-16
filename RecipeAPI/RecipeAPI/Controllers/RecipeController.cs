@@ -5,6 +5,8 @@ using PantryTracker.Model.Recipe;
 using PantryTracker.RecipeReader;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
+using RecipeAPI.Data;
 
 namespace RecipeAPI.Controllers
 {
@@ -15,11 +17,14 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     public class RecipeController : BaseController
     {
+        private RecipeContext _db;
 
 #pragma warning disable 1591
-        public RecipeController(IOptions<AppSettings> config)
+        public RecipeController(IOptions<AppSettings> config,
+                                RecipeContext database)
 #pragma warning restore 1591
         {
+            _db = database;
         }
 
         /// <summary>
@@ -64,7 +69,7 @@ namespace RecipeAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("preview")]
-        public async Task<IActionResult> Preview([FromBody]string rawText)
+        public IActionResult Preview([FromBody]string rawText)
         {
             if(string.IsNullOrEmpty(rawText))
             {
@@ -89,12 +94,31 @@ namespace RecipeAPI.Controllers
         public async Task<IActionResult> Create([FromBody]Recipe recipe)
         {
             //TODO: Validate model.
+            //TODO: Validate that ingredients don't have overlapping indeces, as this will violate db constraint.
             try
             {
-                return await Task.Run(() =>
+                if(recipe == default(Recipe))
                 {
-                    return Ok();
-                });
+                    return BadRequest("Recipe must be present in the request body.");
+                }
+
+                recipe.OwnerId = $@"{Guid.Empty}";
+                recipe.Id = Guid.NewGuid();
+
+                foreach (var ingr in recipe.Ingredients)
+                {
+                    ingr.RecipeId = recipe.Id;
+                }
+
+                foreach (var ingr in recipe.Ingredients.Where(i => i.Index == 0))
+                {
+                    ingr.Index = recipe.Ingredients.Max(p => p.Index) + 1;
+                }
+
+                _db.Recipes.Add(recipe);
+                await _db.SaveChangesAsync();
+
+                return Ok();
             }
             catch(DocumentClientException ex)
             {
@@ -108,7 +132,7 @@ namespace RecipeAPI.Controllers
         /// </summary>
         //[Authorize]
         [HttpPatch]
-        public async Task<IActionResult> Update([FromBody]Recipe recipe)
+        public IActionResult Update([FromBody]Recipe recipe)
         {
             //TODO: Validate model. -- This needs to have an ID, and it needs to belong to the correct owner.
             return BadRequest("This method is not implemented yet.");

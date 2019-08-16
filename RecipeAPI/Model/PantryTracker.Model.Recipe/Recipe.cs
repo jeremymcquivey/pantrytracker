@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PantryTracker.Model.Recipe
 {
     /// <summary>
     /// Defines the POCO for a recipe object
     /// </summary>
-    public class Recipe : IDocument
+    public class Recipe
     {
         /// <summary>
         /// Unique ID of document
         /// </summary>
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// ID of the user who created recipe

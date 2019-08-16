@@ -16,15 +16,6 @@
         /// </summary>
         public class ConnectionString
         {
-            /// <summary>
-            /// Location of the cosmos DB connection
-            /// </summary>
-            public string CosmosConnection { get; set; }
-
-            /// <summary>
-            /// Password for the cosmos DB connection
-            /// </summary>
-            public string CosmosPassword { get; set; }
         }
     }
 }

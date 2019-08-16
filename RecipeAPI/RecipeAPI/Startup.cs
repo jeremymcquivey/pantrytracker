@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure.Documents.Client;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RecipeAPI.Data;
 using RecipeAPI.Helpers;
+using System;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -23,6 +25,9 @@ namespace RecipeAPI
             services.AddMvc();
             services.AddSwashbuckle();
             services.Configure<AppSettings>(Configuration);
+
+            var connStr = Environment.GetEnvironmentVariable("ConnectionString", EnvironmentVariableTarget.Process);
+            services.AddDbContext<RecipeContext>(options => options.UseSqlServer(connStr));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
