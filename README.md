@@ -29,3 +29,10 @@ Written as a micro-service architecture, this will consist of these basic compon
               a) integrate with 3rd party grocery API
               b) generate own from user shopping lists, etc...
               c) generate own from recipes supplied by users
+
+
+When connecting to a database, you must define a connection string in a process-level environement variable:
+ConnectionString: {ConnectionString}.
+
+For Dev Notes: When creating migrations, use this command to set an environment variable in powershell:
+$env:ConnectionString='{ConnectionString}'.
