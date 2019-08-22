@@ -38,13 +38,19 @@ namespace PantryTracker.RecipeReader
                     break;
                 }
 
+                if(sentence.ToLower().Contains("ingredients"))
+                {
+                    (recipe.Ingredients as List<Ingredient>).Clear();
+                    continue;
+                }
+
                 var ingredient = ingredientParser.ProcessSentence(sentence);
 
                 var recentlyAddedPrepTime = false;
                 if (string.IsNullOrEmpty(recipe.PrepTime))
                 {
-                    recentlyAddedPrepTime = true;
                     recipe.PrepTime = GetPrepTime(sentence)?.Trim();
+                    recentlyAddedPrepTime = !string.IsNullOrEmpty(recipe.PrepTime);
                 }
 
                 if (!recentlyAddedPrepTime && null != ingredient)
@@ -52,6 +58,24 @@ namespace PantryTracker.RecipeReader
             }
 
             (recipe.Directions as List<string>).AddRange(input.Skip(currentLineNumber + 1));
+
+            List<string> toRemove = new List<string>();
+            foreach(var direction in recipe.Directions)
+            {
+                var ingredient = ingredientParser.ProcessSentence(direction);
+
+                if(!string.IsNullOrEmpty(ingredient.Unit) && (!string.IsNullOrEmpty(ingredient.Quantity) || !string.IsNullOrEmpty(ingredient.SubQuantity)))
+                {
+                    //actually an ingredient.
+                    (recipe.Ingredients as List<Ingredient>).Add(ingredient);
+                    toRemove.Add(direction);
+                }
+            }
+
+            foreach(var direction in toRemove)
+            {
+                (recipe.Directions as List<string>).Remove(direction);
+            }
 
             return recipe;
         }
