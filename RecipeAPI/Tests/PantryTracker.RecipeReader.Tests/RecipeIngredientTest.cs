@@ -15,7 +15,6 @@ namespace Pantrytracker.RecipeReader.Tests
                 "Jalapeno Cheddar Pork Chops",
                 "50 minutes",
                 "Source: https://www.allrecipes.com/recipe/273630/jalapeno-cheddar-pork-chops/?internalSource=rotd&referringContentType=Homepage&clickId=cardslot%201",
-                "",
                 "1 egg",
                 "2 tablespoons all-purpose flour",
                 "1 pinch ground black pepper",
@@ -25,7 +24,7 @@ namespace Pantrytracker.RecipeReader.Tests
                 "2 bone -in pork chops",
                 "2 teaspoons olive oil",
                 "1 teaspoon margarine",
-                "",
+                "Directions:",
                 "Some directions here."
             };
 
