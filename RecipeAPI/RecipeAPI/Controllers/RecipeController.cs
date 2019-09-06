@@ -15,7 +15,7 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     public class RecipeController : BaseController
     {
-        private const char EndOfLinbeDelimiter = '';
+        private const char EndOfLineDelimiter = '\n';
         private IOCRService _ocr;
 
         public RecipeController(IOCRService ocrService)
@@ -52,7 +52,7 @@ namespace RecipeAPI.Controllers
             try
             {
                 var ocrText = _ocr.ImageToText(imageText);
-                return await Preview(string.Join('\n', ocrText));
+                return await Preview(string.Join(EndOfLineDelimiter, ocrText));
             }
             catch (Exception ex)
             {
@@ -76,7 +76,7 @@ namespace RecipeAPI.Controllers
             }
 
             var parser = new MetadataParser();
-            var lines = rawText.Split(EndOfLinbeDelimiter);
+            var lines = rawText.Split(EndOfLineDelimiter);
             var output = parser.ExtractRecipe(lines);
 
             // Returns just the object representation of the recipe. 
