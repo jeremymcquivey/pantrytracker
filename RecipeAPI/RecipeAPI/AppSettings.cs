@@ -9,22 +9,13 @@
         /// <summary>
         /// Connection strings to 3rd party services
         /// </summary>
-        public ConnectionString ConnectionStrings { get; set; }
+        public ServiceEndpoints Endpoints { get; set; }
 
         /// <summary>
         /// Connection strings to 3rd party services
         /// </summary>
-        public class ConnectionString
+        public class ServiceEndpoints
         {
-            /// <summary>
-            /// Location of the cosmos DB connection
-            /// </summary>
-            public string CosmosConnection { get; set; }
-
-            /// <summary>
-            /// Password for the cosmos DB connection
-            /// </summary>
-            public string CosmosPassword { get; set; }
         }
     }
 }

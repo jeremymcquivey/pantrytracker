@@ -1,5 +1,6 @@
 ﻿Cinnamon Rolls
 
+ingredients
 3 Tbsp. yeast
 2 cups milk, scalded
 2 cups water
@@ -16,4 +17,5 @@ cream cheese
 4 cups powdered sugar
 milk
 
+directions
 blah blah blah.

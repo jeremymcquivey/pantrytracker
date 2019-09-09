@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PantryTracker.ExternalServices;
 using RecipeAPI.Helpers;
 
 #pragma warning disable 1591
@@ -23,6 +23,7 @@ namespace RecipeAPI
             services.AddMvc();
             services.AddSwashbuckle();
             services.Configure<AppSettings>(Configuration);
+            services.AddTransient<IOCRService, OCR>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
