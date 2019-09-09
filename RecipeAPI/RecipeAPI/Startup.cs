@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RecipeAPI.Data;
+using PantryTracker.ExternalServices;
 using RecipeAPI.Helpers;
 using System;
 
@@ -28,6 +29,7 @@ namespace RecipeAPI
 
             var connStr = Environment.GetEnvironmentVariable("ConnectionString", EnvironmentVariableTarget.Process);
             services.AddDbContext<RecipeContext>(options => options.UseSqlServer(connStr));
+            services.AddTransient<IOCRService, OCR>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

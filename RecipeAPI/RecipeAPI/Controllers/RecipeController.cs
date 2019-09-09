@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
-using Microsoft.Extensions.Options;
 using PantryTracker.Model.Recipe;
 using PantryTracker.RecipeReader;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
 using RecipeAPI.Data;
+using PantryTracker.ExternalServices;
 
 namespace RecipeAPI.Controllers
 {
@@ -25,6 +25,12 @@ namespace RecipeAPI.Controllers
 #pragma warning restore 1591
         {
             _db = database;
+        private const char EndOfLineDelimiter = '\n';
+        private IOCRService _ocr;
+
+        public RecipeController(IOCRService ocrService)
+        {
+            _ocr = ocrService;
         }
 
         /// <summary>
@@ -44,18 +50,21 @@ namespace RecipeAPI.Controllers
         /// Returns the desired recipe.
         /// </summary>
         //[Authorize]
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> Get(string id)
+        [HttpPost]
+        [Route("preview/image")]
+        public async Task<IActionResult> PreviewFromImage([FromBody]string imageText)
         {
+            if(string.IsNullOrEmpty(imageText))
+            {
+                return Ok(new Recipe());
+            }
+
             try
             {
-                return await Task.Run(() =>
-                {
-                    return Ok();
-                });
+                var ocrText = _ocr.ImageToText(imageText);
+                return await Preview(string.Join(EndOfLineDelimiter, ocrText));
             }
-            catch (DocumentClientException ex)
+            catch (Exception ex)
             {
                 //TODO: Log to app insights.
                 throw;
@@ -70,14 +79,16 @@ namespace RecipeAPI.Controllers
         [HttpPost]
         [Route("preview")]
         public IActionResult Preview([FromBody]string rawText)
+        [Route("preview/text")]
+        public async Task<IActionResult> Preview([FromBody]string rawText)
         {
             if(string.IsNullOrEmpty(rawText))
             {
-                new Recipe();
+                return Ok(new Recipe());
             }
 
             var parser = new MetadataParser();
-            var lines = rawText.Split('\n');
+            var lines = rawText.Split(EndOfLineDelimiter);
             var output = parser.ExtractRecipe(lines);
 
             // Returns just the object representation of the recipe. 
