@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
+using Microsoft.Extensions.Options;
 using PantryTracker.Model.Recipe;
 using PantryTracker.RecipeReader;
 using System;
@@ -17,19 +18,18 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     public class RecipeController : BaseController
     {
+        private const char EndOfLineDelimiter = '\n';
+
+        private IOCRService _ocr;
         private RecipeContext _db;
 
 #pragma warning disable 1591
         public RecipeController(IOptions<AppSettings> config,
-                                RecipeContext database)
+                                RecipeContext database,
+								IOCRService ocrService)
 #pragma warning restore 1591
         {
             _db = database;
-        private const char EndOfLineDelimiter = '\n';
-        private IOCRService _ocr;
-
-        public RecipeController(IOCRService ocrService)
-        {
             _ocr = ocrService;
         }
 
@@ -77,9 +77,7 @@ namespace RecipeAPI.Controllers
         /// <param name="rawText"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("preview")]
-        public IActionResult Preview([FromBody]string rawText)
-        [Route("preview/text")]
+		[Route("preview/text")]
         public async Task<IActionResult> Preview([FromBody]string rawText)
         {
             if(string.IsNullOrEmpty(rawText))
