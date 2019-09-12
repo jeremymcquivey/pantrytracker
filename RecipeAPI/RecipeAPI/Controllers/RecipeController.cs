@@ -5,6 +5,7 @@ using PantryTracker.RecipeReader;
 using System;
 using System.Threading.Tasks;
 using PantryTracker.ExternalServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RecipeAPI.Controllers
 {
@@ -13,6 +14,7 @@ namespace RecipeAPI.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class RecipeController : BaseController
     {
         private const char EndOfLineDelimiter = '\n';
@@ -26,7 +28,6 @@ namespace RecipeAPI.Controllers
         /// <summary>
         /// Returns all recipes belonging to the current user.
         /// </summary>
-        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -39,7 +40,6 @@ namespace RecipeAPI.Controllers
         /// <summary>
         /// Returns the desired recipe.
         /// </summary>
-        //[Authorize]
         [HttpPost]
         [Route("preview/image")]
         public async Task<IActionResult> PreviewFromImage([FromBody]string imageText)
@@ -89,7 +89,7 @@ namespace RecipeAPI.Controllers
         /// Creates a new recipe within the current user's collection.
         /// </summary>
         [HttpPost]
-        //[Authorize(Roles = "AddRecipe")]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody]Recipe recipe)
         {
             //TODO: Validate model.
@@ -112,6 +112,7 @@ namespace RecipeAPI.Controllers
         /// </summary>
         //[Authorize]
         [HttpPatch]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromBody]Recipe recipe)
         {
             //TODO: Validate model. -- This needs to have an ID, and it needs to belong to the correct owner.
