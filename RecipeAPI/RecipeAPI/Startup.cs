@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +24,35 @@ namespace RecipeAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            services.AddSwashbuckle();
             services.Configure<AppSettings>(Configuration);
 
             var connStr = Environment.GetEnvironmentVariable("ConnectionString", EnvironmentVariableTarget.Process);
             services.AddDbContext<RecipeContext>(options => options.UseSqlServer(connStr));
             services.AddTransient<IOCRService, OCR>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllRequests", builder =>
+                {
+                    builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin()
+                    .AllowCredentials();
+                });
+            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                     .AddJwtBearer(options =>
+                     {
+                         // base-address of your identityserver
+                         options.Authority = "http://localhost:4242/";
+                         options.RequireHttpsMetadata = false;
+                         // name of the API resource
+                         options.Audience = "projects-api";
+                     });
+
+            services.AddSwashbuckle();
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -45,8 +68,9 @@ namespace RecipeAPI
             }
 
             app.UseStaticFiles();
-            app.UseMvc();
             app.UseSwashbuckle(env);
+            app.UseAuthentication();
+            app.UseMvc();
         }
     }
 }

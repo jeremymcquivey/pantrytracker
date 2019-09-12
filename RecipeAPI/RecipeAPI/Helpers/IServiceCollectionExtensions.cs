@@ -65,7 +65,7 @@ namespace RecipeAPI.Helpers
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", appName);
-                c.RoutePrefix = string.Empty;
+                c.RoutePrefix = "swagger";
             });
 
             return app;
