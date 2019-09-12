@@ -5,6 +5,8 @@ using PantryTracker.RecipeReader;
 using System;
 using System.Threading.Tasks;
 using PantryTracker.ExternalServices;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace RecipeAPI.Controllers
 {
@@ -13,6 +15,8 @@ namespace RecipeAPI.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
+    [Authorize]
+    //[Authorize(Roles = "Admin")]
     public class RecipeController : BaseController
     {
         private const char EndOfLineDelimiter = '\n';
@@ -26,12 +30,12 @@ namespace RecipeAPI.Controllers
         /// <summary>
         /// Returns all recipes belonging to the current user.
         /// </summary>
-        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return await Task.Run(() =>
             {
+                var user = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 return Ok();
             });
         }
@@ -39,7 +43,6 @@ namespace RecipeAPI.Controllers
         /// <summary>
         /// Returns the desired recipe.
         /// </summary>
-        //[Authorize]
         [HttpPost]
         [Route("preview/image")]
         public async Task<IActionResult> PreviewFromImage([FromBody]string imageText)
@@ -64,8 +67,6 @@ namespace RecipeAPI.Controllers
         /// <summary>
         /// Creates a recipe from a raw text block (preview only)
         /// </summary>
-        /// <param name="rawText"></param>
-        /// <returns></returns>
         [HttpPost]
         [Route("preview/text")]
         public async Task<IActionResult> Preview([FromBody]string rawText)
@@ -89,7 +90,6 @@ namespace RecipeAPI.Controllers
         /// Creates a new recipe within the current user's collection.
         /// </summary>
         [HttpPost]
-        //[Authorize(Roles = "AddRecipe")]
         public async Task<IActionResult> Create([FromBody]Recipe recipe)
         {
             //TODO: Validate model.
@@ -110,7 +110,6 @@ namespace RecipeAPI.Controllers
         /// <summary>
         /// Updates an existing recipe within the current user's collection.
         /// </summary>
-        //[Authorize]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody]Recipe recipe)
         {
