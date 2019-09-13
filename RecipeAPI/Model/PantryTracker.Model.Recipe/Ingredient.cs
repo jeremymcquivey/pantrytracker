@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PantryTracker.Model.Recipe
 {
@@ -20,6 +21,7 @@ namespace PantryTracker.Model.Recipe
 
         public string Descriptor { get; set; }
 
+        [NotMapped]
         public virtual Recipe Recipe { get; set; }
     }
 }

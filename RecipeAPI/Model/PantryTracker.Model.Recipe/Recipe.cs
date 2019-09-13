@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PantryTracker.Model.Recipe
 {
@@ -42,11 +43,13 @@ namespace PantryTracker.Model.Recipe
         /// <summary>
         /// A list of string tags which categorize the recipe
         /// </summary>
+        [NotMapped]
         public List<string> Tags { get; set; }
 
         /// <summary>
         /// Reviews given for a recipe by app users
         /// </summary>
+        [NotMapped]
         public List<Review> Reviews { get; set; }
 
         /// <summary>
@@ -62,6 +65,7 @@ namespace PantryTracker.Model.Recipe
         public virtual IEnumerable<Ingredient> Ingredients { get; } =
             new List<Ingredient>();
 
+        [NotMapped]
         public virtual IEnumerable<string> Directions { get; } =
             new List<string>();
     }

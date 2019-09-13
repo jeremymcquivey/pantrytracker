@@ -6,10 +6,11 @@ using PantryTracker.RecipeReader;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
-using RecipeAPI.Data;
 using PantryTracker.ExternalServices;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using RecipeAPI.Models;
 
 namespace RecipeAPI.Controllers
 {
@@ -41,13 +42,21 @@ namespace RecipeAPI.Controllers
         /// Returns all recipes belonging to the current user.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll([FromQuery]int ingredientOffset = 0)
         {
-            return await Task.Run(() =>
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var recipes = _db.Recipes.Include(r => r.Ingredients)
+                                     .Where(r => r.OwnerId == userId)
+                                     .ToList();
+            
+            try
             {
-                var user = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                return Ok();
-            });
+                return Ok(recipes);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -102,7 +111,6 @@ namespace RecipeAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]Recipe recipe)
         {
-            //TODO: Validate model.
             //TODO: Validate that ingredients don't have overlapping indeces, as this will violate db constraint.
             try
             {
@@ -111,7 +119,7 @@ namespace RecipeAPI.Controllers
                     return BadRequest("Recipe must be present in the request body.");
                 }
 
-                recipe.OwnerId = $@"{Guid.Empty}";
+                recipe.OwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 recipe.Id = Guid.NewGuid();
 
                 foreach (var ingr in recipe.Ingredients)
@@ -127,7 +135,7 @@ namespace RecipeAPI.Controllers
                 _db.Recipes.Add(recipe);
                 await _db.SaveChangesAsync();
 
-                return Ok();
+                return Ok(recipe);
             }
             catch(DocumentClientException ex)
             {
@@ -139,11 +147,28 @@ namespace RecipeAPI.Controllers
         /// <summary>
         /// Updates an existing recipe within the current user's collection.
         /// </summary>
-        [HttpPatch]
-        public IActionResult Update([FromBody]Recipe recipe)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute]string id, [FromBody]Recipe recipe)
         {
-            //TODO: Validate model. -- This needs to have an ID, and it needs to belong to the correct owner.
-            return BadRequest("This method is not implemented yet.");
+            if(recipe == default(Recipe) || !Guid.TryParse(id, out Guid gId) || !id.Equals(recipe.Id))
+            {
+                return BadRequest("");
+            }
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var existing = _db.Recipes.AsNoTracking()
+                                      .SingleOrDefault(r => r.Id == gId && r.OwnerId == userId);
+
+            if(existing == default(Recipe))
+            {
+                return NotFound();
+            }
+
+            _db.Update(recipe);
+            await _db.SaveChangesAsync();
+
+            return Ok(recipe);
         }
     }
 }

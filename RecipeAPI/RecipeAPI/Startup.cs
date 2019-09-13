@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RecipeAPI.Data;
 using PantryTracker.ExternalServices;
 using RecipeAPI.Helpers;
 using System;
+using RecipeAPI.Models;
 
 #pragma warning disable 1591
 namespace RecipeAPI
