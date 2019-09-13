@@ -1,10 +1,15 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PantryTracker.ExternalServices;
 using RecipeAPI.Helpers;
+using System;
+using RecipeAPI.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -22,6 +27,9 @@ namespace RecipeAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration);
+
+            var connStr = Environment.GetEnvironmentVariable("ConnectionString", EnvironmentVariableTarget.Process);
+            services.AddDbContext<RecipeContext>(options => options.UseSqlServer(connStr));
             services.AddTransient<IOCRService, OCR>();
 
             services.AddCors(options =>
@@ -61,6 +69,7 @@ namespace RecipeAPI
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseCors("AllRequests");
             app.UseStaticFiles();
             app.UseSwashbuckle(env);
             app.UseAuthentication();
