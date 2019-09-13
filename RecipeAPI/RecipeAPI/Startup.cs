@@ -8,6 +8,8 @@ using PantryTracker.ExternalServices;
 using RecipeAPI.Helpers;
 using System;
 using RecipeAPI.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -67,6 +69,7 @@ namespace RecipeAPI
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseCors("AllRequests");
             app.UseStaticFiles();
             app.UseSwashbuckle(env);
             app.UseAuthentication();

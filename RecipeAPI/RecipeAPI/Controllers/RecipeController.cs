@@ -42,7 +42,7 @@ namespace RecipeAPI.Controllers
         /// Returns all recipes belonging to the current user.
         /// </summary>
         [HttpGet]
-        public IActionResult GetAll([FromQuery]int ingredientOffset = 0)
+        public IActionResult GetAll()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var recipes = _db.Recipes.Include(r => r.Ingredients)
