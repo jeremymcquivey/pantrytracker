@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
+using Microsoft.Extensions.Options;
 using PantryTracker.Model.Recipe;
 using PantryTracker.RecipeReader;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 using PantryTracker.ExternalServices;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using RecipeAPI.Models;
 
 namespace RecipeAPI.Controllers
 {
@@ -20,10 +24,17 @@ namespace RecipeAPI.Controllers
     public class RecipeController : BaseController
     {
         private const char EndOfLineDelimiter = '\n';
-        private IOCRService _ocr;
 
-        public RecipeController(IOCRService ocrService)
+        private IOCRService _ocr;
+        private RecipeContext _db;
+
+#pragma warning disable 1591
+        public RecipeController(IOptions<AppSettings> config,
+                                RecipeContext database,
+								IOCRService ocrService)
+#pragma warning restore 1591
         {
+            _db = database;
             _ocr = ocrService;
         }
 
@@ -31,13 +42,21 @@ namespace RecipeAPI.Controllers
         /// Returns all recipes belonging to the current user.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
-            return await Task.Run(() =>
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var recipes = _db.Recipes.Include(r => r.Ingredients)
+                                     .Where(r => r.OwnerId == userId)
+                                     .ToList();
+            
+            try
             {
-                var user = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                return Ok();
-            });
+                return Ok(recipes);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -68,7 +87,7 @@ namespace RecipeAPI.Controllers
         /// Creates a recipe from a raw text block (preview only)
         /// </summary>
         [HttpPost]
-        [Route("preview/text")]
+		[Route("preview/text")]
         public async Task<IActionResult> Preview([FromBody]string rawText)
         {
             if(string.IsNullOrEmpty(rawText))
@@ -92,13 +111,31 @@ namespace RecipeAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]Recipe recipe)
         {
-            //TODO: Validate model.
+            //TODO: Validate that ingredients don't have overlapping indeces, as this will violate db constraint.
             try
             {
-                return await Task.Run(() =>
+                if(recipe == default(Recipe))
                 {
-                    return Ok();
-                });
+                    return BadRequest("Recipe must be present in the request body.");
+                }
+
+                recipe.OwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                recipe.Id = Guid.NewGuid();
+
+                foreach (var ingr in recipe.Ingredients)
+                {
+                    ingr.RecipeId = recipe.Id;
+                }
+
+                foreach (var ingr in recipe.Ingredients.Where(i => i.Index == 0))
+                {
+                    ingr.Index = recipe.Ingredients.Max(p => p.Index) + 1;
+                }
+
+                _db.Recipes.Add(recipe);
+                await _db.SaveChangesAsync();
+
+                return Ok(recipe);
             }
             catch(DocumentClientException ex)
             {
@@ -110,11 +147,28 @@ namespace RecipeAPI.Controllers
         /// <summary>
         /// Updates an existing recipe within the current user's collection.
         /// </summary>
-        [HttpPatch]
-        public async Task<IActionResult> Update([FromBody]Recipe recipe)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute]string id, [FromBody]Recipe recipe)
         {
-            //TODO: Validate model. -- This needs to have an ID, and it needs to belong to the correct owner.
-            return BadRequest("This method is not implemented yet.");
+            if(recipe == default(Recipe) || !Guid.TryParse(id, out Guid gId) || !id.Equals(recipe.Id))
+            {
+                return BadRequest("");
+            }
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var existing = _db.Recipes.AsNoTracking()
+                                      .SingleOrDefault(r => r.Id == gId && r.OwnerId == userId);
+
+            if(existing == default(Recipe))
+            {
+                return NotFound();
+            }
+
+            _db.Update(recipe);
+            await _db.SaveChangesAsync();
+
+            return Ok(recipe);
         }
     }
 }

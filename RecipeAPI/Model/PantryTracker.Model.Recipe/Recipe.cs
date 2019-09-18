@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PantryTracker.Model.Recipe
 {
     /// <summary>
     /// Defines the POCO for a recipe object
     /// </summary>
-    public class Recipe : IDocument
+    public class Recipe
     {
         /// <summary>
         /// Unique ID of document
         /// </summary>
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// ID of the user who created recipe
@@ -41,11 +43,13 @@ namespace PantryTracker.Model.Recipe
         /// <summary>
         /// A list of string tags which categorize the recipe
         /// </summary>
+        [NotMapped]
         public List<string> Tags { get; set; }
 
         /// <summary>
         /// Reviews given for a recipe by app users
         /// </summary>
+        [NotMapped]
         public List<Review> Reviews { get; set; }
 
         /// <summary>
@@ -61,6 +65,7 @@ namespace PantryTracker.Model.Recipe
         public virtual IEnumerable<Ingredient> Ingredients { get; } =
             new List<Ingredient>();
 
+        [NotMapped]
         public virtual IEnumerable<string> Directions { get; } =
             new List<string>();
     }

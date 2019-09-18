@@ -36,3 +36,8 @@ ConnectionString: {ConnectionString}.
 
 For Dev Notes: When creating migrations, use this command to set an environment variable in powershell:
 $env:ConnectionString='{ConnectionString}'.
+
+RECIPE API: The following environment variables are required:
+
+ConnectionString (SQL Connection for principal database)
+MSCognitiveServicesKey (Key for Azure's ComputerVision API)
