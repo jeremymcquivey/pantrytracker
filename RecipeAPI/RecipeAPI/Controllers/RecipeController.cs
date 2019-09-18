@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
-using Microsoft.Extensions.Options;
 using PantryTracker.Model.Recipe;
 using PantryTracker.RecipeReader;
 using System;
@@ -8,7 +7,6 @@ using System.Threading.Tasks;
 using System.Linq;
 using PantryTracker.ExternalServices;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using RecipeAPI.Models;
 
@@ -29,8 +27,7 @@ namespace RecipeAPI.Controllers
         private RecipeContext _db;
 
 #pragma warning disable 1591
-        public RecipeController(IOptions<AppSettings> config,
-                                RecipeContext database,
+        public RecipeController(RecipeContext database,
 								IOCRService ocrService)
 #pragma warning restore 1591
         {
@@ -44,7 +41,7 @@ namespace RecipeAPI.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = AuthenticatedUser;
             var recipes = _db.Recipes.Include(r => r.Ingredients)
                                      .Where(r => r.OwnerId == userId)
                                      .ToList();
@@ -64,7 +61,7 @@ namespace RecipeAPI.Controllers
         /// </summary>
         [HttpPost]
         [Route("preview/image")]
-        public async Task<IActionResult> PreviewFromImage([FromBody]string imageText)
+        public IActionResult PreviewFromImage([FromBody]string imageText)
         {
             if(string.IsNullOrEmpty(imageText))
             {
@@ -73,8 +70,9 @@ namespace RecipeAPI.Controllers
 
             try
             {
+                // TODO: Log which user is converting the image. Maybe impose a quota for the free tier?
                 var ocrText = _ocr.ImageToText(imageText);
-                return await Preview(string.Join(EndOfLineDelimiter, ocrText));
+                return Preview(string.Join(EndOfLineDelimiter, ocrText));
             }
             catch (Exception ex)
             {
@@ -88,13 +86,14 @@ namespace RecipeAPI.Controllers
         /// </summary>
         [HttpPost]
 		[Route("preview/text")]
-        public async Task<IActionResult> Preview([FromBody]string rawText)
+        public IActionResult Preview([FromBody]string rawText)
         {
             if(string.IsNullOrEmpty(rawText))
             {
                 return Ok(new Recipe());
             }
 
+            // TODO: Log which user is converting text. This can help us gage usage. This will probably always be on the free tier.
             var parser = new MetadataParser();
             var lines = rawText.Split(EndOfLineDelimiter);
             var output = parser.ExtractRecipe(lines);
@@ -119,7 +118,7 @@ namespace RecipeAPI.Controllers
                     return BadRequest("Recipe must be present in the request body.");
                 }
 
-                recipe.OwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                recipe.OwnerId = AuthenticatedUser;
                 recipe.Id = Guid.NewGuid();
 
                 foreach (var ingr in recipe.Ingredients)
@@ -156,9 +155,8 @@ namespace RecipeAPI.Controllers
                 return BadRequest("");
             }
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var existing = _db.Recipes.AsNoTracking()
-                                      .SingleOrDefault(r => r.Id == gId && r.OwnerId == userId);
+                                      .SingleOrDefault(r => r.Id == gId && r.OwnerId == AuthenticatedUser);
 
             if(existing == default(Recipe))
             {

@@ -18,7 +18,7 @@ namespace PantryTracker.Model.Recipe
         public string Name { get; set; }
 
         public string Container { get; set; }
-
+        
         public string Descriptor { get; set; }
 
         [NotMapped]

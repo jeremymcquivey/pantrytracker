@@ -12,10 +12,24 @@
         public ServiceEndpoints Endpoints { get; set; }
 
         /// <summary>
+        /// SendGrid template Ids
+        /// </summary>
+        public EmailConfiguration EmailConfig { get; set; }
+
+        /// <summary>
         /// Connection strings to 3rd party services
         /// </summary>
         public class ServiceEndpoints
         {
+        }
+
+        /// <summary>
+        /// Defined list of templates needed for application
+        /// </summary>
+        public class EmailConfiguration
+        {
+            public string EmailFromName { get; set; }
+            public string SampleTemplateId { get; set; }
         }
     }
 }
