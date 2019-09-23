@@ -8,8 +8,6 @@ using PantryTracker.ExternalServices;
 using RecipeAPI.Helpers;
 using System;
 using RecipeAPI.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Cors.Internal;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -46,11 +44,9 @@ namespace RecipeAPI
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                      .AddJwtBearer(options =>
                      {
-                         // base-address of your identityserver
-                         options.Authority = "http://localhost:4242/";
+                         options.Authority = "https://pantrytrackers-identity-dev.azurewebsites.net/";
                          options.RequireHttpsMetadata = false;
-                         // name of the API resource
-                         options.Audience = "projects-api";
+                         options.Audience = "pantrytrackers-ui";
                      });
 
             services.AddSwashbuckle();
