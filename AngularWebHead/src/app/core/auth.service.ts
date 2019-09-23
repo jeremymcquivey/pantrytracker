@@ -14,7 +14,7 @@ export class AuthService {
       authority: Constants.stsAuthority,
       client_id: Constants.clientId,
       redirect_uri: `${Constants.clientRoot}assets/oidc-login-redirect.html`,
-      scope: 'openid projects-api profile',
+      scope: 'openid pantrytrackers-ui profile',
       response_type: 'id_token token',
       post_logout_redirect_uri: `${Constants.clientRoot}?postLogout=true`,
       userStore: new WebStorageStateStore({ store: window.localStorage })
