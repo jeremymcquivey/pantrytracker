@@ -44,10 +44,8 @@ namespace RecipeAPI
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                      .AddJwtBearer(options =>
                      {
-                         // base-address of your identityserver
                          options.Authority = "https://pantrytrackers-identity-dev.azurewebsites.net/";
                          options.RequireHttpsMetadata = false;
-                         // name of the API resource
                          options.Audience = "pantrytrackers-ui";
                      });
 

@@ -9,7 +9,7 @@ namespace PantryTracker.SingleSignOn.STS{
         {
             return new List<ApiResource>
             {
-                new ApiResource("projects-api", "Projects API")
+                new ApiResource("pantrytrackers-ui", "Projects API")
             };
         }
 
@@ -19,25 +19,24 @@ namespace PantryTracker.SingleSignOn.STS{
             {
                 new Client
                 {
-                    ClientId = "pantrytracker-recipe-client",
-                    ClientName = "PantryTracker Recipes",
+                    ClientId = "pantrytrackers-ui",
+                    ClientName = "PantryTracker Web App",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
 
-                    RedirectUris =           { "http://localhost:4200/assets/oidc-login-redirect.html" },
+                    RedirectUris = { "http://localhost:4200/assets/oidc-login-redirect.html" },
                     PostLogoutRedirectUris = { "http://localhost:4200/?postLogout=true" },
-                    AllowedCorsOrigins =     { "http://localhost:4200/" },
+                    AllowedCorsOrigins = { "http://localhost:4200/" },
 
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "projects-api"
+                        "pantrytrackers-ui"
                     }
                 }
             };
-
         }
 
         public static IEnumerable<IdentityResource> GetIdentityResources()
