@@ -45,18 +45,48 @@ namespace RecipeAPI.Controllers
         public IActionResult GetAll()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var recipes = _db.Recipes.Include(r => r.Ingredients)
-                                     .Where(r => r.OwnerId == userId)
-                                     .ToList();
             
             try
             {
+                var recipes = _db.Recipes.Include(r => r.Ingredients)
+                                         .Where(r => r.OwnerId == userId)
+                                         .ToList();
+
+                foreach(var recipe in recipes)
+                {
+                    recipe.Ingredients = recipe.Ingredients.OrderBy(i => i.Index);
+                }
+
                 return Ok(recipes);
             }
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Returns an individual recipe by unique Id
+        /// </summary>
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult Get([FromRoute]string id)
+        {
+            if(!Guid.TryParse(id, out Guid gId))
+            {
+                return NotFound();
+            }
+            
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var recipe = _db.Recipes.Include(x => x.Ingredients)
+                                    .SingleOrDefault(x => x.Id == gId && x.OwnerId == userId);
+
+            if(recipe == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(recipe);
         }
 
         /// <summary>
@@ -151,7 +181,7 @@ namespace RecipeAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute]string id, [FromBody]Recipe recipe)
         {
-            if(recipe == default(Recipe) || !Guid.TryParse(id, out Guid gId) || !id.Equals(recipe.Id))
+            if(recipe == default(Recipe) || !Guid.TryParse(id, out Guid gId) || !id.Equals(recipe.Id.ToString(), StringComparison.CurrentCultureIgnoreCase))
             {
                 return BadRequest("");
             }
@@ -160,9 +190,17 @@ namespace RecipeAPI.Controllers
             var existing = _db.Recipes.AsNoTracking()
                                       .SingleOrDefault(r => r.Id == gId && r.OwnerId == userId);
 
-            if(existing == default(Recipe))
+            if (existing == default(Recipe))
             {
                 return NotFound();
+            }
+
+            var allIndexes = recipe.Ingredients.Select(i => i.Index);
+            foreach (var ingredientToDelete in _db.Ingredients.AsNoTracking()
+                                                              .Where(i => i.RecipeId == gId &&
+                                                                          !allIndexes.Contains(i.Index)))
+            {
+                _db.Remove(ingredientToDelete);
             }
 
             _db.Update(recipe);
