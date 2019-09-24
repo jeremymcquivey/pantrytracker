@@ -3,7 +3,6 @@ import { MatDialog, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
 import { DeleteDialogComponent } from '../admin/delete-dialog.component';
-import { AccountService } from '../core/account.service';
 import { ProjectService } from '../core/project.service';
 import { Utils } from '../core/utils';
 import { Milestone } from '../model/milestone';

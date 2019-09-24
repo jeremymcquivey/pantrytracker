@@ -25,7 +25,7 @@ import { AddEditMilestoneDialogComponent } from './projects/add-edit-milestone-d
 import { AdminModule } from './admin/admin.module';
 import { CoreModule } from './core/core.module';
 import { UnauthorizedComponent } from './home/unauthorized.component';
-import { RecipeComponent } from './core/recipes/recipe.component';
+import { RecipeComponent } from './recipes/recipe.component';
 
 @NgModule({
   declarations: [

@@ -6,7 +6,7 @@ import { ProjectListComponent } from './projects/project-list.component';
 import { ProjectComponent } from './projects/project.component';
 import { ContactUsComponent } from './home/contact-us.component';
 import { UnauthorizedComponent } from './home/unauthorized.component';
-import { RecipeComponent } from './core/recipes/recipe.component';
+import { RecipeComponent } from './recipes/recipe.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },

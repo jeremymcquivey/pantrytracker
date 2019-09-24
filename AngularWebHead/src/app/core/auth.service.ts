@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
 import { UserManager, User, WebStorageStateStore } from 'oidc-client';
 import { Constants } from '../constants';
 
