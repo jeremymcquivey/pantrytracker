@@ -11,7 +11,7 @@ import { MatTableDataSource } from "@angular/material";
     styleUrls: ['recipe.component.scss']
   })
   export class RecipeComponent implements OnInit {
-    recipe: Recipe;
+    recipe: Recipe = {} as Recipe;
     ingredients: Ingredient[];
     
     displayedColumns = ['quantity', 'unit', 'name', 'actions'];
@@ -26,13 +26,19 @@ import { MatTableDataSource } from "@angular/material";
     ngOnInit(): void {
       var recipeId = this._route.snapshot.params.recipeId;
 
-      this._projectService.getRecipe(recipeId).subscribe(recipe => {
-        this.recipe = recipe;
-        this.ingredients = recipe.ingredients;
-        this.reorderList();
-
+      if(recipeId) {
+        this._projectService.getRecipe(recipeId).subscribe(recipe => {
+          this.recipe = recipe;
+          this.ingredients = recipe.ingredients;
+          this.reorderList();
+  
+          this.dataSource.data = this.ingredients;
+        });
+      }
+      else {
+        this.recipe.ingredients = [];
         this.dataSource.data = this.ingredients;
-      });
+      }
     }
 
     public addIngredient() {

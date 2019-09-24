@@ -1,17 +1,25 @@
 <div class="mat-display-1" style="margin-bottom: 0px;">
-    <span>{{recipe?.title}}</span>
+    <mat-form-field style="width:100%;">
+        <input matInput [(ngModel)]="recipe.title" required placeholder="Title">
+    </mat-form-field>
+</div>
+<div>
+    <mat-form-field style="width:100%;">
+        <input matInput [(ngModel)]="recipe.credit" required placeholder="Citation i.e. website, name, etc...">
+    </mat-form-field>
 </div>
 <button title="Save Recipe" mat-raised-button color="primary" class="list-action" (click)="saveRecipe()">
     <i class="material-icons">save</i>
 </button>
 
-<div>--------------------------------------</div>
+<br />&nbsp;<br />
 
 <div class="danger">{{error}}</div>
 <span class="mat-title">Ingredients</span>&nbsp;
 <button title="Delete Ingredient" mat-raised-button color="primary" class="list-action" (click)="addIngredient()">
     <i class="material-icons">add</i>
 </button>
+<br />&nbsp;<br />
 
 <div class="table-container mat-elevation-z8">
 
@@ -21,7 +29,7 @@
         <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
         <mat-cell *matCellDef="let ingredient">
           <div>
-            <strong>{{ingredient.quantity}}</strong>
+            <input matInput [(ngModel)]="ingredient.quantity" required placeholder="Quantity">
           </div>
         </mat-cell>
       </ng-container>
@@ -30,7 +38,7 @@
           <mat-header-cell *matHeaderCellDef>Unit</mat-header-cell>
           <mat-cell *matCellDef="let ingredient">
             <div>
-              <strong>{{ingredient.unit}}</strong>
+              <input matInput [(ngModel)]="ingredient.unit" required placeholder="Unit i.e. tbsp">
             </div>
           </mat-cell>
         </ng-container>
@@ -40,7 +48,7 @@
       <mat-header-cell *matHeaderCellDef>Ingredient</mat-header-cell>
       <mat-cell *matCellDef="let ingredient">
         <div>
-          <strong>{{ingredient.name}}</strong>
+            <input matInput [(ngModel)]="ingredient.name" required placeholder="ingredient i.e. olive oil">
         </div>
       </mat-cell>
     </ng-container>
