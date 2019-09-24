@@ -5,7 +5,7 @@
 </div>
 <div>
     <mat-form-field style="width:100%;">
-        <input matInput [(ngModel)]="recipe.credit" required placeholder="Citation i.e. website, name, etc...">
+        <input matInput [(ngModel)]="recipe.credit" placeholder="Citation i.e. website, name, etc...">
     </mat-form-field>
 </div>
 <button title="Save Recipe" mat-raised-button color="primary" class="list-action" (click)="saveRecipe()">
@@ -75,6 +75,67 @@
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+</div>
+
+<div>&nbsp;</div>
+<button title="Save Recipe" mat-raised-button color="primary" class="list-action" (click)="saveRecipe()">
+    <i class="material-icons">save</i>
+</button>
+
+<div>&nbsp;</div>
+<div class="danger">{{error}}</div>
+<span class="mat-title">Directions</span>&nbsp;
+<button title="Delete Ingredient" mat-raised-button color="primary" class="list-action" (click)="addDirection()">
+    <i class="material-icons">add</i>
+</button>
+<br />&nbsp;<br />
+
+<div class="table-container mat-elevation-z8">
+
+  <mat-table [dataSource]="directionDataSource">
+
+    <ng-container matColumnDef="index">
+        <mat-header-cell *matHeaderCellDef>Step</mat-header-cell>
+        <mat-cell *matCellDef="let direction">
+          <div>
+            <span>{{direction.index}}</span>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+          <mat-cell *matCellDef="let direction">
+            <div style="width: 100%;">
+              <textarea matInput [(ngModel)]="direction.text" required></textarea>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let direction">
+        <div class="action-button-wrapper">
+            <button title="Increase Priority" mat-raised-button color="primary" class="list-action" (click)="increaseDirectionPriority(direction)" [disabled]="direction.index <= 1">
+              <i class="material-icons">keyboard_arrow_up</i>
+            </button>
+            &nbsp;
+            <button title="Decrease Priority" mat-raised-button color="primary" class="list-action" (click)="decreaseDirectionPriority(direction)" [disabled]="direction.index >= directions.length">
+                <i class="material-icons">keyboard_arrow_down</i>
+            </button>
+            &nbsp;
+            <button title="Delete Diretion" mat-raised-button color="warn" class="list-action" (click)="deleteDirection(direction)">
+                <i class="material-icons">delete</i>
+            </button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="directionColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: directionColumns;"></mat-row>
   </mat-table>
 
 </div>

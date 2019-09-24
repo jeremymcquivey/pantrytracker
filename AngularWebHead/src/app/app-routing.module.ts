@@ -14,6 +14,7 @@ const routes: Routes = [
     { path: 'projects', component: ProjectListComponent},
     { path: 'project/:projectId', component: ProjectComponent },
     { path: 'unauthorized', component: UnauthorizedComponent },
+    { path: 'new-recipe', component: RecipeComponent},
     { path: 'recipe/:recipeId', component: RecipeComponent}
 ];
 

@@ -1,4 +1,5 @@
 import { Ingredient } from "./ingredient";
+import { Direction } from "./direction";
 
 export class Recipe
 {
@@ -11,5 +12,5 @@ export class Recipe
     prepTime: string;
     tags: string[];
     ingredients: Ingredient[];
-    directions: string[];
+    directions: Direction[];
 }

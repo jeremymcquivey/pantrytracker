@@ -1,4 +1,13 @@
 <div class="danger">{{error}}</div>
+
+<div>
+  <ul>
+    <li><a routerLink="/new-recipe">New Recipe</a></li>
+    <li><a routerLink="">Upload Recipe via text file</a></li>
+    <li><a routerLink="">Upload Recipe via image file</a></li>
+  </ul>
+</div>
+
 <div class="table-container mat-elevation-z8">
 
   <mat-table [dataSource]="dataSource">

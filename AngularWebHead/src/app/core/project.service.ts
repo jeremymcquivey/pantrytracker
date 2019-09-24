@@ -30,11 +30,13 @@ export class ProjectService {
         var accessToken = this._authService.getAccessToken();
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
-        if(recipe.id == "") {
-            return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/', { headers: headers });
+        if(!recipe.id) {
+            return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/', recipe, { headers: headers });
         }
         return this.httpClient.put<Recipe>(Constants.recipeApi + 'v1/Recipe/' + recipe.id, recipe, { headers: headers });
     }
+    
+
     
 
     getProjects(): Observable<Project[]> {
