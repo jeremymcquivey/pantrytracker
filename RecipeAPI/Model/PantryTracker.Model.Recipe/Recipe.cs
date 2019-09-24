@@ -62,11 +62,11 @@ namespace PantryTracker.Model.Recipe
         /// </summary>
         public string PrepTime { get; set; }
 
-        public virtual IEnumerable<Ingredient> Ingredients { get; } =
+        public virtual IEnumerable<Ingredient> Ingredients { get; set; } =
             new List<Ingredient>();
 
         [NotMapped]
-        public virtual IEnumerable<string> Directions { get; } =
+        public virtual IEnumerable<string> Directions { get; set; } =
             new List<string>();
     }
 }
