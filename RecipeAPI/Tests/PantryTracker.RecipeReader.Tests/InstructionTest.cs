@@ -32,7 +32,7 @@ namespace Pantrytracker.RecipeReader.Tests
 
             var recipe = new MetadataParser().ExtractRecipe(input);
             Assert.AreEqual(3, recipe.Directions.Count());
-            Assert.AreEqual(input.Last(), recipe.Directions.Last());
+            Assert.AreEqual(input.Last(), recipe.Directions.Last().Text);
         }
 
         [TestMethod]

@@ -19,6 +19,19 @@ namespace RecipeAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("PantryTracker.Model.Recipe.Direction", b =>
+                {
+                    b.Property<Guid>("RecipeId");
+
+                    b.Property<int>("Index");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("RecipeId", "Index");
+
+                    b.ToTable("Directions");
+                });
+
             modelBuilder.Entity("PantryTracker.Model.Recipe.Ingredient", b =>
                 {
                     b.Property<Guid>("RecipeId");
@@ -66,9 +79,17 @@ namespace RecipeAPI.Migrations
                     b.ToTable("Recipes");
                 });
 
+            modelBuilder.Entity("PantryTracker.Model.Recipe.Direction", b =>
+                {
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
+                        .WithMany("Directions")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("PantryTracker.Model.Recipe.Ingredient", b =>
                 {
-                    b.HasOne("PantryTracker.Model.Recipe.Recipe", "Recipe")
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);

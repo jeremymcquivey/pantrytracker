@@ -10,8 +10,8 @@ using RecipeAPI.Models;
 namespace RecipeAPI.Migrations
 {
     [DbContext(typeof(RecipeContext))]
-    [Migration("20190913001308_initial")]
-    partial class initial
+    [Migration("20190924021720_InitialSchema")]
+    partial class InitialSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,19 @@ namespace RecipeAPI.Migrations
                 .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("PantryTracker.Model.Recipe.Direction", b =>
+                {
+                    b.Property<Guid>("RecipeId");
+
+                    b.Property<int>("Index");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("RecipeId", "Index");
+
+                    b.ToTable("Directions");
+                });
 
             modelBuilder.Entity("PantryTracker.Model.Recipe.Ingredient", b =>
                 {
@@ -68,9 +81,17 @@ namespace RecipeAPI.Migrations
                     b.ToTable("Recipes");
                 });
 
+            modelBuilder.Entity("PantryTracker.Model.Recipe.Direction", b =>
+                {
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
+                        .WithMany("Directions")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("PantryTracker.Model.Recipe.Ingredient", b =>
                 {
-                    b.HasOne("PantryTracker.Model.Recipe.Recipe", "Recipe")
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);

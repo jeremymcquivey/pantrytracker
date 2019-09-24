@@ -65,8 +65,7 @@ namespace PantryTracker.Model.Recipe
         public virtual IEnumerable<Ingredient> Ingredients { get; set; } =
             new List<Ingredient>();
 
-        [NotMapped]
-        public virtual IEnumerable<string> Directions { get; set; } =
-            new List<string>();
+        public virtual IEnumerable<Direction> Directions { get; set; } =
+            new List<Direction>();
     }
 }
