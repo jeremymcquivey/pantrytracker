@@ -22,6 +22,7 @@ namespace PantryTracker.RecipeReader
             if (string.IsNullOrEmpty(recipe.Title))
                 recipe.Title = input.First().Trim();
 
+            var directions = new List<string>();
             var ingredientParser = new IngredientParser();
             foreach(var sentence in input.Skip(1))
             {
@@ -57,10 +58,10 @@ namespace PantryTracker.RecipeReader
                     (recipe.Ingredients as List<Ingredient>).Add(ingredient);
             }
 
-            (recipe.Directions as List<string>).AddRange(input.Skip(currentLineNumber + 1));
+            directions.AddRange(input.Skip(currentLineNumber + 1));
 
             List<string> toRemove = new List<string>();
-            foreach(var direction in recipe.Directions)
+            foreach(var direction in directions)
             {
                 var ingredient = ingredientParser.ProcessSentence(direction);
 
@@ -76,6 +77,13 @@ namespace PantryTracker.RecipeReader
             {
                 (recipe.Directions as List<string>).Remove(direction);
             }
+
+            var index = 1;
+            recipe.Directions = (directions.Select(dir => new Direction()
+            {
+                Index = index++,
+                Text = dir
+            })).ToList();
 
             return recipe;
         }

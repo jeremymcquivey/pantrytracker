@@ -48,13 +48,13 @@ namespace RecipeAPI.Controllers
             
             try
             {
-                var recipes = _db.Recipes.Include(r => r.Ingredients)
-                                         .Where(r => r.OwnerId == userId)
+                var recipes = _db.Recipes.Where(r => r.OwnerId == userId)
                                          .ToList();
 
                 foreach(var recipe in recipes)
                 {
                     recipe.Ingredients = recipe.Ingredients.OrderBy(i => i.Index);
+                    recipe.Directions = recipe.Directions.OrderBy(i => i.Index);
                 }
 
                 return Ok(recipes);
@@ -79,6 +79,7 @@ namespace RecipeAPI.Controllers
             
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var recipe = _db.Recipes.Include(x => x.Ingredients)
+                                    .Include(x => x.Directions)
                                     .SingleOrDefault(x => x.Id == gId && x.OwnerId == userId);
 
             if(recipe == null)
@@ -86,6 +87,8 @@ namespace RecipeAPI.Controllers
                 return NotFound();
             }
 
+            recipe.Ingredients = recipe.Ingredients.OrderBy(i => i.Index);
+            recipe.Directions = recipe.Directions.OrderBy(i => i.Index);
             return Ok(recipe);
         }
 
@@ -195,12 +198,20 @@ namespace RecipeAPI.Controllers
                 return NotFound();
             }
 
-            var allIndexes = recipe.Ingredients.Select(i => i.Index);
+            var ingredientIndeces = recipe.Ingredients.Select(i => i.Index);
             foreach (var ingredientToDelete in _db.Ingredients.AsNoTracking()
                                                               .Where(i => i.RecipeId == gId &&
-                                                                          !allIndexes.Contains(i.Index)))
+                                                                          !ingredientIndeces.Contains(i.Index)))
             {
                 _db.Remove(ingredientToDelete);
+            }
+
+            var directionIndeces = recipe.Directions.Select(i => i.Index);
+            foreach (var directionToDelete in _db.Directions.AsNoTracking()
+                                                            .Where(i => i.RecipeId == gId &&
+                                                                        !directionIndeces.Contains(i.Index)))
+            {
+                _db.Remove(directionToDelete);
             }
 
             _db.Update(recipe);

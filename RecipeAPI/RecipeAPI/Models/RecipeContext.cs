@@ -9,6 +9,8 @@ namespace RecipeAPI.Models
 
         public DbSet<Ingredient> Ingredients { get; set; }
 
+        public DbSet<Direction> Directions { get; set; }
+
         public RecipeContext(DbContextOptions<RecipeContext> options):
             base(options)
         {
@@ -20,7 +22,9 @@ namespace RecipeAPI.Models
 
             modelBuilder.Entity<Ingredient>()
                 .HasKey(ingredient => new { ingredient.RecipeId, ingredient.Index });
-                
+
+            modelBuilder.Entity<Direction>()
+                .HasKey(direction => new { direction.RecipeId, direction.Index });
         }
     }
 }
