@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RecipeAPI.Controllers
 {
@@ -8,11 +9,9 @@ namespace RecipeAPI.Controllers
     /// </summary>
     public class BaseController : Controller
     {
-        private const string UserId = "1234ABC";
-
         /// <summary>
         /// Retrieves the current user's SSO id
         /// </summary>
-        protected string AuthenticatedUser { get => UserId; }
+        protected string AuthenticatedUser { get => User.FindFirst(ClaimTypes.NameIdentifier).Value; }
     }
 }
