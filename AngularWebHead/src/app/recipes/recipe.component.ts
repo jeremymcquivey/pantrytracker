@@ -134,8 +134,6 @@ import { FileUploader } from "ng2-file-upload";
       this.recipe.ingredients = this.ingredients;
       this.recipe.directions = this.directions;
 
-      console.log(this.recipe);
-
       this._projectService.saveRecipe(this.recipe).subscribe(recipe => {
         this._router.navigate(['recipe/' + recipe.id]);
       });
@@ -160,7 +158,7 @@ import { FileUploader } from "ng2-file-upload";
     public submitFile() {
       this._projectService.submitRawText(this.rawText).subscribe(recipe => {
         this.recipe = recipe;
-        this.recipe.id = null;
+        recipe.id = ({} as Recipe).id;
         this.ingredients = recipe.ingredients;
         this.directions = recipe.directions;
         this.reorderList();

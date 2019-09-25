@@ -30,9 +30,7 @@ export class ProjectService {
         var accessToken = this._authService.getAccessToken();
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
-        console.log(recipe);
-
-        if(recipe.id && recipe.id != "") {
+        if(recipe.id && recipe.id !== "") {
             return this.httpClient.put<Recipe>(Constants.recipeApi + 'v1/Recipe/' + recipe.id, recipe, { headers: headers });
         }
         return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/', recipe, { headers: headers });
