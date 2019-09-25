@@ -121,15 +121,15 @@ namespace RecipeAPI.Controllers
         /// </summary>
         [HttpPost]
 		[Route("preview/text")]
-        public async Task<IActionResult> Preview([FromBody]string rawText)
+        public async Task<IActionResult> Preview([FromBody]string bodyText)
         {
-            if(string.IsNullOrEmpty(rawText))
+            if(string.IsNullOrEmpty(bodyText))
             {
                 return Ok(new Recipe());
             }
 
             var parser = new MetadataParser();
-            var lines = rawText.Split(EndOfLineDelimiter);
+            var lines = bodyText.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
             var output = parser.ExtractRecipe(lines);
 
             // Returns just the object representation of the recipe. 
