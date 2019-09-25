@@ -44,11 +44,11 @@ namespace RecipeAPI.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            
             try
             {
-                var recipes = _db.Recipes.Where(r => r.OwnerId == userId)
+                var recipes = _db.Recipes.Include(r => r.Ingredients)
+                                         .Include(r => r.Directions)
+                                         .Where(r => r.OwnerId == AuthenticatedUser)
                                          .ToList();
 
                 foreach(var recipe in recipes)
@@ -77,10 +77,9 @@ namespace RecipeAPI.Controllers
                 return NotFound();
             }
             
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var recipe = _db.Recipes.Include(x => x.Ingredients)
                                     .Include(x => x.Directions)
-                                    .SingleOrDefault(x => x.Id == gId && x.OwnerId == userId);
+                                    .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
 
             if(recipe == null)
             {
@@ -99,6 +98,8 @@ namespace RecipeAPI.Controllers
         [Route("preview/image")]
         public async Task<IActionResult> PreviewFromImage([FromBody]string imageText)
         {
+            // TODO: Validate a premium membership in order to access this feature.
+
             if(string.IsNullOrEmpty(imageText))
             {
                 return Ok(new Recipe());
@@ -152,7 +153,7 @@ namespace RecipeAPI.Controllers
                     return BadRequest("Recipe must be present in the request body.");
                 }
 
-                recipe.OwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                recipe.OwnerId = AuthenticatedUser;
                 recipe.Id = Guid.NewGuid();
 
                 foreach (var ingr in recipe.Ingredients)
@@ -189,9 +190,8 @@ namespace RecipeAPI.Controllers
                 return BadRequest("");
             }
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var existing = _db.Recipes.AsNoTracking()
-                                      .SingleOrDefault(r => r.Id == gId && r.OwnerId == userId);
+                                      .SingleOrDefault(r => r.Id == gId && r.OwnerId == AuthenticatedUser);
 
             if (existing == default(Recipe))
             {
@@ -199,20 +199,14 @@ namespace RecipeAPI.Controllers
             }
 
             var ingredientIndeces = recipe.Ingredients.Select(i => i.Index);
-            foreach (var ingredientToDelete in _db.Ingredients.AsNoTracking()
-                                                              .Where(i => i.RecipeId == gId &&
-                                                                          !ingredientIndeces.Contains(i.Index)))
-            {
-                _db.Remove(ingredientToDelete);
-            }
+            _db.RemoveRange(_db.Ingredients.AsNoTracking()
+                                           .Where(i => i.RecipeId == gId &&
+                                                       !ingredientIndeces.Contains(i.Index)));
 
             var directionIndeces = recipe.Directions.Select(i => i.Index);
-            foreach (var directionToDelete in _db.Directions.AsNoTracking()
-                                                            .Where(i => i.RecipeId == gId &&
-                                                                        !directionIndeces.Contains(i.Index)))
-            {
-                _db.Remove(directionToDelete);
-            }
+            _db.RemoveRange(_db.Directions.AsNoTracking()
+                                          .Where(i => i.RecipeId == gId &&
+                                                      !directionIndeces.Contains(i.Index)));
 
             _db.Update(recipe);
             await _db.SaveChangesAsync();
