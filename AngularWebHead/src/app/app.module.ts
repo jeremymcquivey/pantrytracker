@@ -26,6 +26,7 @@ import { AdminModule } from './admin/admin.module';
 import { CoreModule } from './core/core.module';
 import { UnauthorizedComponent } from './home/unauthorized.component';
 import { RecipeComponent } from './recipes/recipe.component';
+import { FileSelectDirective } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { RecipeComponent } from './recipes/recipe.component';
     AddEditMilestoneDialogComponent,
     UnauthorizedComponent,
     RecipeComponent,
+    FileSelectDirective
   ],
   imports: [
     BrowserModule,

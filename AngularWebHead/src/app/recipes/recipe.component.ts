@@ -1,10 +1,11 @@
-import { OnInit, Component } from "@angular/core";
+import { OnInit, Component, EventEmitter } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ProjectService } from "../core/project.service";
 import { Recipe } from "../model/recipe";
 import { Ingredient } from "../model/ingredient";
 import { MatTableDataSource } from "@angular/material";
 import { Direction } from "../model/direction";
+import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'app-recipe',
@@ -12,6 +13,11 @@ import { Direction } from "../model/direction";
     styleUrls: ['recipe.component.scss']
   })
   export class RecipeComponent implements OnInit {
+    public uploader:FileUploader = new FileUploader(null);
+    public isUpdate:boolean;
+    public showRawText:boolean = true;
+    public rawText: String = "";
+
     recipe: Recipe = {} as Recipe;
     ingredients: Ingredient[];
     directions: Direction[];
@@ -29,9 +35,10 @@ import { Direction } from "../model/direction";
     ) {}
 
     ngOnInit(): void {
-      var recipeId = this._route.snapshot.params.recipeId;
+      let recipeId = this._route.snapshot.params.recipeId;
+      this.isUpdate = recipeId && recipeId != "0";
 
-      if(recipeId && recipeId != "0") {
+      if(this.isUpdate) {
         this._projectService.getRecipe(recipeId).subscribe(recipe => {
           this.recipe = recipe;
           this.ingredients = recipe.ingredients;
@@ -127,6 +134,8 @@ import { Direction } from "../model/direction";
       this.recipe.ingredients = this.ingredients;
       this.recipe.directions = this.directions;
 
+      console.log(this.recipe);
+
       this._projectService.saveRecipe(this.recipe).subscribe(recipe => {
         this._router.navigate(['recipe/' + recipe.id]);
       });
@@ -146,5 +155,45 @@ import { Direction } from "../model/direction";
       {
         this.directions[i-1].index = i;
       }
+    }
+
+    public submitFile() {
+      this._projectService.submitRawText(this.rawText).subscribe(recipe => {
+        this.recipe = recipe;
+        this.recipe.id = null;
+        this.ingredients = recipe.ingredients;
+        this.directions = recipe.directions;
+        this.reorderList();
+        this.reorderDirections();
+
+        this.dataSource.data = this.ingredients;
+        this.directionDataSource.data = this.directions;
+      });
+    }
+
+    public onFileSelected(event: EventEmitter<File[]>) {
+      const file: File = event[0];
+  
+      var component = this;
+      this.readBase64(file)
+        .then(function(data) {
+          component.rawText = data;
+      })
+    }
+  
+    private readBase64(file): Promise<any> {
+      var reader  = new FileReader();
+      var future = new Promise((resolve, reject) => {
+        reader.addEventListener("load", function () {
+          resolve(reader.result);
+        }, false);
+  
+        reader.addEventListener("error", function (event) {
+          reject(event);
+        }, false);
+  
+        reader.readAsText(file);
+      });
+      return future;
     }
   }

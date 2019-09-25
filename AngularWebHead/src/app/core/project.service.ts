@@ -30,18 +30,28 @@ export class ProjectService {
         var accessToken = this._authService.getAccessToken();
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
-        if(!recipe.id) {
-            return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/', recipe, { headers: headers });
+        console.log(recipe);
+
+        if(recipe.id && recipe.id != "") {
+            return this.httpClient.put<Recipe>(Constants.recipeApi + 'v1/Recipe/' + recipe.id, recipe, { headers: headers });
         }
-        return this.httpClient.put<Recipe>(Constants.recipeApi + 'v1/Recipe/' + recipe.id, recipe, { headers: headers });
+        return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/', recipe, { headers: headers });
     }
     
+    submitRawText(text: String) {
+        var accessToken = this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
+                                         .set('Content-Type', "application/json");
 
-    
+        return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/preview/text', JSON.stringify(text), { headers: headers });
+    }
+
+
 
     getProjects(): Observable<Project[]> {
         var accessToken = this._authService.getAccessToken();
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
         return this.httpClient.get<Project[]>(Constants.apiRoot + 'Projects', { headers: headers });
     }
 

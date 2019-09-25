@@ -12,7 +12,14 @@
     <i class="material-icons">save</i>
 </button>
 
-<br />&nbsp;<br />
+<div *ngIf="!isUpdate && showRawText">
+  <p>&nbsp;</p>
+  <span>Upload from .txt or .rtf file</span><br />
+  <input type="file" ng2FileSelect [uploader]="uploader" (onFileSelected)="onFileSelected($event)" />
+  <textarea style="width: 100%; height:15em;" [(ngModel)]="rawText"></textarea>
+  <p>&nbsp;</p>
+  <button title="Submit File" mat-raised-button color="primary" class="list-action" (click)="submitFile()">Read Text</button>
+</div>
 
 <div class="danger">{{error}}</div>
 <span class="mat-title">Ingredients</span>&nbsp;
