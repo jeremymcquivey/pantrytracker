@@ -43,6 +43,14 @@ export class ProjectService {
 
         return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/preview/text', JSON.stringify(text), { headers: headers });
     }
+    
+    submitImage(text: String) {
+        var accessToken = this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
+                                         .set('Content-Type', "application/json");
+
+        return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/preview/image', JSON.stringify(text), { headers: headers });
+    }
 
 
 

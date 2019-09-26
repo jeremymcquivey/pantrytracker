@@ -40,14 +40,7 @@ import { FileUploader } from "ng2-file-upload";
 
       if(this.isUpdate) {
         this._projectService.getRecipe(recipeId).subscribe(recipe => {
-          this.recipe = recipe;
-          this.ingredients = recipe.ingredients;
-          this.directions = recipe.directions;
-          this.reorderList();
-          this.reorderDirections();
-  
-          this.dataSource.data = this.ingredients;
-          this.directionDataSource.data = this.directions;
+          this.initWithRecipe(recipe);
         });
       }
       else {
@@ -56,6 +49,17 @@ import { FileUploader } from "ng2-file-upload";
         this.dataSource.data = this.ingredients;
         this.directionDataSource.data = this.directions;
       }
+    }
+
+    public initWithRecipe(recipe: Recipe) {
+      this.recipe = recipe;
+      this.ingredients = recipe.ingredients;
+      this.directions = recipe.directions;
+      this.reorderList();
+      this.reorderDirections();
+
+      this.dataSource.data = this.ingredients;
+      this.directionDataSource.data = this.directions;
     }
 
     public addIngredient() {
@@ -169,6 +173,26 @@ import { FileUploader } from "ng2-file-upload";
       });
     }
 
+    public processImage(img: string) {
+      var component = this;
+      this._projectService.submitImage(img.replace(/^data:image\/(png|jpg);base64,/, "")).toPromise()
+        .then(function(data) {
+          const recipe = data as Recipe;
+          recipe.id = ({} as Recipe).id;
+          component.initWithRecipe(recipe);
+        })
+    }
+
+    public onImageSelected(event: EventEmitter<File[]>) {
+      const file: File = event[0];
+  
+      var component = this;
+      this.readBase64Image(file)
+        .then(function(img) {
+          component.processImage(img);
+      });
+    }
+
     public onFileSelected(event: EventEmitter<File[]>) {
       const file: File = event[0];
   
@@ -191,6 +215,22 @@ import { FileUploader } from "ng2-file-upload";
         }, false);
   
         reader.readAsText(file);
+      });
+      return future;
+    }
+  
+    private readBase64Image(file): Promise<any> {
+      var reader  = new FileReader();
+      var future = new Promise((resolve, reject) => {
+        reader.addEventListener("load", function () {
+          resolve(reader.result);
+        }, false);
+  
+        reader.addEventListener("error", function (event) {
+          reject(event);
+        }, false);
+  
+        reader.readAsDataURL(file);
       });
       return future;
     }

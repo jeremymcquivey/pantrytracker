@@ -20,6 +20,12 @@
   <p>&nbsp;</p>
   <button title="Submit File" mat-raised-button color="primary" class="list-action" (click)="submitFile()">Read Text</button>
 </div>
+<hr />
+<div *ngIf="!isUpdate && showRawText">
+  <p>&nbsp;</p>
+  <span>Upload from image</span><br />
+  <input type="file" ng2FileSelect [uploader]="uploader" (onFileSelected)="onImageSelected($event)" />
+</div>
 
 <div class="danger">{{error}}</div>
 <span class="mat-title">Ingredients</span>&nbsp;
