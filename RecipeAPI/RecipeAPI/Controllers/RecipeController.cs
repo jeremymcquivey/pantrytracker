@@ -107,7 +107,7 @@ namespace RecipeAPI.Controllers
 
             try
             {
-                var ocrText = _ocr.ImageToText(imageText);
+                var ocrText = await _ocr.ImageToText(imageText);
                 return await Preview(string.Join(EndOfLineDelimiter, ocrText));
             }
             catch (Exception ex)
