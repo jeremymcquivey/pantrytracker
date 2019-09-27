@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Linq;
 using PantryTracker.ExternalServices;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using RecipeAPI.Models;
 
@@ -96,6 +95,7 @@ namespace RecipeAPI.Controllers
         /// </summary>
         [HttpPost]
         [Route("preview/image")]
+        [Authorize(Roles = "Premium")]
         public async Task<IActionResult> PreviewFromImage([FromBody]string imageText)
         {
             // TODO: Validate a premium membership in order to access this feature.
