@@ -49,7 +49,7 @@ export class ProjectService {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
                                          .set('Content-Type', "application/json");
 
-        return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/preview/image', JSON.stringify(text), { headers: headers });
+        return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/preview/image', JSON.stringify(text.replace(/^data:image\/(png|jpg|jpeg);base64,/, "")), { headers: headers });
     }
 
 
