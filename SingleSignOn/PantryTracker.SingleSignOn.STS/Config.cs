@@ -25,9 +25,9 @@ namespace PantryTracker.SingleSignOn.STS{
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
 
-                    RedirectUris = { "http://localhost:4200/assets/oidc-login-redirect.html" },
-                    PostLogoutRedirectUris = { "http://localhost:4200/?postLogout=true" },
-                    AllowedCorsOrigins = { "http://localhost:4200/" },
+                    RedirectUris = { "http://localhost:4200/assets/oidc-login-redirect.html", "https://pantrytrackers-dev.azurewebsites.net/assets/oidc-login-redirect.html" },
+                    PostLogoutRedirectUris = { "http://localhost:4200/?postLogout=true", "https://pantrytrackers-dev.azurewebsites.net/?postLogout=true" },
+                    AllowedCorsOrigins = { "http://localhost:4200/", "https://pantrytrackers-dev.azurewebsites.net/" },
 
                     AllowedScopes =
                     {
