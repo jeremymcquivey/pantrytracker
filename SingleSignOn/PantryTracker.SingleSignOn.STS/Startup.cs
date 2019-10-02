@@ -9,6 +9,8 @@ using IdentityServer4.Services;
 using PantryTracker.SingleSignOn.STS.Data;
 using PantryTracker.SingleSignOn.STS.Models;
 using PantryTracker.SingleSignOn.STS;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
 
 namespace SecuringAngularApps.STS
 {
@@ -25,6 +27,8 @@ namespace SecuringAngularApps.STS
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppSettings>(Configuration.GetSection("SingleSignOn"));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(System.Environment.GetEnvironmentVariable("ConnectionString")));
 
@@ -55,19 +59,18 @@ namespace SecuringAngularApps.STS
                 })
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
+                .AddClientStore<ClientStore>()
+                .AddCorsPolicyService<CORSService>()
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddProfileService<CustomProfileService>();
 
+            var certificatePassword = System.Environment.GetEnvironmentVariable("CertificatePassword");
+            var environment = System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower();
+            var certificateLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"certificate.{environment}.pfx");
+            var bytes = File.ReadAllBytes(certificateLocation);
 
-            if (Environment.IsDevelopment())
-            {
-                builder.AddDeveloperSigningCredential();
-            }
-            else
-            {
-                throw new Exception("need to configure key material");
-            }
+            var certificate = new X509Certificate2(bytes, certificatePassword, X509KeyStorageFlags.MachineKeySet);
+            builder.AddSigningCredential(certificate);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
