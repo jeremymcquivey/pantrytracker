@@ -180,6 +180,7 @@ import { FileUploader } from "ng2-file-upload";
           const recipe = data as Recipe;
           recipe.id = ({} as Recipe).id;
           component.initWithRecipe(recipe);
+          component.rawText = recipe.rawText;
         })
     }
 
