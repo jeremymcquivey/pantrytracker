@@ -5,6 +5,20 @@
     <UserSecretsId>aspnet-IdentityServerWithAspNetIdentity-04C6939F-E672-4E56-B4A5-5F064EB67F23</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="certificate.development.pfx" />
+    <None Remove="certificate.stage.pfx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="certificate.development.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="certificate.stage.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="3.4.0" />
