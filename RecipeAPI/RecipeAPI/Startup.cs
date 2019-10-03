@@ -8,6 +8,9 @@ using PantryTracker.ExternalServices;
 using RecipeAPI.Helpers;
 using System;
 using RecipeAPI.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -24,7 +27,7 @@ namespace RecipeAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<AppSettings>(Configuration);
+            services.Configure<AppSettings>(Configuration.GetSection("Authentication"));
 
             var connStr = Environment.GetEnvironmentVariable("ConnectionString", EnvironmentVariableTarget.Process);
             services.AddDbContext<RecipeContext>(options => options.UseSqlServer(connStr));
@@ -41,12 +44,22 @@ namespace RecipeAPI
                 });
             });
 
+            /*var certificatePassword = Environment.GetEnvironmentVariable("CertificatePassword");
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower();
+            var cert = new X509Certificate2(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"certificate.{environment}.pfx"), certificatePassword, X509KeyStorageFlags.MachineKeySet);
+            X509SecurityKey key = new X509SecurityKey(cert);*/
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                      .AddJwtBearer(options =>
                      {
-                         options.Authority = "https://pantrytracker-identity-dev.azurewebsites.net/";
+                         options.Authority = Configuration.GetSection("Authentication:STSAuthority").Value;
                          options.RequireHttpsMetadata = false;
                          options.Audience = "pantrytrackers-ui";
+                         /*options.TokenValidationParameters = new TokenValidationParameters
+                         {
+                             ValidateIssuerSigningKey = true,
+                             IssuerSigningKey = key
+                         };*/
                      });
 
             services.AddSwashbuckle();
@@ -62,7 +75,8 @@ namespace RecipeAPI
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseDeveloperExceptionPage();
+                //app.UseExceptionHandler("/Error");
             }
 
             app.UseCors("AllRequests");
