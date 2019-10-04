@@ -75,7 +75,7 @@ namespace PantryTracker.RecipeReader
 
             foreach(var direction in toRemove)
             {
-                (recipe.Directions as List<string>).Remove(direction);
+                (recipe.Directions as List<Direction>).Remove(recipe.Directions.FirstOrDefault(x => x.Text.Equals(direction, StringComparison.CurrentCultureIgnoreCase)));
             }
 
             var index = 1;
