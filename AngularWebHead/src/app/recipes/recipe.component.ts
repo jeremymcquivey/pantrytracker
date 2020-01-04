@@ -30,8 +30,9 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
     ingredients: Ingredient[];
     directions: Direction[];
     
-    displayedColumns = ['quantity', 'unit', 'name', 'actions'];
-    directionColumns = ['index', 'description', 'actions'];
+    directionColumns = ['description'];
+    condensedColumns = ['name'];
+
     dataSource = new MatTableDataSource();
     directionDataSource = new MatTableDataSource();
     error: string;
@@ -79,84 +80,12 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
 
     public initWithRecipe(recipe: Recipe) {
       this.recipe = recipe;
+
+      this.rawText = recipe.rawText;
       this.ingredients = recipe.ingredients;
       this.directions = recipe.directions;
-      this.reorderList();
-      this.reorderDirections();
 
       this.dataSource.data = this.ingredients;
-      this.directionDataSource.data = this.directions;
-    }
-
-    public addIngredient() {
-      this.ingredients.push({
-        index: this.ingredients.length + 1,
-      } as Ingredient);
-      
-      this.dataSource.data = this.ingredients;
-    }
-
-    public deleteIngredient(ingredient: Ingredient) {
-      var index = this.ingredients.indexOf(ingredient);
-      this.ingredients.splice(index, 1);
-
-      this.reorderList();
-      this.dataSource.data = this.ingredients;
-    }
-
-    public decreasePriority(ingredient) {
-      var index = this.ingredients.indexOf(ingredient);
-      var temp = this.ingredients[index + 1];
-      this.ingredients[index + 1] = ingredient;
-      this.ingredients[index] = temp;
-
-      this.reorderList();
-      this.dataSource.data = this.ingredients;
-    }
-
-    public increasePriority(ingredient) {
-      var index = this.ingredients.indexOf(ingredient);
-      var temp = this.ingredients[index - 1];
-      this.ingredients[index - 1] = ingredient;
-      this.ingredients[index] = temp;
-
-      this.reorderList();
-      this.dataSource.data = this.ingredients;
-    }
-
-    public addDirection() {
-      this.directions.push({
-        index: this.directions.length + 1,
-      } as Direction);
-      
-      this.directionDataSource.data = this.directions;
-    }
-
-    public deleteDirection(direction: Direction) {
-      var index = this.directions.indexOf(direction);
-      this.directions.splice(index, 1);
-
-      this.reorderDirections();
-      this.directionDataSource.data = this.directions;
-    }
-
-    public decreaseDirectionPriority(direction) {
-      var index = this.directions.indexOf(direction);
-      var temp = this.directions[index + 1];
-      this.directions[index + 1] = direction;
-      this.directions[index] = temp;
-
-      this.reorderDirections();
-      this.directionDataSource.data = this.directions;
-    }
-
-    public increaseDirectionPriority(direction) {
-      var index = this.directions.indexOf(direction);
-      var temp = this.directions[index - 1];
-      this.directions[index - 1] = direction;
-      this.directions[index] = temp;
-
-      this.reorderDirections();
       this.directionDataSource.data = this.directions;
     }
 
@@ -169,34 +98,17 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
       });
     }
 
-    private reorderList()
-    {
-      for(let i = 1; i <= this.ingredients.length; i++)
-      {
-        this.ingredients[i-1].index = i;
-      }
-    }
-
-    private reorderDirections()
-    {
-      for(let i = 1; i <= this.directions.length; i++)
-      {
-        this.directions[i-1].index = i;
-      }
-    }
-
     public submitFile(updatedText: string) {
       this.hasSubmitted = true;
       this.rawText = updatedText;
       this._projectService.submitRawText(this.rawText).subscribe(recipe => {
         this.recipe = recipe;
         recipe.id = ({} as Recipe).id;
-        this.ingredients = recipe.ingredients;
-        this.directions = recipe.directions;
-        this.reorderList();
-        this.reorderDirections();
 
+        this.ingredients = recipe.ingredients;
         this.dataSource.data = this.ingredients;
+
+        this.directions = recipe.directions;
         this.directionDataSource.data = this.directions;
       });
     }

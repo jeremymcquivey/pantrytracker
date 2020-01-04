@@ -11,7 +11,6 @@ export class TextEditorDialogComponent {
     public isVisible: boolean = false;
 
     private reprocessText(txt) {
-        console.log('reprocessedText event received', txt);
         this.onTextUpdated.emit(txt);
     }
 

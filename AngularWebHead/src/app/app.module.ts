@@ -31,6 +31,7 @@ import { FileSelectDirective } from 'ng2-file-upload';
 import { UploadFileDialogComponent } from './io/uploadfile-dialog.component';
 import { TxtUploadComponent } from './io/txtupload.component';
 import { TextEditorDialogComponent } from './io/texteditor-dialog.component';
+import { IngredientListComponent } from './recipes/ingredient-list.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { TextEditorDialogComponent } from './io/texteditor-dialog.component';
     TxtUploadComponent,
     UploadFileDialogComponent,
     TextEditorDialogComponent,
+    IngredientListComponent,
     FileSelectDirective
   ],
   imports: [
