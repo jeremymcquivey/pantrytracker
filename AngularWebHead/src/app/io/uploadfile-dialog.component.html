@@ -1,8 +1,8 @@
-<div id="upload-modal">
+<div id="upload-modal" *ngIf="this.isVisible">
     <div id="upload-modal-content">
             <h1 mat-dialog-title>Upload File</h1>
             <div mat-dialog-content>
-                <upload-image (onProcessImage)="this.processImage($event)"></upload-image>
+                <upload-image (onProcessImage)="this.processImage($event);"></upload-image>
                 <hr />
                 <upload-text (onProcessFile)="this.processText($event)"></upload-text>
             </div>

@@ -8,7 +8,8 @@ import { Output, EventEmitter, Component } from "@angular/core";
 export class UploadFileDialogComponent {
     @Output() onImageSelected: EventEmitter<any> = new EventEmitter<any>();
     @Output() onTextSelected: EventEmitter<any> = new EventEmitter<any>();
-    @Output() onCancelSelected: EventEmitter<any> = new EventEmitter<any>();
+
+    public isVisible: boolean = false;
 
     private processImage(img) {
         this.onImageSelected.emit(img);
@@ -19,6 +20,6 @@ export class UploadFileDialogComponent {
     }
 
     private cancelDialog() {
-        this.onCancelSelected.emit();
+        this.isVisible = false;
     }
 }

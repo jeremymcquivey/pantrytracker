@@ -1,4 +1,4 @@
-import { OnInit, Component, EventEmitter } from "@angular/core";
+import { OnInit, Component, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ProjectService } from "../core/project.service";
 import { Recipe } from "../model/recipe";
@@ -6,17 +6,25 @@ import { Ingredient } from "../model/ingredient";
 import { MatTableDataSource, MatDialog } from "@angular/material";
 import { Direction } from "../model/direction";
 import { FileUploader } from "ng2-file-upload";
+import { TextEditorDialogComponent } from "../io/texteditor-dialog.component";
+import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
 
 @Component({
     selector: 'app-recipe',
     templateUrl: 'recipe.component.html'
   })
   export class RecipeComponent implements OnInit {
+    
+    @ViewChild("editorDialog")
+    public previewEditor: TextEditorDialogComponent;
+
+    @ViewChild("uploadFileDialog")
+    public uploadDialog: UploadFileDialogComponent;
+
     public uploader:FileUploader = new FileUploader(null);
     public isUpdate:boolean;
-    public showFileDialog:boolean = false;
-    public showRawText:boolean = true;
-    public rawText: String = "";
+    public hasSubmitted: boolean = false;
+    public rawText: string = "";
 
     recipe: Recipe = {} as Recipe;
     ingredients: Ingredient[];
@@ -52,12 +60,21 @@ import { FileUploader } from "ng2-file-upload";
       }
     }
 
-    private openDialog() {
-      this.showFileDialog = true;
+    private showFileUploader() {
+      this.uploadDialog.isVisible = true;
     }
 
-    private closeDialog() {
-      this.showFileDialog = false;
+    private closeFileUploader() {
+      this.uploadDialog.isVisible = false;
+    }
+
+    private showTextPreview() {
+      this.previewEditor.isVisible = true;
+      this.previewEditor.rawText = this.rawText;
+    }
+
+    private closeTextPreview() {
+      this.previewEditor.isVisible = false;
     }
 
     public initWithRecipe(recipe: Recipe) {
@@ -168,7 +185,9 @@ import { FileUploader } from "ng2-file-upload";
       }
     }
 
-    public submitFile() {
+    public submitFile(updatedText: string) {
+      this.hasSubmitted = true;
+      this.rawText = updatedText;
       this._projectService.submitRawText(this.rawText).subscribe(recipe => {
         this.recipe = recipe;
         recipe.id = ({} as Recipe).id;
@@ -183,6 +202,7 @@ import { FileUploader } from "ng2-file-upload";
     }
 
     public processImage(img: string) {
+      this.hasSubmitted = true;
       var component = this;
       this._projectService.submitImage(img.replace(/^data:image\/(png|jpg);base64,/, "")).toPromise()
         .then(function(data) {

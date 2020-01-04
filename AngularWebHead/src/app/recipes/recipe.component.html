@@ -1,10 +1,14 @@
-<upload-file-dialog *ngIf="showFileDialog"
-                    (onImageSelected)="this.processImage($event)" 
-                    (onTextSelected)="this.rawText = $event;"
-                    (onCancelSelected)="this.closeDialog()">
+<upload-file-dialog (onImageSelected)="processImage($event); closeFileUploader();" 
+                    (onTextSelected)="submitFile($event); closeFileUploader();"
+                    #uploadFileDialog>
 </upload-file-dialog>
-<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;">
-    <i class="material-icons" (click)="this.openDialog()" style="cursor: pointer;">attach_file</i>
+
+<texteditor-dialog (onTextUpdated)="submitFile($event); closeTextPreview();"
+                   #editorDialog>
+</texteditor-dialog>
+
+<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="!this.isEdit">
+    <i class="material-icons" (click)="this.showFileUploader()" style="cursor: pointer;">attach_file</i>
     <span>Convert from image or text file</span>
 </div>
 
@@ -20,13 +24,10 @@
     </mat-form-field>
 </div>
 
-<button title="Save Recipe" mat-raised-button color="primary" class="list-action" (click)="saveRecipe()">
-    <i class="material-icons">save</i>
-</button>
-
-<textarea style="width: 100%; height:15em;" [(ngModel)]="rawText"></textarea>
-<p>&nbsp;</p>
-<button title="Submit File" mat-raised-button color="primary" class="list-action" (click)="submitFile()">Read Text</button>
+<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em; margin-bottom: 1em;" *ngIf="this.hasSubmitted">
+    <i class="material-icons" (click)="this.showTextPreview()" style="cursor: pointer;">info_outline</i>
+    <span>Not what you expected? Edit raw text</span>
+</div>
 
 <div class="danger">{{error}}</div>
 <span class="mat-title">Ingredients</span>&nbsp;
