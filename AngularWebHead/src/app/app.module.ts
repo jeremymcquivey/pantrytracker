@@ -26,7 +26,10 @@ import { AdminModule } from './admin/admin.module';
 import { CoreModule } from './core/core.module';
 import { UnauthorizedComponent } from './home/unauthorized.component';
 import { RecipeComponent } from './recipes/recipe.component';
+import { ImageUploadComponent } from './io/imageupload.component';
 import { FileSelectDirective } from 'ng2-file-upload';
+import { UploadFileDialogComponent } from './io/uploadfile-dialog.component';
+import { TxtUploadComponent } from './io/txtupload.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,9 @@ import { FileSelectDirective } from 'ng2-file-upload';
     AddEditMilestoneDialogComponent,
     UnauthorizedComponent,
     RecipeComponent,
+    ImageUploadComponent,
+    TxtUploadComponent,
+    UploadFileDialogComponent,
     FileSelectDirective
   ],
   imports: [

@@ -1,31 +1,33 @@
+<upload-file-dialog *ngIf="showFileDialog"
+                    (onImageSelected)="this.processImage($event)" 
+                    (onTextSelected)="this.rawText = $event;"
+                    (onCancelSelected)="this.closeDialog()">
+</upload-file-dialog>
+&nbsp;<br />
+<div style="background-color: rgba(255,255,0,0.5); padding: 1em;">
+    <i class="material-icons" (click)="this.openDialog()" style="cursor: pointer;">attach_file</i>
+    <span>Convert from image or text file</span>
+</div>
+
 <div class="mat-display-1" style="margin-bottom: 0px;">
     <mat-form-field style="width:100%;">
         <input matInput [(ngModel)]="recipe.title" required placeholder="Title">
     </mat-form-field>
 </div>
+
 <div>
     <mat-form-field style="width:100%;">
         <input matInput [(ngModel)]="recipe.credit" placeholder="Citation i.e. website, name, etc...">
     </mat-form-field>
 </div>
+
 <button title="Save Recipe" mat-raised-button color="primary" class="list-action" (click)="saveRecipe()">
     <i class="material-icons">save</i>
 </button>
 
-<div *ngIf="!isUpdate && showRawText">
-  <p>&nbsp;</p>
-  <span>Upload from .txt or .rtf file</span><br />
-  <input type="file" ng2FileSelect [uploader]="uploader" (onFileSelected)="onFileSelected($event)" />
-  <textarea style="width: 100%; height:15em;" [(ngModel)]="rawText"></textarea>
-  <p>&nbsp;</p>
-  <button title="Submit File" mat-raised-button color="primary" class="list-action" (click)="submitFile()">Read Text</button>
-</div>
-<hr />
-<div *ngIf="!isUpdate && showRawText">
-  <p>&nbsp;</p>
-  <span>Upload from image</span><br />
-  <input type="file" ng2FileSelect [uploader]="uploader" (onFileSelected)="onImageSelected($event)" />
-</div>
+<textarea style="width: 100%; height:15em;" [(ngModel)]="rawText"></textarea>
+<p>&nbsp;</p>
+<button title="Submit File" mat-raised-button color="primary" class="list-action" (click)="submitFile()">Read Text</button>
 
 <div class="danger">{{error}}</div>
 <span class="mat-title">Ingredients</span>&nbsp;

@@ -1,0 +1,13 @@
+<div id="upload-modal">
+    <div id="upload-modal-content">
+            <h1 mat-dialog-title>Upload File</h1>
+            <div mat-dialog-content>
+                <upload-image (onProcessImage)="this.processImage($event)"></upload-image>
+                <hr />
+                <upload-text (onProcessFile)="this.processText($event)"></upload-text>
+            </div>
+            <div mat-dialog-actions layout="row">
+                <button mat-button (click)="cancelDialog()" color="accent">Cancel</button>
+            </div>
+    </div>
+</div>

@@ -3,18 +3,18 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ProjectService } from "../core/project.service";
 import { Recipe } from "../model/recipe";
 import { Ingredient } from "../model/ingredient";
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource, MatDialog } from "@angular/material";
 import { Direction } from "../model/direction";
 import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'app-recipe',
-    templateUrl: 'recipe.component.html',
-    styleUrls: ['recipe.component.scss']
+    templateUrl: 'recipe.component.html'
   })
   export class RecipeComponent implements OnInit {
     public uploader:FileUploader = new FileUploader(null);
     public isUpdate:boolean;
+    public showFileDialog:boolean = false;
     public showRawText:boolean = true;
     public rawText: String = "";
 
@@ -31,7 +31,8 @@ import { FileUploader } from "ng2-file-upload";
     constructor(
       private _route: ActivatedRoute,
       private _projectService: ProjectService,
-      private _router: Router
+      private _router: Router,
+      public dialog: MatDialog
     ) {}
 
     ngOnInit(): void {
@@ -49,6 +50,14 @@ import { FileUploader } from "ng2-file-upload";
         this.dataSource.data = this.ingredients;
         this.directionDataSource.data = this.directions;
       }
+    }
+
+    private openDialog() {
+      this.showFileDialog = true;
+    }
+
+    private closeDialog() {
+      this.showFileDialog = false;
     }
 
     public initWithRecipe(recipe: Recipe) {
@@ -182,57 +191,5 @@ import { FileUploader } from "ng2-file-upload";
           component.initWithRecipe(recipe);
           component.rawText = recipe.rawText;
         })
-    }
-
-    public onImageSelected(event: EventEmitter<File[]>) {
-      const file: File = event[0];
-  
-      var component = this;
-      this.readBase64Image(file)
-        .then(function(img) {
-          component.processImage(img);
-      });
-    }
-
-    public onFileSelected(event: EventEmitter<File[]>) {
-      const file: File = event[0];
-  
-      var component = this;
-      this.readBase64(file)
-        .then(function(data) {
-          component.rawText = data;
-      })
-    }
-  
-    private readBase64(file): Promise<any> {
-      var reader  = new FileReader();
-      var future = new Promise((resolve, reject) => {
-        reader.addEventListener("load", function () {
-          resolve(reader.result);
-        }, false);
-  
-        reader.addEventListener("error", function (event) {
-          reject(event);
-        }, false);
-  
-        reader.readAsText(file);
-      });
-      return future;
-    }
-  
-    private readBase64Image(file): Promise<any> {
-      var reader  = new FileReader();
-      var future = new Promise((resolve, reject) => {
-        reader.addEventListener("load", function () {
-          resolve(reader.result);
-        }, false);
-  
-        reader.addEventListener("error", function (event) {
-          reject(event);
-        }, false);
-  
-        reader.readAsDataURL(file);
-      });
-      return future;
     }
   }
