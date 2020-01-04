@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PantryTracker.Model.Recipe
@@ -22,6 +23,7 @@ namespace PantryTracker.Model.Recipe
         /// <summary>
         /// Friendly title of the recipe
         /// </summary>
+        [Required(AllowEmptyStrings = false)]
         public string Title { get; set; }
 
         /// <summary>
@@ -62,6 +64,7 @@ namespace PantryTracker.Model.Recipe
         /// </summary>
         public string PrepTime { get; set; }
 
+        [MinLength(1)]
         public virtual IEnumerable<Ingredient> Ingredients { get; set; } =
             new List<Ingredient>();
 

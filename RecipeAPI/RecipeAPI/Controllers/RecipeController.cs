@@ -10,6 +10,8 @@ using PantryTracker.ExternalServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using RecipeAPI.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Text.RegularExpressions;
 
 namespace RecipeAPI.Controllers
 {
@@ -98,8 +100,6 @@ namespace RecipeAPI.Controllers
         [Authorize(Roles = "Premium")]
         public async Task<IActionResult> PreviewFromImage([FromBody]string imageText)
         {
-            // TODO: Validate a premium membership in order to access this feature.
-
             if(string.IsNullOrEmpty(imageText))
             {
                 return Ok(new Recipe());
@@ -135,7 +135,7 @@ namespace RecipeAPI.Controllers
 
             // Returns just the object representation of the recipe. 
             // Future feature: return a list of possible "duplicates" of this recipe.
-            // i.e. similar ingredients/ratios.
+            // i.e. similar ingredients/ratios or names.
             return Ok(output);
         }
 
@@ -148,13 +148,14 @@ namespace RecipeAPI.Controllers
             //TODO: Validate that ingredients don't have overlapping indeces, as this will violate db constraint.
             try
             {
-                if(recipe == default(Recipe))
+                if (!ModelState.IsValid)
                 {
-                    return BadRequest("Recipe must be present in the request body.");
+                    return BadRequest(ModelState.Values.Where(value => value.ValidationState == ModelValidationState.Invalid));
                 }
 
                 recipe.OwnerId = AuthenticatedUser;
                 recipe.Id = Guid.NewGuid();
+                recipe.RawText = Regex.Replace(recipe.RawText, @"\r\n?|\n", Environment.NewLine);
 
                 foreach (var ingr in recipe.Ingredients)
                 {
@@ -185,7 +186,12 @@ namespace RecipeAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute]string id, [FromBody]Recipe recipe)
         {
-            if(recipe == default(Recipe) || !Guid.TryParse(id, out Guid gId) || !id.Equals(recipe.Id.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.Values.Where(value => value.ValidationState == ModelValidationState.Invalid));
+            }
+
+            if(!Guid.TryParse(id, out Guid gId) || !id.Equals(recipe.Id.ToString(), StringComparison.CurrentCultureIgnoreCase))
             {
                 return BadRequest("");
             }
@@ -197,6 +203,8 @@ namespace RecipeAPI.Controllers
             {
                 return NotFound();
             }
+
+            recipe.RawText = existing.RawText;
 
             var ingredientIndeces = recipe.Ingredients.Select(i => i.Index);
             _db.RemoveRange(_db.Ingredients.AsNoTracking()
