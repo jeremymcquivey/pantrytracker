@@ -50,6 +50,7 @@ namespace RecipeAPI.Controllers
                 var recipes = _db.Recipes.Include(r => r.Ingredients)
                                          .Include(r => r.Directions)
                                          .Where(r => r.OwnerId == AuthenticatedUser)
+                                         .OrderBy(r => r.Title)
                                          .ToList();
 
                 foreach(var recipe in recipes)
@@ -64,6 +65,30 @@ namespace RecipeAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute]string id)
+        {
+            if (!Guid.TryParse(id, out Guid gId))
+            {
+                return NotFound();
+            }
+
+            var recipe = _db.Recipes.Include(x => x.Ingredients)
+                                    .Include(x => x.Directions)
+                                    .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
+
+            if(recipe == default(Recipe))
+            {
+                return NotFound();
+            }
+
+            _db.Recipes.Remove(recipe);
+            await _db.SaveChangesAsync();
+
+            return NoContent();
         }
 
         /// <summary>
@@ -82,7 +107,7 @@ namespace RecipeAPI.Controllers
                                     .Include(x => x.Directions)
                                     .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
 
-            if(recipe == null)
+            if(recipe == default(Recipe))
             {
                 return NotFound();
             }
@@ -207,7 +232,7 @@ namespace RecipeAPI.Controllers
             recipe.RawText = existing.RawText;
 
             var ingredientIndeces = recipe.Ingredients.Select(i => i.Index);
-            _db.RemoveRange(_db.Ingredients.AsNoTracking()
+            _db.RemoveRange(_db.RecipeIngredients.AsNoTracking()
                                            .Where(i => i.RecipeId == gId &&
                                                        !ingredientIndeces.Contains(i.Index)));
 

@@ -19,8 +19,15 @@
     <None Remove="SampleFiles\PizzaCrust.txt" />
     <None Remove="SampleFiles\PotatoBaconCheddarSoup.txt" />
     <None Remove="SampleFiles\RootBeer.txt" />
+    <None Remove="SampleFiles\StrawberryLemonadeCupcakes.txt" />
     <None Remove="SampleFiles\Tortillas.txt" />
     <None Remove="SampleFiles\WholeWheatBread.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SampleFiles\StrawberryLemonadeCupcakes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleFiles\CinnamonRolls.txt">

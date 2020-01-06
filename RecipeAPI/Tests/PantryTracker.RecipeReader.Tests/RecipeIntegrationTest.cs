@@ -278,5 +278,49 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual("5", recipe.Ingredients.Single(x => x.Name.Contains("dry ice")).Quantity);
             Assert.AreEqual("lb.", recipe.Ingredients.Single(x => x.Name.Contains("dry ice")).Unit);
         }
+
+        [TestMethod]
+        public void StrawberryLemonadeCupcakes()
+        {
+            var filename = Path.Combine(Environment.CurrentDirectory, "SampleFiles", "StrawberryLemonadeCupcakes.txt");
+
+            if (!File.Exists(filename))
+            {
+                Assert.Fail($"File {filename} does not exist.");
+            }
+
+            var parser = new MetadataParser();
+            var lines = File.ReadAllLines(filename);
+            var recipe = parser.ExtractRecipe(lines);
+
+            Assert.AreEqual(9, recipe.Ingredients.Count());
+
+            Assert.AreEqual("3", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
+
+            Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("baking powder")).Quantity);
+            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("baking powder")).Unit);
+
+            Assert.AreEqual("1/2", recipe.Ingredients.First(x => x.Name.Contains("salt")).Quantity);
+            Assert.AreEqual("tsp.", recipe.Ingredients.First(x => x.Name.Contains("salt")).Unit);
+
+            Assert.AreEqual("1", recipe.Ingredients.First(x => x.Name.Contains("butter")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.First(x => x.Name.Contains("butter")).Unit);
+
+            Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Quantity);
+            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Unit);
+
+            Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Quantity);
+            Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Unit);
+
+            //Assert.AreEqual("3", recipe.Ingredients.Single(x => x.Name.Contains("zest")).Quantity);
+            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("zest")).Unit);
+
+            Assert.AreEqual("1/2", recipe.Ingredients.Single(x => x.Name.Contains("lemonade")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("lemonade")).Unit);
+
+            Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("buttermilk")).Quantity);
+            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("buttermilk")).Unit);
+        }
     }
 }
