@@ -14,7 +14,7 @@
 
 <div class="mat-display-1" style="margin-bottom: 0px;">
     <mat-form-field style="width:100%;">
-        <input matInput [(ngModel)]="recipe.title" required placeholder="Title">
+        <input matInput [(ngModel)]="recipe.title" required placeholder="Title" [disabled]="this.rawText != ''">
     </mat-form-field>
 </div>
 

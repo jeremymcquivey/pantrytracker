@@ -70,6 +70,10 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
     }
 
     private showTextPreview() {
+      if(!this.rawText || this.rawText.trim().length == 0) {
+        this.rawText = this.recipe.title;
+      }
+
       this.previewEditor.isVisible = true;
       this.previewEditor.rawText = this.rawText;
     }
