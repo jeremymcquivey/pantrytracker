@@ -34,12 +34,13 @@ namespace PantryTracker.RecipeReader
                 }
 
                 if(sentence.ToLower().Contains("directions") || 
-                   sentence.ToLower().Contains("instructions"))
+                   sentence.ToLower().Contains("instructions") ||
+                   sentence.ToLower().Contains("preparation"))
                 {
                     break;
                 }
 
-                if(sentence.ToLower().Contains("ingredients"))
+                if(sentence.Trim().ToLower().Equals("ingredients"))
                 {
                     (recipe.Ingredients as List<Ingredient>).Clear();
                     continue;
@@ -59,25 +60,7 @@ namespace PantryTracker.RecipeReader
             }
 
             directions.AddRange(input.Skip(currentLineNumber + 1));
-
-            List<string> toRemove = new List<string>();
-            foreach(var direction in directions)
-            {
-                var ingredient = ingredientParser.ProcessSentence(direction);
-
-                if(!string.IsNullOrEmpty(ingredient.Unit) && (!string.IsNullOrEmpty(ingredient.Quantity) || !string.IsNullOrEmpty(ingredient.SubQuantity)))
-                {
-                    //actually an ingredient.
-                    (recipe.Ingredients as List<Ingredient>).Add(ingredient);
-                    toRemove.Add(direction);
-                }
-            }
-
-            foreach(var direction in toRemove)
-            {
-                (recipe.Directions as List<Direction>).Remove(recipe.Directions.FirstOrDefault(x => x.Text.Equals(direction, StringComparison.CurrentCultureIgnoreCase)));
-            }
-
+            
             var index = 1;
             recipe.Directions = (directions.Select(dir => new Direction()
             {
