@@ -232,7 +232,7 @@ namespace RecipeAPI.Controllers
             recipe.RawText = existing.RawText;
 
             var ingredientIndeces = recipe.Ingredients.Select(i => i.Index);
-            _db.RemoveRange(_db.RecipeIngredients.AsNoTracking()
+            _db.RemoveRange(_db.Ingredients.AsNoTracking()
                                            .Where(i => i.RecipeId == gId &&
                                                        !ingredientIndeces.Contains(i.Index)));
 
