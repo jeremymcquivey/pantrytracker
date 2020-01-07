@@ -67,6 +67,9 @@ namespace RecipeAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes the specified id if it belongs to the current user.
+        /// </summary>
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute]string id)

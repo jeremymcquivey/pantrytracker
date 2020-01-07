@@ -10,8 +10,8 @@ using RecipeAPI.Models;
 namespace RecipeAPI.Migrations
 {
     [DbContext(typeof(RecipeContext))]
-    [Migration("20200106210717_stuff3")]
-    partial class InitialSchema
+    [Migration("20200106203503_stuff")]
+    partial class stuff
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
