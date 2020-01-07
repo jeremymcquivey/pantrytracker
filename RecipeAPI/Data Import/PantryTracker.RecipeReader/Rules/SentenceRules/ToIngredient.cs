@@ -6,9 +6,9 @@ namespace PantryTracker.RecipeReader.Rules
 {
     internal static partial class StringRules
     {
-        public static Ingredient ToIngredient(this IEnumerable<Word> wordList)
+        public static RecipeIngredient ToIngredient(this IEnumerable<Word> wordList)
         {
-            return new Ingredient()
+            return new RecipeIngredient()
             {
                 Name = string.Join(" ", wordList.Where(w => w.PartOfSpeech == PartOfSpeech.Name)?.Select(w => w.Contents)),
                 Quantity = wordList.FirstOrDefault(w => w.PartOfSpeech == PartOfSpeech.Quantity)?.Contents ?? string.Empty,

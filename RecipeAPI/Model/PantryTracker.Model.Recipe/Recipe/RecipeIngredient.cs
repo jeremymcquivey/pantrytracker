@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PantryTracker.Model.Recipe
 {
-    public class Ingredient
+    public class RecipeIngredient
     {
         public Guid RecipeId { get; set; }
 

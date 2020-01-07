@@ -36,8 +36,8 @@
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\PantryTracker.Model.Recipe\PantryTracker.Model.Recipe.csproj" />
     <ProjectReference Include="..\Data Import\PantryTracker.RecipeReader\PantryTracker.RecipeReader.csproj" />
+    <ProjectReference Include="..\Model\PantryTracker.Model.Recipe\PantryTracker.Model.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExternalServices\" />

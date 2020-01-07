@@ -7,7 +7,7 @@ namespace RecipeAPI.Models
     {
         public DbSet<Recipe> Recipes { get; set; }
 
-        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
 
         public DbSet<Direction> Directions { get; set; }
 
@@ -20,7 +20,7 @@ namespace RecipeAPI.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Ingredient>()
+            modelBuilder.Entity<RecipeIngredient>()
                 .HasKey(ingredient => new { ingredient.RecipeId, ingredient.Index });
 
             modelBuilder.Entity<Direction>()

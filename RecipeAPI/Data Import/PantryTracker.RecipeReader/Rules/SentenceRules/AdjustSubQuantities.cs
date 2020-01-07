@@ -4,7 +4,7 @@ namespace PantryTracker.RecipeReader.Rules
 {
     public static class IngredientRules
     {
-        public static Ingredient AdjustSubQuantities(this Ingredient ingredient)
+        public static RecipeIngredient AdjustSubQuantities(this RecipeIngredient ingredient)
         {
             if (string.IsNullOrEmpty(ingredient.Quantity) &&
                !string.IsNullOrEmpty(ingredient.SubQuantity))
