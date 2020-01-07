@@ -7,6 +7,8 @@ namespace PantryTracker.Model.Recipe
     {
         public Guid RecipeId { get; set; }
 
+        public int? IngredientId { get; set; }
+
         public int Index { get; set; }
 
         public string Quantity { get; set; }
@@ -20,6 +22,9 @@ namespace PantryTracker.Model.Recipe
         public string Container { get; set; }
 
         public string Descriptor { get; set; }
+
+        [NotMapped]
+        public virtual Ingredient Ingredient { get; set; }
 
         [NotMapped]
         public virtual Recipe Recipe { get; set; }

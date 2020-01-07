@@ -25,6 +25,9 @@ namespace RecipeAPI.Models
 
             modelBuilder.Entity<Direction>()
                 .HasKey(direction => new { direction.RecipeId, direction.Index });
+
+            modelBuilder.Entity<RecipeIngredient>()
+                .HasOne<Ingredient>(nameof(RecipeIngredient.Ingredient));
         }
     }
 }
