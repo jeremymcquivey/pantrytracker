@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeAPI.Models;
 
 namespace RecipeAPI.Migrations
@@ -14,7 +15,7 @@ namespace RecipeAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -98,7 +99,7 @@ namespace RecipeAPI.Migrations
 
             modelBuilder.Entity("PantryTracker.Model.Recipe.Direction", b =>
                 {
-                    b.HasOne("PantryTracker.Model.Recipe.Recipe", "Recipe")
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
                         .WithMany("Directions")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -107,10 +108,10 @@ namespace RecipeAPI.Migrations
             modelBuilder.Entity("PantryTracker.Model.Recipe.Ingredient", b =>
                 {
                     b.HasOne("PantryTracker.Model.Recipe.Product", "Product")
-                        .WithMany("Ingredients")
+                        .WithMany()
                         .HasForeignKey("ProductId");
 
-                    b.HasOne("PantryTracker.Model.Recipe.Recipe", "Recipe")
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);

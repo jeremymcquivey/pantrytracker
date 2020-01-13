@@ -109,7 +109,7 @@ namespace RecipeAPI.Controllers
             }
             
             var recipe = _db.Recipes.Include(x => x.Ingredients)
-                                    .Include(r => r.Ingredients.Select(i => i.Product))
+                                        .ThenInclude(ingredient => ingredient.Product)
                                     .Include(x => x.Directions)
                                     .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
 

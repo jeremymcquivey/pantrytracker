@@ -32,16 +32,13 @@ namespace RecipeAPI.Models
                 .HasKey(direction => new { direction.RecipeId, direction.Index });
 
             modelBuilder.Entity<Recipe>()
-                .HasMany(recipe => recipe.Directions)
-                .WithOne(direction => direction.Recipe);
+                .HasMany(recipe => recipe.Directions);
 
             modelBuilder.Entity<Recipe>()
-                .HasMany(recipe => recipe.Ingredients)
-                .WithOne(ingredient => ingredient.Recipe);
+                .HasMany(recipe => recipe.Ingredients);
 
             modelBuilder.Entity<Ingredient>()
-                .HasOne(ingredient => ingredient.Product)
-                .WithMany(product => product.Ingredients);
+                .HasOne(ingredient => ingredient.Product);
         }
     }
 }

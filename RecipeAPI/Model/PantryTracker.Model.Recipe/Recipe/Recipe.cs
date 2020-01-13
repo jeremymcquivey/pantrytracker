@@ -67,7 +67,7 @@ namespace PantryTracker.Model.Recipe
         [MinLength(1)]
         public virtual IEnumerable<Ingredient> Ingredients { get; set; } =
             new List<Ingredient>();
-
+        
         public virtual IEnumerable<Direction> Directions { get; set; } =
             new List<Direction>();
     }
