@@ -6,16 +6,6 @@
     /// </summary>
     public class AppSettings
     {
-        /// <summary>
-        /// Connection strings to 3rd party services
-        /// </summary>
-        public ServiceEndpoints Endpoints { get; set; }
-
-        /// <summary>
-        /// Connection strings to 3rd party services
-        /// </summary>
-        public class ServiceEndpoints
-        {
-        }
+        public string STSAuthority { get; set; }
     }
 }

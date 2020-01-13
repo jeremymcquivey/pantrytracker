@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <ApplicationInsightsResourceId>/subscriptions/49f2b74d-9de3-4e75-8c2b-9d270320f44b/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/RecipeAPI</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/49f2b74d-9de3-4e75-8c2b-9d270320f44b/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/RecipeAPI</ApplicationInsightsAnnotationResourceId>
     <UserSecretsId>f3c20c9b-e9fd-4a1e-bfd6-dc5b36218c0a</UserSecretsId>
@@ -20,9 +20,21 @@
     <Compile Remove="Migrations\20200113011039_catchup.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="certificate.development.pfx" />
+    <None Remove="certificate.stage.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="certificate.development.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="certificate.stage.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.6.1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.7"><PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.13"><PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
 <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
 </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
