@@ -10,8 +10,5 @@ namespace PantryTracker.Model.Recipe
         public int Index { get; set; }
 
         public string Text { get; set; }
-
-        [NotMapped]
-        public virtual Recipe Recipe { get; set; }
     }
 }
