@@ -44,10 +44,10 @@ namespace RecipeAPI
                 });
             });
 
-            /*var certificatePassword = Environment.GetEnvironmentVariable("CertificatePassword");
+            var certificatePassword = Environment.GetEnvironmentVariable("CertificatePassword");
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower();
             var cert = new X509Certificate2(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"certificate.{environment}.pfx"), certificatePassword, X509KeyStorageFlags.MachineKeySet);
-            X509SecurityKey key = new X509SecurityKey(cert);*/
+            X509SecurityKey key = new X509SecurityKey(cert);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                      .AddJwtBearer(options =>
@@ -55,15 +55,19 @@ namespace RecipeAPI
                          options.Authority = Configuration.GetSection("Authentication:STSAuthority").Value;
                          options.RequireHttpsMetadata = false;
                          options.Audience = "pantrytrackers-ui";
-                         /*options.TokenValidationParameters = new TokenValidationParameters
+                         options.TokenValidationParameters = new TokenValidationParameters
                          {
                              ValidateIssuerSigningKey = true,
                              IssuerSigningKey = key
-                         };*/
+                         };
                      });
 
             services.AddSwashbuckle();
-            services.AddMvc();
+            services.AddMvc()
+                    .AddJsonOptions(options =>
+                    {
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -75,8 +79,7 @@ namespace RecipeAPI
             }
             else
             {
-                app.UseDeveloperExceptionPage();
-                //app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Error");
             }
 
             app.UseCors("AllRequests");
