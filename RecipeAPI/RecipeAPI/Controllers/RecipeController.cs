@@ -48,7 +48,7 @@ namespace RecipeAPI.Controllers
             try
             {
                 var recipes = _db.Recipes.Include(r => r.Ingredients)
-                                            .ThenInclude(i => i.Ingredient)
+                                            .ThenInclude(i => i.Product)
                                          .Include(r => r.Directions)
                                          .Where(r => r.OwnerId == AuthenticatedUser)
                                          .OrderBy(r => r.Title)
@@ -81,7 +81,7 @@ namespace RecipeAPI.Controllers
             }
 
             var recipe = _db.Recipes.Include(x => x.Ingredients)
-                                        .ThenInclude(i => i.Ingredient)
+                                        .ThenInclude(i => i.Product)
                                     .Include(x => x.Directions)
                                     .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
 
@@ -109,7 +109,7 @@ namespace RecipeAPI.Controllers
             }
             
             var recipe = _db.Recipes.Include(x => x.Ingredients)
-                                    .Include(r => r.Ingredients.Select(i => i.Ingredient))
+                                    .Include(r => r.Ingredients.Select(i => i.Product))
                                     .Include(x => x.Directions)
                                     .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
 
@@ -238,7 +238,7 @@ namespace RecipeAPI.Controllers
             recipe.RawText = existing.RawText;
 
             var ingredientIndeces = recipe.Ingredients.Select(i => i.Index);
-            _db.RemoveRange(_db.RecipeIngredients.AsNoTracking()
+            _db.RemoveRange(_db.Ingredients.AsNoTracking()
                                            .Where(i => i.RecipeId == gId &&
                                                        !ingredientIndeces.Contains(i.Index)));
 

@@ -42,7 +42,7 @@ namespace PantryTracker.RecipeReader
 
                 if(sentence.Trim().ToLower().Equals("ingredients"))
                 {
-                    (recipe.Ingredients as List<RecipeIngredient>).Clear();
+                    (recipe.Ingredients as List<Ingredient>).Clear();
                     continue;
                 }
 
@@ -56,7 +56,7 @@ namespace PantryTracker.RecipeReader
                 }
 
                 if (!recentlyAddedPrepTime && null != ingredient)
-                    (recipe.Ingredients as List<RecipeIngredient>).Add(ingredient);
+                    (recipe.Ingredients as List<Ingredient>).Add(ingredient);
             }
 
             directions.AddRange(input.Skip(currentLineNumber + 1));

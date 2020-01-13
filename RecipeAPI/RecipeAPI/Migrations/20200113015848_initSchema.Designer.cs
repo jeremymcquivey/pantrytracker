@@ -10,8 +10,8 @@ using RecipeAPI.Models;
 namespace RecipeAPI.Migrations
 {
     [DbContext(typeof(RecipeContext))]
-    [Migration("20200106210717_stuff3")]
-    partial class InitialSchema
+    [Migration("20200113015848_initSchema")]
+    partial class initSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,8 @@ namespace RecipeAPI.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int?>("ProductId");
+
                     b.Property<string>("Quantity");
 
                     b.Property<string>("SubQuantity");
@@ -54,7 +56,22 @@ namespace RecipeAPI.Migrations
 
                     b.HasKey("RecipeId", "Index");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("Ingredients");
+                });
+
+            modelBuilder.Entity("PantryTracker.Model.Recipe.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("PantryTracker.Model.Recipe.Recipe", b =>
@@ -84,7 +101,7 @@ namespace RecipeAPI.Migrations
 
             modelBuilder.Entity("PantryTracker.Model.Recipe.Direction", b =>
                 {
-                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe", "Recipe")
                         .WithMany("Directions")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -92,7 +109,11 @@ namespace RecipeAPI.Migrations
 
             modelBuilder.Entity("PantryTracker.Model.Recipe.Ingredient", b =>
                 {
-                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
+                    b.HasOne("PantryTracker.Model.Recipe.Product", "Product")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe", "Recipe")
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);

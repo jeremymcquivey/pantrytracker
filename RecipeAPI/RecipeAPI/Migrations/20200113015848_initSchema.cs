@@ -1,12 +1,26 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RecipeAPI.Migrations
 {
-    public partial class InitialSchema : Migration
+    public partial class initSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Recipes",
                 columns: table => new
@@ -50,6 +64,7 @@ namespace RecipeAPI.Migrations
                 {
                     RecipeId = table.Column<Guid>(nullable: false),
                     Index = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: true),
                     Quantity = table.Column<string>(nullable: true),
                     SubQuantity = table.Column<string>(nullable: true),
                     Unit = table.Column<string>(nullable: true),
@@ -61,12 +76,23 @@ namespace RecipeAPI.Migrations
                 {
                     table.PrimaryKey("PK_Ingredients", x => new { x.RecipeId, x.Index });
                     table.ForeignKey(
+                        name: "FK_Ingredients_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Ingredients_Recipes_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_ProductId",
+                table: "Ingredients",
+                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -76,6 +102,9 @@ namespace RecipeAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ingredients");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Recipes");

@@ -8,7 +8,7 @@ namespace PantryTracker.RecipeReader
         private UnitsOfMeasure _unitsOfMeasure =
             new UnitsOfMeasure();
 
-        public RecipeIngredient ProcessSentence(string phrase)
+        public Ingredient ProcessSentence(string phrase)
         {
             if (string.IsNullOrEmpty(phrase))
                 return null;
@@ -22,7 +22,7 @@ namespace PantryTracker.RecipeReader
                               .DefineNames()
                               .RemoveUnwantedWords();
 
-            return (words.ToIngredient() ?? new RecipeIngredient())
+            return (words.ToIngredient() ?? new Ingredient())
                          .AdjustSubQuantities();
         }
     }

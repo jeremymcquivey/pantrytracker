@@ -10,8 +10,8 @@ using RecipeAPI.Models;
 namespace RecipeAPI.Migrations
 {
     [DbContext(typeof(RecipeContext))]
-    [Migration("20200107004220_renameIngredients")]
-    partial class renameIngredients
+    [Migration("20200113011039_catchup")]
+    partial class catchup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,6 +32,19 @@ namespace RecipeAPI.Migrations
                     b.HasKey("RecipeId", "Index");
 
                     b.ToTable("Directions");
+                });
+
+            modelBuilder.Entity("PantryTracker.Model.Recipe.Ingredient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ingredient");
                 });
 
             modelBuilder.Entity("PantryTracker.Model.Recipe.Recipe", b =>
@@ -69,6 +82,8 @@ namespace RecipeAPI.Migrations
 
                     b.Property<string>("Descriptor");
 
+                    b.Property<int?>("IngredientId");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("Quantity");
@@ -78,6 +93,8 @@ namespace RecipeAPI.Migrations
                     b.Property<string>("Unit");
 
                     b.HasKey("RecipeId", "Index");
+
+                    b.HasIndex("IngredientId");
 
                     b.ToTable("RecipeIngredients");
                 });
@@ -92,6 +109,10 @@ namespace RecipeAPI.Migrations
 
             modelBuilder.Entity("PantryTracker.Model.Recipe.RecipeIngredient", b =>
                 {
+                    b.HasOne("PantryTracker.Model.Recipe.Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId");
+
                     b.HasOne("PantryTracker.Model.Recipe.Recipe")
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId")

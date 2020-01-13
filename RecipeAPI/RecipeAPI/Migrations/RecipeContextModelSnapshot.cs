@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeAPI.Models;
 
 namespace RecipeAPI.Migrations
@@ -34,6 +33,33 @@ namespace RecipeAPI.Migrations
 
             modelBuilder.Entity("PantryTracker.Model.Recipe.Ingredient", b =>
                 {
+                    b.Property<Guid>("RecipeId");
+
+                    b.Property<int>("Index");
+
+                    b.Property<string>("Container");
+
+                    b.Property<string>("Descriptor");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("ProductId");
+
+                    b.Property<string>("Quantity");
+
+                    b.Property<string>("SubQuantity");
+
+                    b.Property<string>("Unit");
+
+                    b.HasKey("RecipeId", "Index");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Ingredients");
+                });
+
+            modelBuilder.Entity("PantryTracker.Model.Recipe.Product", b =>
+                {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -42,7 +68,7 @@ namespace RecipeAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredient");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("PantryTracker.Model.Recipe.Recipe", b =>
@@ -70,48 +96,21 @@ namespace RecipeAPI.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("PantryTracker.Model.Recipe.RecipeIngredient", b =>
-                {
-                    b.Property<Guid>("RecipeId");
-
-                    b.Property<int>("Index");
-
-                    b.Property<string>("Container");
-
-                    b.Property<string>("Descriptor");
-
-                    b.Property<int?>("IngredientId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Quantity");
-
-                    b.Property<string>("SubQuantity");
-
-                    b.Property<string>("Unit");
-
-                    b.HasKey("RecipeId", "Index");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("RecipeIngredients");
-                });
-
             modelBuilder.Entity("PantryTracker.Model.Recipe.Direction", b =>
                 {
-                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe", "Recipe")
                         .WithMany("Directions")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("PantryTracker.Model.Recipe.RecipeIngredient", b =>
+            modelBuilder.Entity("PantryTracker.Model.Recipe.Ingredient", b =>
                 {
-                    b.HasOne("PantryTracker.Model.Recipe.Ingredient", "Ingredient")
-                        .WithMany()
-                        .HasForeignKey("IngredientId");
+                    b.HasOne("PantryTracker.Model.Recipe.Product", "Product")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("ProductId");
 
-                    b.HasOne("PantryTracker.Model.Recipe.Recipe")
+                    b.HasOne("PantryTracker.Model.Recipe.Recipe", "Recipe")
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);

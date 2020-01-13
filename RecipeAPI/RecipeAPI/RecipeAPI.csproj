@@ -16,6 +16,8 @@
     <Compile Remove="Migrations\20190816024701_InitialCreateRecipeWithIngredients.Designer.cs" />
     <Compile Remove="Migrations\20200106203503_stuff.cs" />
     <Compile Remove="Migrations\20200106203503_stuff.Designer.cs" />
+    <Compile Remove="Migrations\20200113011039_catchup.cs" />
+    <Compile Remove="Migrations\20200113011039_catchup.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
@@ -41,5 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExternalServices\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 </Project>
