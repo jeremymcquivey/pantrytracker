@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
 using Microsoft.Extensions.Options;
-using PantryTracker.Model.Recipe;
+using PantryTracker.Model.Recipes;
 using PantryTracker.RecipeReader;
 using System;
 using System.Threading.Tasks;

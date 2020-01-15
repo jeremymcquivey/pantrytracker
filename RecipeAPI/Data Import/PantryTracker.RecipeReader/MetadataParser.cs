@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PantryTracker.Model.Recipe;
+using PantryTracker.Model.Recipes;
 using PantryTracker.RecipeReader.Rules;
 
 namespace PantryTracker.RecipeReader

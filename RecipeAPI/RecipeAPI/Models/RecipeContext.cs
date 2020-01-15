@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PantryTracker.Model.Recipe;
+using PantryTracker.Model.Recipes;
 
 namespace RecipeAPI.Models
 {

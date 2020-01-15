@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PantryTracker.Model.Recipe
+namespace PantryTracker.Model.Recipes
 {
     public class Direction
     {

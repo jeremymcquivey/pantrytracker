@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PantryTracker.Model.Recipe;
+using PantryTracker.Model.Recipes;
 
 namespace PantryTracker.RecipeReader.Rules
 {

@@ -1,4 +1,4 @@
-﻿using PantryTracker.Model.Recipe;
+﻿using PantryTracker.Model.Recipes;
 
 namespace PantryTracker.RecipeReader.Rules
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PantryTracker.Model.Recipe
+namespace PantryTracker.Model.Recipes
 {
     public class UnitsOfTime
     {

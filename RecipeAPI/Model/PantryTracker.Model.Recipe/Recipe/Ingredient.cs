@@ -1,13 +1,10 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PantryTracker.Model.Recipe
+namespace PantryTracker.Model.Recipes
 {
     public class Ingredient
     {
         public Guid RecipeId { get; set; }
-
-        public int? ProductId { get; set; }
 
         public int Index { get; set; }
 
@@ -22,7 +19,5 @@ namespace PantryTracker.Model.Recipe
         public string Container { get; set; }
 
         public string Descriptor { get; set; }
-        
-        public virtual Product Product { get; set; }
     }
 }
