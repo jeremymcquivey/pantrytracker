@@ -139,8 +139,12 @@ namespace RecipeAPI.Controllers
             var recipe = _db.Recipes.Include(x => x.Ingredients)
                                     .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
 
-            var userPreferred = _db.UserProductPreferences.Where(x => x.RecipeId == gId);
-            var userProducts = _db.Products.Where(product => product.OwnerId == AuthenticatedUser);
+            var userPreferred = _db.UserProductPreferences.Include(p => p.Product)
+                                                          .Where(x => x.RecipeId == gId)
+                                                          .ToList();
+
+            var userProducts = _db.Products.Where(product => product.OwnerId == AuthenticatedUser)
+                                           .ToList();
 
             var ignored = new List<Ingredient>();
             var unmatched = new List<Ingredient>();
@@ -148,14 +152,13 @@ namespace RecipeAPI.Controllers
 
             foreach (var ingredient in recipe.Ingredients)
             {
-                var userMatch = userPreferred.Include(p => p.Product)
-                                             .Where(p => ingredient.Name.Contains(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
+                var userMatch = userPreferred.Where(p => ingredient.Name.Contains(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
                                              .OrderBy(p => p.matchingText.Length)
                                              .FirstOrDefault();
 
                 if (userMatch != null)
                 {
-                    if (userMatch.Product == default)
+                    if (userMatch.Product == default(Product))
                     {
                         ignored.Add(ingredient);
                         continue;
@@ -165,6 +168,7 @@ namespace RecipeAPI.Controllers
                     {
                         Product = userMatch.Product,
                         RecipeId = gId,
+                        PlainText = ingredient.Name,
                         Unit = ingredient.Unit,
                         Quantity = ingredient.Quantity,
                         Type = IngredientMatchType.UserMatch
@@ -185,6 +189,7 @@ namespace RecipeAPI.Controllers
                     {
                         Product = potentialMatches.First(),
                         RecipeId = gId,
+                        PlainText = ingredient.Name,
                         Unit = ingredient.Unit,
                         Quantity = ingredient.Quantity,
                         Type = IngredientMatchType.SystemMatch

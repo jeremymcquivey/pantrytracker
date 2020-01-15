@@ -7,6 +7,8 @@ namespace PantryTracker.Model.Products
 
         public Guid RecipeId { get; set; }
 
+        public string PlainText { get; set; }
+
         public string Unit { get; set; }
 
         public string Quantity { get; set; }

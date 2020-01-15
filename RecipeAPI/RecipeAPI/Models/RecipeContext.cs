@@ -42,6 +42,9 @@ namespace RecipeAPI.Models
 
             modelBuilder.Entity<UserProductPreference>()
                 .HasOne(preference => preference.Product);
+
+            modelBuilder.Entity<UserProductPreference>()
+                .HasOne(preference => preference.Recipe);
         }
     }
 }
