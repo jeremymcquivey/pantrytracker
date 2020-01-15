@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using RecipeAPI.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using PantryTracker.Model.Products;
+using PantryTracker.Model.Extensions;
 
 namespace RecipeAPI.Controllers
 {
@@ -26,15 +29,18 @@ namespace RecipeAPI.Controllers
     {
         private const char EndOfLineDelimiter = '\n';
 
-        private IOCRService _ocr;
-        private RecipeContext _db;
+        private readonly IOCRService _ocr;
+        private readonly InMemoryProductsDb _products;
+        private readonly RecipeContext _db;
 
 #pragma warning disable 1591
         public RecipeController(IOptions<AppSettings> config,
                                 RecipeContext database,
+                                InMemoryProductsDb products,
 								IOCRService ocrService)
 #pragma warning restore 1591
         {
+            _products = products;
             _db = database;
             _ocr = ocrService;
         }
@@ -48,7 +54,6 @@ namespace RecipeAPI.Controllers
             try
             {
                 var recipes = _db.Recipes.Include(r => r.Ingredients)
-                                            .ThenInclude(i => i.Product)
                                          .Include(r => r.Directions)
                                          .Where(r => r.OwnerId == AuthenticatedUser)
                                          .OrderBy(r => r.Title)
@@ -80,10 +85,7 @@ namespace RecipeAPI.Controllers
                 return NotFound();
             }
 
-            var recipe = _db.Recipes.Include(x => x.Ingredients)
-                                        .ThenInclude(i => i.Product)
-                                    .Include(x => x.Directions)
-                                    .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
+            var recipe = _db.Recipes.SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
 
             if(recipe == default(Recipe))
             {
@@ -109,7 +111,6 @@ namespace RecipeAPI.Controllers
             }
             
             var recipe = _db.Recipes.Include(x => x.Ingredients)
-                                        .ThenInclude(ingredient => ingredient.Product)
                                     .Include(x => x.Directions)
                                     .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
 
@@ -121,6 +122,91 @@ namespace RecipeAPI.Controllers
             recipe.Ingredients = recipe.Ingredients.OrderBy(i => i.Index);
             recipe.Directions = recipe.Directions.OrderBy(i => i.Index);
             return Ok(recipe);
+        }
+
+        /// <summary>
+        /// Retrieves a list of products attached to the recipe
+        /// </summary>
+        [HttpGet]
+        [Route("{id}/products")]
+        public IActionResult GetProducts([FromRoute]string id)
+        {
+            if (!Guid.TryParse(id, out Guid gId))
+            {
+                return NotFound();
+            }
+
+            var recipe = _db.Recipes.Include(x => x.Ingredients)
+                                    .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
+
+            var userPreferred = _db.UserProductPreferences.Include(p => p.Product)
+                                                          .Where(x => x.RecipeId == gId)
+                                                          .ToList();
+
+            var userProducts = _db.Products.Where(product => product.OwnerId == AuthenticatedUser)
+                                           .ToList();
+
+            var ignored = new List<Ingredient>();
+            var unmatched = new List<Ingredient>();
+            var matches = new List<RecipeProduct>();
+
+            foreach (var ingredient in recipe.Ingredients)
+            {
+                var userMatch = userPreferred.Where(p => ingredient.Name.Contains(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
+                                             .OrderBy(p => p.matchingText.Length)
+                                             .FirstOrDefault();
+
+                if (userMatch != null)
+                {
+                    if (userMatch.Product == default(Product))
+                    {
+                        ignored.Add(ingredient);
+                        continue;
+                    }
+
+                    matches.Add(new RecipeProduct
+                    {
+                        Product = userMatch.Product,
+                        RecipeId = gId,
+                        PlainText = ingredient.Name,
+                        Unit = ingredient.Unit,
+                        Quantity = ingredient.Quantity,
+                        Type = IngredientMatchType.UserMatch
+                    });
+
+                    continue;
+                }
+
+                var potentialMatches = _products.Where(p => ingredient.Name.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase))
+                                                .ToList()
+                                                .MergeWith(userProducts.Where(p => ingredient.Name.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase)).ToList())
+                                                .OrderByDescending(p => p.Name.Length)
+                                                .ThenByDescending(p => p.OwnerId);
+
+                if (potentialMatches.Any())
+                {
+                    matches.Add(new RecipeProduct
+                    {
+                        Product = potentialMatches.First(),
+                        RecipeId = gId,
+                        PlainText = ingredient.Name,
+                        Unit = ingredient.Unit,
+                        Quantity = ingredient.Quantity,
+                        Type = IngredientMatchType.SystemMatch
+                    });
+
+                    continue;
+                }
+
+                unmatched.Add(ingredient);
+            }
+
+            return Ok(new
+            {
+                UnmatchedIngredients = unmatched,
+                MatchedProducts = matches,
+                IgnoredIngredients = ignored
+            });
         }
 
         /// <summary>

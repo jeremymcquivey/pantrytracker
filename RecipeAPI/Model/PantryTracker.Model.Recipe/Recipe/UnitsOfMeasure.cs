@@ -18,7 +18,8 @@ namespace PantryTracker.Model.Recipes
         private Dictionary<string, List<string>> _unitsOfWeight =
             new Dictionary<string, List<string>>
             {
-                {"Pound", new List<string>() { "lb", "lbs", "pound", "pounds" } }
+                {"Pound", new List<string>() { "lb", "lbs", "pound", "pounds" } },
+                {"Ounce", new List<string>() { "oz", "ounce", "ounces" } }
             };
 
         public bool IsUnitOfMeasure(string word)
