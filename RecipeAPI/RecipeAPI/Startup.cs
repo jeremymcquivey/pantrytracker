@@ -11,6 +11,7 @@ using RecipeAPI.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using PantryTracker.Model.Products;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -32,6 +33,7 @@ namespace RecipeAPI
             var connStr = Environment.GetEnvironmentVariable("ConnectionString", EnvironmentVariableTarget.Process);
             services.AddDbContext<RecipeContext>(options => options.UseSqlServer(connStr));
             services.AddTransient<IOCRService, OCR>();
+            services.AddSingleton<InMemoryProductsDb>();
 
             services.AddCors(options =>
             {

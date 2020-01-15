@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PantryTracker.Model.Products;
 using PantryTracker.Model.Recipes;
 
 namespace RecipeAPI.Models
@@ -12,6 +13,8 @@ namespace RecipeAPI.Models
         public DbSet<Direction> Directions { get; set; }
 
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<UserProductPreference> UserProductPreferences { get; set; }
 
         public RecipeContext(DbContextOptions<RecipeContext> options):
             base(options)
@@ -37,8 +40,8 @@ namespace RecipeAPI.Models
             modelBuilder.Entity<Recipe>()
                 .HasMany(recipe => recipe.Ingredients);
 
-            modelBuilder.Entity<Ingredient>()
-                .HasOne(ingredient => ingredient.Product);
+            modelBuilder.Entity<UserProductPreference>()
+                .HasOne(preference => preference.Product);
         }
     }
 }
