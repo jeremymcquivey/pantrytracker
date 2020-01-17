@@ -26,9 +26,9 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
     public hasSubmitted: boolean = false;
     public rawText: string = "";
 
-    recipe: Recipe = {} as Recipe;
-    ingredients: Ingredient[];
-    directions: Direction[];
+    public recipe: Recipe = {} as Recipe;
+    public ingredients: Ingredient[];
+    public directions: Direction[];
     
     directionColumns = ['description'];
     condensedColumns = ['name'];
@@ -36,6 +36,7 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
     dataSource = new MatTableDataSource();
     directionDataSource = new MatTableDataSource();
     error: string;
+    recipeId: string = ({} as Recipe).id;
 
     constructor(
       private _route: ActivatedRoute,
@@ -83,6 +84,7 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
     }
 
     public initWithRecipe(recipe: Recipe) {
+      this.recipeId = recipe.id;
       this.recipe = recipe;
 
       this.rawText = recipe.rawText;
@@ -107,7 +109,7 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
       this.rawText = updatedText;
       this._projectService.submitRawText(this.rawText).subscribe(recipe => {
         this.recipe = recipe;
-        recipe.id = ({} as Recipe).id;
+        recipe.id = this.recipeId;
 
         this.ingredients = recipe.ingredients;
         this.dataSource.data = this.ingredients;

@@ -276,7 +276,29 @@ namespace RecipeAPI.Controllers
                 return NotFound();
             }
 
-            recipe.RawText = existing.RawText;
+            recipe.Id = gId;
+            recipe.OwnerId = AuthenticatedUser;
+            recipe.RawText = Regex.Replace(recipe.RawText, @"\r\n?|\n", Environment.NewLine);
+
+            foreach (var ingr in recipe.Ingredients)
+            {
+                ingr.RecipeId = recipe.Id;
+            }
+
+            foreach (var dir in recipe.Directions)
+            {
+                dir.RecipeId = recipe.Id;
+            }
+
+            foreach (var ingr in recipe.Ingredients.Where(i => i.Index == 0))
+            {
+                ingr.Index = recipe.Ingredients.Max(p => p.Index) + 1;
+            }
+
+            foreach (var dir in recipe.Directions.Where(i => i.Index == 0))
+            {
+                dir.Index = recipe.Directions.Max(p => p.Index) + 1;
+            }
 
             var ingredientIndeces = recipe.Ingredients.Select(i => i.Index);
             _db.RemoveRange(_db.Ingredients.AsNoTracking()
@@ -288,10 +310,16 @@ namespace RecipeAPI.Controllers
                                           .Where(i => i.RecipeId == gId &&
                                                       !directionIndeces.Contains(i.Index)));
 
-            _db.Update(recipe);
-            await _db.SaveChangesAsync();
-
-            return Ok(recipe);
+            try
+            {
+                _db.Update(recipe);
+                await _db.SaveChangesAsync();
+                return Ok(recipe);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
 
         private TextProductMatch GetMatchingProducts(Guid recipeId)
