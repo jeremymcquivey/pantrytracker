@@ -1,17 +1,21 @@
 <nav>
-    <mat-toolbar color="primary">
+    <mat-toolbar>
         <a href="/">
             <span>
-                <img src="/assets/images/Globo_logo.png" alt="Globomantics" title="Globomantics" class="globo-logo">
+                <img src="/assets/images/logo-wide.png" alt="PantryTrackers" title="PantryTrackers" class="pt-logo">
             </span>
         </a>
         <span class="navbar-fill">
-            <button mat-button routerLink="/projects">My Projects</button>
-            <button mat-button routerLink="/admin">Manage Projects</button>
+            <button mat-button routerLink="/recipes">My Recipes</button>
+            <button mat-button routerLink="/pantry">My Pantry</button>
         </span>
         <span>
-            <button *ngIf="!isLoggedIn()" mat-button (click)="login()">Login</button>
-            <button *ngIf="isLoggedIn()" mat-button (click)="logout()">Logout</button>
+            <span *ngIf="!isLoggedIn()" mat-button (click)="login()" style="vertical-align: middle;">Login</span>
+            <span *ngIf="isLoggedIn()">
+                <img class="profile-img" src="/assets/images/default-user.jpg" />
+                <span>Welcome, First User! </span>
+                <span mat-button (click)="logout()" style="cursor: pointer;">Logout</span>
+            </span>
         </span>
     </mat-toolbar>
 </nav>

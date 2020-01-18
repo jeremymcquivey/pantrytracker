@@ -11,7 +11,7 @@ import { RecipeComponent } from './recipes/recipe.component';
 const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'contact-us', component: ContactUsComponent },
-    { path: 'projects', component: ProjectListComponent},
+    { path: 'recipes', component: ProjectListComponent},
     { path: 'project/:projectId', component: ProjectComponent },
     { path: 'unauthorized', component: UnauthorizedComponent },
     { path: 'new-recipe', component: RecipeComponent},

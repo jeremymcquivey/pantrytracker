@@ -25,9 +25,9 @@ export class ProjectListComponent implements OnInit {
       this.dataSource2.data = recipes;
     }, error => Utils.formatError(error));
 
-    this._projectService.getProjects().subscribe(projects => {
+    /*this._projectService.getProjects().subscribe(projects => {
       this.projects = projects;
       this.dataSource.data = projects;
-    }, error => Utils.formatError(error));
+    }, error => Utils.formatError(error));*/
   }
 }
