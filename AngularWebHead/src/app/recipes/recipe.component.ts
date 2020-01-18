@@ -25,6 +25,7 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
     public isUpdate:boolean;
     public hasSubmitted: boolean = false;
     public rawText: string = "";
+    private isBusy: boolean = false;
 
     public recipe: Recipe = {} as Recipe;
     public ingredients: Ingredient[];
@@ -96,11 +97,14 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
     }
 
     public saveRecipe() {
+      this.isBusy = true;
       this.recipe.ingredients = this.ingredients;
       this.recipe.directions = this.directions;
 
       this._projectService.saveRecipe(this.recipe).subscribe(recipe => {
         this._router.navigate(['recipe/' + recipe.id]);
+      }).add(() => {
+        this.isBusy = false;
       });
     }
 

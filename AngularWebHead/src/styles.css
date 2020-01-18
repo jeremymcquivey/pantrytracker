@@ -1,21 +1,50 @@
 
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-body {
-    width: 90%;
-    margin-left: 5%;
+html, body {
+  height: 100%;
 }
 
-.globo-logo {
-  width: 200px;
+body {
+    width: 90%;
+    margin: 0;
+    margin-left: 5%;
+    background: #F3F3F3;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+  padding-top: .5em;
+  padding-bottom: 1.5em;
+  padding-left: 1.5em;
+}
+
+.profile-img {
+  height: 3em;
+  vertical-align: middle;
+}
+
+.pt-logo {
+  height: 3em;
   margin-top: 10px;
-  margin-left: -20px;
 }
 
 .navbar-fill {
+  margin-left: .5em;
   flex: 1 1 auto;
 }
 
 .list-action {
   width: 40px;
   text-align: center;
+}
+
+.mat-toolbar {
+  background-color: #FFFFFF;
+}
+
+nav .mat-button {
+  font-size: 20px;
 }

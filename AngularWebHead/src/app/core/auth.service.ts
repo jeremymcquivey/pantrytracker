@@ -25,7 +25,7 @@ export class AuthService {
       }
     });
   }
-
+  
   login(): Promise<any> {
     return this._userManager.signinRedirect();
   }
