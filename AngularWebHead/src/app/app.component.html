@@ -6,8 +6,8 @@
             </span>
         </a>
         <span class="navbar-fill">
-            <button mat-button routerLink="/recipes">My Recipes</button>
-            <button mat-button routerLink="/pantry">My Pantry</button>
+            <button mat-button routerLink="/recipes" *ngIf="isLoggedIn()">My Recipes</button>
+            <button mat-button routerLink="/pantry" *ngIf="isLoggedIn()">My Pantry</button>
         </span>
         <span>
             <span *ngIf="!isLoggedIn()" mat-button (click)="login()" style="vertical-align: middle;">Login</span>

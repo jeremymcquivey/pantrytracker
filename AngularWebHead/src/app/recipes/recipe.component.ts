@@ -101,6 +101,16 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
       this.recipe.ingredients = this.ingredients;
       this.recipe.directions = this.directions;
 
+      this.ingredients.forEach((ing, i) => {
+        ing.recipeId = this.recipe.id;
+        ing.index = i;
+      });
+
+      this.recipe.directions.forEach((dir, i) => {
+        dir.recipeId = this.recipe.id;
+        dir.index = i;
+      });
+
       this._projectService.saveRecipe(this.recipe).subscribe(recipe => {
         this._router.navigate(['recipe/' + recipe.id]);
       }).add(() => {
