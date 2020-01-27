@@ -265,10 +265,22 @@ namespace RecipeAPI.Controllers
 
             if(!Guid.TryParse(id, out Guid gId) || !id.Equals(recipe.Id.ToString(), StringComparison.CurrentCultureIgnoreCase))
             {
-                return BadRequest("");
+                return BadRequest("Please specify a valid recipe id.");
+            }
+
+            try
+            {
+                recipe.Ingredients.ToDictionary(p => p.Index);
+                recipe.Directions.ToDictionary(p => p.Index);
+            }
+            catch(ArgumentException)
+            {
+                return BadRequest("Make sure each ingredient and direction has a unique non-zero index.");
             }
 
             var existing = _db.Recipes.AsNoTracking()
+                                      .Include(p => p.Directions)
+                                      .Include(p => p.Ingredients)
                                       .SingleOrDefault(r => r.Id == gId && r.OwnerId == AuthenticatedUser);
 
             if (existing == default(Recipe))
@@ -280,35 +292,11 @@ namespace RecipeAPI.Controllers
             recipe.OwnerId = AuthenticatedUser;
             recipe.RawText = Regex.Replace(recipe.RawText, @"\r\n?|\n", Environment.NewLine);
 
-            foreach (var ingr in recipe.Ingredients)
-            {
-                ingr.RecipeId = recipe.Id;
-            }
+            _db.AddRange(recipe.Directions.Where(p => !existing.Directions.Any(q => q.Index == p.Index)));
+            _db.AddRange(recipe.Ingredients.Where(p => !existing.Ingredients.Any(q => q.Index == p.Index)));
 
-            foreach (var dir in recipe.Directions)
-            {
-                dir.RecipeId = recipe.Id;
-            }
-
-            foreach (var ingr in recipe.Ingredients.Where(i => i.Index == 0))
-            {
-                ingr.Index = recipe.Ingredients.Max(p => p.Index) + 1;
-            }
-
-            foreach (var dir in recipe.Directions.Where(i => i.Index == 0))
-            {
-                dir.Index = recipe.Directions.Max(p => p.Index) + 1;
-            }
-
-            var ingredientIndeces = recipe.Ingredients.Select(i => i.Index);
-            _db.RemoveRange(_db.Ingredients.AsNoTracking()
-                                           .Where(i => i.RecipeId == gId &&
-                                                       !ingredientIndeces.Contains(i.Index)));
-
-            var directionIndeces = recipe.Directions.Select(i => i.Index);
-            _db.RemoveRange(_db.Directions.AsNoTracking()
-                                          .Where(i => i.RecipeId == gId &&
-                                                      !directionIndeces.Contains(i.Index)));
+            _db.RemoveRange(existing.Directions.Where(p => !recipe.Directions.Any(q => q.Index == p.Index)));
+            _db.RemoveRange(existing.Ingredients.Where(p => !recipe.Ingredients.Any(q => q.Index == p.Index)));
 
             try
             {
@@ -318,7 +306,7 @@ namespace RecipeAPI.Controllers
             }
             catch(Exception ex)
             {
-                throw;
+                return BadRequest(ex);
             }
         }
 
