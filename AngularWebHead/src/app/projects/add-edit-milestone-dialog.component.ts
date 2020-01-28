@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MilestoneStatus } from '../model/milestone-status';
-import { ProjectService } from '../core/project.service';
 
 @Component({
   selector: 'app-add-edit-milestone-dialog',

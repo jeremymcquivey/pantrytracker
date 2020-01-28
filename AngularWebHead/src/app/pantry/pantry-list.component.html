@@ -1,0 +1,23 @@
+<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="!this.isUpdate">
+    <i class="material-icons" style="cursor: pointer;">add</i>
+    <span>Instructions</span>
+</div>
+
+<div class="table-container mat-elevation-z2" style="margin-top: 1em;">
+    <mat-table [dataSource]="dataSource">
+
+      <!-- Name/Description Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Pantry Inventory</mat-header-cell>
+        <mat-cell *matCellDef="let line">
+          <div>
+            <span>{{line.quantity}}</span>&nbsp;
+            <span>{{line.unit}}</span>&nbsp;
+            <span>{{line.product.name}}</span>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-row *matRowDef="let row; columns: visibleColumns;"></mat-row>
+    </mat-table>
+</div>

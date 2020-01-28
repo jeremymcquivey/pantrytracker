@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PantryTracker.Model.Pantry;
 using PantryTracker.Model.Products;
 using PantryTracker.Model.Recipes;
 
@@ -15,6 +16,8 @@ namespace RecipeAPI.Models
         public DbSet<Product> Products { get; set; }
 
         public DbSet<UserProductPreference> UserProductPreferences { get; set; }
+
+        public DbSet<PantryTransaction> Transactions { get; set; }
 
         public RecipeContext(DbContextOptions<RecipeContext> options):
             base(options)
@@ -38,6 +41,9 @@ namespace RecipeAPI.Models
                 .HasMany(recipe => recipe.Directions);
 
             modelBuilder.Entity<Recipe>()
+                .HasIndex(nameof(Recipe.OwnerId));
+
+            modelBuilder.Entity<Recipe>()
                 .HasMany(recipe => recipe.Ingredients);
 
             modelBuilder.Entity<UserProductPreference>()
@@ -45,6 +51,15 @@ namespace RecipeAPI.Models
 
             modelBuilder.Entity<UserProductPreference>()
                 .HasOne(preference => preference.Recipe);
+
+            modelBuilder.Entity<PantryTransaction>()
+                .HasKey(trans => trans.Id);
+
+            modelBuilder.Entity<PantryTransaction>()
+                .HasOne(trans => trans.Product);
+
+            modelBuilder.Entity<PantryTransaction>()
+                .HasIndex(nameof(PantryTransaction.UserId));
         }
     }
 }

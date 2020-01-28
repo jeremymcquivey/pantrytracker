@@ -136,77 +136,7 @@ namespace RecipeAPI.Controllers
                 return NotFound();
             }
 
-            var recipe = _db.Recipes.Include(x => x.Ingredients)
-                                    .SingleOrDefault(x => x.Id == gId && x.OwnerId == AuthenticatedUser);
-
-            var userPreferred = _db.UserProductPreferences.Include(p => p.Product)
-                                                          .Where(x => x.RecipeId == gId)
-                                                          .ToList();
-
-            var userProducts = _db.Products.Where(product => product.OwnerId == AuthenticatedUser)
-                                           .ToList();
-
-            var ignored = new List<Ingredient>();
-            var unmatched = new List<Ingredient>();
-            var matches = new List<RecipeProduct>();
-
-            foreach (var ingredient in recipe.Ingredients)
-            {
-                var userMatch = userPreferred.Where(p => ingredient.Name.Contains(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
-                                             .OrderBy(p => p.matchingText.Length)
-                                             .FirstOrDefault();
-
-                if (userMatch != null)
-                {
-                    if (userMatch.Product == default(Product))
-                    {
-                        ignored.Add(ingredient);
-                        continue;
-                    }
-
-                    matches.Add(new RecipeProduct
-                    {
-                        Product = userMatch.Product,
-                        RecipeId = gId,
-                        PlainText = ingredient.Name,
-                        Unit = ingredient.Unit,
-                        Quantity = ingredient.Quantity,
-                        Type = IngredientMatchType.UserMatch
-                    });
-
-                    continue;
-                }
-
-                var potentialMatches = _products.Where(p => ingredient.Name.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase))
-                                                .ToList()
-                                                .MergeWith(userProducts.Where(p => ingredient.Name.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase)).ToList())
-                                                .OrderByDescending(p => p.Name.Length)
-                                                .ThenByDescending(p => p.OwnerId);
-
-                if (potentialMatches.Any())
-                {
-                    matches.Add(new RecipeProduct
-                    {
-                        Product = potentialMatches.First(),
-                        RecipeId = gId,
-                        PlainText = ingredient.Name,
-                        Unit = ingredient.Unit,
-                        Quantity = ingredient.Quantity,
-                        Type = IngredientMatchType.SystemMatch
-                    });
-
-                    continue;
-                }
-
-                unmatched.Add(ingredient);
-            }
-
-            return Ok(new
-            {
-                UnmatchedIngredients = unmatched,
-                MatchedProducts = matches,
-                IgnoredIngredients = ignored
-            });
+            return Ok(GetMatchingProducts(gId));
         }
 
         /// <summary>
@@ -227,7 +157,7 @@ namespace RecipeAPI.Controllers
                 var ocrText = await _ocr.ImageToText(imageText);
                 return await Preview(string.Join(EndOfLineDelimiter, ocrText));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //TODO: Log to app insights.
                 throw;
@@ -353,6 +283,81 @@ namespace RecipeAPI.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+
+        private TextProductMatch GetMatchingProducts(Guid recipeId)
+        {
+            var recipe = _db.Recipes.Include(x => x.Ingredients)
+                                    .SingleOrDefault(x => x.Id == recipeId && x.OwnerId == AuthenticatedUser);
+
+            var userPreferred = _db.UserProductPreferences.Include(p => p.Product)
+                                                          .Where(x => x.RecipeId == recipeId)
+                                                          .ToList();
+
+            var userProducts = _db.Products.Where(product => product.OwnerId == AuthenticatedUser)
+                                           .ToList();
+
+            var ignored = new List<Ingredient>();
+            var unmatched = new List<Ingredient>();
+            var matches = new List<RecipeProduct>();
+
+            foreach (var ingredient in recipe.Ingredients)
+            {
+                var userMatch = userPreferred.Where(p => ingredient.Name.Contains(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
+                                             .OrderBy(p => p.matchingText.Length)
+                                             .FirstOrDefault();
+
+                if (userMatch != null)
+                {
+                    if (userMatch.Product == default(Product))
+                    {
+                        ignored.Add(ingredient);
+                        continue;
+                    }
+
+                    matches.Add(new RecipeProduct
+                    {
+                        Product = userMatch.Product,
+                        RecipeId = recipeId,
+                        PlainText = ingredient.Name,
+                        Unit = ingredient.Unit,
+                        Quantity = ingredient.Quantity,
+                        Type = IngredientMatchType.UserMatch
+                    });
+
+                    continue;
+                }
+
+                var potentialMatches = _products.Where(p => ingredient.Name.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase))
+                                                .ToList()
+                                                .MergeWith(userProducts.Where(p => ingredient.Name.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase)).ToList())
+                                                .OrderByDescending(p => p.Name.Length)
+                                                .ThenByDescending(p => p.OwnerId);
+
+                if (potentialMatches.Any())
+                {
+                    matches.Add(new RecipeProduct
+                    {
+                        Product = potentialMatches.First(),
+                        RecipeId = recipeId,
+                        PlainText = ingredient.Name,
+                        Unit = ingredient.Unit,
+                        Quantity = ingredient.Quantity,
+                        Type = IngredientMatchType.SystemMatch
+                    });
+
+                    continue;
+                }
+
+                unmatched.Add(ingredient);
+            }
+
+            return new TextProductMatch
+            {
+                Unmatched = unmatched,
+                Matched = matches,
+                Ignored = ignored
+            };
         }
     }
 }
