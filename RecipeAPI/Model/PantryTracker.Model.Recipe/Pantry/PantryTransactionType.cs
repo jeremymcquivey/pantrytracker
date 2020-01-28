@@ -2,9 +2,9 @@
 {
     public enum PantryTransactionType
     {
-        Addition,
-        Usage,
-        SystemAdjustment,
-        UserAdjustment
+        Addition = 0,
+        Usage = 1,
+        SystemAdjustment = 2,
+        UserAdjustment = 3
     }
 }

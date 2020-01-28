@@ -28,8 +28,11 @@ namespace RecipeAPI.Extensions
                           .Select(p =>
                           new PantryTransaction
                           {
+                              Product = p.First().Product,
+                              UserId = p.First().UserId,
                               ProductId = p.Key.ProductId,
-                              Quantity = p.Sum(q => q.Quantity),
+                              Quantity = p.Sum(q => q.Quantity * q.Size.ToNumber()),
+                              Size = "1",
                               Unit = p.Key.Unit
                           });
         }
@@ -102,7 +105,6 @@ namespace RecipeAPI.Extensions
                                                                        (convert.ProductId == null || convert.ProductId == entry.ProductId))
                                                      .OrderByDescending(c => c.ProductId)
                                                      .FirstOrDefault();
-
                 ConvertUnit(entry, conversion);
                 convertedElements.Add(entry);
             }

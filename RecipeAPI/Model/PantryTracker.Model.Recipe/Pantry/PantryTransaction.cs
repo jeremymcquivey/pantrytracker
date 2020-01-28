@@ -9,9 +9,9 @@ namespace PantryTracker.Model.Pantry
 
         public Guid UserId { get; set; }
 
-        public double Quantity { get; set; }
+        public double Quantity { get; set; } = 1;
 
-        public string Unit { get; set; }
+        public string Unit { get; set; } = "";
 
         public string Size { get; set; }
 

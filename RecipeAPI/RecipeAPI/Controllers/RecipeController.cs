@@ -15,8 +15,6 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using PantryTracker.Model.Products;
 using PantryTracker.Model.Extensions;
-using RecipeAPI.Extensions;
-using RecipeAPI.MockData;
 
 namespace RecipeAPI.Controllers
 {
@@ -126,29 +124,6 @@ namespace RecipeAPI.Controllers
             return Ok(recipe);
         }
 
-        [HttpGet]
-        [Route("{id}/inventory")]
-        public IActionResult GetInventory([FromRoute]string id)
-        {
-            if (!Guid.TryParse(id, out Guid gId))
-            {
-                return NotFound();
-            }
-
-            //TODO: Refactor so these two methods pull from common code.
-            var matchedProducts = GetMatchingProducts(gId).Matched
-                                                          .Select(p => p.ToPantryTransaction())
-                                                          .CombineUnits();
-
-            var userPantry = new MockPantryData().Where(p => p.UserId == gId)
-                                             .Where(p => matchedProducts.Select(w => w.ProductId)
-                                                                        .Contains(p.ProductId))
-                                             .ToList()
-                                             .CalculateTotals(matchedProducts.Select(p => new Tuple<int, string>(p.ProductId, p.Unit)));
-
-            return Ok(matchedProducts);
-        }
-
         /// <summary>
         /// Retrieves a list of products attached to the recipe
         /// </summary>
@@ -182,7 +157,7 @@ namespace RecipeAPI.Controllers
                 var ocrText = await _ocr.ImageToText(imageText);
                 return await Preview(string.Join(EndOfLineDelimiter, ocrText));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //TODO: Log to app insights.
                 throw;

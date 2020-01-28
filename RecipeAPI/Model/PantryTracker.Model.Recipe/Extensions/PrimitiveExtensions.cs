@@ -10,6 +10,11 @@ namespace PantryTracker.Model.Extensions
             return Math.Abs(x - y) < acceptableVariance;
         }
 
+        public static bool IsGreaterThan(this double x, double y, double acceptableVariance)
+        {
+            return x - y >= acceptableVariance;
+        }
+
         public static double ToNumber(this string amount)
         {
             if (string.IsNullOrEmpty(amount))

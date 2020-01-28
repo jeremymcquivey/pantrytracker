@@ -36,6 +36,12 @@ namespace RecipeAPI.MockData
                     PrimaryUnit = "cup",
                     SecondaryUnit = "oz",
                     ProductId = 44
+                },
+                new UnitConversionRate
+                {
+                    ConversionScale = 4,
+                    PrimaryUnit = "gallon",
+                    SecondaryUnit = "cup"
                 }
             });
         }

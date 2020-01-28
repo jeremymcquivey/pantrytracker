@@ -21,7 +21,7 @@ namespace RecipeAPI.MockData
                     ProductId = 44,
                     Unit = "lb",
                     Quantity = 2,
-                    UserId = new Guid(""),
+                    UserId = Guid.Parse(""),
                     TransactionType = PantryTransactionType.Addition
                 },
                 new PantryTransaction
@@ -34,7 +34,7 @@ namespace RecipeAPI.MockData
                     ProductId = 44,
                     Unit = "oz",
                     Quantity = 16,
-                    UserId = new Guid(""),
+                    UserId = Guid.Parse(""),
                     TransactionType = PantryTransactionType.Addition
                 },
                 new PantryTransaction
@@ -45,7 +45,7 @@ namespace RecipeAPI.MockData
                         Name = "mozzarella cheese"
                     },
                     ProductId = 44,
-                    UserId = new Guid(""),
+                    UserId = Guid.Parse(""),
                     Unit = "oz",
                     Quantity = -8,
                     TransactionType = PantryTransactionType.Usage
@@ -58,7 +58,7 @@ namespace RecipeAPI.MockData
                         Name = "pizza sauce"
                     },
                     ProductId = 37,
-                    UserId = new Guid(""),
+                    UserId = Guid.Parse(""),
                     Unit = "fl oz",
                     Quantity = 1,
                     TransactionType = PantryTransactionType.Addition
@@ -71,7 +71,7 @@ namespace RecipeAPI.MockData
                         Id = 44,
                         Name = "mozzarella cheese"
                     },
-                    UserId = Guid.NewGuid(),
+                    UserId = Guid.Parse(""),
                     Unit = "oz",
                     Quantity = 12,
                     TransactionType = PantryTransactionType.Addition
@@ -84,7 +84,7 @@ namespace RecipeAPI.MockData
                         Name = "italian sausage"
                     },
                     ProductId = 33,
-                    UserId = new Guid(""),
+                    UserId = Guid.Parse(""),
                     Unit = "lbs",
                     Quantity = 25,
                     TransactionType = PantryTransactionType.Addition
@@ -97,7 +97,7 @@ namespace RecipeAPI.MockData
                         Name = "onion"
                     },
                     ProductId = 13,
-                    UserId = new Guid(""),
+                    UserId = Guid.Parse(""),
                     Unit = "",
                     Quantity = 5,
                     TransactionType = PantryTransactionType.Addition
@@ -110,7 +110,7 @@ namespace RecipeAPI.MockData
                         Name = "rice"
                     },
                     ProductId = 34,
-                    UserId = new Guid(""),
+                    UserId = Guid.Parse(""),
                     Unit = "lbs",
                     Quantity = 10,
                     TransactionType = PantryTransactionType.Addition
@@ -123,7 +123,7 @@ namespace RecipeAPI.MockData
                         Name = "parmesan cheese"
                     },
                     ProductId = 36,
-                    UserId = new Guid(""),
+                    UserId = Guid.Parse(""),
                     Unit = "cup",
                     Quantity = 2,
                     TransactionType = PantryTransactionType.Addition
@@ -136,7 +136,7 @@ namespace RecipeAPI.MockData
                         Name = "mozzarella cheese"
                     },
                     ProductId = 44,
-                    UserId = new Guid(""),
+                    UserId = Guid.Parse(""),
                     Unit = "oz",
                     Quantity = 20,
                     TransactionType = PantryTransactionType.Addition
