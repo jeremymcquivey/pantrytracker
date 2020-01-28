@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from './core/account.service';
 import { UserProfile } from './model/user-profile';
 import { MatDialog } from '@angular/material';
-import { Utils } from './core/utils';
 import { AuthService } from './core/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: []
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   userProfile: UserProfile;
