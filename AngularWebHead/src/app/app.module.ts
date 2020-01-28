@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule, MatCard } from '@angular/material/card';
 
 import {
   MatButtonModule,
@@ -64,7 +65,8 @@ import { IngredientListComponent } from './recipes/ingredient-list.component';
     MatSelectModule,
     AdminModule,
     CoreModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatCardModule
   ],
   providers: [
   ],
