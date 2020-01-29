@@ -13,7 +13,7 @@ namespace PantryTracker.Model.Pantry
 
         public string Unit { get; set; } = "";
 
-        public string Size { get; set; }
+        public string Size { get; set; } = "1";
 
         public int ProductId { get; set; }
 
