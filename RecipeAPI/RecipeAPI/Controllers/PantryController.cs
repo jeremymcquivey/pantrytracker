@@ -7,6 +7,8 @@ using RecipeAPI.Models;
 using RecipeAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
 using PantryTracker.Model.Extensions;
+using PantryTracker.Model.Pantry;
+using System.Threading.Tasks;
 
 namespace RecipeAPI.Controllers
 {
@@ -51,6 +53,24 @@ namespace RecipeAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostTransaction([FromBody] PantryTransaction transaction)
+        {
+            // TODO: Validate input of transaction i.e. positive/negative quantities, required fields, etc...
+            if(transaction == default)
+            {
+                return BadRequest("Please include a transaction object in the body of the request.");
+            }
+
+            transaction.UserId = Guid.Parse(AuthenticatedUser);
+            transaction.Product = null;
+
+            _db.Transactions.Add(transaction);
+            await _db.SaveChangesAsync();
+
+            return Ok(transaction);
         }
     }
 }

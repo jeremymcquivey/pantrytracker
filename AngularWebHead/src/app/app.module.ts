@@ -34,6 +34,7 @@ import { TxtUploadComponent } from './io/txtupload.component';
 import { TextEditorDialogComponent } from './io/texteditor-dialog.component';
 import { IngredientListComponent } from './recipes/ingredient-list.component';
 import { PantryListComponent } from './pantry/pantry-list.component'
+import { InventoryCorrectionComponent } from './pantry/inventory-correction.component'
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { PantryListComponent } from './pantry/pantry-list.component'
     TextEditorDialogComponent,
     IngredientListComponent,
     PantryListComponent,
+    InventoryCorrectionComponent,
     FileSelectDirective
   ],
   imports: [

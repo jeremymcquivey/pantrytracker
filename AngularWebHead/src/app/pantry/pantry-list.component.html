@@ -9,7 +9,7 @@
       <!-- Name/Description Column -->
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef>Pantry Inventory</mat-header-cell>
-        <mat-cell *matCellDef="let line">
+        <mat-cell *matCellDef="let line" (click)="openDialog(line)" style="cursor: pointer">
           <div>
             <span>{{line.quantity}}</span>&nbsp;
             <span>{{line.unit}}</span>&nbsp;
@@ -21,3 +21,6 @@
       <mat-row *matRowDef="let row; columns: visibleColumns;"></mat-row>
     </mat-table>
 </div>
+
+<inventory-correction #correctionDialog>
+</inventory-correction>

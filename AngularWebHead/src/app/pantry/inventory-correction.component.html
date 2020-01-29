@@ -1,0 +1,19 @@
+<div id="upload-modal" *ngIf="this.isVisible">
+    <div id="upload-modal-content">
+        <div>Correct your inventory</div>
+
+        <span>{{  Line.product.name }} {{ "(" }} {{ Line.unit || "each" }} {{ ")" }}</span>
+        
+        <mat-form-field style="width:100%;">
+            <input matInput [(ngModel)]="originalQuantity" required placeholder="Quantity">
+        </mat-form-field>
+        
+        <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
+            Cancel
+        </button>
+
+        <button title="Update" [disabled]="isBusy" mat-raised-button color="primary" class="list-action" (click)="updateInventory()" style="margin-top: 1.5em; margin-bottom: 1.5em; float: right;">
+            Save
+        </button>
+    </div>
+</div>

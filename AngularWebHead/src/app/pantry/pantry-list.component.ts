@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material";
-import { PantryLine } from "../model/pantryline";
 import { PantryService } from "../core/pantry.service";
+import { InventoryCorrectionComponent } from "./inventory-correction.component";
+import { PantryLine } from "../model/pantryline";
 
 @Component({
 selector: 'pantry-list',
@@ -12,6 +13,9 @@ export class PantryListComponent implements OnInit {
     dataSource = new MatTableDataSource();
     visibleColumns = ['name'];
 
+    @ViewChild("correctionDialog")
+    public correctionDialog: InventoryCorrectionComponent;
+
     constructor(
         private _pantryService: PantryService
       ) {}
@@ -21,5 +25,10 @@ export class PantryListComponent implements OnInit {
             this.recipeData = recipeData;
             this.dataSource.data = this.recipeData;
         });
+    }
+
+    openDialog(line: PantryLine): void {
+        this.correctionDialog.isVisible = true;
+        this.correctionDialog.pantryLine = line;
     }
 }
