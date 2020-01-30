@@ -8,6 +8,8 @@ namespace PantryTracker.Model.Products
 
         public string Name { get; set; }
 
+        public string DefaultUnit { get; set; }
+
         public string OwnerId { get; set; }
     }
 }

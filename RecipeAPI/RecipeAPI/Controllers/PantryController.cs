@@ -41,7 +41,7 @@ namespace RecipeAPI.Controllers
                 var gId = Guid.Parse(AuthenticatedUser);
                 var pantryItems = _db.Transactions.Where(p => p.UserId == gId)
                                                   .Include(p => p.Product)
-                                                  .CombineUnits()
+                                                  .CalculateTotals(null)
                                                   .OrderBy(p => p.Product.Name);
                 if(!includeZeroValues)
                 {

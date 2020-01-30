@@ -41,6 +41,36 @@ namespace RecipeAPI.MockData
                 {
                     ConversionScale = 4,
                     PrimaryUnit = "gallon",
+                    SecondaryUnit = "quart"
+                },
+                new UnitConversionRate
+                {
+                    ConversionScale = 8,
+                    PrimaryUnit = "gallon",
+                    SecondaryUnit = "pint"
+                },
+                new UnitConversionRate
+                {
+                    ConversionScale = 16,
+                    PrimaryUnit = "gallon",
+                    SecondaryUnit = "cup"
+                },
+                new UnitConversionRate
+                {
+                    ConversionScale = 2,
+                    PrimaryUnit = "quart",
+                    SecondaryUnit = "pint",
+                },
+                new UnitConversionRate
+                {
+                    ConversionScale = 4,
+                    PrimaryUnit = "quart",
+                    SecondaryUnit = "cup"
+                },
+                new UnitConversionRate
+                {
+                    ConversionScale = 2,
+                    PrimaryUnit = "pint",
                     SecondaryUnit = "cup"
                 }
             });

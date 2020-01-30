@@ -44,6 +44,11 @@ namespace RecipeAPI.Extensions
                 return null;
             }
 
+            if(productUnits == default)
+            {
+                productUnits = products.Select(p => new Tuple<int, string>(p.ProductId, p.Product?.DefaultUnit ?? ""));
+            }
+
             return products.SanitizeUnits()
                            .CombineUnits()
                            .ConvertUnits(productUnits.SanitizeUnits())
@@ -100,7 +105,7 @@ namespace RecipeAPI.Extensions
             {
                 var destinationUnit = productUnits.First(productUnit => productUnit.Item1 == entry.ProductId).Item2;
 
-                var conversion = unitConversions.Where(convert => convert.SecondaryUnit == entry.Unit.Replace(".", string.Empty) &&
+                var conversion = unitConversions.Where(convert => convert.SecondaryUnit == (entry.Unit ?? "").Replace(".", string.Empty) &&
                                                                        convert.PrimaryUnit == destinationUnit &&
                                                                        (convert.ProductId == null || convert.ProductId == entry.ProductId))
                                                      .OrderByDescending(c => c.ProductId)
