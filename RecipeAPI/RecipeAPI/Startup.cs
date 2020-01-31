@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using PantryTracker.Model.Products;
+using PantryTrackers.Integrations.Kroger;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -34,15 +35,17 @@ namespace RecipeAPI
             services.AddDbContext<RecipeContext>(options => options.UseSqlServer(connStr));
             services.AddTransient<IOCRService, OCR>();
             services.AddSingleton<InMemoryProductsDb>();
+            services.AddScoped<KrogerService>();
+            services.AddHttpClient();
 
             services.AddCors(options =>
             {
                 options.AddPolicy("AllRequests", builder =>
                 {
                     builder.AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowAnyOrigin()
-                    .AllowCredentials();
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin()
+                        .AllowCredentials();
                 });
             });
 
