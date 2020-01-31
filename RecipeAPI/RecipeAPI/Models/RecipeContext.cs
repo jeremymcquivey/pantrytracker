@@ -19,6 +19,8 @@ namespace RecipeAPI.Models
 
         public DbSet<PantryTransaction> Transactions { get; set; }
 
+        public DbSet<ProductCode> ProductCodes { get; set; }
+
         public RecipeContext(DbContextOptions<RecipeContext> options):
             base(options)
         {
@@ -60,6 +62,16 @@ namespace RecipeAPI.Models
 
             modelBuilder.Entity<PantryTransaction>()
                 .HasIndex(nameof(PantryTransaction.UserId));
+
+            modelBuilder.Entity<ProductCode>()
+                .HasKey(code => code.Id);
+
+            modelBuilder.Entity<ProductCode>()
+                .HasIndex(code => new { code.Code, code.OwnerId })
+                .HasName("UniqueProductCodeByUser");
+
+            modelBuilder.Entity<ProductCode>()
+                .HasOne(code => code.Product);
         }
     }
 }
