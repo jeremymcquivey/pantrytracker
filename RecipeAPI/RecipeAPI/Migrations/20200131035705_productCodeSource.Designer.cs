@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeAPI.Models;
 
 namespace RecipeAPI.Migrations
 {
     [DbContext(typeof(RecipeContext))]
-    partial class RecipeContextModelSnapshot : ModelSnapshot
+    [Migration("20200131035705_productCodeSource")]
+    partial class productCodeSource
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,11 +83,9 @@ namespace RecipeAPI.Migrations
 
                     b.Property<string>("Size");
 
+                    b.Property<string>("Source");
+
                     b.Property<string>("Unit");
-
-                    b.Property<string>("Vendor");
-
-                    b.Property<string>("VendorCode");
 
                     b.HasKey("Id");
 

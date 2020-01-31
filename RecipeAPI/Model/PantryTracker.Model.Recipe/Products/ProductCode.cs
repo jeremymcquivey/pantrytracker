@@ -16,6 +16,10 @@
 
         public string Description { get; set; }
 
+        public string Vendor { get; set; }
+
+        public string VendorCode { get; set; }
+
         public int ProductId { get; set; }
 
         public virtual Product Product { get; set; }
