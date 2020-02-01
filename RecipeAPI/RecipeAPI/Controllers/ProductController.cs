@@ -20,7 +20,7 @@ namespace RecipeAPI.Controllers
         private readonly ICacheManager _cache;
         private readonly KrogerService _krogerService;
         private readonly RecipeContext _database;
-        private readonly Func<List<Product>> _productDelegate;
+        private readonly Func<Dictionary<int, string[]>> _productDelegate;
 
         public ProductController(RecipeContext database, KrogerService krogerService, ICacheManager cache)
         {
@@ -28,7 +28,7 @@ namespace RecipeAPI.Controllers
             _krogerService = krogerService;
             _database = database;
 
-            _productDelegate = () => { return _database.Products.ToList(); };
+            _productDelegate = () => GetProductBreakdowns(ownerId: null);
         }
         
         [HttpGet]
@@ -53,21 +53,14 @@ namespace RecipeAPI.Controllers
                     product = await _krogerService.SearchByCodeAsync(code);
                     if(product != default)
                     {
-                        var potentialMatch = _database.Products.Where(p => product.Description.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase))
-                                                               .OrderByDescending(p => p.Name.Length)
-                                                               .ThenByDescending(p => p.OwnerId)
-                                                               .FirstOrDefault();
-                        if(potentialMatch != default)
-                        {
-                            product.ProductId = potentialMatch.Id;
-                            //product.Description = string.Empty;
-                        }
+                        AssignProduct(product);
 
                         //TODO: tie to existing product variety.
                         _database.ProductCodes.Add(product);
                         await _database.SaveChangesAsync();
                         return Ok(product);
                     }
+                    return NotFound();
                 }
 
                 return Ok(product);
@@ -76,6 +69,25 @@ namespace RecipeAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private void AssignProduct(ProductCode code)
+        {
+            var products = _cache.Get("AllProducts", _productDelegate, TimeSpan.FromDays(1));
+
+            var potentialMatch = products.Where(list => list.Value.All(q => code.Description.Contains(q, StringComparison.CurrentCultureIgnoreCase)))
+                                         .OrderByDescending(p => p.Value.Length)
+                                         .FirstOrDefault();
+
+            if(potentialMatch.Key > default(int))
+            {
+                code.ProductId = potentialMatch.Key;
+            }
+        }
+
+        private Dictionary<int, string[]> GetProductBreakdowns(string ownerId)
+        {
+            return _database.Products.Where(p => p.OwnerId == ownerId).ToDictionary(p => p.Id, p => p.Name.Split(" ", StringSplitOptions.None));
         }
     }
 }
