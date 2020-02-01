@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using PantryTracker.Model;
 using PantryTracker.Model.Products;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,27 +11,37 @@ namespace PantryTrackers.Integrations.Kroger
 {
     public class KrogerService : IProductSearch
     {
-        private const string oAuthAPI = "";
-        private const string BaseAPI = "https://api.kroger.com/v1/products";
-
+        private Func<Task<KrogerAuthToken>> getTokenDelegate;
+        private const string oAuthKey = "KrogerAuthToken";
+        private const string BaseAPI = "https://api.kroger.com/v1/";
+        private readonly ICacheManager _cache;
         private readonly IHttpClientFactory _requestFactory;
         private readonly string _clientId;
 
-        public KrogerService(IHttpClientFactory requestFactory)
+        public KrogerService(IHttpClientFactory requestFactory, ICacheManager cache)
         {
+            _cache = cache;
             _requestFactory = requestFactory;
-            _clientId = System.Environment.GetEnvironmentVariable("KrogerAPIClientSecret", System.EnvironmentVariableTarget.Process);
+            _clientId = Environment.GetEnvironmentVariable("KrogerAPIClientSecret", EnvironmentVariableTarget.Process);
+            getTokenDelegate = async () => await GetAuthToken();
         }
 
         public async Task<ProductCode> SearchByCodeAsync(string code)
         {
+            var authToken = await _cache.GetAsync(oAuthKey, getTokenDelegate, TimeSpan.FromMinutes(25));
+
+            if(authToken == default)
+            {
+                return default;
+            }
+
             var krogerUPC = ToKrogerCode(code);
             using (var request = _requestFactory.CreateClient())
             {
-                request.BaseAddress = new System.Uri(BaseAPI);
-                request.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", GetAuthToken());
+                request.BaseAddress = new Uri(BaseAPI);
+                request.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", authToken.access_token);
                 request.DefaultRequestHeaders.Add("Accept", "application/json");
-                var response = await request.GetAsync($"?filter.term={krogerUPC}");
+                var response = await request.GetAsync($"products?filter.term={krogerUPC}");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -65,7 +77,7 @@ namespace PantryTrackers.Integrations.Kroger
         {
             var sizePieces = size.Split(" ");
             code.Size = sizePieces[0];
-            code.Unit = sizePieces.Length > 0 ? sizePieces[1] : string.Empty;
+            code.Unit = sizePieces.Length > 0 ? string.Join(" ", sizePieces.Skip(1)) : string.Empty;
         }
 
         private string ToKrogerCode(string upc)
@@ -78,9 +90,31 @@ namespace PantryTrackers.Integrations.Kroger
             return upc;
         }
 
-        private string GetAuthToken()
+        private async Task<KrogerAuthToken> GetAuthToken()
         {
-            return "";
+            using (var request = _requestFactory.CreateClient())
+            {
+                request.BaseAddress = new Uri(BaseAPI);
+                request.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("basic", _clientId);
+                request.DefaultRequestHeaders.Add("Accept", "application/json");
+                
+                var requestBody = new Dictionary<string, string>
+                {
+                    { "grant_type", "client_credentials" },
+                    { "scope", "product.compact" }
+                };
+
+                var response = await request.PostAsync($"connect/oauth2/token", new FormUrlEncodedContent(requestBody));
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var responseMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception(responseMessage);
+                }
+
+                var rawJson = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<KrogerAuthToken>(rawJson);
+            }
         }
     }
 }

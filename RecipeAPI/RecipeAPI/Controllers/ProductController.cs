@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PantryTracker.Model;
+using PantryTracker.Model.Products;
 using PantryTrackers.Integrations.Kroger;
 using RecipeAPI.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,13 +17,18 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     public class ProductController: BaseController
     {
+        private readonly ICacheManager _cache;
         private readonly KrogerService _krogerService;
         private readonly RecipeContext _database;
+        private readonly Func<List<Product>> _productDelegate;
 
-        public ProductController(RecipeContext database, KrogerService krogerService)
+        public ProductController(RecipeContext database, KrogerService krogerService, ICacheManager cache)
         {
+            _cache = cache;
             _krogerService = krogerService;
             _database = database;
+
+            _productDelegate = () => { return _database.Products.ToList(); };
         }
         
         [HttpGet]
@@ -33,25 +41,33 @@ namespace RecipeAPI.Controllers
         [Route("search/code/{code}")]
         public async Task<IActionResult> GetByUpc([FromRoute]string code)
         {
-            var originalSearch = new string(code);
             try
             {
                 var product = _database.ProductCodes
-                                   .Include(productCode => productCode.Product)
-                                   .SingleOrDefault(productCode => (productCode.Code == code || productCode.VendorCode == code) &&
-                                                   (productCode.OwnerId == null || productCode.OwnerId == AuthenticatedUser));
+                                       .Include(productCode => productCode.Product)
+                                       .OrderByDescending(productCode => productCode.Code == code)
+                                       .FirstOrDefault(productCode => (productCode.Code == code || productCode.VendorCode == code) && 
+                                                                      (productCode.OwnerId == null || productCode.OwnerId == AuthenticatedUser));
                 if (product == default)
                 {
-                    var krogerProduct = await _krogerService.SearchByCodeAsync(code);
-                    if(krogerProduct == default)
+                    product = await _krogerService.SearchByCodeAsync(code);
+                    if(product != default)
                     {
-                        return NotFound();
-                    }
+                        var potentialMatch = _database.Products.Where(p => product.Description.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase))
+                                                               .OrderByDescending(p => p.Name.Length)
+                                                               .ThenByDescending(p => p.OwnerId)
+                                                               .FirstOrDefault();
+                        if(potentialMatch != default)
+                        {
+                            product.ProductId = potentialMatch.Id;
+                            //product.Description = string.Empty;
+                        }
 
-                    //TODO: tie to existing product.
-                    _database.ProductCodes.Add(krogerProduct);
-                    await _database.SaveChangesAsync();
-                    return Ok(krogerProduct);
+                        //TODO: tie to existing product variety.
+                        _database.ProductCodes.Add(product);
+                        await _database.SaveChangesAsync();
+                        return Ok(product);
+                    }
                 }
 
                 return Ok(product);
