@@ -20,7 +20,7 @@ namespace RecipeAPI.Controllers
         private readonly ICacheManager _cache;
         private readonly KrogerService _krogerService;
         private readonly RecipeContext _database;
-        private readonly Func<Dictionary<int, string[]>> _productDelegate;
+        private readonly Func<Dictionary<Tuple<int,int?>, string[]>> _productDelegate;
 
         public ProductController(RecipeContext database, KrogerService krogerService, ICacheManager cache)
         {
@@ -79,15 +79,30 @@ namespace RecipeAPI.Controllers
                                          .OrderByDescending(p => p.Value.Length)
                                          .FirstOrDefault();
 
-            if(potentialMatch.Key > default(int))
+            if(potentialMatch.Key != default)
             {
-                code.ProductId = potentialMatch.Key;
+                code.ProductId = potentialMatch.Key.Item1;
+                code.VarietyId = potentialMatch.Key.Item2 != 0 ? potentialMatch.Key.Item2 : null;
             }
         }
 
-        private Dictionary<int, string[]> GetProductBreakdowns(string ownerId)
+        private Dictionary<Tuple<int,int?>, string[]> GetProductBreakdowns(string ownerId)
         {
-            return _database.Products.Where(p => p.OwnerId == ownerId).ToDictionary(p => p.Id, p => p.Name.Split(" ", StringSplitOptions.None));
+            var varieties = _database.Varieties.Include(v => v.Product)
+                                               .ToList();
+
+            return _database.Products.Where(p => p.OwnerId == ownerId || p.OwnerId == null)
+                                     .Select(p => new ProductVariety
+                                     {
+                                         Product = p,
+                                         ProductId = p.Id,
+                                         Description = null,
+                                         Id = 0
+                                     })
+                                     .Union(varieties)
+                                     .ToDictionary(variety => new Tuple<int, int?>(variety.ProductId, variety.Id), p => ((p.Description?.Split(" ", StringSplitOptions.None) ?? new string[0])
+                                                                                                                                        .Concat(p.Product.Name.Split(" ", StringSplitOptions.None)))
+                                                                                                                                        .ToArray());
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PantryTracker.Model.Products
 {
@@ -11,5 +12,7 @@ namespace PantryTracker.Model.Products
         public string DefaultUnit { get; set; }
 
         public string OwnerId { get; set; }
+
+        public virtual IEnumerable<ProductVariety> Varieties { get; set; }
     }
 }
