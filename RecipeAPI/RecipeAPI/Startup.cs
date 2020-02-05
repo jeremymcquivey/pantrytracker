@@ -13,6 +13,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using PantryTracker.Model.Products;
 using PantryTrackers.Integrations.Kroger;
+using PantryTracker.Model;
 
 #pragma warning disable 1591
 namespace RecipeAPI
