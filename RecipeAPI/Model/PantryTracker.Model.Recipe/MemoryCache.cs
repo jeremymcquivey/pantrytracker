@@ -78,5 +78,35 @@ namespace PantryTracker.Model
             Add(key, updatedVal, validity);
             return updatedVal;
         }
+
+        public T Get<inT, T>(string key, Func<inT, T> refreshDelegate, inT delegateParameter, TimeSpan validity)
+        {
+            if (_cache.Keys.Contains(key))
+            {
+                var val = _cache[key];
+                if (val.Item2 >= DateTime.Now)
+                {
+                    return (T)val.Item1;
+                }
+            }
+
+            var updatedVal = refreshDelegate(delegateParameter);
+            Add(key, updatedVal, validity);
+            return updatedVal;
+        }
+
+        public T Get<T>(string key)
+        {
+            if (_cache.Keys.Contains(key))
+            {
+                var val = _cache[key];
+                if (val.Item2 >= DateTime.Now)
+                {
+                    return (T)val.Item1;
+                }
+            }
+
+            return default;
+        }
     }
 }

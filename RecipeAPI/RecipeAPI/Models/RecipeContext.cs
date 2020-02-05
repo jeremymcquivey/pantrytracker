@@ -73,13 +73,12 @@ namespace RecipeAPI.Models
                 .HasName("UniqueProductCodeByUser");
 
             modelBuilder.Entity<ProductCode>()
-                .HasOne(code => code.Product);
-
-            modelBuilder.Entity<Product>()
-                .HasMany(product => product.Varieties);
+                .HasOne(code => code.Product)
+                .WithMany(product => product.Codes);
 
             modelBuilder.Entity<ProductVariety>()
-                .HasOne(variety => variety.Product);
+                .HasOne(variety => variety.Product)
+                .WithMany(product => product.Varieties);
         }
     }
 }
