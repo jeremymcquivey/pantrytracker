@@ -25,6 +25,8 @@ export class Product {
 export class ProductVariety {
     public id: number;
 
+    public productId: number;
+
     public description: string;
 }
 

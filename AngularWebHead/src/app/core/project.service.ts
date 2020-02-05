@@ -9,7 +9,7 @@ import { UserProfile } from '../model/user-profile';
 import { MilestoneStatus } from '../model/milestone-status';
 import { AuthService } from './auth.service';
 import { Recipe } from '../model/recipe';
-import { Product } from '../model/pantryline';
+import { Product, ProductVariety } from '../model/pantryline';
 
 @Injectable()
 export class ProjectService {
@@ -52,6 +52,14 @@ export class ProjectService {
 
         return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/preview/image', JSON.stringify(text.replace(/^data:image\/(png|jpg|jpeg);base64,/, "")), { headers: headers });
     }
+
+    addVariety(variety: ProductVariety): Observable<ProductVariety> {
+        var accessToken = this._authService.getAccessToken();
+        var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
+                                       .set('Content-Type', "application/json");
+                                       
+        return this.httpClient.post<ProductVariety>(Constants.recipeApi + `v1/Product/${variety.productId}/variety`, JSON.stringify(variety), { headers: headers });
+    };
 
     getProduct(id: number): Observable<Product> {
         var accessToken = this._authService.getAccessToken();

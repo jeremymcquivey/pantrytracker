@@ -83,6 +83,24 @@ namespace RecipeAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("{productId}/variety")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SaveNewVariety([FromRoute]int productId, [FromBody]ProductVariety variety)
+        {
+            if(variety == default || string.IsNullOrEmpty(variety.Description))
+            {
+                return BadRequest("A variety must have at least a description");
+            }
+
+            variety.Id = 0;
+            variety.ProductId = productId;
+
+            _database.Add(variety);
+            await _database.SaveChangesAsync();
+            return Ok(variety);
+        }
+
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetById(int id)
