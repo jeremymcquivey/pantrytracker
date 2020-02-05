@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
-import { DeleteDialogComponent } from '../admin/delete-dialog.component';
-import { ProjectService } from '../core/project.service';
+import { ProductService } from '../core/product.service'
 import { Utils } from '../core/utils';
 import { Milestone } from '../model/milestone';
 import { MilestoneStatus } from '../model/milestone-status';
@@ -25,20 +24,20 @@ export class ProjectComponent implements OnInit {
 
   constructor(
     private _route: ActivatedRoute,
-    private _projectService: ProjectService,
+    private _projectService: ProductService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit() {
     var projectId = this._route.snapshot.params.projectId;
-    this._projectService.getMilestoneStatuses().subscribe(ms => {
+    /*this._projectService.getMilestoneStatuses().subscribe(ms => {
       this.milestoneStatuses = ms;
-    });
-    this._projectService.getProject(projectId).subscribe(project => {
+    });*/
+    /*this._projectService.getProject(projectId).subscribe(project => {
       this.project = project;
       this.milestones = project.milestones;
       this.dataSource.data = this.milestones;
-    });
+    });*/
   }
 
   addMilestone() {
@@ -55,9 +54,9 @@ export class ProjectComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        this._projectService.addMilestone(result).subscribe(() => {
+        /*this._projectService.addMilestone(result).subscribe(() => {
           this.ngOnInit();
-        });
+        });*/
       }
     });
   }
@@ -72,17 +71,17 @@ export class ProjectComponent implements OnInit {
           defaultStatus: this.milestoneStatuses.find(ms => ms.id == milestone.milestoneStatusId)
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
+      /*dialogRef.afterClosed().subscribe(result => {
         if (result !== undefined) {
           this._projectService.updateMilestone(result).subscribe(() => {
             this.ngOnInit();
           });
         }
-      });
+      });*/
     }
 
   deleteMilestone(milestone: Milestone) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+    /*const dialogRef = this.dialog.open(DeleteDialogComponent, {
         width: '348px',
         data: { entityName: 'Milestone', message: `Are you sure you want to delete milestone ${milestone.name}?` }
       });
@@ -92,7 +91,7 @@ export class ProjectComponent implements OnInit {
                 this.ngOnInit();
             }, error => this.error = Utils.formatError(error));
               }
-      });
+      });*/
   
     }
 

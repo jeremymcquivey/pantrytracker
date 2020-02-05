@@ -12,7 +12,7 @@ import { Recipe } from '../model/recipe';
 import { Product, ProductVariety } from '../model/pantryline';
 
 @Injectable()
-export class ProjectService {
+export class ProductService {
     constructor(private httpClient: HttpClient, private _authService: AuthService) { }
     
     getRecipes(): Observable<Recipe[]> {
@@ -73,55 +73,5 @@ export class ProjectService {
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
         return this.httpClient.get<Product[]>(Constants.recipeApi + `v1/Product?startingChar=${group}`, { headers: headers });
-    }
-
-
-
-    getProject(projectId: number): Observable<Project> {
-        return this.httpClient.get<Project>(Constants.apiRoot + 'Projects/' + projectId);
-    }
-
-    getProjectUsers(projectId: number): Observable<UserProfile[]> {
-        return this.httpClient.get<UserProfile[]>(Constants.apiRoot + 'Projects/' + projectId + '/Users');
-    }
-
-    addProject(project: Project): Observable<Project> {
-        return this.httpClient.post<Project>(Constants.apiRoot + 'Projects', project);
-    }
-
-    deleteProject(project: Project): Observable<object> {
-        return this.httpClient.delete(Constants.apiRoot + 'Projects/' + project.id);
-    }
-
-    addUserPermission(userPermission: UserPermission) {
-        return this.httpClient.post(Constants.apiRoot + 'UserPermissions', userPermission);
-    }
-
-    removeUserPermission(userId: string, projectId: number) {
-        return this.httpClient.delete(`${Constants.apiRoot}UserPermissions/?userId=${userId}&projectId=${projectId}`);
-    }
-
-    updateUserPermission(userPermission) {
-        return this.httpClient.put(`${Constants.apiRoot}UserPermissions`, userPermission);
-    }
-
-    getMilestones(projectId: number): Observable<Milestone[]> {
-        return this.httpClient.get<Milestone[]>(Constants.apiRoot + 'Milestone');
-    }
-
-    getMilestoneStatuses() {
-        return this.httpClient.get<MilestoneStatus[]>(`${Constants.apiRoot}Projects/MilestoneStatuses`);
-    }
-
-    addMilestone(milestone: Milestone) {
-        return this.httpClient.post(`${Constants.apiRoot}Projects/Milestones`, milestone);
-    }
-
-    deleteMilestone(id: number) {
-        return this.httpClient.delete(`${Constants.apiRoot}Projects/Milestones/${id}`);
-    }
-
-    updateMilestone(milestone: Milestone) {
-        return this.httpClient.put(`${Constants.apiRoot}Projects/Milestones/${milestone.id}`, milestone);
     }
 }

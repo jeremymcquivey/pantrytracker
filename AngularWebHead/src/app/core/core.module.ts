@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ProjectService } from './project.service';
+import { ProductService } from './product.service';
 import { AccountService } from './account.service';
 import { PantryService } from './pantry.service';
 import { AuthService } from './auth.service';
@@ -12,7 +12,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
     declarations: [],
     providers: [ 
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-        ProjectService,
+        ProductService,
         AccountService,
         PantryService,
         AuthService

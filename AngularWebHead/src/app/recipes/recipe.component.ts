@@ -1,6 +1,6 @@
 import { OnInit, Component, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ProjectService } from "../core/project.service";
+import { ProductService } from "../core/product.service";
 import { Recipe } from "../model/recipe";
 import { Ingredient } from "../model/ingredient";
 import { MatTableDataSource, MatDialog } from "@angular/material";
@@ -41,7 +41,7 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
 
     constructor(
       private _route: ActivatedRoute,
-      private _projectService: ProjectService,
+      private _projectService: ProductService,
       private _router: Router,
       public dialog: MatDialog
     ) {}

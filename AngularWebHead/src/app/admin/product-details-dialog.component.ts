@@ -1,6 +1,6 @@
 import { Output, EventEmitter, Component, Input } from "@angular/core";
 import { Product, ProductVariety } from "../model/pantryline";
-import { ProjectService } from "../core/project.service";
+import { ProductService } from "../core/product.service";
 import { _MatChipListMixinBase, MatTableDataSource } from "@angular/material";
 
 @Component({
@@ -33,7 +33,7 @@ export class ProductDetailsDialogComponent {
 
     public isVisible: boolean = false;
 
-    constructor(private _projectService: ProjectService) {}
+    constructor(private _projectService: ProductService) {}
 
     public addVariety() {
         if(this.networkIsBusy)
@@ -60,6 +60,9 @@ export class ProductDetailsDialogComponent {
 
     private GetDetails(productId: number)
     {
+        this.varietyDataSource.data = [];
+        this.codeDataSource.data = [];
+
         this.networkIsBusy = true;
         this._projectService.getProduct(productId).subscribe(product => {
             this._product = product;

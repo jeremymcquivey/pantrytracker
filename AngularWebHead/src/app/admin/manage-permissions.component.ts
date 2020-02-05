@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AccountService } from '../core/account.service';
 import { UserProfile } from '../model/user-profile';
 import { Project } from '../model/project';
-import { ProjectService } from '../core/project.service';
+import { ProductService } from '../core/product.service';
 import {
   MatTableDataSource,
   MatDialog,
@@ -11,8 +11,6 @@ import {
   MAT_DIALOG_DATA
 } from '@angular/material';
 import { Utils } from '../core/utils';
-import { DeleteDialogComponent } from './delete-dialog.component';
-import { Constants } from '../constants';
 
 @Component({
   selector: 'app-manage-permissions',
@@ -30,7 +28,7 @@ export class ManagePermissionsComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _accountService: AccountService,
-    private _projectService: ProjectService,
+    private _projectService: ProductService,
     public dialog: MatDialog
   ) {
   }
@@ -38,7 +36,7 @@ export class ManagePermissionsComponent implements OnInit {
   ngOnInit() {
     this.projectId = parseInt(this._route.snapshot.params.projectId);
 
-    this._projectService.getProject(this.projectId).subscribe(p => {
+    /*this._projectService.getProject(this.projectId).subscribe(p => {
       this.project = p;
       this._accountService.getAllUsers().subscribe(users => {
         this._projectService
@@ -53,7 +51,7 @@ export class ManagePermissionsComponent implements OnInit {
             this.dataSource.data = users;
           }, error => (this.error = Utils.formatError(error)));
       }, error => (this.error = Utils.formatError(error)));
-    }, error => (this.error = Utils.formatError(error)));
+    }, error => (this.error = Utils.formatError(error)));*/
   }
 
   addUser() {
@@ -69,14 +67,14 @@ export class ManagePermissionsComponent implements OnInit {
   }
 
   removeUser(user: UserProfile) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+    /*const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '348px',
       data: {
         entityName: 'User',
         message: `Are you sure you want to remove user ${user.firstName} ${user.lastName} from this project?`
       }
-    });
-    dialogRef.afterClosed().subscribe(result => {
+    });*/
+    /*dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
         this._projectService
           .removeUserPermission(user.id, this.projectId)
@@ -85,12 +83,12 @@ export class ManagePermissionsComponent implements OnInit {
             this.dataSource.data = this.users;
           }, error => (this.error = Utils.formatError(error)));
       }
-    });
+    });*/
   }
 
   onPermissionChanged(user: any) {
-    this._projectService.updateUserPermission(user.permission).subscribe(() => {
+    /*this._projectService.updateUserPermission(user.permission).subscribe(() => {
 
-    }, error => { this.error = Utils.formatError(error)});
+    }, error => { this.error = Utils.formatError(error)});*/
   }
 }

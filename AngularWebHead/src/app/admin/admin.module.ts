@@ -13,7 +13,6 @@ import {
 } from '@angular/material';
 
 import { ManageProductsComponent } from './manage-products.component';
-import { DeleteDialogComponent } from './delete-dialog.component';
 import { ManagePermissionsComponent } from './manage-permissions.component';
 import { ProductDetailsDialogComponent } from './product-details-dialog.component';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -35,12 +34,10 @@ import { AdminRoutingModule } from './admin-routing.module';
   declarations: [
     ManageProductsComponent,
     ManagePermissionsComponent,
-    DeleteDialogComponent,
     ProductDetailsDialogComponent
   ],
   providers: [],
   entryComponents: [
-    DeleteDialogComponent,
   ]
 })
 export class AdminModule {}

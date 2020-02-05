@@ -3,7 +3,7 @@ import {
   MatTableDataSource,
   MatDialog
 } from '@angular/material';
-import { ProjectService } from '../core/project.service';
+import { ProductService } from '../core/product.service';
 import { Project } from '../model/project';
 import { Product } from '../model/pantryline';
 import { ProductDetailsDialogComponent } from './product-details-dialog.component';
@@ -24,7 +24,7 @@ export class ManageProductsComponent implements OnInit {
   productMap: Map<string, Product[]> = new Map<string, Product[]>();
 
   constructor(
-    private _projectService: ProjectService,
+    private _projectService: ProductService,
     public dialog: MatDialog
   ) { }
 
