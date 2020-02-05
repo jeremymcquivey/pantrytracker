@@ -9,6 +9,7 @@ import { UserProfile } from '../model/user-profile';
 import { MilestoneStatus } from '../model/milestone-status';
 import { AuthService } from './auth.service';
 import { Recipe } from '../model/recipe';
+import { Product } from '../model/pantryline';
 
 @Injectable()
 export class ProjectService {
@@ -52,14 +53,21 @@ export class ProjectService {
         return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/preview/image', JSON.stringify(text.replace(/^data:image\/(png|jpg|jpeg);base64,/, "")), { headers: headers });
     }
 
-
-
-    getProjects(): Observable<Project[]> {
+    getProduct(id: number): Observable<Product> {
         var accessToken = this._authService.getAccessToken();
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
-        return this.httpClient.get<Project[]>(Constants.apiRoot + 'Projects', { headers: headers });
+        return this.httpClient.get<Product>(Constants.recipeApi + `v1/Product/${id}`, { headers: headers });
     }
+
+    getProducts(group: string): Observable<Product[]> {
+        var accessToken = this._authService.getAccessToken();
+        var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+        return this.httpClient.get<Product[]>(Constants.recipeApi + `v1/Product?startingChar=${group}`, { headers: headers });
+    }
+
+
 
     getProject(projectId: number): Observable<Project> {
         return this.httpClient.get<Project>(Constants.apiRoot + 'Projects/' + projectId);

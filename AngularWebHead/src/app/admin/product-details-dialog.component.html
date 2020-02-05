@@ -1,0 +1,47 @@
+<div id="upload-modal" *ngIf="this.isVisible">
+    <div id="upload-modal-content">
+            <h1 mat-dialog-title>{{product.name}}</h1>
+            
+            <mat-table [dataSource]="varietyDataSource">
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Varieties (i.e. organic, ground, large, etc...)</mat-header-cell>
+                    <mat-cell *matCellDef="let variety" [style.flex]="'flex'">
+                        <div class="project-name">
+                            <p>{{variety.description}}</p>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+        
+                <mat-header-row *matHeaderRowDef="varietyColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: varietyColumns;"></mat-row>
+            </mat-table>
+
+            <p>&nbsp;</p>
+
+            <mat-table [dataSource]="codeDataSource">
+                <ng-container matColumnDef="code">
+                    <mat-header-cell *matHeaderCellDef>UPCs mapped to {{ product.name }}</mat-header-cell>
+                    <mat-cell *matCellDef="let code" [style.flex]="'flex'">
+                        <div class="project-name">
+                            <p>{{code.code}}</p>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="variety">
+                    <mat-header-cell *matHeaderCellDef>Assigned Variety</mat-header-cell>
+                    <mat-cell *matCellDef="let code" [style.flex]="'flex'">
+                        <div class="project-name">
+                            <p>{{ code.variety == null ? "None" : code.variety.description }}</p>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+        
+                <mat-header-row *matHeaderRowDef="codeColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: codeColumns;"></mat-row>
+            </mat-table>
+
+            <div mat-dialog-actions layout="row">
+                <button mat-button (click)="cancelDialog()" color="accent">Cancel</button>
+            </div>
+    </div>
+</div>

@@ -10,7 +10,6 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA
 } from '@angular/material';
-import { AddProjectUserDialogComponent } from './add-project-user-dialog.component';
 import { Utils } from '../core/utils';
 import { DeleteDialogComponent } from './delete-dialog.component';
 import { Constants } from '../constants';
@@ -58,7 +57,7 @@ export class ManagePermissionsComponent implements OnInit {
   }
 
   addUser() {
-    const dialogRef = this.dialog.open(AddProjectUserDialogComponent, {
+    /*const dialogRef = this.dialog.open(AddProjectUserDialogComponent, {
       width: '348px',
       data: { projectId: this.projectId }
     });
@@ -66,7 +65,7 @@ export class ManagePermissionsComponent implements OnInit {
       if (result !== undefined) {
         this.ngOnInit();
       }
-    });
+    });*/
   }
 
   removeUser(user: UserProfile) {

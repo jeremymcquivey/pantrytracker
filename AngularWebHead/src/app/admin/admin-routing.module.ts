@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ManageProjectsComponent } from './manage-projects.component';
+import { ManageProductsComponent } from './manage-products.component';
 import { ManagePermissionsComponent } from './manage-permissions.component';
 
 const routes: Routes = [
-  { path: 'admin', component: ManageProjectsComponent },
+  { path: 'admin', component: ManageProductsComponent },
   { path: 'admin/manage-permissions/:projectId', component: ManagePermissionsComponent }
 ];
 
@@ -15,4 +15,4 @@ const routes: Routes = [
 })
 export class AdminRoutingModule { }
 
-export const routedComponents = [ManageProjectsComponent];
+export const routedComponents = [ManageProductsComponent];

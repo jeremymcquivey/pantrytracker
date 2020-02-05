@@ -16,4 +16,24 @@ export class Product {
     public name: string;
 
     public id: number;
+
+    public varieties: ProductVariety[];
+
+    public codes: ProductCode[];
+}
+
+export class ProductVariety {
+    public id: number;
+
+    public description: string;
+}
+
+export class ProductCode {
+    public id: number;
+
+    public code: string;
+
+    public variety: ProductVariety;
+
+    public varietyId: number;
 }

@@ -42,10 +42,7 @@ export class InventoryCorrectionComponent implements OnInit {
             size: 1,
         } as PantryLine;
         
-        console.log(adjustment);
-
         this._pantryService.updateInventory(adjustment).subscribe(lineItem => {
-            console.log("Success", lineItem);
             this.dismissDialog();
         });
 

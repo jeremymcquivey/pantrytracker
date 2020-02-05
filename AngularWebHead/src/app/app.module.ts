@@ -32,7 +32,6 @@ import { FileSelectDirective } from 'ng2-file-upload';
 import { UploadFileDialogComponent } from './io/uploadfile-dialog.component';
 import { TxtUploadComponent } from './io/txtupload.component';
 import { TextEditorDialogComponent } from './io/texteditor-dialog.component';
-import { IngredientListComponent } from './recipes/ingredient-list.component';
 import { PantryListComponent } from './pantry/pantry-list.component'
 import { InventoryCorrectionComponent } from './pantry/inventory-correction.component'
 
@@ -50,7 +49,6 @@ import { InventoryCorrectionComponent } from './pantry/inventory-correction.comp
     TxtUploadComponent,
     UploadFileDialogComponent,
     TextEditorDialogComponent,
-    IngredientListComponent,
     PantryListComponent,
     InventoryCorrectionComponent,
     FileSelectDirective

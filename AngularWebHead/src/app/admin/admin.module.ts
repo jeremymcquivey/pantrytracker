@@ -12,12 +12,11 @@ import {
   MatSelectModule
 } from '@angular/material';
 
-import { ManageProjectsComponent } from './manage-projects.component';
-import { AddProjectDialogComponent } from './add-project-dialog.component';
+import { ManageProductsComponent } from './manage-products.component';
 import { DeleteDialogComponent } from './delete-dialog.component';
 import { ManagePermissionsComponent } from './manage-permissions.component';
+import { ProductDetailsDialogComponent } from './product-details-dialog.component';
 import { AdminRoutingModule } from './admin-routing.module';
-import { AddProjectUserDialogComponent } from './add-project-user-dialog.component';
 
 @NgModule({
   imports: [
@@ -34,17 +33,14 @@ import { AddProjectUserDialogComponent } from './add-project-user-dialog.compone
   ],
   exports: [],
   declarations: [
-    ManageProjectsComponent,
+    ManageProductsComponent,
     ManagePermissionsComponent,
-    AddProjectDialogComponent,
     DeleteDialogComponent,
-    AddProjectUserDialogComponent
+    ProductDetailsDialogComponent
   ],
   providers: [],
   entryComponents: [
-    AddProjectDialogComponent,
     DeleteDialogComponent,
-    AddProjectUserDialogComponent
   ]
 })
 export class AdminModule {}

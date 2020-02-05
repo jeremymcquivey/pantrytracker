@@ -1,25 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, ViewChild } from '@angular/core';
 import {
   MatTableDataSource,
   MatDialog
 } from '@angular/material';
 import { ProjectService } from '../core/project.service';
 import { Project } from '../model/project';
-import { AddProjectDialogComponent } from './add-project-dialog.component';
-import { DeleteDialogComponent } from './delete-dialog.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Utils } from '../core/utils';
+import { Product } from '../model/pantryline';
+import { ProductDetailsDialogComponent } from './product-details-dialog.component';
 
 @Component({
   selector: 'app-manage-projects',
-  templateUrl: 'manage-projects.component.html',
-  styleUrls: ['manage-projects.component.scss']
+  templateUrl: 'manage-products.component.html',
+  styleUrls: ['manage-products.component.scss']
 })
-export class ManageProjectsComponent implements OnInit {
-  displayedColumns = ['name', 'actions'];
+export class ManageProductsComponent implements OnInit {
+  @ViewChild("ProductDetailsDialog")
+  ProductDetails: ProductDetailsDialogComponent;
+
+  selectedLetter = 'C';
+  displayedColumns = ['name'];
   error: string;
   dataSource = new MatTableDataSource();
-  projects: Project[];
+  productMap: Map<string, Product[]> = new Map<string, Product[]>();
 
   constructor(
     private _projectService: ProjectService,
@@ -27,20 +29,19 @@ export class ManageProjectsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._projectService.getProjects().subscribe(projects => {
-      this.projects = projects;
-      this.dataSource.data = projects;
-    }, error => this.error = Utils.formatError(error));
+    this._projectService.getProducts(this.selectedLetter).subscribe(productGroup => {
+      this.productMap.set(this.selectedLetter, productGroup);
+      this.dataSource.data = this.productMap.get(this.selectedLetter);
+    }, error => { console.error(error); });
   }
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+  productClick(selectedProduct: Product) { //}: Product {
+    this.ProductDetails.product = selectedProduct;
+    this.ProductDetails.isVisible = true;
   }
 
   addProject() {
-    const dialogRef = this.dialog.open(AddProjectDialogComponent, {
+    /*const dialogRef = this.dialog.open(AddProjectDialogComponent, {
       width: '348px',
       data: { name: '' }
     });
@@ -53,11 +54,11 @@ export class ManageProjectsComponent implements OnInit {
           this.dataSource.data = this.projects;
         }, error => this.error = Utils.formatError(error));
       }
-    });
+    });*/
   }
 
   deleteProject(project: Project) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+    /*const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '348px',
       data: { entityName: 'Project', message: `Are you sure you want to delete project ${project.name}?` }
     });
@@ -68,7 +69,7 @@ export class ManageProjectsComponent implements OnInit {
           this.dataSource.data = this.projects;
         }, error => this.error = Utils.formatError(error));
       }
-    });
+    });*/
   }
 
 }

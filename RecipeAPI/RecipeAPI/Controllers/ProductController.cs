@@ -88,6 +88,7 @@ namespace RecipeAPI.Controllers
         public IActionResult GetById(int id)
         {
             return Ok(_database.Products.Include(p => p.Codes)
+                                            .ThenInclude(c => c.Variety)
                                         .Include(p => p.Varieties)
                                         .SingleOrDefault(p => p.Id == id && (p.OwnerId == AuthenticatedUser || p.OwnerId == null)));
         }
@@ -116,7 +117,8 @@ namespace RecipeAPI.Controllers
         private IEnumerable<Product> GetProducts(char startingLetter)
         {
             return _database.Products.Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
-                                     .Where(p => EF.Functions.Like(p.Name, $"{startingLetter}%"));
+                                     .Where(p => EF.Functions.Like(p.Name, $"{startingLetter}%"))
+                                     .OrderBy(p => p.Name);
         }
     }
 }
