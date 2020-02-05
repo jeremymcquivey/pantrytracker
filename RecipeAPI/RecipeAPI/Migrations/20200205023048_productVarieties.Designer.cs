@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeAPI.Models;
 
 namespace RecipeAPI.Migrations
 {
     [DbContext(typeof(RecipeContext))]
-    partial class RecipeContextModelSnapshot : ModelSnapshot
+    [Migration("20200205023048_productVarieties")]
+    partial class productVarieties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,8 +85,6 @@ namespace RecipeAPI.Migrations
 
                     b.Property<string>("Unit");
 
-                    b.Property<int?>("VarietyId");
-
                     b.Property<string>("Vendor");
 
                     b.Property<string>("VendorCode");
@@ -92,8 +92,6 @@ namespace RecipeAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("VarietyId");
 
                     b.HasIndex("Code", "OwnerId")
                         .HasName("UniqueProductCodeByUser");
@@ -215,10 +213,6 @@ namespace RecipeAPI.Migrations
                     b.HasOne("PantryTracker.Model.Products.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
-
-                    b.HasOne("PantryTracker.Model.Products.ProductVariety", "Variety")
-                        .WithMany()
-                        .HasForeignKey("VarietyId");
                 });
 
             modelBuilder.Entity("PantryTracker.Model.Products.ProductVariety", b =>

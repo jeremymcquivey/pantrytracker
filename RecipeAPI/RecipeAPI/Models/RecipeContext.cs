@@ -15,6 +15,8 @@ namespace RecipeAPI.Models
 
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<ProductVariety> Varieties { get; set; }
+
         public DbSet<UserProductPreference> UserProductPreferences { get; set; }
 
         public DbSet<PantryTransaction> Transactions { get; set; }
@@ -72,6 +74,12 @@ namespace RecipeAPI.Models
 
             modelBuilder.Entity<ProductCode>()
                 .HasOne(code => code.Product);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(product => product.Varieties);
+
+            modelBuilder.Entity<ProductVariety>()
+                .HasOne(variety => variety.Product);
         }
     }
 }
