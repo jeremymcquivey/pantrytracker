@@ -5,6 +5,8 @@ namespace PantryTracker.Model
 {
     public interface IProductSearch
     {
+        string Name { get; }
+
         Task<ProductCode> SearchByCodeAsync(string code); 
     }
 }

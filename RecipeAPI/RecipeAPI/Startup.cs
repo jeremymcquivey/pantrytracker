@@ -14,6 +14,7 @@ using System.IO;
 using PantryTracker.Model.Products;
 using PantryTrackers.Integrations.Kroger;
 using PantryTracker.Model;
+using RecipeAPI.ExternalServices;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -38,6 +39,7 @@ namespace RecipeAPI
             services.AddSingleton<InMemoryProductsDb>();
             services.AddSingleton<ICacheManager, MemoryCache>();
             services.AddScoped<KrogerService>();
+            services.AddScoped<UPCLookup>();
             services.AddHttpClient();
 
             services.AddCors(options =>

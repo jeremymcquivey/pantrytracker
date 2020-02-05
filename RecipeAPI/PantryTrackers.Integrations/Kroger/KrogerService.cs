@@ -11,26 +11,37 @@ namespace PantryTrackers.Integrations.Kroger
 {
     public class KrogerService : IProductSearch
     {
-        private Func<Task<KrogerAuthToken>> getTokenDelegate;
+        private Func<Task<KrogerAuthToken>> _getTokenDelegate;
+        private Func<string, Task<ProductCode>> _getCodeDelegate;
+
         private const string oAuthKey = "KrogerAuthToken";
         private const string BaseAPI = "https://api.kroger.com/v1/";
         private readonly ICacheManager _cache;
         private readonly IHttpClientFactory _requestFactory;
         private readonly string _clientId;
 
+        public string Name => "Kroger API";
+
         public KrogerService(IHttpClientFactory requestFactory, ICacheManager cache)
         {
             _cache = cache;
             _requestFactory = requestFactory;
             _clientId = Environment.GetEnvironmentVariable("KrogerAPIClientSecret", EnvironmentVariableTarget.Process);
-            getTokenDelegate = async () => await GetAuthToken();
+
+            _getTokenDelegate = async () => await GetAuthToken();
+            _getCodeDelegate = async (string code) => await Search(code);
         }
 
         public async Task<ProductCode> SearchByCodeAsync(string code)
         {
-            var authToken = await _cache.GetAsync(oAuthKey, getTokenDelegate, TimeSpan.FromMinutes(25));
+            return await _cache.GetAsync($"Kroger:{code.ToLower()}", _getCodeDelegate, code, TimeSpan.FromHours(24));
+        }
 
-            if(authToken == default)
+        private async Task<ProductCode> Search(string code)
+        {
+            var authToken = await _cache.GetAsync(oAuthKey, _getTokenDelegate, TimeSpan.FromMinutes(25));
+
+            if (authToken == default)
             {
                 return default;
             }
@@ -62,7 +73,7 @@ namespace PantryTrackers.Integrations.Kroger
                     Brand = item.Brand,
                     Code = code,
                     Description = item.Description,
-                    Vendor = "Kroger API",
+                    Vendor = Name,
                     VendorCode = krogerUPC,
                     ProductId = null,
                     Product = null

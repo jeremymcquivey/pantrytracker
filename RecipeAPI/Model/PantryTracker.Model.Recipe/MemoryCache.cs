@@ -31,6 +31,22 @@ namespace PantryTracker.Model
             _cache[key] = new Tuple<object, DateTime>(toCache, DateTime.Now.Add(validity));
         }
 
+        public async Task<T> GetAsync<paramType, T>(string key, Func<paramType, Task<T>> refreshDelegate, paramType delegateParameter, TimeSpan validity = default)
+        {
+            if (_cache.Keys.Contains(key))
+            {
+                var val = _cache[key];
+                if (val.Item2 >= DateTime.Now)
+                {
+                    return (T)val.Item1;
+                }
+            }
+
+            var updatedVal = await refreshDelegate(delegateParameter);
+            Add(key, updatedVal, validity);
+            return updatedVal;
+        }
+
         public async Task<T> GetAsync<T>(string key, Func<Task<T>> refreshDelegate, TimeSpan validity = default)
         {
             if(_cache.Keys.Contains(key))
