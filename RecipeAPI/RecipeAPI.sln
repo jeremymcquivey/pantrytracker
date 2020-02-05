@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PantryTracker.RecipeReader.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PantryTracker.RecipeReader", "Data Import\PantryTracker.RecipeReader\PantryTracker.RecipeReader.csproj", "{096CDA3F-3100-48D3-94D9-AB3DD389BB21}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PantryTrackers.Integrations", "PantryTrackers.Integrations\PantryTrackers.Integrations.csproj", "{13C4C938-CAF4-4088-9EDB-4DF96C03E4FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
