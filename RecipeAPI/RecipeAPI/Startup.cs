@@ -15,6 +15,7 @@ using PantryTracker.Model.Products;
 using PantryTrackers.Integrations.Kroger;
 using PantryTracker.Model;
 using RecipeAPI.ExternalServices;
+using Microsoft.Extensions.Hosting;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -47,9 +48,8 @@ namespace RecipeAPI
                 options.AddPolicy("AllRequests", builder =>
                 {
                     builder.AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowAnyOrigin()
-                        .AllowCredentials();
+                           .AllowAnyMethod()
+                           .AllowCredentials();
                 });
             });
 
@@ -71,17 +71,21 @@ namespace RecipeAPI
                          };
                      });
 
+            services.AddApplicationInsightsTelemetry();
             services.AddSwashbuckle();
-            services.AddMvc()
-                    .AddJsonOptions(options =>
-                    {
-                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                    });
+            services.AddMvc(options =>
+                {
+                    options.EnableEndpointRouting = false;
+                })
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || true)
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();

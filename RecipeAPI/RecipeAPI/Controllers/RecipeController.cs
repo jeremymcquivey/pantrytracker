@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Documents;
 using Microsoft.Extensions.Options;
 using PantryTracker.Model.Recipes;
 using PantryTracker.RecipeReader;
@@ -155,7 +154,7 @@ namespace RecipeAPI.Controllers
             try
             {
                 var ocrText = await _ocr.ImageToText(imageText);
-                return await Preview(string.Join(EndOfLineDelimiter, ocrText));
+                return Preview(string.Join(EndOfLineDelimiter, ocrText));
             }
             catch (Exception)
             {
@@ -169,7 +168,7 @@ namespace RecipeAPI.Controllers
         /// </summary>
         [HttpPost]
 		[Route("preview/text")]
-        public async Task<IActionResult> Preview([FromBody]string bodyText)
+        public IActionResult Preview([FromBody]string bodyText)
         {
             if(string.IsNullOrEmpty(bodyText))
             {
@@ -219,7 +218,7 @@ namespace RecipeAPI.Controllers
 
                 return Ok(recipe);
             }
-            catch(DocumentClientException ex)
+            catch(Exception)
             {
                 //TODO: Log to app insights.
                 throw;

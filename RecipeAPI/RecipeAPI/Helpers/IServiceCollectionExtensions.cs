@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,25 +27,33 @@ namespace RecipeAPI.Helpers
             {
                 c.SwaggerDoc(
                     "v1",
-                    new Info
+                    new OpenApiInfo
                     {
                         Title = "Recipe API",
                         Version = "v1",
                         Description = "Manages the PantryTracker recipes"
                     });
 
-                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    In = "header",
+                    In = ParameterLocation.Header,
                     Description = "JWT from PantryTracker's SSO API",
                     Name = "Authorization",
-                    Type = "apiKey"
+                    Type = SecuritySchemeType.ApiKey
                 });
 
-                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>()
-                {
-                    { "Bearer", Enumerable.Empty<string>() }
-                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement 
+                {{  
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }});
 
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "RecipeAPI.xml"));
             });
@@ -54,7 +65,7 @@ namespace RecipeAPI.Helpers
         /// Configures UI elements for Swagger.
         /// </summary>
         public static IApplicationBuilder UseSwashbuckle(this IApplicationBuilder app,
-                                                              IHostingEnvironment env)
+                                                              IHostEnvironment env)
         {
             var appName = "Recipe API";
             if (!env.IsProduction())

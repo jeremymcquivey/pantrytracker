@@ -105,26 +105,35 @@ namespace PantryTrackers.Integrations.Kroger
         {
             using (var request = _requestFactory.CreateClient())
             {
-                request.BaseAddress = new Uri(BaseAPI);
-                request.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("basic", _clientId);
-                request.DefaultRequestHeaders.Add("Accept", "application/json");
-                
-                var requestBody = new Dictionary<string, string>
+                try
                 {
-                    { "grant_type", "client_credentials" },
-                    { "scope", "product.compact" }
-                };
+                    request.BaseAddress = new Uri(BaseAPI);
+                    request.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("basic", _clientId);
+                    request.DefaultRequestHeaders.Add("Accept", "application/json");
 
-                var response = await request.PostAsync($"connect/oauth2/token", new FormUrlEncodedContent(requestBody));
+                    var requestBody = new Dictionary<string, string>
+                    {
+                        { "grant_type", "client_credentials" },
+                        { "scope", "product.compact" }
+                    };
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    var responseMessage = await response.Content.ReadAsStringAsync();
-                    throw new Exception(responseMessage);
+                    var response = await request.PostAsync($"connect/oauth2/token", new FormUrlEncodedContent(requestBody));
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var responseMessage = await response.Content.ReadAsStringAsync();
+                        //TODO: Log into AppInsights event, but don't impede progress.
+                        return default;
+                    }
+
+                    var rawJson = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<KrogerAuthToken>(rawJson);
                 }
-
-                var rawJson = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<KrogerAuthToken>(rawJson);
+                catch(Exception)
+                {
+                    //TODO: Log into AppInsights event, but don't impede progress.
+                    return default;
+                }
             }
         }
     }
