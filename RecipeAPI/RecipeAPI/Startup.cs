@@ -47,7 +47,8 @@ namespace RecipeAPI
             {
                 options.AddPolicy("AllRequests", builder =>
                 {
-                    builder.AllowAnyHeader()
+                    builder.SetIsOriginAllowed(x => _ = true)
+                           .AllowAnyHeader()
                            .AllowAnyMethod()
                            .WithOrigins(Settings.AllowedOrigins)
                            .AllowCredentials();
