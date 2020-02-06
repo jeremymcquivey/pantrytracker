@@ -7,5 +7,7 @@
     public class AppSettings
     {
         public string STSAuthority { get; set; }
+
+        public string[] AllowedOrigins { get; set; }
     }
 }

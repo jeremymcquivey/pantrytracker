@@ -49,6 +49,7 @@ namespace RecipeAPI
                 {
                     builder.AllowAnyHeader()
                            .AllowAnyMethod()
+                           .WithOrigins(Settings.AllowedOrigins)
                            .AllowCredentials();
                 });
             });
