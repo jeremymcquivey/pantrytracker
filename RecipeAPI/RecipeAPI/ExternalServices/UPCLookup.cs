@@ -1,7 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PantryTracker.Model;
 using PantryTracker.Model.Products;
 using PantryTrackers.Integrations.Kroger;
+using PantryTrackers.Integrations.Walmart;
 using RecipeAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -10,44 +14,68 @@ using System.Threading.Tasks;
 
 namespace RecipeAPI.ExternalServices
 {
+    /// <summary>
+    /// Searches list of registered APIs for specified UPC. If no APIs find UPC, default is returned.
+    /// </summary>
     public class UPCLookup
     {
         private readonly Func<Dictionary<Tuple<int, int?>, string[]>> _productDelegate;
 
+        private readonly TelemetryClient _appInsights;
         private readonly RecipeContext _database;
         private readonly ICacheManager _cache;
         private readonly IList<IProductSearch> _providers;
 
-        public UPCLookup(RecipeContext database, KrogerService krogerService, ICacheManager cache)
+        /// <summary></summary>
+        public UPCLookup(RecipeContext database, KrogerService krogerService, WalmartService walmartService, ICacheManager cache)
         {
+            _appInsights = new TelemetryClient(TelemetryConfiguration.CreateDefault());
             _database = database;
             _cache = cache;
 
             _providers = new List<IProductSearch>
-            { 
-                krogerService
+            {
+                //krogerService,
+                walmartService
             };
 
             _productDelegate = () => GetProductBreakdowns(ownerId: null);
         }
 
-        public async Task<ProductCode> Lookup(string code, string ownerId = null)
+        /// <summary>
+        /// Looks up a product by UPC from the list of registered APIs.
+        /// </summary>
+        /// <param name="code">UPC/EAN to find</param>
+        /// <param name="preferredProvider">Name of preferred Api i.e. Walmart, Kroger, etc...</param>
+        /// <param name="ownerId">Owner of custom products. Leave null for only system products</param>
+        public async Task<ProductCode> Lookup(string code, string preferredProvider = null, string ownerId = null)
         {
             var product = _database.ProductCodes
                                    .Include(productCode => productCode.Product)
                                    .OrderByDescending(productCode => productCode.Code == code)
+                                   .ThenByDescending(productCode => productCode.Vendor == preferredProvider)
                                    .ThenByDescending(productCode => productCode.Id)
                                    .FirstOrDefault(productCode => (productCode.Code == code || productCode.VendorCode == code) &&
                                                                   (productCode.OwnerId == null || productCode.OwnerId == ownerId));
             if(product != default && product.Vendor != null)
             {
                 var provider = _providers.Single(p => p.Name == product.Vendor);
-                product = await provider.SearchByCodeAsync(code);
+                var newProduct = await provider.SearchByCodeAsync(code);
+
+                if(newProduct != default)
+                {
+                    product.Brand = newProduct.Brand;
+                    product.Description = newProduct.Description;
+                    product.Size = newProduct.Size;
+                    product.Unit = newProduct.Unit;
+                }
             }
             
             if(product == default)
             {
-                foreach (var provider in _providers)
+                //TODO: Break out API names into constants to make string comparison more bullet-proof.
+                foreach (var provider in _providers.Where(p => preferredProvider == null)
+                                                   .OrderBy(p => p.Name.Equals(preferredProvider, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     product = await provider.SearchByCodeAsync(code);
                     if (product != default)
@@ -62,6 +90,8 @@ namespace RecipeAPI.ExternalServices
                             VarietyId = product.VarietyId,
                             Vendor = provider.Name
                         });
+
+
                         await _database.SaveChangesAsync();
                         return product;
                     }
@@ -98,7 +128,7 @@ namespace RecipeAPI.ExternalServices
                                          ProductId = p.Id,
                                          Description = null,
                                          Id = 0
-                                     })
+                                     }).ToList()
                                      .Union(varieties)
                                      .ToDictionary(variety => new Tuple<int, int?>(variety.ProductId, variety.Id), p => ((p.Description?.Split(" ", StringSplitOptions.None) ?? new string[0])
                                                                                                                                         .Concat(p.Product.Name.Split(" ", StringSplitOptions.None)))

@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using PantryTracker.Model.Extensions;
 using PantryTracker.Model.Pantry;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
+using System.Collections.Generic;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace RecipeAPI.Controllers
 {
@@ -21,6 +24,7 @@ namespace RecipeAPI.Controllers
     public class PantryController : BaseController
     {
         private readonly RecipeContext _db;
+        private readonly TelemetryClient _appInsights;
 
 #pragma warning disable 1591
         public PantryController(IOptions<AppSettings> config,
@@ -28,6 +32,7 @@ namespace RecipeAPI.Controllers
 #pragma warning restore 1591
         {
             _db = database;
+            _appInsights = new TelemetryClient(TelemetryConfiguration.CreateDefault());
         }
 
         /// <summary>
@@ -38,6 +43,8 @@ namespace RecipeAPI.Controllers
         {
             try
             {
+                _appInsights.TrackEvent("GetAllPantryItems 3", new Dictionary<string, string> { { "IncludeZeroValues", includeZeroValues ? "true" : "false" } });
+
                 var gId = Guid.Parse(AuthenticatedUser);
                 var pantryItems = _db.Transactions.Where(p => p.UserId == gId)
                                                   .Include(p => p.Product)
@@ -55,17 +62,24 @@ namespace RecipeAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Posts a new transaction to the current user's pantry.
+        /// </summary>
         [HttpPost]
-        public async Task<IActionResult> PostTransaction([FromBody] PantryTransaction transaction)
+        [Route("{pantryId}/transaction")]
+        public async Task<IActionResult> PostTransaction([FromRoute]string pantryId, [FromBody] PantryTransaction transaction)
         {
+            //Note: pantryId is for future use when users can have multiple "pantries", i.e. pantry, kitchen cupboards, fridge, etc...
+
             // TODO: Validate input of transaction i.e. positive/negative quantities, required fields, etc...
             if(transaction == default)
             {
                 return BadRequest("Please include a transaction object in the body of the request.");
             }
 
+            transaction.Id = default;
             transaction.UserId = Guid.Parse(AuthenticatedUser);
-            transaction.Product = null;
+            transaction.Product = default;
 
             _db.Transactions.Add(transaction);
             await _db.SaveChangesAsync();

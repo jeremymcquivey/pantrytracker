@@ -23,7 +23,6 @@ namespace RecipeAPI.Controllers
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
     [Authorize]
-    //[Authorize(Roles = "Admin")]
     public class RecipeController : BaseController
     {
         private const char EndOfLineDelimiter = '\n';

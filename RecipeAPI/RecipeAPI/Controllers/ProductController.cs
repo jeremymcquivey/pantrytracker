@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace RecipeAPI.Controllers
 {
+    /// <summary>
+    /// Gives ability to search for and edit products
+    /// </summary>
     [Authorize]
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
@@ -22,24 +25,29 @@ namespace RecipeAPI.Controllers
         private readonly RecipeContext _database;
         private readonly UPCLookup _productCodes;
 
+#pragma warning disable 1591
         public ProductController(RecipeContext database, UPCLookup productCodes, ICacheManager cache)
         {
             _cache = cache;
             _database = database;
             _productCodes = productCodes;
         }
-        
+#pragma warning restore 1591
+
+        /// <summary>
+        /// Admin functionality: Returns a list of all products whose name starts with the provided string.
+        /// </summary>
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult Get(char startingChar = 'A')
+        public IActionResult Get(string startsWith)
         {
             IEnumerable<Product> realItems;
-            var cachedItems = _cache.Get<IList<int>>($"Products:{startingChar}");
+            var cachedItems = _cache.Get<IList<int>>($"Products:{startsWith}");
 
             if(cachedItems == default)
             {
-                realItems = GetProducts(startingChar);
-                _cache.Add($"Products:{startingChar}", realItems.Select(p => p.Id).ToList(), TimeSpan.FromHours(24));
+                realItems = GetProducts(startsWith);
+                _cache.Add($"Products:{startsWith}", realItems.Select(p => p.Id).ToList(), TimeSpan.FromHours(24));
             }
             else
             {
@@ -49,6 +57,9 @@ namespace RecipeAPI.Controllers
             return Ok(realItems);
         }
 
+        /// <summary>
+        /// Admin functionality: Update the information stored about a given product.
+        /// </summary>
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
@@ -83,24 +94,9 @@ namespace RecipeAPI.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("{productId}/variety")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> SaveNewVariety([FromRoute]int productId, [FromBody]ProductVariety variety)
-        {
-            if(variety == default || string.IsNullOrEmpty(variety.Description))
-            {
-                return BadRequest("A variety must have at least a description");
-            }
-
-            variety.Id = 0;
-            variety.ProductId = productId;
-
-            _database.Add(variety);
-            await _database.SaveChangesAsync();
-            return Ok(variety);
-        }
-
+        /// <summary>
+        /// Returns a product with the given Id
+        /// </summary>
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetById(int id)
@@ -111,13 +107,16 @@ namespace RecipeAPI.Controllers
                                         .SingleOrDefault(p => p.Id == id && (p.OwnerId == AuthenticatedUser || p.OwnerId == null)));
         }
 
+        /// <summary>
+        /// Returns a single product (or null if not found) by product code i.e. UPC, EAN, etc...
+        /// </summary>
         [HttpGet]
         [Route("search/code/{code}")]
         public async Task<IActionResult> GetByUpc([FromRoute]string code)
         {
             try
             {
-                var product = await _productCodes.Lookup(code, AuthenticatedUser);
+                var product = await _productCodes.Lookup(code, ownerId: AuthenticatedUser);
 
                 if(product != default)
                 {
@@ -132,10 +131,10 @@ namespace RecipeAPI.Controllers
             }
         }
 
-        private IEnumerable<Product> GetProducts(char startingLetter)
+        private IEnumerable<Product> GetProducts(string startsWith)
         {
             return _database.Products.Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
-                                     .Where(p => EF.Functions.Like(p.Name, $"{startingLetter}%"))
+                                     .Where(p => p.Name.StartsWith(startsWith))
                                      .OrderBy(p => p.Name);
         }
     }
