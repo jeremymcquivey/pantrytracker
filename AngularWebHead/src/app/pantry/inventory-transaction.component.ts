@@ -26,7 +26,6 @@ export class InventoryTransactionComponent implements OnInit {
     constructor(private _pantryService: PantryService, 
                 private _productService: ProductService) {
         this.Line = new PantryLine();
-        this.Line.quantity = '12';
     }
 
     ngOnInit(): void { }
