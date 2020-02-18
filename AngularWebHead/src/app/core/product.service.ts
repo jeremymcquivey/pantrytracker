@@ -9,7 +9,7 @@ import { UserProfile } from '../model/user-profile';
 import { MilestoneStatus } from '../model/milestone-status';
 import { AuthService } from './auth.service';
 import { Recipe } from '../model/recipe';
-import { Product, ProductVariety } from '../model/pantryline';
+import { Product, ProductVariety, ProductCode } from '../model/pantryline';
 
 @Injectable()
 export class ProductService {
@@ -73,5 +73,12 @@ export class ProductService {
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
         return this.httpClient.get<Product[]>(Constants.recipeApi + `v1/Product?startingChar=${group}`, { headers: headers });
+    }
+
+    lookupCode(code: string): Observable<ProductCode> {
+        var accessToken = this._authService.getAccessToken();
+        var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+        return this.httpClient.get<ProductCode>(Constants.recipeApi + `v1/Product/search/code/${code}`, { headers: headers });
     }
 }

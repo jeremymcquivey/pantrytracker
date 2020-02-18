@@ -7,9 +7,15 @@ export class PantryLine {
 
     public productId: number;
 
+    public variety: ProductVariety;
+
+    public varietyId: number;
+
     public unit: string;
 
     public size: number;
+
+    public code: string;
 }
 
 export class Product {
@@ -35,7 +41,15 @@ export class ProductCode {
 
     public code: string;
 
-    public variety: ProductVariety;
+    public size: number;
+
+    public unit: string;
+
+    public productId: number;
+
+    public product: Product;
 
     public varietyId: number;
+
+    public variety: ProductVariety;
 }

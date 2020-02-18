@@ -18,6 +18,6 @@ export class PantryService {
     updateInventory(adjustment: PantryLine) {
         var accessToken = this._authService.getAccessToken();
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-        return this.httpClient.post<PantryLine>(Constants.recipeApi + 'v1/Pantry', adjustment, { headers: headers });
+        return this.httpClient.post<PantryLine>(Constants.recipeApi + 'v1/Pantry/value/transaction', adjustment, { headers: headers });
     }
 }

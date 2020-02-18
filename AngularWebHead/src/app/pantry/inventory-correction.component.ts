@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { PantryService } from "../core/pantry.service";
 import { PantryLine } from "../model/pantryline";
 
@@ -11,6 +11,8 @@ export class InventoryCorrectionComponent implements OnInit {
     isVisible: boolean = false;
     private originalQuantity: string;
     private Line: PantryLine;
+
+    @Output() onUpdate: EventEmitter<PantryLine> = new EventEmitter();
 
     @Input() set pantryLine(value: PantryLine) {
         this.Line = value;
@@ -43,6 +45,7 @@ export class InventoryCorrectionComponent implements OnInit {
         } as PantryLine;
         
         this._pantryService.updateInventory(adjustment).subscribe(lineItem => {
+            this.onUpdate.emit(lineItem);
             this.dismissDialog();
         });
 

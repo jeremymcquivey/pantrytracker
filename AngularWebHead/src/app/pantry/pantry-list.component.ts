@@ -3,6 +3,7 @@ import { MatTableDataSource } from "@angular/material";
 import { PantryService } from "../core/pantry.service";
 import { InventoryCorrectionComponent } from "./inventory-correction.component";
 import { PantryLine } from "../model/pantryline";
+import { InventoryTransactionComponent } from "./inventory-transaction.component";
 
 @Component({
 selector: 'pantry-list',
@@ -16,11 +17,18 @@ export class PantryListComponent implements OnInit {
     @ViewChild("correctionDialog")
     public correctionDialog: InventoryCorrectionComponent;
 
+    @ViewChild("inventoryTransaction")
+    public transactionDialog: InventoryTransactionComponent;
+
     constructor(
         private _pantryService: PantryService
       ) {}
 
     ngOnInit(): void {
+        this.getInventory();
+    }
+
+    getInventory(): void {
         this._pantryService.getCurrentInventory().subscribe(recipeData => {
             this.recipeData = recipeData;
             this.dataSource.data = this.recipeData;
@@ -30,5 +38,9 @@ export class PantryListComponent implements OnInit {
     openDialog(line: PantryLine): void {
         this.correctionDialog.isVisible = true;
         this.correctionDialog.pantryLine = line;
+    }
+
+    addTransaction(): void {
+        this.transactionDialog.isVisible = true;
     }
 }

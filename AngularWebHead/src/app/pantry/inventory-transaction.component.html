@@ -1,0 +1,55 @@
+<div id="upload-modal" *ngIf="this.isVisible">
+    <div id="upload-modal-content">
+        <div>Add more inventory</div>
+
+        <!--<span *ngIf="PantryLine">{{  Line.product.name }} {{ "(" }} {{ Line.unit || "each" }} {{ ")" }}</span>-->
+        <div>
+            <mat-form-field style="width:20em;">
+                <input matInput [(ngModel)]="Line.code" placeholder="Product Code i.e. UPC/EAN">
+            </mat-form-field>
+            <i class="material-icons" style="cursor: pointer;" (click)="lookupUPC()">search</i>
+        </div>
+
+        <div>
+            <mat-form-field style="width:20em;">
+                <input matInput [(ngModel)]="product" placeholder="Product Search">
+            </mat-form-field>
+            <i class="material-icons" style="cursor: pointer;" (click)="searchProduct()">search</i>
+        </div>
+
+        <hr />
+
+        <mat-form-field style="width:100%;">
+            <input matInput [(ngModel)]="Line.quantity" required placeholder="Quantity">
+        </mat-form-field>
+        
+        <mat-form-field style="width:100%;">
+            <input matInput [(ngModel)]="Line.size" type="number" required placeholder="Size">
+        </mat-form-field>
+        
+        <mat-form-field style="width:100%;">
+            <input matInput [(ngModel)]="Line.unit" required placeholder="Unit">
+        </mat-form-field>
+        
+        <mat-form-field style="width:100%;">
+            <input matInput [(ngModel)]="productName" [disabled]="true" required placeholder="Product Name">
+        </mat-form-field>
+
+        <mat-form-field *ngIf="Varieties.length > 0">
+            <mat-select [(value)]="selectedVariety">
+                <mat-option value="">---------- No Variety --------------</mat-option>
+                <mat-option *ngFor="let variety of Varieties" [value]="variety.id">
+                  {{ variety.description }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
+            Cancel
+        </button>
+
+        <button title="Update" [disabled]="isBusy" mat-raised-button color="primary" class="list-action" (click)="updateInventory()" style="margin-top: 1.5em; margin-bottom: 1.5em; float: right;">
+            Save
+        </button>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 <div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="!this.isUpdate">
-    <i class="material-icons" style="cursor: pointer;">add</i>
+    <i class="material-icons" style="cursor: pointer;" (click)="addTransaction()">add</i>
     <span>Instructions</span>
 </div>
 
@@ -22,5 +22,6 @@
     </mat-table>
 </div>
 
-<inventory-correction #correctionDialog>
-</inventory-correction>
+<inventory-correction #correctionDialog (onUpdate)="getInventory()"></inventory-correction>
+
+<inventory-transaction #inventoryTransaction (onUpdate)="getInventory()"></inventory-transaction>
