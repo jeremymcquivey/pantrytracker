@@ -72,7 +72,7 @@ export class ProductService {
         var accessToken = this._authService.getAccessToken();
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
-        return this.httpClient.get<Product[]>(Constants.recipeApi + `v1/Product?startingChar=${group}`, { headers: headers });
+        return this.httpClient.get<Product[]>(Constants.recipeApi + `v1/Product?startsWith=${group}`, { headers: headers });
     }
 
     lookupCode(code: string): Observable<ProductCode> {

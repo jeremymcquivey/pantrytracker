@@ -1,0 +1,31 @@
+<div id="upload-modal" *ngIf="this.isVisible">
+    <div id="upload-modal-content">
+        <div>Product Search</div>
+
+        <div>
+            <mat-form-field style="width:20em;">
+                <input matInput [(ngModel)]="SearchText" placeholder="Product Name or Description">
+            </mat-form-field>
+            <i class="material-icons" style="cursor: pointer;" (click)="productSearch()">search</i>
+        </div>
+
+        <mat-table [dataSource]="dataSource">
+
+            <!-- Name/Description Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef>Pantry Inventory</mat-header-cell>
+              <mat-cell *matCellDef="let product" (click)="selectProduct(product)" style="cursor: pointer">
+                <div>
+                  <span>{{product.name}}</span>
+                </div>
+              </mat-cell>
+            </ng-container>
+      
+            <mat-row *matRowDef="let row; columns: visibleColumns;"></mat-row>
+          </mat-table>
+
+        <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
+            Cancel
+        </button>
+    </div>
+</div>

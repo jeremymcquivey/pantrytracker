@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using PantryTracker.Model;
 using PantryTracker.Model.Products;
 using RecipeAPI.ExternalServices;
 using RecipeAPI.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,14 +19,12 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     public class ProductController: BaseController
     {
-        private readonly ICacheManager _cache;
         private readonly RecipeContext _database;
         private readonly UPCLookup _productCodes;
 
 #pragma warning disable 1591
-        public ProductController(RecipeContext database, UPCLookup productCodes, ICacheManager cache)
+        public ProductController(RecipeContext database, UPCLookup productCodes)
         {
-            _cache = cache;
             _database = database;
             _productCodes = productCodes;
         }
@@ -38,23 +34,12 @@ namespace RecipeAPI.Controllers
         /// Admin functionality: Returns a list of all products whose name starts with the provided string.
         /// </summary>
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public IActionResult Get(string startsWith)
+        public IActionResult Get(string startsWith, int limit = 100)
         {
-            IEnumerable<Product> realItems;
-            var cachedItems = _cache.Get<IList<int>>($"Products:{startsWith}");
-
-            if(cachedItems == default)
-            {
-                realItems = GetProducts(startsWith);
-                _cache.Add($"Products:{startsWith}", realItems.Select(p => p.Id).ToList(), TimeSpan.FromHours(24));
-            }
-            else
-            {
-                realItems = _database.Products.Where(p => cachedItems.Contains(p.Id));
-            }
-
-            return Ok(realItems);
+            return Ok(_database.Products.Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
+                                        .Where(p => p.Name.StartsWith(startsWith))
+                                        .OrderBy(p => p.Name)
+                                        .Take(limit));
         }
 
         /// <summary>
@@ -129,13 +114,6 @@ namespace RecipeAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        private IEnumerable<Product> GetProducts(string startsWith)
-        {
-            return _database.Products.Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
-                                     .Where(p => p.Name.StartsWith(startsWith))
-                                     .OrderBy(p => p.Name);
         }
     }
 }

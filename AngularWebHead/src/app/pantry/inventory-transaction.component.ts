@@ -1,7 +1,8 @@
-import { Component, OnInit, EventEmitter, Output } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from "@angular/core";
 import { PantryService } from "../core/pantry.service";
 import { PantryLine, Product, ProductVariety } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
+import { ProductSearchComponent } from "../product/product-search.component";
 
 
 @Component({
@@ -13,6 +14,7 @@ export class InventoryTransactionComponent implements OnInit {
     productName: string;
     public selectedVariety: number;
     preassignedVariety: string;
+    ProductSearchText: string;
 
     isVisible: boolean = false;
     isBusy: boolean = false;
@@ -20,6 +22,9 @@ export class InventoryTransactionComponent implements OnInit {
     private Line: PantryLine;
     private Product: Product;
     private Varieties: ProductVariety[] = [];
+
+    @ViewChild("productSearchDialog")
+    public ProductSearch: ProductSearchComponent; 
 
     @Output() onUpdate: EventEmitter<PantryLine> = new EventEmitter();
 
@@ -94,6 +99,17 @@ export class InventoryTransactionComponent implements OnInit {
 
             this.isBusy = false;
         });
+    }
+
+    searchProduct(): void {
+        this.ProductSearch.SearchText = this.ProductSearchText;
+        this.ProductSearch.productSearch();
+    }
+
+    updateProduct(product: Product) {
+        this.Line.productId = product.id;
+        this.Product = product;
+        this.productName = product.name;
     }
 
     dismissDialog(): void {

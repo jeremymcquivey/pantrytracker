@@ -12,7 +12,7 @@
 
         <div>
             <mat-form-field style="width:20em;">
-                <input matInput [(ngModel)]="product" placeholder="Product Search">
+                <input matInput [(ngModel)]="ProductSearchText" placeholder="Product Search">
             </mat-form-field>
             <i class="material-icons" style="cursor: pointer;" (click)="searchProduct()">search</i>
         </div>
@@ -53,3 +53,5 @@
         </button>
     </div>
 </div>
+
+<product-search #productSearchDialog (onSelected)="updateProduct($event)"></product-search>
