@@ -5,12 +5,9 @@ import { MatTableDataSource } from "@angular/material";
 
 @Component({
 selector: 'product-search',
-    templateUrl: 'product-search.component.html',
-    styleUrls: ['product-search.component.css']
+    templateUrl: 'product-search.component.html'
 })
 export class ProductSearchComponent implements OnInit {
-    private isVisible: boolean = false;
-
     private dataSource = new MatTableDataSource();
     private visibleColumns = ['name'];
 
@@ -26,21 +23,15 @@ export class ProductSearchComponent implements OnInit {
 
     selectProduct(product: Product) {
         this.onSelected.emit(product);
-        this.dismissDialog();
     }
 
     productSearch(): void {
         this.dataSource.data = [];
-        this.isVisible = true;
 
         if(this.SearchText) {
             this._productService.getProducts(this.SearchText).subscribe(product => {
                 this.dataSource.data = product;
             });
         }
-    }
-
-    dismissDialog(): void {
-        this.isVisible = false;
     }
 }

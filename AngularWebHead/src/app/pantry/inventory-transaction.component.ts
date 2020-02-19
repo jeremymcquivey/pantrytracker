@@ -2,8 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from "@angu
 import { PantryService } from "../core/pantry.service";
 import { PantryLine, Product, ProductVariety } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
-import { ProductSearchComponent } from "../product/product-search.component";
-
+import { ProductSearchDialogComponent } from "../product/product-search-dialog.component";
 
 @Component({
 selector: 'inventory-transaction',
@@ -24,7 +23,7 @@ export class InventoryTransactionComponent implements OnInit {
     private Varieties: ProductVariety[] = [];
 
     @ViewChild("productSearchDialog")
-    public ProductSearch: ProductSearchComponent; 
+    public ProductSearchDialog: ProductSearchDialogComponent; 
 
     @Output() onUpdate: EventEmitter<PantryLine> = new EventEmitter();
 
@@ -102,14 +101,21 @@ export class InventoryTransactionComponent implements OnInit {
     }
 
     searchProduct(): void {
-        this.ProductSearch.SearchText = this.ProductSearchText;
-        this.ProductSearch.productSearch();
+        this.ProductSearchDialog.isVisible = true;
+        this.ProductSearchDialog.SearchText = this.ProductSearchText;
+        this.ProductSearchDialog.productSearch();
     }
 
     updateProduct(product: Product) {
+        this.Varieties = [];
         this.Line.productId = product.id;
         this.Product = product;
         this.productName = product.name;
+
+        if(product.varieties.length > 0)
+        {
+            this.Varieties = product.varieties;
+        }
     }
 
     dismissDialog(): void {

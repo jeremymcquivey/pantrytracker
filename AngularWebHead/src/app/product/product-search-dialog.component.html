@@ -1,0 +1,9 @@
+<div id="upload-modal" [hidden]="!this.isVisible">
+    <div id="upload-modal-content">
+        <product-search #productSearch (onSelected)="selectProduct($event)"></product-search>
+
+        <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
+            Cancel
+        </button>
+    </div>
+</div>

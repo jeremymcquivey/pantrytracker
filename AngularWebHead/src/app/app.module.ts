@@ -36,6 +36,7 @@ import { PantryListComponent } from './pantry/pantry-list.component'
 import { InventoryCorrectionComponent } from './pantry/inventory-correction.component'
 import { InventoryTransactionComponent } from './pantry/inventory-transaction.component'
 import { ProductSearchComponent } from './product/product-search.component'
+import { ProductSearchDialogComponent } from './product/product-search-dialog.component'
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ProductSearchComponent } from './product/product-search.component'
     TextEditorDialogComponent,
     PantryListComponent,
     ProductSearchComponent,
+    ProductSearchDialogComponent,
     InventoryCorrectionComponent,
     InventoryTransactionComponent,
     FileSelectDirective
