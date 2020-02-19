@@ -12,9 +12,15 @@ export class ProductSearchComponent implements OnInit {
     private visibleColumns = ['name'];
 
     @Output() onSelected: EventEmitter<Product> = new EventEmitter();
+    @Output() onSearched: EventEmitter<number> = new EventEmitter();
 
     @Input()
     public SearchText: string;
+
+    @Input()
+    get HasResults(): boolean {
+        return this.dataSource.data.length > 0;
+    }
 
     constructor(private _productService: ProductService) {
     }
@@ -30,6 +36,7 @@ export class ProductSearchComponent implements OnInit {
 
         if(this.SearchText) {
             this._productService.getProducts(this.SearchText).subscribe(product => {
+                this.onSearched.emit(product.length);
                 this.dataSource.data = product;
             });
         }

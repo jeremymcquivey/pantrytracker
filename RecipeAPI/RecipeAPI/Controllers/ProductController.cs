@@ -36,7 +36,8 @@ namespace RecipeAPI.Controllers
         [HttpGet]
         public IActionResult Get(string startsWith, int limit = 100)
         {
-            return Ok(_database.Products.Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
+            return Ok(_database.Products.Include(p => p.Varieties)
+                                        .Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
                                         .Where(p => p.Name.StartsWith(startsWith))
                                         .OrderBy(p => p.Name)
                                         .Take(limit));

@@ -12,9 +12,7 @@ import {
   MatSelectModule
 } from '@angular/material';
 
-import { ManageProductsComponent } from './manage-products.component';
 import { ManagePermissionsComponent } from './manage-permissions.component';
-import { ProductDetailsDialogComponent } from './product-details-dialog.component';
 import { AdminRoutingModule } from './admin-routing.module';
 
 @NgModule({
@@ -32,9 +30,7 @@ import { AdminRoutingModule } from './admin-routing.module';
   ],
   exports: [],
   declarations: [
-    ManageProductsComponent,
-    ManagePermissionsComponent,
-    ProductDetailsDialogComponent
+    ManagePermissionsComponent
   ],
   providers: [],
   entryComponents: [

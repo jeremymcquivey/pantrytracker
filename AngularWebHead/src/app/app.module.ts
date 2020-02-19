@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule, MatCard } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 
 import {
   MatButtonModule,
@@ -37,6 +37,8 @@ import { InventoryCorrectionComponent } from './pantry/inventory-correction.comp
 import { InventoryTransactionComponent } from './pantry/inventory-transaction.component'
 import { ProductSearchComponent } from './product/product-search.component'
 import { ProductSearchDialogComponent } from './product/product-search-dialog.component'
+import { ManageProductsComponent } from './product/manage-products.component'
+import { ProductDetailsDialogComponent } from './product/product-details-dialog.component'
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { ProductSearchDialogComponent } from './product/product-search-dialog.co
     ProductSearchDialogComponent,
     InventoryCorrectionComponent,
     InventoryTransactionComponent,
-    FileSelectDirective
+    ManageProductsComponent,
+    FileSelectDirective,
+    ProductDetailsDialogComponent
   ],
   imports: [
     BrowserModule,

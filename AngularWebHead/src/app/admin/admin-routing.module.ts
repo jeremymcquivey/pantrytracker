@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ManageProductsComponent } from './manage-products.component';
+import { ManageProductsComponent } from '../product/manage-products.component';
 import { ManagePermissionsComponent } from './manage-permissions.component';
 
 const routes: Routes = [
