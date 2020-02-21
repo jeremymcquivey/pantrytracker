@@ -1,7 +1,7 @@
-import { Output, EventEmitter, Component, Input } from "@angular/core";
-import { ProductCode, ProductVariety } from "../model/pantryline";
+import { Output, EventEmitter, Component, Input, ViewChild } from "@angular/core";
+import { ProductCode, Product, ProductVariety } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
-import { _MatChipListMixinBase, MatTableDataSource } from "@angular/material";
+import { _MatChipListMixinBase } from "@angular/material";
 
 @Component({
     selector: 'add-product-code',

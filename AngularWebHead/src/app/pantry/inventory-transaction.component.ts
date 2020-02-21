@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output, ViewChild } from "@angular/core";
 import { PantryService } from "../core/pantry.service";
 import { PantryLine, Product, ProductVariety, ProductCode } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
@@ -12,13 +12,14 @@ selector: 'inventory-transaction',
 })
 export class InventoryTransactionComponent implements OnInit {
     productName: string;
+    loadBarcode: boolean = false;
     public selectedVariety: number;
     preassignedVariety: string;
     ProductSearchText: string;
 
     warnings: string[] = [];
-    isVisible: boolean = false;
-    isBusy: boolean = false;
+    private isVisible: boolean = false;
+    private isBusy: boolean = false;
 
     private Line: PantryLine;
     private Product: Product;
@@ -39,6 +40,14 @@ export class InventoryTransactionComponent implements OnInit {
 
     ngOnInit(): void { }
 
+    LaunchDialog() {
+        this.isVisible = true;
+        this.Line = new PantryLine();
+        this.Product = new Product();
+        this.productName = "";
+        this.Varieties = [];
+    }
+
     updateInventory(): PantryLine {
         if(!this.Line.productId || !this.Line.size || !this.Line.quantity || !this.Line.unit)
         {
@@ -55,6 +64,7 @@ export class InventoryTransactionComponent implements OnInit {
     }
 
     lookupUPC(): void {
+        this.loadBarcode = false;
         if(this.Line.code.length == 0)
         {
             return;
@@ -70,6 +80,7 @@ export class InventoryTransactionComponent implements OnInit {
                 this.Line.unit = productCode.unit;
                 this.Line.varietyId = productCode.varietyId;
                 this.Line.productId = productCode.productId;
+                this.selectedVariety = productCode.varietyId;
 
                 if(productCode.productId) {
                     this.getProductById(productCode.productId);
@@ -82,20 +93,12 @@ export class InventoryTransactionComponent implements OnInit {
             this.isBusy = false;
         }, error => {
             if(!this.Line.productId) {
+                this.loadBarcode = true;
                 this.warnings.push("Barcode not registered.");
-                this.warnings.push("Please select a product then rescan the barcode.");
+                this.warnings.push("Please select a product to register the new barcode.");
                 return;
             }
-
-            this.AddProductCodeDialog.Code = new ProductCode();
-            this.AddProductCodeDialog.Code.code = this.Line.code;
-            this.AddProductCodeDialog.Code.product = this.Product;
-            this.AddProductCodeDialog.Code.productId = this.Line.productId;
-
-            console.log(this.AddProductCodeDialog.Code);
-
-            this.AddProductCodeDialog.isVisible = true;
-            this.isBusy = false;
+            else this.registerNewProductCode();
         });
     }
 
@@ -137,11 +140,25 @@ export class InventoryTransactionComponent implements OnInit {
         {
             this.Varieties = product.varieties;
         }
+
+        if(this.loadBarcode) {
+            this.registerNewProductCode();
+        }
+    }
+
+    registerNewProductCode() {
+        this.loadBarcode = false;
+
+        this.AddProductCodeDialog.Code = new ProductCode();
+        this.AddProductCodeDialog.Code.code = this.Line.code;
+        this.AddProductCodeDialog.Code.product = this.Product;
+        this.AddProductCodeDialog.Code.productId = this.Line.productId;
+
+        this.AddProductCodeDialog.isVisible = true;
+        this.isBusy = false;
     }
 
     newCodeSaved(code: ProductCode) {
-        console.log(code);
-
         this.Line.code = code.code;
         this.Line.product = code.product;
         this.Line.productId = code.productId;
@@ -149,6 +166,7 @@ export class InventoryTransactionComponent implements OnInit {
         this.Line.unit = code.unit;
         this.Line.variety = code.variety;
         this.Line.varietyId = code.varietyId;
+        this.selectedVariety = code.varietyId;
     }
 
     dismissDialog(): void {

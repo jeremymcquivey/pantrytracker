@@ -20,7 +20,7 @@
             </mat-form-field>
         </div>
 
-        <mat-form-field *ngIf="Code.product.varieties.length > 0">
+        <mat-form-field>
             <mat-select [(value)]="Code.varietyId">
                 <mat-option value="">---------- No Variety --------------</mat-option>
                 <mat-option *ngFor="let variety of Code.product.varieties" [value]="variety.id">
@@ -28,6 +28,8 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+
+        <span (click)="addVariety()" style="cursor:pointer;"> Add Variety </span>
 
         <div>
             <mat-form-field>

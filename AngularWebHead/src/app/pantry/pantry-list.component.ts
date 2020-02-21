@@ -41,6 +41,6 @@ export class PantryListComponent implements OnInit {
     }
 
     addTransaction(): void {
-        this.transactionDialog.isVisible = true;
+        this.transactionDialog.LaunchDialog();
     }
 }
