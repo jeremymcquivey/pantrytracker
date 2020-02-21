@@ -3,9 +3,5 @@
 <div style="padding-left: 1em;">
     <product-search #ProductSearch (onSelected)="productClick($event)" (onSearched)="searchReturned($event)"></product-search>
 </div>
-    
-<button title="Add Product" mat-raised-button color="primary" (click)="addProduct()" *ngIf="canAdd()">
-    <i class="material-icons">add</i>
-</button>
 
 <product-details-dialog #ProductDetailsDialog></product-details-dialog>

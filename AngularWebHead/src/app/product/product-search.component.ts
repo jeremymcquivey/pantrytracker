@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from "@angular/core";
 import { Product } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource, MatInput } from "@angular/material";
+import { AddProductDialogComponent } from "./add-product-dialog.component";
 
 @Component({
 selector: 'product-search',
@@ -9,7 +10,11 @@ selector: 'product-search',
 })
 export class ProductSearchComponent implements OnInit {
     private dataSource = new MatTableDataSource();
+    private hasSearched = false;
     private visibleColumns = ['name'];
+
+    @ViewChild("AddProductDialog")
+    private AddProductDialog: AddProductDialogComponent;
 
     @Output() onSelected: EventEmitter<Product> = new EventEmitter();
     @Output() onSearched: EventEmitter<number> = new EventEmitter();
@@ -28,7 +33,20 @@ export class ProductSearchComponent implements OnInit {
     ngOnInit(): void { }
 
     selectProduct(product: Product) {
+        this.hasSearched = false;
         this.onSelected.emit(product);
+    }
+
+    addProduct() {
+        this.AddProductDialog.Product = new Product();
+        this.AddProductDialog.Product.name = this.SearchText;
+
+        this.AddProductDialog.isVisible = true;
+    }
+  
+    canAdd() {
+      return this.hasSearched &&
+             this.dataSource.data.length == 0;
     }
 
     productSearch(): void {
@@ -36,6 +54,7 @@ export class ProductSearchComponent implements OnInit {
 
         if(this.SearchText) {
             this._productService.getProducts(this.SearchText).subscribe(product => {
+                this.hasSearched = true;
                 this.onSearched.emit(product.length);
                 this.dataSource.data = product;
             });

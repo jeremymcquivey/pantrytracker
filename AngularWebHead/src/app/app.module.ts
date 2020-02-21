@@ -39,6 +39,8 @@ import { ProductSearchComponent } from './product/product-search.component'
 import { ProductSearchDialogComponent } from './product/product-search-dialog.component'
 import { ManageProductsComponent } from './product/manage-products.component'
 import { ProductDetailsDialogComponent } from './product/product-details-dialog.component'
+import { AddProductDialogComponent } from './product/add-product-dialog.component'
+import { AddProductCodeComponent } from './product/add-product-code.component'
 
 @NgModule({
   declarations: [
@@ -59,8 +61,10 @@ import { ProductDetailsDialogComponent } from './product/product-details-dialog.
     ProductSearchDialogComponent,
     InventoryCorrectionComponent,
     InventoryTransactionComponent,
+    AddProductDialogComponent,
     ManageProductsComponent,
     FileSelectDirective,
+    AddProductCodeComponent,
     ProductDetailsDialogComponent
   ],
   imports: [

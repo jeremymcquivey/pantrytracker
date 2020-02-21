@@ -23,9 +23,11 @@ export class Product {
 
     public id: number;
 
-    public varieties: ProductVariety[];
+    public defaultUnit: string;
 
-    public codes: ProductCode[];
+    public varieties: ProductVariety[] = [];
+
+    public codes: ProductCode[] = [];
 }
 
 export class ProductVariety {

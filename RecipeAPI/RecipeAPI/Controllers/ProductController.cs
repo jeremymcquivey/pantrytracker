@@ -6,6 +6,7 @@ using PantryTracker.Model.Products;
 using RecipeAPI.ExternalServices;
 using RecipeAPI.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,13 +35,39 @@ namespace RecipeAPI.Controllers
         /// Admin functionality: Returns a list of all products whose name starts with the provided string.
         /// </summary>
         [HttpGet]
-        public IActionResult Get(string startsWith, int limit = 100)
+        public IActionResult Get(string searchText, int limit = 100)
         {
             return Ok(_database.Products.Include(p => p.Varieties)
                                         .Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
-                                        .Where(p => p.Name.StartsWith(startsWith))
+                                        .Where(p => p.Name.Contains(searchText))
                                         .OrderBy(p => p.Name)
                                         .Take(limit));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProduct([FromBody]Product product)
+        {
+            //TODO: Do a duplicate check.
+            if(product == default)
+            {
+                return BadRequest("Product body object is required");
+            }
+
+            if(string.IsNullOrEmpty(product.Name))
+            {
+                return BadRequest("Name of the product is required");
+            }
+
+            product.Id = 0;
+            product.OwnerId = UserRoles.Contains("Admin") ? null : AuthenticatedUser;
+            product.DefaultUnit ??= "each";
+            product.Varieties = new List<ProductVariety>();
+            product.Codes = new List<ProductCode>();
+
+            _database.Products.Add(product);
+            await _database.SaveChangesAsync();
+
+            return Ok(product);
         }
 
         /// <summary>
@@ -115,6 +142,46 @@ namespace RecipeAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("{id}/code/{code}")]
+        public async Task<IActionResult> AddCode([FromRoute]int id, [FromRoute]string code, [FromBody]ProductCode productCode)
+        {
+            // TODO: Verify that if a variety is speicfied that it actually belongs to that product.
+
+            if(productCode == default)
+            {
+                return BadRequest("ProductCode object is required in request body.");
+            }
+
+            if(string.IsNullOrEmpty(code) || (code.Length != 12 && code.Length != 13))
+            {
+                return BadRequest("12 or 13 digit code is required.");
+            }
+
+            if(string.IsNullOrEmpty(productCode.Size) || string.IsNullOrEmpty(productCode.Unit))
+            {
+                return BadRequest("Size and Unit are both required.");
+            }
+
+            productCode.Id = 0;
+            productCode.ProductId = id;
+            productCode.OwnerId = UserRoles.Contains("Admin") ? null : AuthenticatedUser;
+            productCode.Code = code;
+            productCode.VendorCode = null;
+            productCode.Vendor = null;
+            productCode.Product = null;
+
+            if (_database.ProductCodes.Any(p => p.Code == code && p.OwnerId == productCode.OwnerId))
+            {
+                return BadRequest("Duplicate code found.");
+            }
+
+            _database.ProductCodes.Add(productCode);
+            await _database.SaveChangesAsync();
+
+            return Ok(productCode);
         }
     }
 }

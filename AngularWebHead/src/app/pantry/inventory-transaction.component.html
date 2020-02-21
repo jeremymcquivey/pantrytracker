@@ -2,6 +2,9 @@
     <div id="upload-modal-content">
         <div>Add more inventory</div>
 
+        <div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="warnings.length > 0">
+            <div *ngFor="let warning of warnings">{{ warning }}</div>
+        </div>
         <!--<span *ngIf="PantryLine">{{  Line.product.name }} {{ "(" }} {{ Line.unit || "each" }} {{ ")" }}</span>-->
         <div>
             <mat-form-field style="width:20em;">
@@ -55,3 +58,4 @@
 </div>
 
 <product-search-dialog #productSearchDialog (onSelected)="updateProduct($event)"></product-search-dialog>
+<add-product-code #addProductCodeDialog (onSaved)="newCodeSaved($event)"></add-product-code>

@@ -35,8 +35,7 @@ namespace PantryTrackers.Integrations.Walmart
 
         public async Task<ProductCode> SearchByCodeAsync(string code)
         {
-            return await Search(code);
-            //return await _cache.GetAsync($"Walmart:{code.ToLower()}", _getCodeDelegate, code, TimeSpan.FromHours(24));
+            return await _cache.GetAsync($"Walmart:{code.ToLower()}", _getCodeDelegate, code, TimeSpan.FromHours(24));
         }
 
         private async Task<ProductCode> Search(string code)

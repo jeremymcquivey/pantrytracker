@@ -1,0 +1,52 @@
+<div id="upload-modal" *ngIf="this.isVisible" style="z-index:60">
+    <div id="upload-modal-content">
+        <h1 mat-dialog-title>{{Code.code}}</h1>
+
+        <div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="Code.code" placeholder="Code" [disabled]="networkIsBusy">
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="Code.brand" placeholder="Brand" [disabled]="networkIsBusy">
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="Code.product.name" placeholder="Product" [disabled]="true">
+            </mat-form-field>
+        </div>
+
+        <mat-form-field *ngIf="Code.product.varieties.length > 0">
+            <mat-select [(value)]="Code.varietyId">
+                <mat-option value="">---------- No Variety --------------</mat-option>
+                <mat-option *ngFor="let variety of Code.product.varieties" [value]="variety.id">
+                  {{ variety.description }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="Code.size" placeholder="Size" [disabled]="networkIsBusy">
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="Code.unit" placeholder="Unit" [disabled]="networkIsBusy">
+            </mat-form-field>
+        </div>
+
+        <div mat-dialog-actions layout="row">
+            <button mat-button (click)="saveProductCode()" color="primary">Save</button>
+        </div>
+
+        <div mat-dialog-actions layout="row">
+            <button mat-button (click)="cancelDialog()" color="accent">Cancel</button>
+        </div>
+    </div>
+</div>

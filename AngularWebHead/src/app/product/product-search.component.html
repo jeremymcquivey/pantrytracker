@@ -2,16 +2,20 @@
 
 <div>
     <mat-form-field style="width:20em;">
-        <input matInput [(ngModel)]="SearchText" placeholder="Product Name or Description">
+        <input matInput #searchTextBox [(ngModel)]="SearchText" placeholder="Product Name or Description" (input)="hasSearched = false;">
     </mat-form-field>
     <i class="material-icons" style="cursor: pointer;" (click)="productSearch()">search</i>
 </div>
+
+<button title="Add Product" mat-raised-button color="primary" (click)="addProduct()" [disabled]="!canAdd()">
+    <i class="material-icons">add</i>
+</button>
 
 <mat-table [dataSource]="dataSource">
 
     <!-- Name/Description Column -->
 <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>Pantry Inventory</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>Search Results</mat-header-cell>
     <mat-cell *matCellDef="let product" (click)="selectProduct(product)" style="cursor: pointer">
     <div>
         <span>{{product.name}}</span>
@@ -21,3 +25,5 @@
 
 <mat-row *matRowDef="let row; columns: visibleColumns;"></mat-row>
 </mat-table>
+
+<add-product-dialog #AddProductDialog (onAdded)="selectProduct($event)"></add-product-dialog>

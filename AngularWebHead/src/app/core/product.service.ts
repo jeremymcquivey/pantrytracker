@@ -68,11 +68,19 @@ export class ProductService {
         return this.httpClient.get<Product>(Constants.recipeApi + `v1/Product/${id}`, { headers: headers });
     }
 
-    getProducts(group: string): Observable<Product[]> {
+    getProducts(searchText: string): Observable<Product[]> {
         var accessToken = this._authService.getAccessToken();
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
-        return this.httpClient.get<Product[]>(Constants.recipeApi + `v1/Product?startsWith=${group}`, { headers: headers });
+        return this.httpClient.get<Product[]>(Constants.recipeApi + `v1/Product?searchText=${searchText}`, { headers: headers });
+    }
+
+    addProduct(newProduct: Product): Observable<Product> {
+        var accessToken = this._authService.getAccessToken();
+        var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
+                                       .set('Content-Type', "application/json");
+
+        return this.httpClient.post<Product>(Constants.recipeApi + `v1/Product`, JSON.stringify(newProduct), { headers: headers });
     }
 
     lookupCode(code: string): Observable<ProductCode> {
@@ -80,5 +88,13 @@ export class ProductService {
         var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
         return this.httpClient.get<ProductCode>(Constants.recipeApi + `v1/Product/search/code/${code}`, { headers: headers });
+    }
+
+    addProductCode(code: ProductCode): Observable<ProductCode> {
+        var accessToken = this._authService.getAccessToken();
+        var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
+                                       .set('Content-Type', "application/json");
+
+        return this.httpClient.post<ProductCode>(Constants.recipeApi + `v1/Product/${code.productId}/code/${code.code}`, JSON.stringify(code), { headers: headers });
     }
 }

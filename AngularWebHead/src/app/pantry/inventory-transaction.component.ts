@@ -1,8 +1,9 @@
 import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from "@angular/core";
 import { PantryService } from "../core/pantry.service";
-import { PantryLine, Product, ProductVariety } from "../model/pantryline";
+import { PantryLine, Product, ProductVariety, ProductCode } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
 import { ProductSearchDialogComponent } from "../product/product-search-dialog.component";
+import { AddProductCodeComponent } from "../product/add-product-code.component";
 
 @Component({
 selector: 'inventory-transaction',
@@ -15,6 +16,7 @@ export class InventoryTransactionComponent implements OnInit {
     preassignedVariety: string;
     ProductSearchText: string;
 
+    warnings: string[] = [];
     isVisible: boolean = false;
     isBusy: boolean = false;
 
@@ -24,6 +26,9 @@ export class InventoryTransactionComponent implements OnInit {
 
     @ViewChild("productSearchDialog")
     public ProductSearchDialog: ProductSearchDialogComponent; 
+
+    @ViewChild("addProductCodeDialog")
+    public AddProductCodeDialog: AddProductCodeComponent;
 
     @Output() onUpdate: EventEmitter<PantryLine> = new EventEmitter();
 
@@ -55,8 +60,8 @@ export class InventoryTransactionComponent implements OnInit {
             return;
         }
 
+        this.warnings = [];
         this.isBusy = true;
-        this.Product = new Product();
         this.Varieties = [];
 
         this._productService.lookupCode(this.Line.code).subscribe(productCode => {
@@ -74,6 +79,22 @@ export class InventoryTransactionComponent implements OnInit {
                 alert("Code not found.");
             }
 
+            this.isBusy = false;
+        }, error => {
+            if(!this.Line.productId) {
+                this.warnings.push("Barcode not registered.");
+                this.warnings.push("Please select a product then rescan the barcode.");
+                return;
+            }
+
+            this.AddProductCodeDialog.Code = new ProductCode();
+            this.AddProductCodeDialog.Code.code = this.Line.code;
+            this.AddProductCodeDialog.Code.product = this.Product;
+            this.AddProductCodeDialog.Code.productId = this.Line.productId;
+
+            console.log(this.AddProductCodeDialog.Code);
+
+            this.AddProductCodeDialog.isVisible = true;
             this.isBusy = false;
         });
     }
@@ -116,6 +137,18 @@ export class InventoryTransactionComponent implements OnInit {
         {
             this.Varieties = product.varieties;
         }
+    }
+
+    newCodeSaved(code: ProductCode) {
+        console.log(code);
+
+        this.Line.code = code.code;
+        this.Line.product = code.product;
+        this.Line.productId = code.productId;
+        this.Line.size = code.size;
+        this.Line.unit = code.unit;
+        this.Line.variety = code.variety;
+        this.Line.varietyId = code.varietyId;
     }
 
     dismissDialog(): void {

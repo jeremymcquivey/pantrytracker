@@ -2,18 +2,19 @@
     <div id="upload-modal-content">
             <h1 mat-dialog-title>{{product.name}}</h1>
             
+            <span style="background-color: #a8a8a8; margin-left: 1em; padding: 1em;">
+                <mat-form-field>
+                    <input matInput [(ngModel)]="blankVariety.description" placeholder="Description" [disabled]="networkIsBusy">
+                </mat-form-field>
+                <b style="cursor: pointer; color: blue; margin-left: 1.5em;" (click)="addVariety()">
+                    Add
+                </b>
+            </span>
+
             <mat-table [dataSource]="varietyDataSource">
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef>
                         Varieties (i.e. organic, ground, large, etc...)
-                        <span style="background-color: #a8a8a8; margin-left: 3em; padding-left:1em; padding-right:1em;">
-                            <mat-form-field>
-                                <input matInput [(ngModel)]="blankVariety.description" placeholder="Description" [disabled]="networkIsBusy">
-                            </mat-form-field>
-                            <b style="cursor: pointer; color: blue; margin-left: 1.5em;" (click)="addVariety()">
-                                Add
-                            </b>
-                        </span>
                     </mat-header-cell>
                     <mat-cell *matCellDef="let variety" [style.flex]="'flex'">
                         <div class="project-name">
@@ -27,6 +28,15 @@
             </mat-table>
 
             <p>&nbsp;</p>
+            
+            <span style="background-color: #a8a8a8; margin-left: 1em; padding: 1em;">
+                <mat-form-field>
+                    <input matInput [(ngModel)]="blankCode.code" placeholder="Code" [disabled]="networkIsBusy">
+                </mat-form-field>
+                <b style="cursor: pointer; color: blue; margin-left: 1.5em;" (click)="addCode()">
+                    Add
+                </b>
+            </span>
 
             <mat-table [dataSource]="codeDataSource">
                 <ng-container matColumnDef="code"> 
@@ -39,11 +49,36 @@
                         </div>
                     </mat-cell>
                 </ng-container>
+
                 <ng-container matColumnDef="variety">
-                    <mat-header-cell *matHeaderCellDef>Assigned Variety</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>
+                        Assigned Variety
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let code" [style.flex]="'flex'">
                         <div class="project-name">
                             <p>{{ code.variety == null ? "None" : code.variety.description }}</p>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="size">
+                    <mat-header-cell *matHeaderCellDef>
+                        Size
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let code" [style.flex]="'flex'">
+                        <div class="project-name">
+                            <p>{{ code.size }} &nbsp; {{ code.unit }}</p>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="brand">
+                    <mat-header-cell *matHeaderCellDef>
+                        Brand
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let code" [style.flex]="'flex'">
+                        <div class="project-name">
+                            <p>{{ code.brand == null ? "None" : code.brand }}</p>
                         </div>
                     </mat-cell>
                 </ng-container>
@@ -53,7 +88,9 @@
             </mat-table>
 
             <div mat-dialog-actions layout="row">
-                <button mat-button (click)="cancelDialog()" color="accent">Cancel</button>
+                <button mat-button (click)="cancelDialog()" color="accent">Close</button>
             </div>
     </div>
 </div>
+
+<add-product-code #addProductCodeDialog (onSaved)="codeAdded()"></add-product-code>

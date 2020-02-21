@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RecipeAPI.Controllers
@@ -13,5 +15,7 @@ namespace RecipeAPI.Controllers
         /// Retrieves the current user's SSO id
         /// </summary>
         protected string AuthenticatedUser { get => User.FindFirst(ClaimTypes.NameIdentifier).Value; }
+
+        protected IEnumerable<string> UserRoles { get => User.FindAll(ClaimTypes.Role).Select(p => p.Value); }
     }
 }

@@ -30,16 +30,7 @@ export class ManageProductsComponent implements OnInit {
     this.ProductDetails.isVisible = true;
   }
 
-  canAdd() {
-    return this.ProductSearch.SearchText &&
-           this.searchResults == 0;
-  }
-
   searchReturned(resultCount: number) {
     this.searchResults = resultCount;
-  }
-
-  addProduct() {
-    
   }
 }
