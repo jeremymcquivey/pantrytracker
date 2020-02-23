@@ -41,6 +41,7 @@ import { ManageProductsComponent } from './product/manage-products.component'
 import { ProductDetailsDialogComponent } from './product/product-details-dialog.component'
 import { AddProductDialogComponent } from './product/add-product-dialog.component'
 import { AddProductCodeComponent } from './product/add-product-code.component'
+import { AddVarietyComponent } from './product/add-variety.component'
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AddProductCodeComponent } from './product/add-product-code.component'
     ManageProductsComponent,
     FileSelectDirective,
     AddProductCodeComponent,
+    AddVarietyComponent,
     ProductDetailsDialogComponent
   ],
   imports: [

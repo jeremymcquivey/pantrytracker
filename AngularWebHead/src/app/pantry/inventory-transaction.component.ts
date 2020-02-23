@@ -4,6 +4,7 @@ import { PantryLine, Product, ProductVariety, ProductCode } from "../model/pantr
 import { ProductService } from "../core/product.service";
 import { ProductSearchDialogComponent } from "../product/product-search-dialog.component";
 import { AddProductCodeComponent } from "../product/add-product-code.component";
+import { AddVarietyComponent } from "../product/add-variety.component";
 
 @Component({
 selector: 'inventory-transaction',
@@ -27,6 +28,9 @@ export class InventoryTransactionComponent implements OnInit {
 
     @ViewChild("productSearchDialog")
     public ProductSearchDialog: ProductSearchDialogComponent; 
+
+    @ViewChild("addVariety")
+    private addVariety: AddVarietyComponent;
 
     @ViewChild("addProductCodeDialog")
     public AddProductCodeDialog: AddProductCodeComponent;
@@ -135,6 +139,7 @@ export class InventoryTransactionComponent implements OnInit {
         this.Line.productId = product.id;
         this.Product = product;
         this.productName = product.name;
+        this.addVariety.resetVariety(product.id);
 
         if(product.varieties.length > 0)
         {
@@ -167,6 +172,10 @@ export class InventoryTransactionComponent implements OnInit {
         this.Line.variety = code.variety;
         this.Line.varietyId = code.varietyId;
         this.selectedVariety = code.varietyId;
+    }
+
+    varietyAdded(variety: ProductVariety) {
+        this.Product.varieties.push(variety);
     }
 
     dismissDialog(): void {

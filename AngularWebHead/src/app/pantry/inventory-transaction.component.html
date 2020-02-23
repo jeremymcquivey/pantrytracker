@@ -47,6 +47,8 @@
             </mat-select>
         </mat-form-field>
 
+        <add-variety [hidden]="!productName" #addVariety (onVarietyAdded)="varietyAdded($event)"></add-variety>
+
         <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
             Cancel
         </button>

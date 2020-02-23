@@ -3,6 +3,7 @@ import { Product, ProductVariety, ProductCode } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
 import { _MatChipListMixinBase, MatTableDataSource } from "@angular/material";
 import { AddProductCodeComponent } from "./add-product-code.component";
+import { AddVarietyComponent } from "./add-variety.component";
 
 @Component({
     selector: 'product-details-dialog',
@@ -13,7 +14,6 @@ export class ProductDetailsDialogComponent {
     private _product: Product = new Product();
     
     networkIsBusy: boolean = false;
-    blankVariety: ProductVariety = new ProductVariety();
     blankCode: ProductCode = new ProductCode();
     varietyDataSource = new MatTableDataSource();
     codeDataSource = new MatTableDataSource();
@@ -23,41 +23,24 @@ export class ProductDetailsDialogComponent {
     @ViewChild("addProductCodeDialog")
     private AddProductCodeDialog: AddProductCodeComponent;
 
+    @ViewChild("addVariety")
+    private AddVariety: AddVarietyComponent;
+
     @Input() 
     set product(value: Product) {
         this._product = value || new Product();
         this.GetDetails(value.id);
-        this.resetBlankVariety();
         this.resetBlankCode();
     }
     get product(): Product {
         return this._product;
     }
 
-    @Output() onImageSelected: EventEmitter<any> = new EventEmitter<any>();
-    @Output() onTextSelected: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onVarietyAdded: EventEmitter<ProductVariety> = new EventEmitter<ProductVariety>();
 
     public isVisible: boolean = false;
 
     constructor(private _projectService: ProductService) {}
-
-    public addVariety() {
-        if(this.networkIsBusy)
-        {
-            return;
-        }
-
-        if(this.blankVariety.description.length > 0)
-        {
-            this.networkIsBusy = true;
-            this._projectService.addVariety(this.blankVariety).subscribe(variety => {
-                this._product.varieties.push(variety);
-                this.varietyDataSource.data = this._product.varieties;
-                this.resetBlankVariety();
-                this.networkIsBusy = false;
-            }, error => { console.error(error); this.networkIsBusy = false; });
-        }
-    }
 
     public addCode() {
         if(this.networkIsBusy)
@@ -72,6 +55,12 @@ export class ProductDetailsDialogComponent {
         }
     }
 
+    private varietyAdded(variety: ProductVariety) {
+        this._product.varieties.push(variety);
+        this.varietyDataSource.data = this._product.varieties;
+        this.onVarietyAdded.emit(variety);
+    }
+
     private cancelDialog() {
         this.isVisible = false;
     }
@@ -83,6 +72,7 @@ export class ProductDetailsDialogComponent {
         this.networkIsBusy = true;
         this._projectService.getProduct(productId).subscribe(product => {
             this._product = product;
+            this.AddVariety.resetVariety(this._product.id);
             this.varietyDataSource.data = product.varieties;
             this.codeDataSource.data = product.codes;
             this.networkIsBusy = false;
@@ -92,11 +82,6 @@ export class ProductDetailsDialogComponent {
     private codeAdded() {
         this.GetDetails(this._product.id);
         this.resetBlankCode();
-    }
-
-    private resetBlankVariety() {
-        this.blankVariety = new ProductVariety();
-        this.blankVariety.productId = this._product.id;
     }
 
     private resetBlankCode() {
