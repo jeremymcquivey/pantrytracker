@@ -28,13 +28,13 @@ namespace RecipeAPI.Controllers
         private const char EndOfLineDelimiter = '\n';
 
         private readonly IOCRService _ocr;
-        private readonly InMemoryProductsDb _products;
+        private readonly ProductService _products;
         private readonly RecipeContext _db;
 
 #pragma warning disable 1591
         public RecipeController(IOptions<AppSettings> config,
                                 RecipeContext database,
-                                InMemoryProductsDb products,
+                                ProductService products,
 								IOCRService ocrService)
 #pragma warning restore 1591
         {
@@ -304,7 +304,6 @@ namespace RecipeAPI.Controllers
                 var userMatch = userPreferred.Where(p => ingredient.Name.Contains(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
                                              .OrderBy(p => p.matchingText.Length)
                                              .FirstOrDefault();
-
                 if (userMatch != null)
                 {
                     if (userMatch.Product == default(Product))
@@ -326,17 +325,14 @@ namespace RecipeAPI.Controllers
                     continue;
                 }
 
-                var potentialMatches = _products.Where(p => ingredient.Name.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase))
-                                                .ToList()
-                                                .MergeWith(userProducts.Where(p => ingredient.Name.Contains(p.Name, StringComparison.CurrentCultureIgnoreCase)).ToList())
-                                                .OrderByDescending(p => p.Name.Length)
-                                                .ThenByDescending(p => p.OwnerId);
+                var potentialMatch = _products.MatchProduct(ingredient.Name);
 
-                if (potentialMatches.Any())
+                if (potentialMatch.Key != default)
                 {
                     matches.Add(new RecipeProduct
                     {
-                        Product = potentialMatches.First(),
+                        Product = _products.GetById(potentialMatch.Key.Item1),
+                        Variety = _products.GetVariety(potentialMatch.Key.Item2),
                         RecipeId = recipeId,
                         PlainText = ingredient.Name,
                         Unit = ingredient.Unit,

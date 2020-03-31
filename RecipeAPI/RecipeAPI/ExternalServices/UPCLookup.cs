@@ -1,7 +1,6 @@
 ﻿using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using PantryTracker.Model;
 using PantryTracker.Model.Products;
 using PantryTrackers.Integrations.Kroger;
@@ -19,27 +18,23 @@ namespace RecipeAPI.ExternalServices
     /// </summary>
     public class UPCLookup
     {
-        private readonly Func<Dictionary<Tuple<int, int?>, string[]>> _productDelegate;
-
         private readonly TelemetryClient _appInsights;
+        private readonly ProductService _products;
         private readonly RecipeContext _database;
-        private readonly ICacheManager _cache;
         private readonly IList<IProductSearch> _providers;
 
         /// <summary></summary>
-        public UPCLookup(RecipeContext database, KrogerService krogerService, WalmartService walmartService, ICacheManager cache)
+        public UPCLookup(RecipeContext database, KrogerService krogerService, WalmartService walmartService, ProductService products)
         {
             _appInsights = new TelemetryClient(TelemetryConfiguration.CreateDefault());
+            _products = products;
             _database = database;
-            _cache = cache;
 
             _providers = new List<IProductSearch>
             {
                 //krogerService,
                 walmartService
             };
-
-            _productDelegate = () => GetProductBreakdowns(ownerId: null);
         }
 
         /// <summary>
@@ -91,7 +86,6 @@ namespace RecipeAPI.ExternalServices
                             Vendor = provider.Name
                         });
 
-
                         await _database.SaveChangesAsync();
                         return product;
                     }
@@ -103,36 +97,13 @@ namespace RecipeAPI.ExternalServices
 
         private void AssignProduct(ProductCode code)
         {
-            var products = _cache.Get("AllProducts", _productDelegate, TimeSpan.FromDays(1));
-
-            var potentialMatch = products.Where(list => list.Value.All(q => code.Description.Contains(q, StringComparison.CurrentCultureIgnoreCase)))
-                                         .OrderByDescending(p => p.Value.Length)
-                                         .FirstOrDefault();
+            var potentialMatch = _products.MatchProduct(code.Description);
 
             if (potentialMatch.Key != default)
             {
                 code.ProductId = potentialMatch.Key.Item1;
                 code.VarietyId = potentialMatch.Key.Item2 != 0 ? potentialMatch.Key.Item2 : null;
             }
-        }
-
-        private Dictionary<Tuple<int, int?>, string[]> GetProductBreakdowns(string ownerId)
-        {
-            var varieties = _database.Varieties.Include(v => v.Product)
-                                               .ToList();
-
-            return _database.Products.Where(p => p.OwnerId == ownerId || p.OwnerId == null)
-                                     .Select(p => new ProductVariety
-                                     {
-                                         Product = p,
-                                         ProductId = p.Id,
-                                         Description = null,
-                                         Id = 0
-                                     }).ToList()
-                                     .Union(varieties)
-                                     .ToDictionary(variety => new Tuple<int, int?>(variety.ProductId, variety.Id), p => ((p.Description?.Split(" ", StringSplitOptions.None) ?? new string[0])
-                                                                                                                                        .Concat(p.Product.Name.Split(" ", StringSplitOptions.None)))
-                                                                                                                                        .ToArray());
         }
     }
 }

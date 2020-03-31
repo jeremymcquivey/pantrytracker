@@ -18,6 +18,8 @@ namespace PantryTracker.Model.Products
 
         public Product Product { get; set; }
 
+        public ProductVariety Variety { get; set; }
+
         public PantryTransaction ToPantryTransaction()
         {
             return new PantryTransaction

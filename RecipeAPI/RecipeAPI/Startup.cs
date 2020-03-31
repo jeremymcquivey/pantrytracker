@@ -16,7 +16,6 @@ using PantryTrackers.Integrations.Kroger;
 using PantryTracker.Model;
 using RecipeAPI.ExternalServices;
 using Microsoft.Extensions.Hosting;
-using System.Net;
 using PantryTrackers.Integrations.Walmart;
 
 #pragma warning disable 1591
@@ -44,6 +43,7 @@ namespace RecipeAPI
             services.AddScoped<KrogerService>();
             services.AddScoped<WalmartService>();
             services.AddScoped<UPCLookup>();
+            services.AddScoped<ProductService>();
             services.AddHttpClient();
 
             services.AddCors(options =>
