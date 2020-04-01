@@ -1,0 +1,14 @@
+<div id="upload-modal" [hidden]="!this.isVisible">
+    <div id="upload-modal-content">
+        <div>Using: {{ deviceName }}</div>
+        <zxing-scanner [formats]="['EAN_13', 'CODE_128', 'DATA_MATRIX']"
+                       [enable]="scannerEnabled" 
+                       (scanSuccess)="scanSuccessHandler($event)"
+                       #barcodeReader>
+
+        </zxing-scanner>
+        <div mat-dialog-actions layout="row">
+            <button mat-raised-button (click)="hideDialog()" color="accent">Close</button> &nbsp;
+        </div>
+    </div>
+</div>

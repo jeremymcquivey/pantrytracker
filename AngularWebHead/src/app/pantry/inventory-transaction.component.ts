@@ -5,6 +5,7 @@ import { ProductService } from "../core/product.service";
 import { ProductSearchDialogComponent } from "../product/product-search-dialog.component";
 import { AddProductCodeComponent } from "../product/add-product-code.component";
 import { AddVarietyComponent } from "../product/add-variety.component";
+import { BarcodeReaderComponent } from '../io/barcodereader.component';
 
 @Component({
 selector: 'inventory-transaction',
@@ -26,14 +27,17 @@ export class InventoryTransactionComponent implements OnInit {
     private Product: Product;
     private Varieties: ProductVariety[] = [];
 
+    @ViewChild("readBarcode") 
+    private reader: BarcodeReaderComponent;
+
     @ViewChild("productSearchDialog")
-    public ProductSearchDialog: ProductSearchDialogComponent; 
+    private ProductSearchDialog: ProductSearchDialogComponent; 
 
     @ViewChild("addVariety")
     private addVariety: AddVarietyComponent;
 
     @ViewChild("addProductCodeDialog")
-    public AddProductCodeDialog: AddProductCodeComponent;
+    private AddProductCodeDialog: AddProductCodeComponent;
 
     @Output() onUpdate: EventEmitter<PantryLine> = new EventEmitter();
 
@@ -180,5 +184,14 @@ export class InventoryTransactionComponent implements OnInit {
 
     dismissDialog(): void {
         this.isVisible = false;
+    }
+
+    launchScanner() {
+        this.reader.startScan();
+    }
+
+    barcodeReadHandler(text) {
+        this.Line.code = text;
+        this.lookupUPC();
     }
 }

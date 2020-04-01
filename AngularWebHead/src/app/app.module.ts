@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 import {
   MatButtonModule,
@@ -42,6 +43,7 @@ import { ProductDetailsDialogComponent } from './product/product-details-dialog.
 import { AddProductDialogComponent } from './product/add-product-dialog.component'
 import { AddProductCodeComponent } from './product/add-product-code.component'
 import { AddVarietyComponent } from './product/add-variety.component'
+import { BarcodeReaderComponent } from './io/barcodereader.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,8 @@ import { AddVarietyComponent } from './product/add-variety.component'
     FileSelectDirective,
     AddProductCodeComponent,
     AddVarietyComponent,
-    ProductDetailsDialogComponent
+    ProductDetailsDialogComponent,
+    BarcodeReaderComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +87,8 @@ import { AddVarietyComponent } from './product/add-variety.component'
     AdminModule,
     CoreModule,
     AppRoutingModule,
-    MatCardModule
+    MatCardModule,
+    ZXingScannerModule
   ],
   providers: [
   ],

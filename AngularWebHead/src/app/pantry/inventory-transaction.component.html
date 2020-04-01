@@ -10,6 +10,7 @@
             <mat-form-field style="width:20em;">
                 <input matInput [(ngModel)]="Line.code" placeholder="Product Code i.e. UPC/EAN">
             </mat-form-field>
+            <i class="material-icons" style="cursor: pointer;" (click)="launchScanner()">camera_alt</i>
             <i class="material-icons" style="cursor: pointer;" (click)="lookupUPC()">search</i>
         </div>
 
@@ -59,5 +60,6 @@
     </div>
 </div>
 
+<read-barcode #readBarcode (onReadValue)="barcodeReadHandler($event)"></read-barcode>
 <product-search-dialog #productSearchDialog (onSelected)="updateProduct($event)"></product-search-dialog>
 <add-product-code #addProductCodeDialog (onSaved)="newCodeSaved($event)"></add-product-code>
