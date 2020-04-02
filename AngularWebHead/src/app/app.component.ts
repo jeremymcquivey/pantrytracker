@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './core/account.service';
 import { UserProfile } from './model/user-profile';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './core/auth.service';
 import { Router } from '@angular/router';
 

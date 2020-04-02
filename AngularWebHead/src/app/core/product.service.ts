@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Constants } from '../constants';
 import { Project } from '../model/project';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Milestone } from '../model/milestone';
 import { UserPermission } from '../model/user-permission';
 import { UserProfile } from '../model/user-profile';
