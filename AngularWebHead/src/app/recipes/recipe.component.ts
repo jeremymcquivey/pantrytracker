@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ProductService } from "../core/product.service";
 import { Recipe } from "../model/recipe";
 import { Ingredient } from "../model/ingredient";
-import { MatTableDataSource, MatDialog } from "@angular/material";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatDialog } from "@angular/material/dialog";
 import { Direction } from "../model/direction";
 import { FileUploader } from "ng2-file-upload";
 import { TextEditorDialogComponent } from "../io/texteditor-dialog.component";
@@ -25,7 +26,7 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
     public isUpdate:boolean;
     public hasSubmitted: boolean = false;
     public rawText: string = "";
-    private isBusy: boolean = false;
+    public isBusy: boolean = false;
 
     public recipe: Recipe = {} as Recipe;
     public ingredients: Ingredient[];
@@ -67,11 +68,11 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
       this.uploadDialog.isVisible = true;
     }
 
-    private closeFileUploader() {
+    public closeFileUploader() {
       this.uploadDialog.isVisible = false;
     }
 
-    private showTextPreview() {
+    public showTextPreview() {
       if(!this.rawText || this.rawText.trim().length == 0) {
         this.rawText = this.recipe.title;
       }
@@ -80,7 +81,7 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
       this.previewEditor.rawText = this.rawText;
     }
 
-    private closeTextPreview() {
+    public closeTextPreview() {
       this.previewEditor.isVisible = false;
     }
 

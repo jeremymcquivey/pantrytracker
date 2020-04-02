@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from "@angular/core";
 import { Product } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
-import { MatTableDataSource, MatInput } from "@angular/material";
+import { MatTableDataSource } from "@angular/material/table";
 import { AddProductDialogComponent } from "./add-product-dialog.component";
 
 @Component({
@@ -9,9 +9,9 @@ selector: 'product-search',
     templateUrl: 'product-search.component.html'
 })
 export class ProductSearchComponent implements OnInit {
-    private dataSource = new MatTableDataSource();
-    private hasSearched = false;
-    private visibleColumns = ['name'];
+    public dataSource = new MatTableDataSource();
+    public hasSearched = false;
+    public visibleColumns = ['name'];
 
     @ViewChild("AddProductDialog")
     private AddProductDialog: AddProductDialogComponent;

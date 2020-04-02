@@ -1,19 +1,18 @@
 import { Component, OnInit } from "@angular/core";
-import { MatTableDataSource } from "@angular/material";
 import { ProductService } from "../core/product.service";
 import { Utils } from "../core/utils";
 import { Project } from "../model/project";
 import { Recipe } from "../model/recipe";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: "app-projects",
-  templateUrl: "project-list.component.html"
+  templateUrl: "./recipe-list.component.html"
 })
-export class ProjectListComponent implements OnInit {
-  displayedColumns = ["name"];
+export class RecipeListComponent implements OnInit {
+  displayedColumns = ['name'];
   error: string;
   dataSource = new MatTableDataSource();
-  dataSource2 = new MatTableDataSource();
   projects: Project[];
   recipes: Recipe[];
 
@@ -22,12 +21,7 @@ export class ProjectListComponent implements OnInit {
   ngOnInit() {
     this._projectService.getRecipes().subscribe(recipes => {
       this.recipes = recipes;
-      this.dataSource2.data = recipes;
+      this.dataSource.data = recipes;
     }, error => Utils.formatError(error));
-
-    /*this._projectService.getProjects().subscribe(projects => {
-      this.projects = projects;
-      this.dataSource.data = projects;
-    }, error => Utils.formatError(error));*/
   }
 }
