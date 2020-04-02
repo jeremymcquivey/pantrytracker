@@ -10,7 +10,7 @@ selector: 'pantry-list',
     templateUrl: 'pantry-list.component.html'
 })
 export class PantryListComponent implements OnInit {
-    private recipeData: any[];
+    private recipeData: PantryLine[];
     dataSource = new MatTableDataSource();
     visibleColumns = ['name'];
 
@@ -20,9 +20,7 @@ export class PantryListComponent implements OnInit {
     @ViewChild("inventoryTransaction")
     public transactionDialog: InventoryTransactionComponent;
 
-    constructor(
-        private _pantryService: PantryService
-      ) {}
+    constructor(private _pantryService: PantryService) {}
 
     ngOnInit(): void {
         this.getInventory();

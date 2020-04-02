@@ -13,7 +13,8 @@
           <div>
             <span>{{line.quantity}}</span>&nbsp;
             <span>{{line.unit}}</span>&nbsp;
-            <span>{{line.product.name}}</span>
+            <span>{{line.product.name}}</span>&nbsp;
+            <span *ngIf="line.variety">({{ line.variety.description }})</span>
           </div>
         </mat-cell>
       </ng-container>

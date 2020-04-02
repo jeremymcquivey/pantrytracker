@@ -24,13 +24,15 @@ namespace RecipeAPI.Extensions
 
         public static IEnumerable<PantryTransaction> CombineUnits(this IEnumerable<PantryTransaction> entries)
         {
-            return entries.GroupBy(x => new { x.ProductId, x.Unit })
+            return entries.GroupBy(x => new { x.ProductId, x.VarietyId, x.Unit })
                           .Select(p =>
                           new PantryTransaction
                           {
                               Product = p.First().Product,
+                              Variety = p.First().Variety,
                               UserId = p.First().UserId,
                               ProductId = p.Key.ProductId,
+                              VarietyId = p.Key.VarietyId,
                               Quantity = p.Sum(q => q.Quantity * q.Size.ToNumber()),
                               Size = "1",
                               Unit = p.Key.Unit

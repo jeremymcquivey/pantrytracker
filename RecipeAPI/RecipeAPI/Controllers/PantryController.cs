@@ -43,11 +43,12 @@ namespace RecipeAPI.Controllers
         {
             try
             {
-                _appInsights.TrackEvent("GetAllPantryItems 3", new Dictionary<string, string> { { "IncludeZeroValues", includeZeroValues ? "true" : "false" } });
+                _appInsights.TrackEvent("GetAllPantryItems", new Dictionary<string, string> { { "IncludeZeroValues", includeZeroValues ? "true" : "false" } });
 
                 var gId = Guid.Parse(AuthenticatedUser);
                 var pantryItems = _db.Transactions.Where(p => p.UserId == gId)
                                                   .Include(p => p.Product)
+                                                  .Include(p => p.Variety)
                                                   .CalculateTotals(null)
                                                   .OrderBy(p => p.Product.Name);
                 if(!includeZeroValues)
