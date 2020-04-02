@@ -141,6 +141,7 @@ export class InventoryTransactionComponent implements OnInit {
     updateProduct(product: Product) {
         this.Varieties = [];
         this.Line.productId = product.id;
+        this.Line.unit = product.defaultUnit;
         this.Product = product;
         this.productName = product.name;
         this.addVariety.resetVariety(product.id);
@@ -179,7 +180,7 @@ export class InventoryTransactionComponent implements OnInit {
     }
 
     varietyAdded(variety: ProductVariety) {
-        this.Product.varieties.push(variety);
+        this.Varieties.push(variety);
     }
 
     dismissDialog(): void {
