@@ -1,7 +1,7 @@
 import { Output, EventEmitter, Component, Input, ViewChild } from "@angular/core";
 import { Product, ProductVariety, ProductCode } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
-import { _MatChipListMixinBase, MatTableDataSource } from "@angular/material";
+import { MatTableDataSource } from "@angular/material/table";
 import { AddProductCodeComponent } from "./add-product-code.component";
 import { AddVarietyComponent } from "./add-variety.component";
 
@@ -79,7 +79,7 @@ export class ProductDetailsDialogComponent {
         }, error => { console.error(error); this.networkIsBusy = false; });
     }
 
-    private codeAdded() {
+    public codeAdded() {
         this.GetDetails(this._product.id);
         this.resetBlankCode();
     }

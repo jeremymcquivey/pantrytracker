@@ -4,32 +4,26 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-
-import {
-  MatButtonModule,
-  MatToolbarModule,
-  MatDialogModule,
-  MatTableModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule
-} from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ContactUsComponent } from './home/contact-us.component';
-import { ProjectListComponent } from './projects/project-list.component';
-import { ProjectComponent } from './projects/project.component';
-import { AddEditMilestoneDialogComponent } from './projects/add-edit-milestone-dialog.component';
+import { RecipeListComponent } from './product/recipe-list.component';
 import { AdminModule } from './admin/admin.module';
 import { CoreModule } from './core/core.module';
 import { UnauthorizedComponent } from './home/unauthorized.component';
 import { RecipeComponent } from './recipes/recipe.component';
 import { ImageUploadComponent } from './io/imageupload.component';
-import { FileSelectDirective } from 'ng2-file-upload';
 import { UploadFileDialogComponent } from './io/uploadfile-dialog.component';
 import { TxtUploadComponent } from './io/txtupload.component';
 import { TextEditorDialogComponent } from './io/texteditor-dialog.component';
@@ -43,16 +37,14 @@ import { ProductDetailsDialogComponent } from './product/product-details-dialog.
 import { AddProductDialogComponent } from './product/add-product-dialog.component'
 import { AddProductCodeComponent } from './product/add-product-code.component'
 import { AddVarietyComponent } from './product/add-variety.component'
-import { BarcodeReaderComponent } from './io/barcodereader.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ContactUsComponent,
-    ProjectListComponent,
-    ProjectComponent,
-    AddEditMilestoneDialogComponent,
+    RecipeListComponent,
     UnauthorizedComponent,
     RecipeComponent,
     ImageUploadComponent,
@@ -66,11 +58,9 @@ import { BarcodeReaderComponent } from './io/barcodereader.component';
     InventoryTransactionComponent,
     AddProductDialogComponent,
     ManageProductsComponent,
-    FileSelectDirective,
     AddProductCodeComponent,
     AddVarietyComponent,
-    ProductDetailsDialogComponent,
-    BarcodeReaderComponent
+    ProductDetailsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -88,13 +78,11 @@ import { BarcodeReaderComponent } from './io/barcodereader.component';
     CoreModule,
     AppRoutingModule,
     MatCardModule,
+    FileUploadModule,    
     ZXingScannerModule
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent],
-  entryComponents:[
-    AddEditMilestoneDialogComponent
-  ]
+  entryComponents:[]
 })
 export class AppModule { }

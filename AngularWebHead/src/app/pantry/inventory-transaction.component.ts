@@ -20,12 +20,12 @@ export class InventoryTransactionComponent implements OnInit {
     ProductSearchText: string;
 
     warnings: string[] = [];
-    private isVisible: boolean = false;
-    private isBusy: boolean = false;
+    public isVisible: boolean = false;
+    public isBusy: boolean = false;
 
-    private Line: PantryLine;
+    public Line: PantryLine;
     private Product: Product;
-    private Varieties: ProductVariety[] = [];
+    public Varieties: ProductVariety[] = [];
 
     @ViewChild("readBarcode") 
     private reader: BarcodeReaderComponent;

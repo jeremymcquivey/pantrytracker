@@ -9,6 +9,7 @@ selector: 'product-search-dialog',
 })
 export class ProductSearchDialogComponent implements OnInit {
     public isVisible: boolean = false;
+    public isBusy: boolean = false;
 
     @ViewChild("productSearch")
     public ProductSearch: ProductSearchComponent;

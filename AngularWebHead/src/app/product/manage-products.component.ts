@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { Product } from '../model/pantryline';
 import { ProductDetailsDialogComponent } from './product-details-dialog.component';
 import { ProductSearchComponent } from './product-search.component';

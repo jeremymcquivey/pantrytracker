@@ -4,13 +4,8 @@ import { AccountService } from '../core/account.service';
 import { UserProfile } from '../model/user-profile';
 import { Project } from '../model/project';
 import { ProductService } from '../core/product.service';
-import {
-  MatTableDataSource,
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material';
-import { Utils } from '../core/utils';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-manage-permissions',

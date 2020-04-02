@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserProfile } from '../model/user-profile';
 import { Constants } from '../constants';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { catchError, map } from "rxjs/operators";
 @Injectable()
 export class AccountService {

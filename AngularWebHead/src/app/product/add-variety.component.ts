@@ -1,5 +1,4 @@
 import { Component, Output, EventEmitter } from "@angular/core";
-import { _MatChipListMixinBase } from "@angular/material";
 import { ProductVariety } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
 
@@ -8,8 +7,8 @@ import { ProductService } from "../core/product.service";
     templateUrl: 'add-variety.component.html'
 })
 export class AddVarietyComponent {
-    private blankVariety: ProductVariety = new ProductVariety();
-    private networkIsBusy: boolean = false;
+    public blankVariety: ProductVariety = new ProductVariety();
+    public networkIsBusy: boolean = false;
     private productId: number = 0;
 
     @Output() onVarietyAdded: EventEmitter<ProductVariety> = new EventEmitter<ProductVariety>();

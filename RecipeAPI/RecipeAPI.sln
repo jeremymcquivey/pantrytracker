@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PantryTracker.RecipeReader.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PantryTracker.RecipeReader", "Data Import\PantryTracker.RecipeReader\PantryTracker.RecipeReader.csproj", "{096CDA3F-3100-48D3-94D9-AB3DD389BB21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PantryTrackers.Integrations", "PantryTrackers.Integrations\PantryTrackers.Integrations.csproj", "{13C4C938-CAF4-4088-9EDB-4DF96C03E4FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PantryTrackers.Integrations", "PantryTrackers.Integrations\PantryTrackers.Integrations.csproj", "{13C4C938-CAF4-4088-9EDB-4DF96C03E4FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +35,10 @@ Global
 		{096CDA3F-3100-48D3-94D9-AB3DD389BB21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{096CDA3F-3100-48D3-94D9-AB3DD389BB21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{096CDA3F-3100-48D3-94D9-AB3DD389BB21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13C4C938-CAF4-4088-9EDB-4DF96C03E4FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13C4C938-CAF4-4088-9EDB-4DF96C03E4FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13C4C938-CAF4-4088-9EDB-4DF96C03E4FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13C4C938-CAF4-4088-9EDB-4DF96C03E4FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
