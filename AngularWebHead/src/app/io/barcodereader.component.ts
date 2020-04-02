@@ -1,15 +1,15 @@
 import { EventEmitter, Component, ViewChild, Output } from "@angular/core";
-import { ZXingScannerComponent } from '@zxing/ngx-scanner';
+import { ZXingScannerModule, ZXingScannerComponent } from '@zxing/ngx-scanner';
 
 @Component({
     selector: 'read-barcode',
-    templateUrl: 'barcodereader.component.html',
+    templateUrl: './barcodereader.component.html',
     styleUrls: ['./uploadfile-dialog.component.css']
 })
 export class BarcodeReaderComponent {
-    private isVisible = false;
-    private allDevices = [];
-    private scannerEnabled: boolean = false;
+    public isVisible = false;
+    public allDevices = [];
+    public scannerEnabled: boolean = false;
     
     @ViewChild("barcodeReader") scanner: ZXingScannerComponent;
 
@@ -39,7 +39,7 @@ export class BarcodeReaderComponent {
         });
     }
 
-    private hideDialog()
+    public hideDialog()
     {
         this.scannerEnabled = false;
         this.isVisible = false;

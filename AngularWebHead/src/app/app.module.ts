@@ -38,6 +38,7 @@ import { AddProductDialogComponent } from './product/add-product-dialog.componen
 import { AddProductCodeComponent } from './product/add-product-code.component'
 import { AddVarietyComponent } from './product/add-variety.component'
 import { FileUploadModule } from 'ng2-file-upload';
+import { BarcodeReaderComponent } from './io/barcodereader.component';
 
 @NgModule({
   declarations: [
@@ -60,9 +61,11 @@ import { FileUploadModule } from 'ng2-file-upload';
     ManageProductsComponent,
     AddProductCodeComponent,
     AddVarietyComponent,
-    ProductDetailsDialogComponent
+    ProductDetailsDialogComponent,
+    BarcodeReaderComponent
   ],
   imports: [
+    ZXingScannerModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -78,8 +81,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     CoreModule,
     AppRoutingModule,
     MatCardModule,
-    FileUploadModule,    
-    ZXingScannerModule
+    FileUploadModule
   ],
   providers: [],
   bootstrap: [AppComponent],
