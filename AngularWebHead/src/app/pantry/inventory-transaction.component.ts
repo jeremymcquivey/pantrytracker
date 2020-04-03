@@ -24,7 +24,7 @@ export class InventoryTransactionComponent implements OnInit {
     public isBusy: boolean = false;
 
     public Line: PantryLine;
-    private Product: Product;
+    public Product: Product;
     public Varieties: ProductVariety[] = [];
 
     @ViewChild("readBarcode") 
