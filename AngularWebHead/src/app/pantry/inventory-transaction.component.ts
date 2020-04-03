@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output, ViewChild, Input, ElementRef } from "@angular/core";
 import { PantryService } from "../core/pantry.service";
 import { PantryLine, Product, ProductVariety, ProductCode } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
@@ -26,6 +26,9 @@ export class InventoryTransactionComponent implements OnInit {
     public Line: PantryLine;
     public Product: Product;
     public Varieties: ProductVariety[] = [];
+
+    @ViewChild("barcodeInput")
+    private autoFocusedInput: ElementRef;
 
     @ViewChild("readBarcode") 
     private reader: BarcodeReaderComponent;
@@ -57,6 +60,10 @@ export class InventoryTransactionComponent implements OnInit {
         this.ProductSearchText = "";
         this.ProductSearchDialog.SearchText = "";
         this.warnings = [];
+
+        setTimeout(() => { 
+            this.autoFocusedInput.nativeElement.focus();
+        }, 0);
     }
 
     updateInventory(): PantryLine {
