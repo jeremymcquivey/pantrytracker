@@ -155,9 +155,9 @@ namespace RecipeAPI.Controllers
                 return BadRequest("ProductCode object is required in request body.");
             }
 
-            if(string.IsNullOrEmpty(code) || (code.Length != 12 && code.Length != 13))
+            if(string.IsNullOrEmpty(code) || code.Length <=4 || code.Length >= 13)
             {
-                return BadRequest("12 or 13 digit code is required.");
+                return BadRequest("4-13 digit code is required.");
             }
 
             if(string.IsNullOrEmpty(productCode.Size) || string.IsNullOrEmpty(productCode.Unit))

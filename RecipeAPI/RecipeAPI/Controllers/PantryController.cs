@@ -81,6 +81,7 @@ namespace RecipeAPI.Controllers
             transaction.Id = default;
             transaction.UserId = Guid.Parse(AuthenticatedUser);
             transaction.Product = default;
+            transaction.Variety = default;
 
             _db.Transactions.Add(transaction);
             await _db.SaveChangesAsync();

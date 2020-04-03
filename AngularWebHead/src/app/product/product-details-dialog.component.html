@@ -1,7 +1,7 @@
-<div id="upload-modal" *ngIf="this.isVisible">
+<div id="upload-modal" *ngIf="isVisible">
     <div id="upload-modal-content">
             <h1 mat-dialog-title>{{product.name}}</h1>
-            <add-variety #addVariety (onVarietyAdded)="varietyAdded($event)"></add-variety>
+            <add-variety #addVariety [product]="product" (onVarietyAdded)="varietyAdded($event)"></add-variety>
 
             <mat-table [dataSource]="varietyDataSource">
                 <ng-container matColumnDef="name">

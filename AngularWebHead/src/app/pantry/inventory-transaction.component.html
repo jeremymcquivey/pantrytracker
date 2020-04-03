@@ -39,7 +39,7 @@
             <input matInput [(ngModel)]="productName" [disabled]="true" required placeholder="Product Name">
         </mat-form-field>
 
-        <mat-form-field *ngIf="Varieties.length > 0">
+        <mat-form-field [hidden]="Varieties.length == 0">
             <mat-select [(value)]="selectedVariety">
                 <mat-option value="">---------- No Variety --------------</mat-option>
                 <mat-option *ngFor="let variety of Varieties" [value]="variety.id">
@@ -48,7 +48,7 @@
             </mat-select>
         </mat-form-field>
 
-        <add-variety [hidden]="!productName" #addVariety (onVarietyAdded)="varietyAdded($event)"></add-variety>
+        <add-variety [hidden]="!productName" [product]="Product" #addVariety (onVarietyAdded)="varietyAdded($event)"></add-variety>
 
         <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
             Cancel

@@ -80,7 +80,6 @@ export class InventoryTransactionComponent implements OnInit {
 
         this.warnings = [];
         this.isBusy = true;
-        this.Varieties = [];
 
         this._productService.lookupCode(this.Line.code).subscribe(productCode => {
             if(productCode) {
@@ -140,11 +139,11 @@ export class InventoryTransactionComponent implements OnInit {
 
     updateProduct(product: Product) {
         this.Varieties = [];
+        this.Line.product = product;
         this.Line.productId = product.id;
         this.Line.unit = product.defaultUnit;
         this.Product = product;
         this.productName = product.name;
-        this.addVariety.resetVariety(product.id);
 
         if(product.varieties.length > 0)
         {
@@ -159,11 +158,12 @@ export class InventoryTransactionComponent implements OnInit {
     registerNewProductCode() {
         this.loadBarcode = false;
 
-        this.AddProductCodeDialog.Code = new ProductCode();
-        this.AddProductCodeDialog.Code.code = this.Line.code;
-        this.AddProductCodeDialog.Code.product = this.Product;
-        this.AddProductCodeDialog.Code.productId = this.Line.productId;
+        let newCode = new ProductCode();
+        newCode.code = this.Line.code;
+        newCode.product = this.Product;
+        newCode.productId = this.Line.productId;
 
+        this.AddProductCodeDialog.Code = newCode;
         this.AddProductCodeDialog.isVisible = true;
         this.isBusy = false;
     }

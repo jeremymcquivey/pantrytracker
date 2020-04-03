@@ -72,7 +72,6 @@ export class ProductDetailsDialogComponent {
         this.networkIsBusy = true;
         this._projectService.getProduct(productId).subscribe(product => {
             this._product = product;
-            this.AddVariety.resetVariety(this._product.id);
             this.varietyDataSource.data = product.varieties;
             this.codeDataSource.data = product.codes;
             this.networkIsBusy = false;

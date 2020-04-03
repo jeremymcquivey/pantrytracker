@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter } from "@angular/core";
-import { ProductVariety } from "../model/pantryline";
+import { Component, Output, EventEmitter, Input } from "@angular/core";
+import { ProductVariety, Product } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
 
 @Component({
@@ -9,16 +9,12 @@ import { ProductService } from "../core/product.service";
 export class AddVarietyComponent {
     public blankVariety: ProductVariety = new ProductVariety();
     public networkIsBusy: boolean = false;
-    private productId: number = 0;
+    
+    @Input() product: Product;
 
     @Output() onVarietyAdded: EventEmitter<ProductVariety> = new EventEmitter<ProductVariety>();
 
     constructor(private _productService: ProductService) { }
-
-    public resetVariety(productId: number) {
-        this.productId = productId;
-        this.resetBlankVariety();
-    }
 
     public addVariety() {
         if(this.networkIsBusy)
@@ -29,6 +25,8 @@ export class AddVarietyComponent {
         if(this.blankVariety.description.length > 0)
         {
             this.networkIsBusy = true;
+            this.blankVariety.productId = this.product.id;
+            
             this._productService.addVariety(this.blankVariety).subscribe(variety => {
                 this.onVarietyAdded.emit(variety);
                 this.resetBlankVariety();
@@ -39,6 +37,6 @@ export class AddVarietyComponent {
 
     private resetBlankVariety() {
         this.blankVariety = new ProductVariety();
-        this.blankVariety.productId = this.productId;
+        this.blankVariety.productId = this.product.id;
     }
 }
