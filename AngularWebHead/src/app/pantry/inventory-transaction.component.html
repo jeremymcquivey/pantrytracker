@@ -20,6 +20,10 @@
             </mat-form-field>
             <i class="material-icons" style="cursor: pointer;" (click)="searchProduct()">search</i>
         </div>
+        
+        <mat-form-field style="width:100%;">
+            <input matInput [(ngModel)]="productName" [disabled]="true" required placeholder="Product Name">
+        </mat-form-field>
 
         <hr />
 
@@ -34,21 +38,19 @@
         <mat-form-field style="width:100%;">
             <input matInput [(ngModel)]="Line.unit" required placeholder="Unit">
         </mat-form-field>
-        
-        <mat-form-field style="width:100%;">
-            <input matInput [(ngModel)]="productName" [disabled]="true" required placeholder="Product Name">
-        </mat-form-field>
 
-        <mat-form-field [hidden]="Varieties.length == 0">
-            <mat-select [(value)]="selectedVariety">
-                <mat-option value="">---------- No Variety --------------</mat-option>
-                <mat-option *ngFor="let variety of Varieties" [value]="variety.id">
-                  {{ variety.description }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <add-variety [hidden]="!productName" [product]="Product" #addVariety (onVarietyAdded)="varietyAdded($event)"></add-variety>
+        <div [hidden]="!productName">
+            <mat-form-field >
+                <mat-select [(value)]="selectedVariety">
+                    <mat-option value="">---------- No Variety --------------</mat-option>
+                    <mat-option *ngFor="let variety of Varieties" [value]="variety.id">
+                      {{ variety.description }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+    
+            <add-variety [product]="Product" #addVariety (onVarietyAdded)="varietyAdded($event)"></add-variety>
+        </div>
 
         <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
             Cancel

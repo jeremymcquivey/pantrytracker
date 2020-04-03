@@ -54,6 +54,9 @@ export class InventoryTransactionComponent implements OnInit {
         this.Product = new Product();
         this.productName = "";
         this.Varieties = [];
+        this.ProductSearchText = "";
+        this.ProductSearchDialog.SearchText = "";
+        this.warnings = [];
     }
 
     updateInventory(): PantryLine {
@@ -166,6 +169,7 @@ export class InventoryTransactionComponent implements OnInit {
         this.AddProductCodeDialog.Code = newCode;
         this.AddProductCodeDialog.isVisible = true;
         this.isBusy = false;
+        this.warnings = [];
     }
 
     newCodeSaved(code: ProductCode) {
@@ -181,6 +185,7 @@ export class InventoryTransactionComponent implements OnInit {
 
     varietyAdded(variety: ProductVariety) {
         this.Varieties.push(variety);
+        this.selectedVariety = variety.id;
     }
 
     dismissDialog(): void {

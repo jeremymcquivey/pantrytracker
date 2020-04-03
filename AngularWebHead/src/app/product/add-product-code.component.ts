@@ -36,6 +36,7 @@ export class AddProductCodeComponent {
 
     private varietyAdded(variety: ProductVariety) {
         this.Code.product.varieties.push(variety);
+        this.Code.varietyId = variety.id;
     }
 
     private cancelDialog() {
