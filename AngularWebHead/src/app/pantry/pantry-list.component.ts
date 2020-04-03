@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { PantryService } from "../core/pantry.service";
 import { InventoryCorrectionComponent } from "./inventory-correction.component";
-import { PantryLine } from "../model/pantryline";
+import { PantryLine, PantryLineGrouping } from "../model/pantryline";
 import { InventoryTransactionComponent } from "./inventory-transaction.component";
 
 @Component({
@@ -10,7 +10,7 @@ selector: 'pantry-list',
     templateUrl: 'pantry-list.component.html'
 })
 export class PantryListComponent implements OnInit {
-    private recipeData: PantryLine[];
+    private recipeData: PantryLineGrouping[];
     dataSource = new MatTableDataSource();
     visibleColumns = ['name'];
 

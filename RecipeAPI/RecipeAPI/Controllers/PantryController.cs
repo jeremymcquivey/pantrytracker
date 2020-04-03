@@ -51,11 +51,18 @@ namespace RecipeAPI.Controllers
                                                   .Include(p => p.Variety)
                                                   .CalculateTotals(null)
                                                   .OrderBy(p => p.Product.Name);
-                if(!includeZeroValues)
-                {
-                    return Ok(pantryItems.Where(p => p.Quantity.IsGreaterThan(0, 0.5)));
-                }
-                return Ok(pantryItems);
+
+                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThan(0, 0.5)) : pantryItems;
+
+                var groupedItems = otherItems.GroupBy(p => p.ProductId)
+                                             .Select(p => new
+                                             {
+                                                 Header = p.First().Product.Name,
+                                                 Total = $"{p.Sum(q => q.Quantity)} {p.First().Unit}",
+                                                 Elements = p
+                                             });
+
+                return Ok(groupedItems);
             }
             catch (Exception ex)
             {

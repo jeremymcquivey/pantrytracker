@@ -41,6 +41,7 @@ export class InventoryCorrectionComponent implements OnInit {
             productId: this.Line.product.id,
             quantity: `${updateAmount}`,
             transactionType: 2,
+            varietyId: this.Line.varietyId,
             size: 1,
         } as PantryLine;
         

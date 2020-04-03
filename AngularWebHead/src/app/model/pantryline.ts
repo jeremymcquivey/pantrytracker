@@ -18,6 +18,14 @@ export class PantryLine {
     public code: string;
 }
 
+export class PantryLineGrouping {
+    public header: string;
+
+    public total: string;
+
+    public elements: PantryLine[]
+}
+
 export class Product {
     public name: string;
 

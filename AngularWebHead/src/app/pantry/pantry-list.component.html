@@ -9,12 +9,16 @@
       <!-- Name/Description Column -->
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef>Pantry Inventory</mat-header-cell>
-        <mat-cell *matCellDef="let line" (click)="openDialog(line)" style="cursor: pointer">
+        <mat-cell *matCellDef="let group">
           <div>
-            <span>{{line.quantity}}</span>&nbsp;
-            <span>{{line.unit}}</span>&nbsp;
-            <span>{{line.product.name}}</span>&nbsp;
-            <span *ngIf="line.variety">({{ line.variety.description }})</span>
+            <h3>{{ group.header}} | {{ group.total }}</h3>
+
+            <div *ngFor="let line of group.elements; let i = index" (click)="openDialog(line)" style="cursor: pointer; padding:1em; margin:0;">
+              {{line.quantity}}&nbsp;
+              {{line.unit}}&nbsp;
+              {{line.product.name}}&nbsp;
+              <span *ngIf="line.variety">({{ line.variety.description }})</span>
+            </div>
           </div>
         </mat-cell>
       </ng-container>
