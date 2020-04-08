@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild, Input, ElementRef } from "@angular/core";
 import { PantryService } from "../core/pantry.service";
-import { PantryLine, Product, ProductVariety, ProductCode } from "../model/pantryline";
+import { PantryLine, Product, ProductVariety, ProductCode, TransactionType } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
 import { ProductSearchDialogComponent } from "../product/product-search-dialog.component";
 import { AddProductCodeComponent } from "../product/add-product-code.component";
@@ -15,7 +15,6 @@ selector: 'inventory-transaction',
 export class InventoryTransactionComponent implements OnInit {
     productName: string;
     loadBarcode: boolean = false;
-    public selectedVariety: number;
     preassignedVariety: string;
     ProductSearchText: string;
 
@@ -26,6 +25,12 @@ export class InventoryTransactionComponent implements OnInit {
     public Line: PantryLine;
     public Product: Product;
     public Varieties: ProductVariety[] = [];
+
+    @Input() set transactionMode(value: number) {
+        this.Line.transactionType = value;
+    } get transactionMode(): number {
+        return this.Line.transactionType;
+    }
 
     @ViewChild("barcodeInput")
     private autoFocusedInput: ElementRef;
@@ -97,7 +102,7 @@ export class InventoryTransactionComponent implements OnInit {
                 this.Line.unit = productCode.unit;
                 this.Line.varietyId = productCode.varietyId;
                 this.Line.productId = productCode.productId;
-                this.selectedVariety = productCode.varietyId;
+                this.Line.varietyId = productCode.varietyId;
 
                 if(productCode.productId) {
                     this.getProductById(productCode.productId);
@@ -131,7 +136,7 @@ export class InventoryTransactionComponent implements OnInit {
                 var varieties = this.Product.varieties.filter(p => p.id === this.Line.varietyId);
                 if(varieties.length == 1)
                 {
-                    this.selectedVariety = varieties[0].id;
+                    this.Line.varietyId = varieties[0].id;
                     this.preassignedVariety = varieties[0].description;
                     this.Line.variety = varieties[0];
                 }
@@ -187,12 +192,12 @@ export class InventoryTransactionComponent implements OnInit {
         this.Line.unit = code.unit;
         this.Line.variety = code.variety;
         this.Line.varietyId = code.varietyId;
-        this.selectedVariety = code.varietyId;
+        this.Line.varietyId = code.varietyId;
     }
 
     varietyAdded(variety: ProductVariety) {
         this.Varieties.push(variety);
-        this.selectedVariety = variety.id;
+        this.Line.varietyId = variety.id;
     }
 
     dismissDialog(): void {

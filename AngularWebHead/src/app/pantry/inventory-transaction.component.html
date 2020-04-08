@@ -1,6 +1,8 @@
 <div id="upload-modal" [hidden]="!this.isVisible">
     <div id="upload-modal-content">
-        <div>Add more inventory</div>
+        
+        <div [hidden]="transactionMode != 1">Remove inventory</div>
+        <div [hidden]="transactionMode != 0">Add more inventory</div>
 
         <div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="warnings.length > 0">
             <div *ngFor="let warning of warnings">{{ warning }}</div>
@@ -41,7 +43,7 @@
 
         <div [hidden]="!productName">
             <mat-form-field >
-                <mat-select [(value)]="selectedVariety">
+                <mat-select [(value)]="Line.varietyId">
                     <mat-option value="">---------- No Variety --------------</mat-option>
                     <mat-option *ngFor="let variety of Varieties" [value]="variety.id">
                       {{ variety.description }}

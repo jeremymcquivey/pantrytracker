@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   userProfile: UserProfile;
   firstLogin = false;
+  loginBusy = false;
+
   constructor(
     private _acctService: AccountService,
     public dialog: MatDialog,
@@ -32,10 +34,12 @@ export class AppComponent implements OnInit {
   }
 
   login() {
+    this.loginBusy = true;
     this._authService.login();
   }
 
   logout() {
+    this.loginBusy = true;
     this._authService.logout();
   }
 

@@ -1,7 +1,7 @@
 export class PantryLine {
     public quantity: string;
 
-    public transactionType: number;
+    public transactionType: number = TransactionType.Addition;
 
     public product: Product;
 
@@ -16,6 +16,13 @@ export class PantryLine {
     public size: number;
 
     public code: string;
+}
+
+export enum TransactionType {
+    Addition = 0,
+    Usage = 1,
+    SystemAdjustment = 2,
+    UserAdjustment = 3
 }
 
 export class PantryLineGrouping {
