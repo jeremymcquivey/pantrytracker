@@ -5,6 +5,7 @@ import { PantryService } from './pantry.service';
 import { AuthService } from './auth.service';
 import { AuthInterceptor } from './auth.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { AdminRouteGuard } from './admin-route-guard';
 
 @NgModule({
     imports: [],
@@ -15,7 +16,8 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
         ProductService,
         AccountService,
         PantryService,
-        AuthService
+        AuthService,
+        AdminRouteGuard
     ],
 })
 export class CoreModule { }

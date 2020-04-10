@@ -13,6 +13,7 @@ selector: 'inventory-transaction',
     styleUrls: ['../io/uploadfile-dialog.component.css']
 })
 export class InventoryTransactionComponent implements OnInit {
+    private _lastTransactionType: number = TransactionType.Addition;
     productName: string;
     loadBarcode: boolean = false;
     preassignedVariety: string;
@@ -27,6 +28,7 @@ export class InventoryTransactionComponent implements OnInit {
     public Varieties: ProductVariety[] = [];
 
     @Input() set transactionMode(value: number) {
+        this._lastTransactionType = value;
         this.Line.transactionType = value;
     } get transactionMode(): number {
         return this.Line.transactionType;
@@ -59,6 +61,8 @@ export class InventoryTransactionComponent implements OnInit {
     LaunchDialog() {
         this.isVisible = true;
         this.Line = new PantryLine();
+        this.Line.transactionType = this._lastTransactionType;
+
         this.Product = new Product();
         this.productName = "";
         this.Varieties = [];
