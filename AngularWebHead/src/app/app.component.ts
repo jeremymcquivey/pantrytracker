@@ -13,24 +13,21 @@ export class AppComponent implements OnInit {
   userProfile: UserProfile;
   firstLogin = false;
   loginBusy = false;
+  isLoggedIn = false;
 
   constructor(
-    private _acctService: AccountService,
     public dialog: MatDialog,
     private _authService: AuthService,
-    private _router: Router
-  ) {}
+  ) {
+    this._authService.loginChanged.subscribe(loggedIn => {
+      this.isLoggedIn = loggedIn;
+    })
+  }
 
   ngOnInit() {
-    if (window.location.href.indexOf('?postLogout=true') > 0) {
-      this._authService.signoutRedirectCallback().then(() => {
-        let url: string = this._router.url.substring(
-          0,
-          this._router.url.indexOf('?')
-        );
-        this._router.navigateByUrl(url);
-      });
-    }
+    this._authService.isLoggedIn().then(loggedIn => {
+      this.isLoggedIn = loggedIn;
+    })
   }
 
   login() {
@@ -43,7 +40,7 @@ export class AppComponent implements OnInit {
     this._authService.logout();
   }
 
-  isLoggedIn() {
-    return this._authService.isLoggedIn();
+  isAdmin() {
+    return this._authService.authContext && this._authService.authContext.userIsAdmin();
   }
 }

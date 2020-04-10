@@ -23,15 +23,16 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (req.url.startsWith(Constants.apiRoot)) {
-      var accessToken = this._authService.getAccessToken();
-      const headers = req.headers.set('Authorization', `Bearer ${accessToken}`);
-      const authReq = req.clone({ headers });
-      return next.handle(authReq).pipe(tap(() => {}, error => {
-        var respError = error as HttpErrorResponse;
-        if (respError && (respError.status === 401 || respError.status === 403)) {
-          this._router.navigate(['/unauthorized']);
-        }
-      }));
+      this._authService.getAccessToken().then(accessToken => {
+        const headers = req.headers.set('Authorization', `Bearer ${accessToken}`);
+        const authReq = req.clone({ headers });
+        return next.handle(authReq).pipe(tap(() => {}, error => {
+          var respError = error as HttpErrorResponse;
+          if (respError && (respError.status === 401 || respError.status === 403)) {
+            this._router.navigate(['/unauthorized']);
+          }
+        }));
+      });
     } else {
       return next.handle(req);
     }

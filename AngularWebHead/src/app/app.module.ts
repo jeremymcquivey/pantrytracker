@@ -40,6 +40,8 @@ import { AddProductCodeComponent } from './product/add-product-code.component'
 import { AddVarietyComponent } from './product/add-variety.component'
 import { FileUploadModule } from 'ng2-file-upload';
 import { BarcodeReaderComponent } from './io/barcodereader.component';
+import { SigninRedirectCallbackComponent } from './home/signin-redirect-callback.component';
+import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callback.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { BarcodeReaderComponent } from './io/barcodereader.component';
     AddProductCodeComponent,
     AddVarietyComponent,
     ProductDetailsDialogComponent,
-    BarcodeReaderComponent
+    BarcodeReaderComponent,
+    SigninRedirectCallbackComponent,
+    SignoutRedirectCallbackComponent
   ],
   imports: [
     ZXingScannerModule,

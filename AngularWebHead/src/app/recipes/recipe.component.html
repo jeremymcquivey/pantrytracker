@@ -7,9 +7,14 @@
                    #editorDialog>
 </texteditor-dialog>
 
-<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="!this.isUpdate">
+<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="!this.isUpdate && isPremium()">
     <i class="material-icons" (click)="this.showFileUploader()" style="cursor: pointer;">attach_file</i>
     <span>Convert from image or text file</span>
+</div>
+
+<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="!this.isUpdate && !isPremium()">
+  <i class="material-icons" style="cursor: pointer;">attach_file</i>
+  <span>Upgrade to a premium membership in order to convert a recipe from an image or text file</span>
 </div>
 
 <div style="margin: 0 1em;">
