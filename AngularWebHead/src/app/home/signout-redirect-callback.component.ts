@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-signout-callback',
-    template: '<div></div>'
+    template: '<div>Completing Logout.</div>'
 })
 
 export class SignoutRedirectCallbackComponent implements OnInit {
