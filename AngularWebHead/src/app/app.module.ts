@@ -10,6 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
@@ -39,6 +40,8 @@ import { AddProductCodeComponent } from './product/add-product-code.component'
 import { AddVarietyComponent } from './product/add-variety.component'
 import { FileUploadModule } from 'ng2-file-upload';
 import { BarcodeReaderComponent } from './io/barcodereader.component';
+import { SigninRedirectCallbackComponent } from './home/signin-redirect-callback.component';
+import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callback.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +65,9 @@ import { BarcodeReaderComponent } from './io/barcodereader.component';
     AddProductCodeComponent,
     AddVarietyComponent,
     ProductDetailsDialogComponent,
-    BarcodeReaderComponent
+    BarcodeReaderComponent,
+    SigninRedirectCallbackComponent,
+    SignoutRedirectCallbackComponent
   ],
   imports: [
     ZXingScannerModule,
@@ -81,7 +86,8 @@ import { BarcodeReaderComponent } from './io/barcodereader.component';
     CoreModule,
     AppRoutingModule,
     MatCardModule,
-    FileUploadModule
+    FileUploadModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent],

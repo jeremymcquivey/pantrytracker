@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=1024, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <script src="/assets/js/oidc-client.min.js"></script>
+    </head>
+    <body>
+        <script>
+            new Oidc.UserManager().signinSilentCallback().then(_=> console.log('silent renew')).catch(error => {
+                console.error(error);
+            });
+        </script>
+    </body>
+</html>

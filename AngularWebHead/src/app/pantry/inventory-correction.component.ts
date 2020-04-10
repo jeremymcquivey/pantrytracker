@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { PantryService } from "../core/pantry.service";
-import { PantryLine } from "../model/pantryline";
+import { PantryLine, TransactionType } from "../model/pantryline";
 
 @Component({
 selector: 'inventory-correction',
@@ -40,7 +40,7 @@ export class InventoryCorrectionComponent implements OnInit {
             unit: this.Line.unit,
             productId: this.Line.product.id,
             quantity: `${updateAmount}`,
-            transactionType: 2,
+            transactionType: TransactionType.SystemAdjustment,
             varietyId: this.Line.varietyId,
             size: 1,
         } as PantryLine;

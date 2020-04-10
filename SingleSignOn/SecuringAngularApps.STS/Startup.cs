@@ -43,10 +43,9 @@ namespace SecuringAngularApps.STS
                 options.AddPolicy("CorsPolicy", corsBuilder =>
                 {
                     corsBuilder.AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowAnyOrigin()
-                    //.SetIsOriginAllowed(origin => origin == "http://localhost:4200")
-                    .AllowCredentials();
+                               .AllowAnyMethod()
+                               .AllowAnyOrigin()
+                               .AllowCredentials();
                 });
             });
 

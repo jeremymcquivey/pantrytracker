@@ -6,16 +6,21 @@
             </span>
         </a>
         <span class="navbar-fill">
-            <button mat-button routerLink="/recipes" *ngIf="isLoggedIn()">My Recipes</button>
-            <button mat-button routerLink="/pantry/inventory" *ngIf="isLoggedIn()">My Pantry</button>
-            <button mat-button routerLink="/admin" *ngIf="isLoggedIn()">Admin</button>
+            <span *ngIf="isLoggedIn">
+                <button mat-button routerLink="/recipes">My Recipes</button>
+                <button mat-button routerLink="/pantry/inventory">My Pantry</button>
+                <button mat-button routerLink="/admin" *ngIf="isAdmin()">Admin</button>
+            </span>
         </span>
         <span>
-            <span *ngIf="!isLoggedIn()" mat-button (click)="login()" style="vertical-align: middle;">Login</span>
-            <span *ngIf="isLoggedIn()">
-                <img class="profile-img" src="/assets/images/default-user.jpg" />
-                <span>Welcome, First User! </span>
-                <span mat-button (click)="logout()" style="cursor: pointer;">Logout</span>
+            <mat-progress-spinner *ngIf="loginBusy" mode="indeterminate" color='primary' diameter=30 style="display:inline-block; vertical-align: middle;"></mat-progress-spinner>
+            <span [hidden]="loginBusy">
+                <span [hidden]="isLoggedIn" mat-button (click)="login()" style="vertical-align: middle; cursor: pointer;">Login</span>
+                <span [hidden]="!isLoggedIn" >
+                    <img class="profile-img" src="/assets/images/default-user.jpg" />
+                    <span>Welcome, First User! </span>
+                    <span mat-button (click)="logout()" style="cursor: pointer;">Logout</span>
+                </span>
             </span>
         </span>
     </mat-toolbar>

@@ -9,6 +9,7 @@ import { Direction } from "../model/direction";
 import { FileUploader } from "ng2-file-upload";
 import { TextEditorDialogComponent } from "../io/texteditor-dialog.component";
 import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
+import { AuthService } from "../core/auth.service";
 
 @Component({
     selector: 'app-recipe',
@@ -44,6 +45,7 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
       private _route: ActivatedRoute,
       private _projectService: ProductService,
       private _router: Router,
+      public _authService: AuthService,
       public dialog: MatDialog
     ) {}
 
@@ -144,5 +146,9 @@ import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
           component.initWithRecipe(recipe);
           component.rawText = recipe.rawText;
         })
+    }
+
+    public isPremium() {
+      return this._authService.authContext && this._authService.authContext.userIsPremium();
     }
   }

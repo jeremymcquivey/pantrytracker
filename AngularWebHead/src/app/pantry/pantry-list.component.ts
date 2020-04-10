@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { PantryService } from "../core/pantry.service";
 import { InventoryCorrectionComponent } from "./inventory-correction.component";
-import { PantryLine, PantryLineGrouping } from "../model/pantryline";
+import { PantryLine, PantryLineGrouping, TransactionType } from "../model/pantryline";
 import { InventoryTransactionComponent } from "./inventory-transaction.component";
 
 @Component({
@@ -38,7 +38,13 @@ export class PantryListComponent implements OnInit {
         this.correctionDialog.pantryLine = line;
     }
 
-    addTransaction(): void {
+    addInventory(): void {
+        this.transactionDialog.transactionMode = TransactionType.Addition;
+        this.transactionDialog.LaunchDialog();
+    }
+
+    removeInventory(): void {
+        this.transactionDialog.transactionMode = TransactionType.Usage;
         this.transactionDialog.LaunchDialog();
     }
 }

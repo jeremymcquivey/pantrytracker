@@ -90,6 +90,11 @@ namespace RecipeAPI.Controllers
             transaction.Product = default;
             transaction.Variety = default;
 
+            if(transaction.TransactionType == PantryTransactionType.Usage)
+            {
+                transaction.Quantity = -1 * Math.Abs(transaction.Quantity);
+            }
+
             _db.Transactions.Add(transaction);
             await _db.SaveChangesAsync();
 
