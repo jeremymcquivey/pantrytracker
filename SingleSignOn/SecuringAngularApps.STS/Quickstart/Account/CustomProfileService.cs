@@ -33,6 +33,8 @@ namespace SecuringAngularApps.STS.Quickstart.Account
             var nameClaim = claims.Single(c => c.Type == "name");
             claims.Remove(nameClaim);
 
+            claims.Add(new Claim(JwtClaimTypes.GivenName, user.FirstName));
+            claims.Add(new Claim(JwtClaimTypes.FamilyName, user.LastName));
             claims.Add(new Claim(JwtClaimTypes.Name, $"{user.FirstName} {user.LastName}"));
 
             context.IssuedClaims = claims;
