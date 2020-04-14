@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using IdentityModel;
 using RecipeAPI.Models;
 using PantryTracker.Model.Auth;
-using System.Linq;
+using System.Security.Claims;
 
 namespace RecipeAPI.Controllers
 {
@@ -27,7 +27,8 @@ namespace RecipeAPI.Controllers
             {
                 UserProfile = new UserProfile
                 {
-                    Id = AuthenticatedUser
+                    Id = AuthenticatedUser,
+                    FirstName = User.FindFirst(ClaimTypes.GivenName)?.Value,
                 },
                 Roles = UserRoles
             });
