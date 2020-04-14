@@ -30,10 +30,11 @@ namespace SecuringAngularApps.STS.Quickstart.Account
 
             var claims = principal.Claims.ToList();
 
-            if (user.Email == "admin@globomantics.com")
-            {
-                claims.Add(new Claim(JwtClaimTypes.Role, "Admin"));
-            }
+            var nameClaim = claims.Single(c => c.Type == "name");
+            claims.Remove(nameClaim);
+
+            claims.Add(new Claim(JwtClaimTypes.Name, $"{user.FirstName} {user.LastName}"));
+
             context.IssuedClaims = claims;
         }
 
