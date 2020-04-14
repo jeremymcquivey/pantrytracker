@@ -15,6 +15,13 @@ export class AppComponent implements OnInit {
   loginBusy = false;
   isLoggedIn = false;
 
+  userName(): string {
+    if(this._authService.authContext && this._authService.authContext.userProfile) {
+      return this._authService.authContext.userProfile.firstName;
+    }
+    return '';
+  }
+
   constructor(
     public dialog: MatDialog,
     private _authService: AuthService,

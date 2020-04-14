@@ -18,7 +18,7 @@
                 <span [hidden]="isLoggedIn" mat-button (click)="login()" style="vertical-align: middle; cursor: pointer;">Login</span>
                 <span [hidden]="!isLoggedIn" >
                     <img class="profile-img" src="/assets/images/default-user.jpg" />
-                    <span>Welcome, First User! </span>
+                    <span>{{ userName() }} </span>
                     <span mat-button (click)="logout()" style="cursor: pointer;">Logout</span>
                 </span>
             </span>
