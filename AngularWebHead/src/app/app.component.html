@@ -9,7 +9,6 @@
             <span *ngIf="isLoggedIn">
                 <button mat-button routerLink="/recipes">My Recipes</button>
                 <button mat-button routerLink="/pantry/inventory">My Pantry</button>
-                <button mat-button routerLink="/admin" *ngIf="isAdmin()">Admin</button>
             </span>
         </span>
         <span>
@@ -18,8 +17,15 @@
                 <span [hidden]="isLoggedIn" mat-button (click)="login()" style="vertical-align: middle; cursor: pointer;">Login</span>
                 <span [hidden]="!isLoggedIn" >
                     <img class="profile-img" src="/assets/images/default-user.jpg" />
-                    <span>{{ userName() }} </span>
-                    <span mat-button (click)="logout()" style="cursor: pointer;">Logout</span>
+
+                    <div style="position: relative; display: inline-block;">
+                        <span>{{ userName() }} </span> 
+                        <span style="cursor: pointer; vertical-align: middle;" (click)="settingsExpanded = !settingsExpanded" class="material-icons">more_vert</span>
+                        <div *ngIf="settingsExpanded" style="float: right; display: block; position: absolute; background-color: #f9f9f9; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); padding: .25em 1em; z-index: 1;">
+                            <div (click)="logout()" style="cursor: pointer; vertical-align: middle;">Logout</div>
+                            <div (click)="adminNavigation()" *ngIf="isAdmin()" style="cursor: pointer;">Admin</div>
+                        </div>
+                    </div>
                 </span>
             </span>
         </span>

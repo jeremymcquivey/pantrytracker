@@ -3,7 +3,7 @@ import { AccountService } from './core/account.service';
 import { UserProfile } from './model/user-profile';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './core/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   firstLogin = false;
   loginBusy = false;
   isLoggedIn = false;
+  settingsExpanded = false;
 
   userName(): string {
     if(this._authService.authContext && this._authService.authContext.userProfile) {
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private _authService: AuthService,
+    private _router: Router
   ) {
     this._authService.loginChanged.subscribe(loggedIn => {
       this.isLoggedIn = loggedIn;
@@ -45,6 +47,11 @@ export class AppComponent implements OnInit {
   logout() {
     this.loginBusy = true;
     this._authService.logout();
+  }
+
+  adminNavigation() {
+    this._router.navigate(['admin']);
+    this.settingsExpanded = false;
   }
 
   isAdmin() {
