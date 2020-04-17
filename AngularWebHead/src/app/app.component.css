@@ -1,0 +1,161 @@
+ul,nav {
+    padding: 0%;
+    margin: 0%;
+}
+
+header { 
+    height: 3rem; 
+    background-color: green;  
+    position: relative;
+    font-size: 1.25rem;
+    color: rgba(255,255,255,1);
+}
+
+header .logo {
+    background-image: url("../assets/images/logo-wide.png");
+    background-repeat: no-repeat;
+    background-color: rgba(255,255,255,1);
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+}
+
+nav {
+    background-color: transparent;
+    height: 100%;
+}
+      
+nav ul li {
+    visibility: hidden;
+    list-style-type: none;
+}
+
+nav ul li {
+    padding: .5rem;
+    background-color: rgba(55,55,55,1);
+}
+
+nav ul li:hover {
+    cursor: pointer;
+    background-color: green;
+}
+
+nav.right {
+    visibility: hidden;
+}
+
+nav.left {
+    display: inline-block;
+    max-width: 75%;
+    left: .5rem;
+}
+
+nav.left > label {
+    height: 3rem;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url('../assets/images/menu.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    min-width: 3rem;
+}
+
+nav input[type=checkbox] {
+    display: none;
+}
+
+nav input[type=checkbox] + ul,
+nav input[type=checkbox] + ul li {
+    visibility: hidden;
+}
+
+nav input[type=checkbox]:checked + ul,
+nav input[type=checkbox]:checked + ul li {
+    visibility: visible;
+}
+
+.material-icons {
+    vertical-align: middle;
+}
+
+/**** Medium ****/
+@media(min-width: 30rem) {
+    .small {
+        display: none;
+    }
+    
+    header .logo {
+        width: 25%;
+        left: 38%;
+        height: 100%;
+    }
+        
+    nav.left {
+        max-width: 38%;
+    }     
+        
+    nav.right {
+        visibility: visible;
+        position: absolute;
+        max-width: 38%;
+        right: 0;
+        top: 0;
+    }      
+    
+    nav.right ul li {
+        visibility: visible;
+    }
+            
+    nav.right img {
+        max-height: 3rem;
+        vertical-align: middle;
+    }
+}
+
+/**** Large ****/
+@media(min-width: 60rem) {
+    
+    header .logo {
+        max-width: 10%;
+        left: 40%
+    }
+    .medium {
+        display: none;
+    }
+    
+    
+    nav.left {
+        max-width: 60%;
+    }
+    
+     nav.left label {
+        display: none;
+    }
+    
+    nav.left input[type=checkbox] + ul,
+    nav.left input[type=checkbox] + ul li {
+        visibility: visible;
+        display: inline-block;
+        height: 100%;
+        padding: 0 1rem;
+        background-color: green;
+    }
+    
+    nav.left input[type=checkbox] + ul li a {
+        display: inline-block;
+        height: 100%;
+        padding-top: 1rem;
+    }
+
+    nav.left input[type=checkbox] + ul li:hover {
+        background-color: rgba(55,55,55,1);
+    }
+    
+    nav.left input[type=checkbox] + ul li.small {
+        display: none;
+    }
+}

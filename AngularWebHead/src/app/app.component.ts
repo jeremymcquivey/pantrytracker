@@ -1,20 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountService } from './core/account.service';
+import { Component, OnInit, ViewChildren, ElementRef, HostListener } from '@angular/core';
 import { UserProfile } from './model/user-profile';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './core/auth.service';
-import { Router, RouterOutlet, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styleUrls: ['app.component.css']
 })
 export class AppComponent implements OnInit {
   userProfile: UserProfile;
-  firstLogin = false;
   loginBusy = false;
   isLoggedIn = false;
-  settingsExpanded = false;
+
+  @ViewChildren("menuLink")
+  menuLinks: ElementRef[] = [];
+
+  // Before using @HostListener anywhere else, read this SO post:
+  // https://stackoverflow.com/questions/40107008/detect-click-outside-angular-component
+  @HostListener('document:click', ['$event'])
+  documentClick(evt: any): void {
+    if(evt.srcElement.type != 'checkbox' || evt.srcElement.name != 'menuLink') {
+      this.menuLinks.forEach(cb => {
+        cb.nativeElement.checked = false;
+      });
+    }
+  }
 
   userName(): string {
     if(this._authService.authContext && this._authService.authContext.userProfile) {
@@ -36,7 +48,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this._authService.isLoggedIn().then(loggedIn => {
       this.isLoggedIn = loggedIn;
-    })
+    });
+  }
+
+  menuClickHandler(evt) {
+    this.menuLinks.filter(cb => cb.nativeElement.checked && evt.srcElement.id !== cb.nativeElement.id)
+                  .forEach(cb => cb.nativeElement.checked = false);
   }
 
   login() {
@@ -51,7 +68,6 @@ export class AppComponent implements OnInit {
 
   adminNavigation() {
     this._router.navigate(['admin']);
-    this.settingsExpanded = false;
   }
 
   isAdmin() {

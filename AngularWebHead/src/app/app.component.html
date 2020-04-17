@@ -1,36 +1,47 @@
-<nav>
-    <mat-toolbar>
-        <a href="/">
-            <span>
-                <img src="/assets/images/logo-wide.png" alt="PantryTrackers" title="PantryTrackers" class="pt-logo">
-            </span>
-        </a>
-        <span class="navbar-fill">
-            <span *ngIf="isLoggedIn">
-                <button mat-button routerLink="/recipes">My Recipes</button>
-                <button mat-button routerLink="/pantry/inventory">My Pantry</button>
-            </span>
+<header>
+    <nav class="left">
+        <label for='leftMenu'></label>
+        <input mat-checkbox type="checkbox" name="menuLink" #menuLink id="leftMenu" (click)="menuClickHandler($event)" />
+        <ul>
+            <li class="small" *ngIf="isAdmin()" (click)="adminNavigation()" >
+                <a>Admin</a>
+            </li>
+            <li class="small" *ngIf="isLoggedIn" (click)="logout()" >
+                <a>Sign Out</a>
+            </li>
+            <li routerLink="/" *ngIf="!isLoggedIn">
+                <a>Join Free</a>
+            </li>
+            <li *ngIf="!isLoggedIn" (click)="login()" >
+                <a>Login</a>
+            </li>
+            <li routerLink="/recipes" *ngIf="isLoggedIn">
+                <a>My Recipes</a>
+            </li>
+            <li routerLink="/pantry/inventory" *ngIf="isLoggedIn">
+                <a>My Pantry</a> 
+            </li>
+        </ul>		
+    </nav>
+    <span class="logo" title="Automated Pantry Management" routerLink="/"></span>
+    <nav class="right">
+        <span *ngIf="isLoggedIn">
+            <img src="../assets/images/default-user.png" />
+            <span>{{ userName() }}</span>
         </span>
-        <span>
-            <mat-progress-spinner *ngIf="loginBusy" mode="indeterminate" color='primary' diameter=30 style="display:inline-block; vertical-align: middle;"></mat-progress-spinner>
-            <span [hidden]="loginBusy">
-                <span [hidden]="isLoggedIn" mat-button (click)="login()" style="vertical-align: middle; cursor: pointer;">Login</span>
-                <span [hidden]="!isLoggedIn" >
-                    <img class="profile-img" src="/assets/images/default-user.jpg" />
-
-                    <div style="position: relative; display: inline-block;">
-                        <span>{{ userName() }} </span> 
-                        <span style="cursor: pointer; vertical-align: middle;" (click)="settingsExpanded = !settingsExpanded" class="material-icons">more_vert</span>
-                        <div *ngIf="settingsExpanded" style="float: right; display: block; position: absolute; background-color: #f9f9f9; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); padding: .25em 1em; z-index: 1;">
-                            <div (click)="logout()" style="cursor: pointer; vertical-align: middle;">Logout</div>
-                            <div (click)="adminNavigation()" *ngIf="isAdmin()" style="cursor: pointer;">Admin</div>
-                        </div>
-                    </div>
-                </span>
-            </span>
-        </span>
-    </mat-toolbar>
-</nav>
+        <label class="material-icons" for='rightMenu' *ngIf="isLoggedIn">more_vert</label>
+        <input mat-checkbox type="checkbox" id="rightMenu" name="menuLink" #menuLink (click)="menuClickHandler($event)" />
+        <ul>
+            <li *ngIf="isAdmin()" (click)="adminNavigation()" >
+                <a>Admin</a>
+            </li>
+            <li *ngIf="isLoggedIn" (click)="logout()" >
+                <a>Sign Out</a>
+            </li>
+        </ul>
+        <mat-progress-spinner *ngIf="loginBusy" mode="indeterminate" color='primary' diameter=30 style="display:inline-block; vertical-align: middle;"></mat-progress-spinner>
+    </nav>
+</header>
 <div>
     <router-outlet></router-outlet>
 </div>
