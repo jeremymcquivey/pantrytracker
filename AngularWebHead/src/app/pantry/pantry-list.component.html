@@ -1,7 +1,8 @@
+<h3 class="title">My Inventory</h3>
 <round-button (click)="addInventory()" float='right' altText='Add' buttonText='+'></round-button>
 <round-button (click)="removeInventory()" altText='Remove' buttonText='-'></round-button>
 
-<div class="table-container mat-elevation-z2" style="margin-top: 1em; clear: both;">
+<div class="table-container mat-elevation-z2" style="clear: both;">
     <mat-table [dataSource]="dataSource">
 
       <!-- Name/Description Column -->
@@ -11,12 +12,15 @@
           <div>
             <h3 class="group-header">{{ group.header}} | {{ group.total }}</h3>
 
-            <div *ngFor="let line of group.elements; let i = index" (click)="openDialog(line)" style="cursor: pointer; padding:1em; margin:0;">
-              {{line.quantity}}&nbsp;
-              {{line.unit}}&nbsp;
-              {{line.product.name}}&nbsp;
-              <span *ngIf="line.variety">({{ line.variety.description }})</span>
-            </div>
+            <span class="line-details">
+              <div *ngFor="let line of group.elements; let i = index" (click)="openDialog(line)">
+                {{line.quantity}}&nbsp;
+                {{line.unit}}&nbsp;
+                {{line.product.name}}&nbsp;
+                <span *ngIf="line.variety">({{ line.variety.description }})</span>
+              </div>
+            </span>
+            
           </div>
         </mat-cell>
       </ng-container>

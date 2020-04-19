@@ -1,9 +1,26 @@
+.title {
+    margin: 0;
+    padding: .25rem;
+    text-align: center;
+}
+
 .group-header {
     display: none;
+}
+
+.line-details div {
+    cursor: pointer; 
+    padding:1em; 
 }
 
 @media(min-width: 20rem) {
     .group-header {
         display: block;
+    }
+
+    .title {
+        position: absolute;
+        left: 13%;
+        width: 75%;
     }
 }
