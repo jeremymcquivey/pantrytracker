@@ -7,11 +7,12 @@ import { InventoryTransactionComponent } from "./inventory-transaction.component
 
 @Component({
 selector: 'pantry-list',
-    templateUrl: 'pantry-list.component.html'
+    templateUrl: 'pantry-list.component.html',
+    styleUrls: ['pantry-list.component.css']
 })
 export class PantryListComponent implements OnInit {
     private recipeData: PantryLineGrouping[];
-    dataSource = new MatTableDataSource();
+    dataSource = new MatTableDataSource<PantryLineGrouping>();
     visibleColumns = ['name'];
 
     @ViewChild("correctionDialog")

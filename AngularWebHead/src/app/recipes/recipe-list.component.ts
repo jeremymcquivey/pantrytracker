@@ -12,7 +12,7 @@ import { MatTableDataSource } from "@angular/material/table";
 export class RecipeListComponent implements OnInit {
   displayedColumns = ['name'];
   error: string;
-  dataSource = new MatTableDataSource();
+  dataSource = new MatTableDataSource<Recipe>();
   projects: Project[];
   recipes: Recipe[];
 

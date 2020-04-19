@@ -1,10 +1,8 @@
 <div class="danger">{{error}}</div>
 
-<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1.5em; margin-top: .25em;">
-  <span routerLink="/new-recipe" style="cursor: pointer;">New Recipe</span>
-</div>
+<round-button float='left' altText='New' buttonText="+" routerLink='/new-recipe'></round-button>
 
-<div class="table-container mat-elevation-z1" style="margin-top: 1em;">
+<div class="table-container mat-elevation-z1">
   <table mat-table [dataSource]="dataSource">
 
     <!-- Name/Description Column -->

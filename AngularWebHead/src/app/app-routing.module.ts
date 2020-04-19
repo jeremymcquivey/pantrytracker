@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { RecipeListComponent } from './product/recipe-list.component';
+import { RecipeListComponent } from './recipes/recipe-list.component';
 import { ContactUsComponent } from './home/contact-us.component';
 import { UnauthorizedComponent } from './home/unauthorized.component';
 import { RecipeComponent } from './recipes/recipe.component';

@@ -1,2 +1,29 @@
 
 @import url('./reset.css');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300|Roboto&display=swap');
+
+html, body {
+    background-color: #FFFFFF;
+}
+
+body {
+  font-family: 'Roboto','Helvetica Neue',sans-serif;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    width: 100%;
+    background-color: rgba(55,55,55,1);
+    color: rgba(255,255,255,.95);
+    padding: 2rem 0;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.medium, 
+.large {
+    display: none;
+}

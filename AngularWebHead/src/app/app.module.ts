@@ -19,7 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ContactUsComponent } from './home/contact-us.component';
-import { RecipeListComponent } from './product/recipe-list.component';
+import { RecipeListComponent } from './recipes/recipe-list.component';
 import { AdminModule } from './admin/admin.module';
 import { CoreModule } from './core/core.module';
 import { UnauthorizedComponent } from './home/unauthorized.component';
@@ -42,6 +42,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { BarcodeReaderComponent } from './io/barcodereader.component';
 import { SigninRedirectCallbackComponent } from './home/signin-redirect-callback.component';
 import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callback.component';
+import { RoundButtonComponent } from './controls/round-button.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callba
     ProductDetailsDialogComponent,
     BarcodeReaderComponent,
     SigninRedirectCallbackComponent,
-    SignoutRedirectCallbackComponent
+    SignoutRedirectCallbackComponent,
+    RoundButtonComponent
   ],
   imports: [
     ZXingScannerModule,

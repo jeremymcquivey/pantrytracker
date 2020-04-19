@@ -7,6 +7,7 @@ import { Input, Output, EventEmitter, Component } from "@angular/core";
 })
 export class TextEditorDialogComponent {
     @Output() onTextUpdated: EventEmitter<any> = new EventEmitter<any>();
+    
     @Input() rawText: string;
     public isVisible: boolean = false;
 
