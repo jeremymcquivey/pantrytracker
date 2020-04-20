@@ -4,37 +4,6 @@
   box-sizing: border-box;
 }
 
-form {
-  width: 100%;
-  margin: 1.5rem auto;
-}
-  
-form h1 {
-    font-size: 3em;
-    font-weight: 300;
-    text-align: center;
-    color: blue;
-}
-
-form h5 {
-    text-align: center;
-    text-transform: uppercase;
-    color: red;
-}
-
-form hr.sep {
-    background: green;
-    box-shadow: none;
-    border: none;
-    height: 2px;
-    width: 25%;
-    margin: 0px auto 45px auto;
-}
-
-form hr.sep .emoji {
-    font-size: 1.2em;
-}
-
 .group {
   position: relative;
   margin: 2rem 0;
@@ -47,14 +16,13 @@ textarea {
 input,
 textarea {
   background: none;
-  color: pink;
-  font-size: 18px;
-  padding: 10px 10px 10px 5px;
+  font-size: 300;
+  padding: .5rem;
   display: block;
-  width: 75%;
+  width: 100%;
   border: none;
   border-radius: 0;
-  border-bottom: 1px solid chartreuse;
+  border-bottom: 1px solid rgba(200,200,200,1);
 }
 
 input:focus,
@@ -70,12 +38,12 @@ input:disabled ~ label,
 textarea:disabled ~label {
     top: -14px;
     font-size: 12px;
-    color: magenta;
+    color: green;
 }
 
-input:focus ~ .bar:before,
-textarea:focus ~ .bar:before {
-    width: 80%;
+input:disabled,
+textarea:disabled {
+    background-color: rgba(200,200,200,1);
 }
 
 input[type="password"] {
@@ -93,78 +61,38 @@ input[type="password"] {
   transition: .25s ease all;
 }
 
-.bar {
-  position: relative;
-  display: block;
-  width: 75%;
-}
-
-.bar:before {
-    content: '';
-    height: 2px;
-    width: 0;
-    bottom: 0px;
-    position: absolute;
-    background: green;
-    transition: 2s ease all;
-    left: 0%;
-}
-
 .btn {
-  background: #fff;
-  color: mix(black, yellow, 25%);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 3px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-decoration: none;
-  outline: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    background-color: rgba(200,200,200,1);
+    color: rgba(55,55,55,1);
+    border: none;
+    padding: 1rem 2rem;
+    margin: .5rem;
+    border-radius: unset;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    outline: none;
 }
 
 .btn:hover {
-    color: mix(black, turquoise, 30%);
-    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.18), 0 5px 5px rgba(0, 0, 0, 0.12);
+    background-color: rgba(55,55,55,1);
+    color: rgba(200,200,200,1);
 }
 
-.btn.btn-link {
-    background: yellow;
-    color: mix(white, purple, 80%);
+.btn.btn-action {
+    background-color: green;
+    color: #ffffff;
 }
 
-.btn.btn-link:hover {
-      background: darken(red, 5%);
-      color: mix(white, blue, 85%);
-}
-
-.btn.btn-submit {
-    background: red;
-    color: mix(white, yellow, 70%);
-}
-
-.btn.btn-submit:hover {
-      background: darken(red, 5%);
-      color: mix(white, yellow, 85%);
-}
-
-.btn.btn-cancel {
-    background: #eee;
-}
-
-.btn.btn-cancel:hover {
-      background: darken(#eee, 5%);
-      color: mix(black, pink, 30%);
+.btn.btn-action:hover {
+    background-color: rgba(55,55,55,1);
+    color: rgba(200,200,200,1);
 }
 
 .btn-box {
-  text-align: center;
-  margin: 50px 0;
-}
-
-.btn-box.right {
-    float: right;
+    display: block;
+    width: 100%;
+    text-align: center;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -177,4 +105,11 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+@media(min-width: 30rem) {
+    .btn-box.right {
+        width: auto;
+        float: right;
+    }
 }
