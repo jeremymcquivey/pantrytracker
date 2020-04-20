@@ -5,7 +5,8 @@ import { PantryLine, TransactionType } from "../model/pantryline";
 @Component({
 selector: 'inventory-correction',
     templateUrl: 'inventory-correction.component.html',
-    styleUrls: ['../controls/dialog.component.css']
+    styleUrls: ['../controls/dialog.component.css',
+                '../controls/fancy-form.component.css']
 })
 export class InventoryCorrectionComponent implements OnInit {
     isVisible: boolean = false;

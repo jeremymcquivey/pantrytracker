@@ -1,5 +1,6 @@
 <div id="dialog-modal" *ngIf="this.isVisible">
     <div id="dialog-modal-content">
+        
         <h3>
             <span *ngIf="Line.variety">{{ Line.variety.description }}</span> 
             {{  Line.product.name }} {{ "(" }} {{ Line.unit || "each" }} {{ ")" }}
@@ -7,20 +8,19 @@
         
         <div>How much do you actually have?</div>
 
-        <mat-form-field style="width:100%;">
-            <input matInput [(ngModel)]="originalQuantity" required placeholder="Quantity">
-        </mat-form-field>
+        <div class="group">
+            <input type="number" [(ngModel)]='originalQuantity' required>
+            <label>Quantity</label>
+        </div>
 
-        <mat-form-field style="width: 100%">
-            <input [disabled]="true" matInput [(ngModel)]="Line.unit" required placeholder="Unit">
-        </mat-form-field>
-        
-        <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
-            Cancel
-        </button>
+        <div class="group">
+            <input type="text" [(ngModel)]='Line.unit' required disabled>
+            <label>Unit</label>
+        </div>
 
-        <button title="Update" [disabled]="isBusy" mat-raised-button color="primary" class="list-action" (click)="updateInventory()" style="margin-top: 1.5em; margin-bottom: 1.5em; float: right;">
-            Save
-        </button>
+        <span class="btn-box right">
+            <button class="btn btn-cancel" [disabled]="isBusy" (click)="dismissDialog()">Cancel</button>
+            <button class="btn btn-submit" [disabled]="isBusy" (click)="updateInventory()">Save</button>
+        </span>
     </div>
 </div>
