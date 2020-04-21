@@ -1,0 +1,11 @@
+.half {
+    display: block;
+    width: 100%;
+}
+
+@media(min-width: 20rem){
+    .half {
+        display: inline-block;
+        width: 48%;
+    }
+}

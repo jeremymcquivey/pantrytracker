@@ -1,14 +1,26 @@
-<div id="upload-modal" [hidden]="!this.isVisible">
-    <div id="upload-modal-content">
-        <div>Using: {{ deviceName }}</div>
+<div id="dialog-modal" [hidden]="!this.isVisible">
+    <div id="dialog-modal-content">
+        <h3 class="half">Product Barcode</h3>
+        <span class="btn-box right half">
+            <button class="btn" (click)="hideDialog()" >Cancel</button>
+        </span>
+
+        <div class="warning" *ngIf="allDevices.length < 1">You need to connect a camera to your device in order to scan product barcodes.</div>
+
+        <div class="group" *ngIf="allDevices.length > 0">
+            <select [(ngModel)]="SelectedDevice">
+                <option [ngValue]="null">---------- Select a Device --------------</option>
+                <option *ngFor="let device of allDevices" [ngValue]="device">{{ device.label }}</option>
+            </select>
+            <label *ngIf="deviceName">Using</label>
+            <label *ngIf="!deviceName">Select a Device</label>
+        </div>
+
         <zxing-scanner [formats]="['EAN_13', 'CODE_128', 'DATA_MATRIX']"
                        [enable]="scannerEnabled" 
                        (scanSuccess)="scanSuccessHandler($event)"
                        #barcodeReader>
 
         </zxing-scanner>
-        <div mat-dialog-actions layout="row">
-            <button mat-raised-button (click)="hideDialog()" color="accent">Close</button> &nbsp;
-        </div>
     </div>
 </div>

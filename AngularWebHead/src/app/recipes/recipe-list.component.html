@@ -1,16 +1,19 @@
+<h3 class="title">My Recipes</h3>
 <div class="danger">{{error}}</div>
 
-<round-button float='left' altText='New' buttonText="+" routerLink='/new-recipe'></round-button>
+<round-button float='right' altText='New' buttonText="+" routerLink='/new-recipe'></round-button>
 
-<div class="table-container mat-elevation-z1" style="clear: both;">
-  <table mat-table [dataSource]="dataSource">
+<mat-table [dataSource]="dataSource" style="clear: both;">
 
-    <!-- Name/Description Column -->
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Stuff</th>
-        <td mat-cell *matCellDef="let recipe"><div><a routerLink="/recipe/{{recipe.id}}"><strong>{{recipe.title}}</strong></a></div></td>
-    </ng-container>
+  <!-- Name/Description Column -->
+  <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Stuff</mat-header-cell>
+      <mat-cell *matCellDef="let recipe" routerLink="/recipe/{{recipe.id}}">
+        <div>
+          <a>{{recipe.title}}</a>
+        </div>
+      </mat-cell>
+  </ng-container>
 
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-</div>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

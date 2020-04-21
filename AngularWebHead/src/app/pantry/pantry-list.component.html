@@ -2,32 +2,30 @@
 <round-button (click)="addInventory()" float='right' altText='Add' buttonText='+'></round-button>
 <round-button (click)="removeInventory()" altText='Remove' buttonText='-'></round-button>
 
-<div class="table-container mat-elevation-z2" style="clear: both;">
-    <mat-table [dataSource]="dataSource">
+<mat-table [dataSource]="dataSource" style="clear: both;">
 
-      <!-- Name/Description Column -->
-      <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Pantry Inventory</mat-header-cell>
-        <mat-cell *matCellDef="let group">
-          <div>
-            <h3 class="group-header">{{ group.header}} | {{ group.total }}</h3>
+  <!-- Name/Description Column -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Pantry Inventory</mat-header-cell>
+    <mat-cell *matCellDef="let group">
+      <div>
+        <h3 class="group-header">{{ group.header}} | {{ group.total }}</h3>
 
-            <span class="line-details">
-              <div *ngFor="let line of group.elements; let i = index" (click)="openDialog(line)">
-                {{line.quantity}}&nbsp;
-                {{line.unit}}&nbsp;
-                {{line.product.name}}&nbsp;
-                <span *ngIf="line.variety">({{ line.variety.description }})</span>
-              </div>
-            </span>
-            
+        <span class="line-details">
+          <div *ngFor="let line of group.elements; let i = index" (click)="openDialog(line)">
+            {{line.quantity}}&nbsp;
+            {{line.unit}}&nbsp;
+            {{line.product.name}}&nbsp;
+            <span *ngIf="line.variety">({{ line.variety.description }})</span>
           </div>
-        </mat-cell>
-      </ng-container>
+        </span>
+      
+      </div>
+    </mat-cell>
+  </ng-container>
 
-      <mat-row *matRowDef="let row; columns: visibleColumns;"></mat-row>
-    </mat-table>
-</div>
+  <mat-row *matRowDef="let row; columns: visibleColumns;"></mat-row>
+</mat-table>
 
 <inventory-correction #correctionDialog (onUpdate)="getInventory()"></inventory-correction>
 

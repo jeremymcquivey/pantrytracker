@@ -1,0 +1,14 @@
+.title {
+    margin: 0;
+    padding: .25rem;
+    text-align: center;
+}
+
+
+@media(min-width: 20rem) {
+    .title {
+        position: absolute;
+        left: 13%;
+        width: 75%;
+    }
+}

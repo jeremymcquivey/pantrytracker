@@ -1,6 +1,6 @@
 header { 
     height: 3rem; 
-    background-color: green;  
+    background-color: rgba(23, 156, 0,1);  
     position: relative;
     font-size: 1.25rem;
     color: rgba(255,255,255,1);
@@ -36,7 +36,7 @@ nav ul li {
 
 nav ul li:hover {
     cursor: pointer;
-    background-color: green;
+    background-color:rgba(23, 156, 0,1);
 }
 
 nav.right {
@@ -137,7 +137,7 @@ nav input[type=checkbox]:checked + ul li {
         display: inline-block;
         height: 100%;
         padding: 0 1rem;
-        background-color: green;
+        background-color:rgba(23, 156, 0,1);
     }
     
     nav.left input[type=checkbox] + ul li a {

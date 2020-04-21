@@ -4,7 +4,8 @@ import { ProductService } from "../core/product.service";
 
 @Component({
     selector: 'add-variety',
-    templateUrl: 'add-variety.component.html'
+    templateUrl: 'add-variety.component.html',
+    styleUrls: ['../controls/fancy-form.component.css']
 })
 export class AddVarietyComponent {
     public blankVariety: ProductVariety = new ProductVariety();

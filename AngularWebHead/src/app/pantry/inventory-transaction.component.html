@@ -1,66 +1,59 @@
-<div id="upload-modal" [hidden]="!this.isVisible">
-    <div id="upload-modal-content">
+<div id="dialog-modal" [hidden]="!this.isVisible">
+    <div id="dialog-modal-content">
         
-        <div [hidden]="transactionMode != 1">Remove inventory</div>
-        <div [hidden]="transactionMode != 0">Add more inventory</div>
+        <h3 [hidden]="transactionMode != 1">Remove Inventory</h3>
+        <h3 [hidden]="transactionMode != 0">Add Inventory</h3>
 
-        <div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="warnings.length > 0">
+        <div class="warning" *ngIf="warnings.length > 0">
             <div *ngFor="let warning of warnings">{{ warning }}</div>
         </div>
-        <!--<span *ngIf="PantryLine">{{  Line.product.name }} {{ "(" }} {{ Line.unit || "each" }} {{ ")" }}</span>-->
-        <div>
-            <mat-form-field style="width:20em;">
-                <input matInput #barcodeInput [(ngModel)]="Line.code" placeholder="Product Code i.e. UPC/EAN" />
-            </mat-form-field>
-            <i class="material-icons" style="cursor: pointer;" (click)="launchScanner()">camera_alt</i>
-            <i class="material-icons" style="cursor: pointer;" (click)="lookupUPC()">search</i>
+
+        <span (click)="launchScanner()"><i class="material-icons" style="cursor: pointer; vertical-align: middle;">camera_alt</i>&nbsp;<span class="expanded">Scan&nbsp;</span>Barcode</span>
+        <div class="group">
+            <i class="material-icons" (click)="lookupUPC()">search</i>
+            <input type="number" #barcodeInput [(ngModel)]="Line.code">
+            <label><span class="expanded">Product Code i.e. </span>UPC/EAN </label>
         </div>
 
-        <div>
-            <mat-form-field style="width:20em;">
-                <input matInput [(ngModel)]="ProductSearchText" placeholder="Product Search">
-            </mat-form-field>
-            <i class="material-icons" style="cursor: pointer;" (click)="searchProduct()">search</i>
+        <div class="group">
+            <i class="material-icons" (click)="searchProduct()">search</i>
+            <input type="text" [(ngModel)]="ProductSearchText">
+            <label>Product Search</label>
         </div>
-        
-        <mat-form-field style="width:100%;">
-            <input matInput [(ngModel)]="productName" [disabled]="true" required placeholder="Product Name">
-        </mat-form-field>
 
-        <hr />
+        <div class="group">
+            <input type="text" [(ngModel)]="productName" [disabled]="true" required placeholder="Select Product">
+            <label>Product Name</label>
+        </div>
 
-        <mat-form-field style="width:100%;">
-            <input matInput [(ngModel)]="Line.quantity" required placeholder="Quantity">
-        </mat-form-field>
-        
-        <mat-form-field style="width:100%;">
-            <input matInput [(ngModel)]="Line.size" type="number" required placeholder="Size">
-        </mat-form-field>
-        
-        <mat-form-field style="width:100%;">
-            <input matInput [(ngModel)]="Line.unit" required placeholder="Unit">
-        </mat-form-field>
+        <div class="group">
+            <input type="number" [(ngModel)]="Line.quantity" required >
+            <label>Quantity</label>
+        </div>
 
-        <div [hidden]="!productName">
-            <mat-form-field >
-                <mat-select [(value)]="Line.varietyId">
-                    <mat-option value="">---------- No Variety --------------</mat-option>
-                    <mat-option *ngFor="let variety of Varieties" [value]="variety.id">
-                      {{ variety.description }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-    
+        <div class="group">
+            <input type="number" [(ngModel)]="Line.size" required >
+            <label><span class="expanded">Container&nbsp;</span>Size</label>
+        </div>
+
+        <div class="group">
+            <input [(ngModel)]="Line.unit" required>
+            <label>Unit&nbsp;<span class="expanded">i.e. fl oz, lb</span></label>
+        </div>
+
+        <div class="group" [hidden]="!productName">
+            <select [(ngModel)]="SelectedVariety">
+                <option [ngValue]="null">---------- No Variety --------------</option>
+                <option *ngFor="let variety of Varieties" [ngValue]="variety">{{ variety.description }}</option>
+            </select>
+            <label>Variety of {{ productName }}</label>
             <add-variety [product]="Product" #addVariety (onVarietyAdded)="varietyAdded($event)"></add-variety>
         </div>
 
-        <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
-            Cancel
-        </button>
-
-        <button title="Update" [disabled]="isBusy" mat-raised-button color="primary" class="list-action" (click)="updateInventory()" style="margin-top: 1.5em; margin-bottom: 1.5em; float: right;">
-            Save
-        </button>
+        <span class="btn-box right">
+            <button class="btn" [disabled]="isBusy" (click)="dismissDialog()">Cancel</button>
+            <button class="btn btn-action" [disabled]="isBusy" (click)="updateInventory()">Save</button>
+        </span>
     </div>
 </div>
 

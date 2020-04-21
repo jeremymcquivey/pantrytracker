@@ -10,10 +10,13 @@ import { BarcodeReaderComponent } from '../io/barcodereader.component';
 @Component({
 selector: 'inventory-transaction',
     templateUrl: 'inventory-transaction.component.html',
-    styleUrls: ['../io/uploadfile-dialog.component.css']
+    styleUrls: ['../controls/dialog.component.css',
+                '../controls/fancy-form.component.css',
+                './inventory-transaction.component.css']
 })
 export class InventoryTransactionComponent implements OnInit {
     private _lastTransactionType: number = TransactionType.Addition;
+
     productName: string;
     loadBarcode: boolean = false;
     preassignedVariety: string;
@@ -26,6 +29,7 @@ export class InventoryTransactionComponent implements OnInit {
     public Line: PantryLine;
     public Product: Product;
     public Varieties: ProductVariety[] = [];
+    public SelectedVariety: ProductVariety = null;
 
     @Input() set transactionMode(value: number) {
         this._lastTransactionType = value;
@@ -82,6 +86,7 @@ export class InventoryTransactionComponent implements OnInit {
             return;
         }
 
+        this.Line.varietyId = this.SelectedVariety?.id;
         this._pantryService.updateInventory(this.Line).subscribe(line => {
             if(line) {
                 this.onUpdate.emit(line);
@@ -172,6 +177,9 @@ export class InventoryTransactionComponent implements OnInit {
         if(this.loadBarcode) {
             this.registerNewProductCode();
         }
+
+        this.ProductSearchText = '';
+        this.ProductSearchDialog.SearchText = '';
     }
 
     registerNewProductCode() {
@@ -199,9 +207,9 @@ export class InventoryTransactionComponent implements OnInit {
         this.Line.varietyId = code.varietyId;
     }
 
-    varietyAdded(variety: ProductVariety) {
-        this.Varieties.push(variety);
-        this.Line.varietyId = variety.id;
+    varietyAdded(addedVariety: ProductVariety) {
+        this.Varieties.push(addedVariety);
+        this.SelectedVariety = this.Varieties.find(variety => variety.id == addedVariety.id);
     }
 
     dismissDialog(): void {

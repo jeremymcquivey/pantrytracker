@@ -1,8 +1,5 @@
-<span style="background-color: #a8a8a8; margin-left: 1em; padding: 1em;">
-    <mat-form-field>
-        <input matInput [(ngModel)]="blankVariety.description" placeholder="Description" [disabled]="networkIsBusy">
-    </mat-form-field>
-    <b style="cursor: pointer; color: blue; margin-left: 1.5em;" (click)="addVariety()">
-        Add
-    </b>
-</span>
+<div class="group">
+    <i class="" (click)="addVariety()">Add</i>
+    <input type="text" [(ngModel)]="blankVariety.description" [disabled]="networkIsBusy">
+    <label>Add Variety</label>
+</div>

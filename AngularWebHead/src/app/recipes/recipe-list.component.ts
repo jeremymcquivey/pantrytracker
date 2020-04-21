@@ -7,7 +7,8 @@ import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: "app-projects",
-  templateUrl: "./recipe-list.component.html"
+  templateUrl: "./recipe-list.component.html",
+  styleUrls: ['./recipe-list.component.css']
 })
 export class RecipeListComponent implements OnInit {
   displayedColumns = ['name'];

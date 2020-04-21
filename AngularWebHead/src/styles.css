@@ -27,3 +27,33 @@ footer {
 .large {
     display: none;
 }
+
+div.warning {
+    background-color: rgba(255, 255, 0, 0.349); 
+    padding: 1rem; 
+    margin-top: .25rem;
+}
+
+a,
+a.visited {
+    cursor: pointer;
+    color: rgba(56, 133, 255,1);
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgba(55,55,55,1);
+}
+
+ul a {
+    color: rgba(255,255,255,1);
+}
+
+mat-row {
+    border-bottom: 1px solid !important;
+    border-color: rgba(200,200,200,1) !important;
+}
+
+mat-row:first-child {
+    border-top: 1px solid rgba(200,200,200,1) !important;
+}
