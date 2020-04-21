@@ -3,7 +3,8 @@ import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'upload-image',
-    templateUrl: 'imageupload.component.html'
+    templateUrl: 'imageupload.component.html',
+    styleUrls: ['../controls/fancy-form.component.css']
 })
 export class ImageUploadComponent {
     @Output() onProcessImage: EventEmitter<any> = new EventEmitter();

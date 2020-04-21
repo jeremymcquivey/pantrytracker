@@ -23,6 +23,11 @@ nav {
     background-color: transparent;
     height: 100%;
 }
+
+nav a,
+nav a:hover {
+    color: rgba(255,255,255,1);
+}
       
 nav ul li {
     display: none;
@@ -61,6 +66,11 @@ nav.left > label {
 
 nav input[type=checkbox] {
     display: none;
+}
+
+nav input[type=checkbox] + ul {
+    position: relative;
+    z-index: 1;
 }
 
 nav input[type=checkbox] + ul,

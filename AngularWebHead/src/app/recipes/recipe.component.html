@@ -7,82 +7,78 @@
                    #editorDialog>
 </texteditor-dialog>
 
-<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="!this.isUpdate && isPremium()">
-    <i class="material-icons" (click)="this.showFileUploader()" style="cursor: pointer;">attach_file</i>
-    <span>Convert from image or text file</span>
+<h3 *ngIf="this.isUpdate">{{ recipe.title }}</h3>
+
+<div class="warning" *ngIf="!this.isUpdate && isPremium()" (click)="this.showFileUploader()">
+    <i class="material-icons" style="cursor: pointer;">attach_file</i>
+    <span><span class="expanded">Convert&nbsp;</span>From Image</span>
 </div>
 
-<div style="background-color: rgba(255, 255, 0, 0.349); padding: 1em; margin-top: .25em;" *ngIf="!this.isUpdate && !isPremium()">
-  <i class="material-icons" style="cursor: pointer;">attach_file</i>
-  <span>Upgrade to a premium membership in order to convert a recipe from an image or text file</span>
+<div class="warning" *ngIf="!this.isUpdate && !isPremium()">
+  <i class="material-icons">attach_file</i>
+  <span>Upgrade to a premium membership in order to convert a recipe from an image</span>
 </div>
 
-<div style="margin: 0 1em;">
-  <div class="mat-display-1" style="margin-bottom: 0px;">
-    <mat-form-field style="width:100%;">
-        <input matInput [(ngModel)]="recipe.title" required placeholder="Title" [disabled]="this.rawText != ''">
-    </mat-form-field>
-  </div>
+<div class="danger" *ngIf="error">{{error}}</div>
 
-  <div>
-      <mat-form-field style="width:100%;">
-          <input matInput [(ngModel)]="recipe.credit" placeholder="Citation i.e. website, name, etc...">
-      </mat-form-field>
-  </div>
+<div class="group">
+  <input type="text" [(ngModel)]="recipe.title" [disabled]="this.rawText != ''">
+  <label>Title</label>
+</div>
 
-  <div class="danger">{{error}}</div>
-  <span class="mat-title">Ingredients</span>&nbsp;
-  <button title="Edit Directions" mat-raised-button color="primary" class="list-action" (click)="this.showTextPreview()">
-      <i class="material-icons" style="cursor: pointer;">edit</i>
-  </button>
-  <br />&nbsp;<br />
+<div class="group">
+  <input type="text" [(ngModel)]="recipe.credit" >
+  <label>Citation<span class="expanded">&nbsp;i.e. website, name, etc...</span></label>
+</div>
 
-  <div class="table-container mat-elevation-z2" style="margin-top: 1em;">
-    <mat-table [dataSource]="dataSource">
+<div class="group" *ngIf="!!recipe.title || isUpdate">
+  <i class="material-icons" style="cursor: pointer;" (click)="this.showTextPreview()">edit</i> <h3>Ingredients</h3> &nbsp;
+</div>
 
-      <!-- Name/Description Column -->
-      <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Ingredient</mat-header-cell>
-        <mat-cell *matCellDef="let ingredient">
-          <div>
-            <span>{{ingredient.quantity}}</span>&nbsp;
-            <span>{{ingredient.unit}}</span>&nbsp;
-            <span>{{ingredient.name}}</span>
+<h4 *ngIf="ingredients.length === 0">No Ingredients</h4>
+<div class="table-container mat-elevation-z2" style="margin-top: 1em;" *ngIf="ingredients.length > 0">
+  <mat-table [dataSource]="dataSource">
+
+    <!-- Name/Description Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Ingredient</mat-header-cell>
+      <mat-cell *matCellDef="let ingredient">
+        <div>
+          <span>{{ingredient.quantity}}</span>&nbsp;
+          <span>{{ingredient.unit}}</span>&nbsp;
+          <span>{{ingredient.name}}</span>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <mat-row *matRowDef="let row; columns: condensedColumns;"></mat-row>
+  </mat-table>
+</div>
+
+<div class="group" *ngIf="!!recipe.title || isUpdate">
+  <i class="material-icons" style="cursor: pointer;" (click)="this.showTextPreview()">edit</i> <h3>Directions</h3> &nbsp;
+</div>
+
+<h4 *ngIf="directions.length === 0">No Directions</h4>
+<div class="table-container mat-elevation-z2" *ngIf="directions.length > 0">
+  <mat-table [dataSource]="directionDataSource">
+
+    <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-cell *matCellDef="let direction; let i = index">
+          <div style="width: 100%;">
+            <b>{{i + 1}}</b> {{direction.text}}
           </div>
         </mat-cell>
       </ng-container>
 
-      <mat-row *matRowDef="let row; columns: condensedColumns;"></mat-row>
-    </mat-table>
-  </div>
-
-  <div>&nbsp;</div>
-  <div class="danger">{{error}}</div>
-  <span class="mat-title">Directions</span>&nbsp;
-  <button title="Edit Directions" mat-raised-button color="primary" class="list-action" (click)="this.showTextPreview()">
-      <i class="material-icons" style="cursor: pointer;">edit</i>
-  </button>
-  <br />&nbsp;<br />
-
-  <div class="table-container mat-elevation-z2">
-    <mat-table [dataSource]="directionDataSource">
-
-        <ng-container matColumnDef="description">
-            <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
-            <mat-cell *matCellDef="let direction; let i = index">
-              <div style="width: 100%;">
-                <b>{{i + 1}}</b> {{direction.text}}
-              </div>
-            </mat-cell>
-          </ng-container>
-
-      <mat-row *matRowDef="let row; columns: directionColumns;"></mat-row>
-    </mat-table>
+    <mat-row *matRowDef="let row; columns: directionColumns;"></mat-row>
+  </mat-table>
 </div>
 
+<div class="danger" *ngIf="error">{{error}}</div>
 
-  <button title="Save Recipe" [disabled]="isBusy" mat-raised-button color="primary" class="list-action" (click)="saveRecipe()" style="margin-top: 1.5em; margin-bottom: 1.5em; float: right;">
-      Save
-  </button>
-
-</div>
+<span class="btn-box right">
+  <button class="btn btn" [disabled]="isBusy" routerLink='/recipes'>Cancel</button>
+  <button class="btn btn-action" [disabled]="isBusy" (click)="saveRecipe()">Save</button>
+</span>

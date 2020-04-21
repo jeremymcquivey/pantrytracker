@@ -1,4 +1,3 @@
-/*#upload-modal {*/
 #dialog-modal {
     background-color:rgba(22,22,22,0.5); 
     position: absolute;
@@ -9,7 +8,6 @@
     top: 0;
 }
 
-/*#upload-modal-content {*/
 #dialog-modal-content {
     width: 100%;
     min-height: 100%;
@@ -30,7 +28,7 @@ input[type=number] {
   -moz-appearance:textfield;
 }
 
-@media(min-width: 30rem) {
+@media(min-width: 35rem) {
     #dialog-modal-content {
         width: 75%;
         margin: auto;

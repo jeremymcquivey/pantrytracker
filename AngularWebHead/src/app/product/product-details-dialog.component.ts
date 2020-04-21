@@ -8,7 +8,9 @@ import { AddVarietyComponent } from "./add-variety.component";
 @Component({
     selector: 'product-details-dialog',
     templateUrl: 'product-details-dialog.component.html',
-    styleUrls: ['../io/uploadfile-dialog.component.css']
+    styleUrls: ['../controls/dialog.component.css',
+                './product-details.dialog.component.css',
+                '../controls/fancy-form.component.css']
 })
 export class ProductDetailsDialogComponent {
     private _product: Product = new Product();

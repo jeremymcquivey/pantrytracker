@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from "@angular/core";
 import { Product } from "../model/pantryline";
 import { ProductService } from "../core/product.service";
 import { MatTableDataSource } from "@angular/material/table";
@@ -6,12 +6,16 @@ import { AddProductDialogComponent } from "./add-product-dialog.component";
 
 @Component({
 selector: 'product-search',
-    templateUrl: 'product-search.component.html'
+    templateUrl: 'product-search.component.html',
+    styleUrls: ['../controls/fancy-form.component.css']
 })
 export class ProductSearchComponent implements OnInit {
     public dataSource = new MatTableDataSource();
     public hasSearched = false;
     public visibleColumns = ['name'];
+
+    @ViewChild('searchTextBox')
+    private _autoFocusedElement: ElementRef;
 
     @ViewChild("AddProductDialog")
     private AddProductDialog: AddProductDialogComponent;
@@ -22,15 +26,13 @@ export class ProductSearchComponent implements OnInit {
     @Input()
     public SearchText: string;
 
-    @Input()
-    get HasResults(): boolean {
-        return this.dataSource.data.length > 0;
-    }
+    constructor(private _productService: ProductService) { }
 
-    constructor(private _productService: ProductService) {
+    ngOnInit() {
+        setTimeout(() => {
+            this._autoFocusedElement.nativeElement.focus();
+        }, 0);
     }
-
-    ngOnInit(): void { }
 
     selectProduct(product: Product) {
         this.hasSearched = false;

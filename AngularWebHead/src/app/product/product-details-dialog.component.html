@@ -1,88 +1,78 @@
-<div id="upload-modal" *ngIf="isVisible">
-    <div id="upload-modal-content">
-            <h1 mat-dialog-title>{{product.name}}</h1>
-            <add-variety #addVariety [product]="product" (onVarietyAdded)="varietyAdded($event)"></add-variety>
-
-            <mat-table [dataSource]="varietyDataSource">
-                <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef>
-                        Varieties (i.e. organic, ground, large, etc...)
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let variety" [style.flex]="'flex'">
-                        <div class="project-name">
-                            <p>{{variety.description}}</p>
-                        </div>
-                    </mat-cell>
-                </ng-container>
+<div id="dialog-modal" *ngIf="isVisible">
+    <div id="dialog-modal-content">
+        <h3 mat-dialog-title>{{product.name}}</h3>
         
-                <mat-header-row *matHeaderRowDef="varietyColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: varietyColumns;"></mat-row>
-            </mat-table>
+        <add-variety #addVariety [product]="product" (onVarietyAdded)="varietyAdded($event)"></add-variety>
 
-            <p>&nbsp;</p>
-            
-            <span style="background-color: #a8a8a8; margin-left: 1em; padding: 1em;">
-                <mat-form-field>
-                    <input matInput [(ngModel)]="blankCode.code" placeholder="Code" [disabled]="networkIsBusy">
-                </mat-form-field>
-                <b style="cursor: pointer; color: blue; margin-left: 1.5em;" (click)="addCode()">
-                    Add
-                </b>
-            </span>
+        <div class="group">
+            <i (click)="addCode()">Add</i>
+            <input matInput [(ngModel)]="blankCode.code" [disabled]="networkIsBusy">
+            <label>Add Code</label>
+        </div>
 
-            <mat-table [dataSource]="codeDataSource">
-                <ng-container matColumnDef="code"> 
-                    <mat-header-cell *matHeaderCellDef>
-                        UPCs mapped to {{ product.name }} 
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let code" [style.flex]="'flex'">
-                        <div class="project-name">
-                            <p>{{code.code}}</p>
-                        </div>
-                    </mat-cell>
-                </ng-container>
+        <h4>Varieties <span class="expanded">&nbsp;(i.e. organic, ground, large, etc...)</span></h4>
+        <mat-table [dataSource]="varietyDataSource">
+            <ng-container matColumnDef="name">
+                <mat-cell *matCellDef="let variety" [style.flex]="'flex'">
+                    <div class="project-name">
+                        <p>{{variety.description}}</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
+    
+            <mat-row *matRowDef="let row; columns: varietyColumns;"></mat-row>
+        </mat-table>
 
-                <ng-container matColumnDef="variety">
-                    <mat-header-cell *matHeaderCellDef>
-                        Assigned Variety
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let code" [style.flex]="'flex'">
-                        <div class="project-name">
-                            <p>{{ code.variety == null ? "None" : code.variety.description }}</p>
-                        </div>
-                    </mat-cell>
-                </ng-container>
+        <h4>Codes <span class="expanded">&nbsp;(i.e. UPC, EAN, etc...)</span></h4>
+        <mat-table [dataSource]="codeDataSource">
+            <ng-container matColumnDef="code">
+                <mat-cell *matCellDef="let code" [style.flex]="'flex'">
+                    <div class="project-name">
+                        <p>{{code.code}}</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
 
-                <ng-container matColumnDef="size">
-                    <mat-header-cell *matHeaderCellDef>
-                        Size
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let code" [style.flex]="'flex'">
-                        <div class="project-name">
-                            <p>{{ code.size }} &nbsp; {{ code.unit }}</p>
-                        </div>
-                    </mat-cell>
-                </ng-container>
+            <ng-container matColumnDef="variety">
+                <mat-header-cell *matHeaderCellDef>
+                    Assigned Variety
+                </mat-header-cell>
+                <mat-cell *matCellDef="let code" [style.flex]="'flex'">
+                    <div class="project-name">
+                        <p>{{ code.variety == null ? "None" : code.variety.description }}</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
 
-                <ng-container matColumnDef="brand">
-                    <mat-header-cell *matHeaderCellDef>
-                        Brand
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let code" [style.flex]="'flex'">
-                        <div class="project-name">
-                            <p>{{ code.brand == null ? "None" : code.brand }}</p>
-                        </div>
-                    </mat-cell>
-                </ng-container>
-        
-                <mat-header-row *matHeaderRowDef="codeColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: codeColumns;"></mat-row>
-            </mat-table>
+            <ng-container matColumnDef="size">
+                <mat-header-cell *matHeaderCellDef>
+                    Size
+                </mat-header-cell>
+                <mat-cell *matCellDef="let code" [style.flex]="'flex'">
+                    <div class="project-name">
+                        <p>{{ code.size }} &nbsp; {{ code.unit }}</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
 
-            <div mat-dialog-actions layout="row">
-                <button mat-button (click)="cancelDialog()" color="accent">Close</button>
-            </div>
+            <ng-container matColumnDef="brand">
+                <mat-header-cell *matHeaderCellDef>
+                    Brand
+                </mat-header-cell>
+                <mat-cell *matCellDef="let code" [style.flex]="'flex'">
+                    <div class="project-name">
+                        <p>{{ code.brand == null ? "None" : code.brand }}</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
+    
+            <mat-row *matRowDef="let row; columns: codeColumns;"></mat-row>
+        </mat-table>
+
+        <span class="btn-box right">
+            <button class="btn btn" [disabled]="isBusy" (click)="cancelDialog()">Cancel</button>
+        </span>
+
+        <add-product-code #addProductCodeDialog (onSaved)="codeAdded()"></add-product-code>
     </div>
 </div>
-
-<add-product-code #addProductCodeDialog (onSaved)="codeAdded()"></add-product-code>

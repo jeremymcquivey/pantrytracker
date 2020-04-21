@@ -6,8 +6,7 @@ import { ProductSearchComponent } from './product-search.component';
 
 @Component({
   selector: 'app-manage-projects',
-  templateUrl: 'manage-products.component.html',
-  styleUrls: ['manage-products.component.scss']
+  templateUrl: 'manage-products.component.html'
 })
 export class ManageProductsComponent implements OnInit {
   private searchResults: number = -1;
@@ -18,7 +17,7 @@ export class ManageProductsComponent implements OnInit {
   @ViewChild("ProductSearch")
   ProductSearch: ProductSearchComponent;
 
-  error: string;
+  error: string = null;
   dataSource = new MatTableDataSource();
   productMap: Map<string, Product[]> = new Map<string, Product[]>();
 

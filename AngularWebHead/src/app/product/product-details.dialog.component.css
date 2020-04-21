@@ -1,0 +1,9 @@
+.expanded {
+    display: none;
+}
+
+@media(min-width:30rem) {
+    .expanded {
+        display: inline-block;
+    }
+}

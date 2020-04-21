@@ -1,7 +1,9 @@
-<div class="error-text">{{error}}</div>
+<div style="margin: 1rem;">
+    <h3>Admin | Pantry Products</h3>
 
-<div style="padding-left: 1em;">
+    <div class="danger" *ngIf="!!error">{{error}}</div>
+    
     <product-search #ProductSearch (onSelected)="productClick($event)" (onSearched)="searchReturned($event)"></product-search>
+    
+    <product-details-dialog #ProductDetailsDialog></product-details-dialog>
 </div>
-
-<product-details-dialog #ProductDetailsDialog></product-details-dialog>

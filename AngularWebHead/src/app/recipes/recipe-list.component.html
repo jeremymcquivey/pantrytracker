@@ -1,5 +1,5 @@
 <h3 class="title">My Recipes</h3>
-<div class="danger">{{error}}</div>
+<div class="danger" *ngIf="!!error">{{error}}</div>
 
 <round-button float='right' altText='New' buttonText="+" routerLink='/new-recipe'></round-button>
 

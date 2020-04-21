@@ -1,4 +1,8 @@
 <div>
-    <span>Upload from .txt or .rtf file</span><br />
-    <input type="file" ng2FileSelect [uploader]="uploader" (onFileSelected)="onFileSelected($event)" />
+    <h3>Upload from .txt<span class="expanded">&nbsp;or .rtf file</span></h3>
+
+    <div class="group">
+        <input type="file" ng2FileSelect [uploader]="uploader" (onFileSelected)="onFileSelected($event)" id="txt-uploader" />
+        <label for="txt-uploader">Upload File</label>
+    </div>
 </div>

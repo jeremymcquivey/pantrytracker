@@ -1,4 +1,8 @@
 <div>
-    <span>Upload from image</span><br />
-    <input type="file" ng2FileSelect [uploader]="uploader" (onFileSelected)="this.onImageSelected($event)" />
+    <h3>Upload from image</h3>
+
+    <div class="group">
+        <input type="file" ng2FileSelect [uploader]="uploader" (onFileSelected)="this.onImageSelected($event)" id="img-uploader" />
+        <label for="img-uploader">Upload File</label>
+    </div>
 </div>

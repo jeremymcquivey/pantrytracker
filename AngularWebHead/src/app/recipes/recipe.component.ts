@@ -13,10 +13,11 @@ import { AuthService } from "../core/auth.service";
 
 @Component({
     selector: 'app-recipe',
-    templateUrl: 'recipe.component.html'
+    templateUrl: 'recipe.component.html',
+    styleUrls: ['../controls/fancy-form.component.css',
+                './recipe.component.css']
   })
   export class RecipeComponent implements OnInit {
-    
     @ViewChild("editorDialog")
     public previewEditor: TextEditorDialogComponent;
 
@@ -29,7 +30,7 @@ import { AuthService } from "../core/auth.service";
     public rawText: string = "";
     public isBusy: boolean = false;
 
-    public recipe: Recipe = {} as Recipe;
+    public recipe: Recipe = { title: '' } as Recipe;
     public ingredients: Ingredient[];
     public directions: Direction[];
     
@@ -38,7 +39,7 @@ import { AuthService } from "../core/auth.service";
 
     dataSource = new MatTableDataSource();
     directionDataSource = new MatTableDataSource();
-    error: string;
+    error: string = '';
     recipeId: string = ({} as Recipe).id;
 
     constructor(
@@ -60,13 +61,13 @@ import { AuthService } from "../core/auth.service";
       }
       else {
         this.ingredients = [];
-        this.directions = [];
+        this.directions = []
         this.dataSource.data = this.ingredients;
         this.directionDataSource.data = this.directions;
       }
     }
 
-    private showFileUploader() {
+    public showFileUploader() {
       this.uploadDialog.isVisible = true;
     }
 
@@ -76,7 +77,7 @@ import { AuthService } from "../core/auth.service";
 
     public showTextPreview() {
       if(!this.rawText || this.rawText.trim().length == 0) {
-        this.rawText = this.recipe.title;
+        this.rawText = this.recipe.title + '\nIngredients\n\nDirections\n';
       }
 
       this.previewEditor.isVisible = true;

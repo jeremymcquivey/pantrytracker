@@ -1,13 +1,14 @@
-<div id="upload-modal" *ngIf="this.isVisible">
-    <div id="upload-modal-content">
-            <h1 mat-dialog-title>Upload File</h1>
-            <div mat-dialog-content>
-                <upload-image (onProcessImage)="this.processImage($event);"></upload-image>
-                <hr />
-                <upload-text (onProcessFile)="this.processText($event)"></upload-text>
-            </div>
-            <div mat-dialog-actions layout="row">
-                <button mat-button (click)="cancelDialog()" color="accent">Cancel</button>
-            </div>
+<div id="dialog-modal" *ngIf="this.isVisible">
+    <div id="dialog-modal-content">
+        <h1 mat-dialog-title>Upload File</h1>
+        <div mat-dialog-content>
+            <upload-image (onProcessImage)="this.processImage($event);"></upload-image>
+            
+            <upload-text (onProcessFile)="this.processText($event)"></upload-text>
+        </div>
+
+        <span class="btn-box right">
+            <button class="btn" (click)="cancelDialog()">Cancel</button>
+        </span>
     </div>
 </div>

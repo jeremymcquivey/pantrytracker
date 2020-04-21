@@ -3,7 +3,8 @@ import { Output, EventEmitter, Component } from "@angular/core";
 @Component({
     selector: 'upload-file-dialog',
     templateUrl: 'uploadfile-dialog.component.html',
-    styleUrls: ['./uploadfile-dialog.component.css']
+    styleUrls: ['../controls/dialog.component.css',
+                '../controls/fancy-form.component.css']
 })
 export class UploadFileDialogComponent {
     @Output() onImageSelected: EventEmitter<any> = new EventEmitter<any>();

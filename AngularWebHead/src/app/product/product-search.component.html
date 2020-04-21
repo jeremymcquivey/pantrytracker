@@ -1,29 +1,26 @@
-<div>Product Search</div>
+<h4>Product Search</h4>
 
-<div>
-    <mat-form-field style="width:20em;">
-        <input matInput #searchTextBox [(ngModel)]="SearchText" placeholder="Product Name or Description" (input)="hasSearched = false;">
-    </mat-form-field>
+<div class="group">
     <i class="material-icons" style="cursor: pointer;" (click)="productSearch()">search</i>
+    <input matInput #searchTextBox [(ngModel)]="SearchText" (input)="hasSearched = false;">
+    <label>Product Name or Description</label>
 </div>
 
-<button title="Add Product" mat-raised-button color="primary" (click)="addProduct()" [disabled]="!canAdd()">
-    <i class="material-icons">add</i>
-</button>
+<round-button altText='New' buttonText="+" (click)="addProduct()" [hidden]="!canAdd()"></round-button>
+<!-- TODO: Implement disabling round button [disabled]='!canAdd()' -->
 
-<mat-table [dataSource]="dataSource">
+<h4 *ngIf="dataSource.data.length > 0">Search Results</h4>
+<mat-table [dataSource]="dataSource" *ngIf="dataSource.data.length > 0">
 
     <!-- Name/Description Column -->
-<ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>Search Results</mat-header-cell>
-    <mat-cell *matCellDef="let product" (click)="selectProduct(product)" style="cursor: pointer">
-    <div>
-        <span>{{product.name}}</span>
-    </div>
-    </mat-cell>
-</ng-container>
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Search Results</mat-header-cell>
+        <mat-cell *matCellDef="let product" (click)="selectProduct(product)" style="cursor: pointer">
+            <span>{{product.name}}</span>
+        </mat-cell>
+    </ng-container>
 
-<mat-row *matRowDef="let row; columns: visibleColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: visibleColumns;"></mat-row>
 </mat-table>
 
 <add-product-dialog #AddProductDialog (onAdded)="selectProduct($event)"></add-product-dialog>

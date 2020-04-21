@@ -3,7 +3,8 @@ import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'upload-text',
-    templateUrl: 'txtupload.component.html'
+    templateUrl: 'txtupload.component.html',
+    styleUrls: ['../controls/fancy-form.component.css']
 })
 export class TxtUploadComponent {
     @Output() onProcessFile: EventEmitter<any> = new EventEmitter();

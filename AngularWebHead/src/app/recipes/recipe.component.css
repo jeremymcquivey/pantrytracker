@@ -1,0 +1,13 @@
+h3, h4 {
+    text-align: center;
+}
+
+.expanded {
+    display: none;
+}
+
+@media(min-width:20rem) {
+    .expanded {
+        display: inline-block;
+    }
+}

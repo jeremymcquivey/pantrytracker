@@ -5,7 +5,7 @@ import { ProductService } from "../core/product.service";
 @Component({
     selector: 'add-product-code',
     templateUrl: 'add-product-code.component.html',
-    styleUrls: ['../io/uploadfile-dialog.component.css']
+    styleUrls: ['../controls/dialog.component.css']
 })
 export class AddProductCodeComponent {
     private networkIsBusy: boolean = false;
