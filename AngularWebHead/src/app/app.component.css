@@ -79,7 +79,8 @@ nav input[type=checkbox]:checked + ul li {
 
 /**** Medium ****/
 @media(min-width: 30rem) {
-    .small {
+
+    nav input[type=checkbox]:checked + ul li.small {
         display: none;
     }
     
@@ -94,7 +95,7 @@ nav input[type=checkbox]:checked + ul li {
     }     
         
     nav.right {
-        visibility: visible;
+        display: block;
         position: absolute;
         max-width: 38%;
         right: 0;
@@ -118,10 +119,10 @@ nav input[type=checkbox]:checked + ul li {
         max-width: 10%;
         left: 40%
     }
+
     .medium {
         display: none;
     }
-    
     
     nav.left {
         max-width: 60%;
@@ -133,7 +134,6 @@ nav input[type=checkbox]:checked + ul li {
     
     nav.left input[type=checkbox] + ul,
     nav.left input[type=checkbox] + ul li {
-        visibility: visible;
         display: inline-block;
         height: 100%;
         padding: 0 1rem;
