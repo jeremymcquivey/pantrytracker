@@ -1,21 +1,20 @@
-<div id="upload-modal" [hidden]="!this.isVisible" style="z-index:60">
-    <div id="upload-modal-content">
-        <p>Add {{ Product.name }}</p>
+<div id="dialog-modal" *ngIf="isVisible">
+    <div id="dialog-modal-content">
+        <h3>Add {{ Product.name }}</h3>
 
-        <mat-form-field style="width:100%;">
-            <input matInput [(ngModel)]="Product.name" required placeholder="Name">
-        </mat-form-field>
+        <div class="group">
+            <input type="text" [(ngModel)]="Product.name" required>
+            <label>Name</label>
+        </div>
 
-        <mat-form-field style="width:100%;">
-            <input matInput [(ngModel)]="Product.defaultUnit" required placeholder="Default Unit">
-        </mat-form-field>
+        <div class="group">
+            <input type="text" [(ngModel)]="Product.defaultUnit" required>
+            <label>Default Unit</label>
+        </div>
 
-        <button title="Save" [disabled]="isBusy" mat-raised-button color="primary" class="list-action" (click)="saveProduct()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
-            Save
-        </button>
-
-        <button title="Cancel" [disabled]="isBusy" mat-raised-button color="default" class="list-action" (click)="dismissDialog()" style="margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 1em; float: right;">
-            Cancel
-        </button>
+        <span class="btn-box right">
+            <button class="btn btn" [disabled]="isBusy" (click)='dismissDialog()'>Cancel</button>
+            <button class="btn btn-action" [disabled]="isBusy" (click)='saveProduct()'>Save</button>
+        </span>
     </div>
 </div>

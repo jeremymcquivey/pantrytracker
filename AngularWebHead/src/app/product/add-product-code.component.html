@@ -1,54 +1,45 @@
-<div id="upload-modal" *ngIf="this.isVisible" style="z-index:60">
-    <div id="upload-modal-content">
-        <h1 mat-dialog-title>{{Code.code}}</h1>
-
-        <div>
-            <mat-form-field>
-                <input matInput [(ngModel)]="Code.code" placeholder="Code" [disabled]="networkIsBusy">
-            </mat-form-field>
+<div id="dialog-modal" *ngIf="this.isVisible" style="z-index:60">
+    <div id="dialog-modal-content">
+        <h3>{{Code.code}}</h3>
+        
+        <div class="group">
+            <input type="number" [(ngModel)]="Code.code" [disabled]="networkIsBusy">
+            <label>Product Code</label>
         </div>
 
-        <div>
-            <mat-form-field>
-                <input matInput [(ngModel)]="Code.brand" placeholder="Brand" [disabled]="networkIsBusy">
-            </mat-form-field>
+        <div class="group">
+            <input type="text" [(ngModel)]="Code.brand" [disabled]="networkIsBusy">
+            <label>Brand</label>
         </div>
 
-        <div>
-            <mat-form-field>
-                <input matInput [(ngModel)]="Code.product.name" placeholder="Product" [disabled]="true">
-            </mat-form-field>
+        <div class="group">
+            <input type="text" [(ngModel)]="Code.product.name" [disabled]="true">
+            <label>Product</label>
         </div>
 
-        <mat-form-field [hidden]="Code.product.varieties == 0">
-            <mat-select [(value)]="Code.varietyId">
-                <mat-option value="">---------- No Variety --------------</mat-option>
-                <mat-option *ngFor="let variety of Code.product.varieties" [value]="variety.id">
-                  {{ variety.description }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+        <div class="group">
+            <input type="number" [(ngModel)]="Code.size" [disabled]="networkIsBusy">
+            <label>Size</label>
+        </div>
+
+        <div class="group">
+            <input type="text" [(ngModel)]="Code.unit" [disabled]="networkIsBusy">
+            <label>Unit</label>
+        </div>
+
+        <div class="group" [hidden]="Code.product.varieties == 0">
+            <select [(ngModel)]="selectedVariety">
+                <option [ngValue]="null">---------- No Variety --------------</option>
+                <option *ngFor="let variety of Code.product.varieties" [ngValue]="variety">{{ variety.description }}</option>
+            </select>
+            <label>Variety of {{ productName }}</label>
+        </div>
 
         <add-variety #addVariety [product]="Code.product" (onVarietyAdded)="varietyAdded($event)"></add-variety>
 
-        <div>
-            <mat-form-field>
-                <input matInput [(ngModel)]="Code.size" placeholder="Size" [disabled]="networkIsBusy">
-            </mat-form-field>
-        </div>
-
-        <div>
-            <mat-form-field>
-                <input matInput [(ngModel)]="Code.unit" placeholder="Unit" [disabled]="networkIsBusy">
-            </mat-form-field>
-        </div>
-
-        <div mat-dialog-actions layout="row">
-            <button mat-button (click)="saveProductCode()" color="primary">Save</button>
-        </div>
-
-        <div mat-dialog-actions layout="row">
-            <button mat-button (click)="cancelDialog()" color="accent">Cancel</button>
-        </div>
+        <span class="btn-box right">
+            <button class="btn btn" (click)="cancelDialog()">Cancel</button>
+            <button class="btn btn-action" (click)="saveProductCode()">Save</button>
+        </span>
     </div>
 </div>

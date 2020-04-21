@@ -172,6 +172,7 @@ namespace RecipeAPI.Controllers
             productCode.VendorCode = null;
             productCode.Vendor = null;
             productCode.Product = null;
+            productCode.Variety = null;
 
             if (_database.ProductCodes.Any(p => p.Code == code && p.OwnerId == productCode.OwnerId))
             {

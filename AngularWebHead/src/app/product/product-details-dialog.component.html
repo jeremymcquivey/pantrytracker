@@ -14,9 +14,7 @@
         <mat-table [dataSource]="varietyDataSource">
             <ng-container matColumnDef="name">
                 <mat-cell *matCellDef="let variety" [style.flex]="'flex'">
-                    <div class="project-name">
-                        <p>{{variety.description}}</p>
-                    </div>
+                    <p>{{variety.description}}</p>
                 </mat-cell>
             </ng-container>
     
@@ -27,45 +25,16 @@
         <mat-table [dataSource]="codeDataSource">
             <ng-container matColumnDef="code">
                 <mat-cell *matCellDef="let code" [style.flex]="'flex'">
-                    <div class="project-name">
-                        <p>{{code.code}}</p>
-                    </div>
+                    <p>
+                        {{code.code}}
+                        <span *ngIf="code.variety">&nbsp;({{ code.variety.description }})</span>
+                        <span *ngIf="code.brand">&nbsp;{{ code.brand }}</span> 
+                        &nbsp;{{ code.size }}
+                        &nbsp;{{ code.unit }}
+                    </p>
                 </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="variety">
-                <mat-header-cell *matHeaderCellDef>
-                    Assigned Variety
-                </mat-header-cell>
-                <mat-cell *matCellDef="let code" [style.flex]="'flex'">
-                    <div class="project-name">
-                        <p>{{ code.variety == null ? "None" : code.variety.description }}</p>
-                    </div>
-                </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="size">
-                <mat-header-cell *matHeaderCellDef>
-                    Size
-                </mat-header-cell>
-                <mat-cell *matCellDef="let code" [style.flex]="'flex'">
-                    <div class="project-name">
-                        <p>{{ code.size }} &nbsp; {{ code.unit }}</p>
-                    </div>
-                </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="brand">
-                <mat-header-cell *matHeaderCellDef>
-                    Brand
-                </mat-header-cell>
-                <mat-cell *matCellDef="let code" [style.flex]="'flex'">
-                    <div class="project-name">
-                        <p>{{ code.brand == null ? "None" : code.brand }}</p>
-                    </div>
-                </mat-cell>
-            </ng-container>
-    
             <mat-row *matRowDef="let row; columns: codeColumns;"></mat-row>
         </mat-table>
 

@@ -5,7 +5,9 @@ import { ProductService } from '../core/product.service';
 @Component({
   selector: 'add-product-dialog',
   templateUrl: 'add-product-dialog.component.html',
-  styleUrls: ['product-search-dialog.component.css']
+  styleUrls: ['product-search-dialog.component.css',
+              '../controls/fancy-form.component.css',
+              '../controls/dialog.component.css']
 })
 export class AddProductDialogComponent implements OnInit {
     error: string;

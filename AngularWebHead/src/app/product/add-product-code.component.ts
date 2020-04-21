@@ -5,10 +5,20 @@ import { ProductService } from "../core/product.service";
 @Component({
     selector: 'add-product-code',
     templateUrl: 'add-product-code.component.html',
-    styleUrls: ['../controls/dialog.component.css']
+    styleUrls: ['../controls/dialog.component.css',
+                '../controls/fancy-form.component.css']
 })
 export class AddProductCodeComponent {
     private networkIsBusy: boolean = false;
+    
+    set selectedVariety(value: ProductVariety) {
+        this.Code.variety = value;
+        this.Code.varietyId = value?.id;
+    } get selectedVariety(): ProductVariety {
+        return this.Code?.variety;
+    }
+
+    @Input()
     public isVisible: boolean = false;
 
     @Input() Code: ProductCode;
@@ -36,7 +46,7 @@ export class AddProductCodeComponent {
 
     private varietyAdded(variety: ProductVariety) {
         this.Code.product.varieties.push(variety);
-        this.Code.varietyId = variety.id;
+        this.selectedVariety = variety;
     }
 
     private cancelDialog() {

@@ -20,7 +20,7 @@ export class ProductDetailsDialogComponent {
     varietyDataSource = new MatTableDataSource();
     codeDataSource = new MatTableDataSource();
     varietyColumns = ["name"];
-    codeColumns = ["code","variety","size", "brand"];
+    codeColumns = ["code"];
 
     @ViewChild("addProductCodeDialog")
     private AddProductCodeDialog: AddProductCodeComponent;
@@ -59,6 +59,7 @@ export class ProductDetailsDialogComponent {
 
     private varietyAdded(variety: ProductVariety) {
         this._product.varieties.push(variety);
+        this.blankCode.product.varieties.push(variety);
         this.varietyDataSource.data = this._product.varieties;
         this.onVarietyAdded.emit(variety);
     }
