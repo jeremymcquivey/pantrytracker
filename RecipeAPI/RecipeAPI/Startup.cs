@@ -38,7 +38,6 @@ namespace RecipeAPI
             var connStr = Environment.GetEnvironmentVariable("ConnectionString", EnvironmentVariableTarget.Process);
             services.AddDbContext<RecipeContext>(options => options.UseSqlServer(connStr));
             services.AddTransient<IOCRService, OCR>();
-            services.AddSingleton<InMemoryProductsDb>();
             services.AddSingleton<ICacheManager, MemoryCache>();
             services.AddScoped<KrogerService>();
             services.AddScoped<WalmartService>();

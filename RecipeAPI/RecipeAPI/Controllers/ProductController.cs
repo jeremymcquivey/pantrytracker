@@ -20,12 +20,14 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     public class ProductController: BaseController
     {
+        private readonly ProductService _products;
         private readonly RecipeContext _database;
         private readonly UPCLookup _productCodes;
 
 #pragma warning disable 1591
-        public ProductController(RecipeContext database, UPCLookup productCodes)
+        public ProductController(RecipeContext database, ProductService products, UPCLookup productCodes)
         {
+            _products = products;
             _database = database;
             _productCodes = productCodes;
         }
@@ -58,16 +60,11 @@ namespace RecipeAPI.Controllers
                 return BadRequest("Name of the product is required");
             }
 
-            product.Id = 0;
             product.OwnerId = UserRoles.Contains("Admin") ? null : AuthenticatedUser;
-            product.DefaultUnit ??= "each";
-            product.Varieties = new List<ProductVariety>();
-            product.Codes = new List<ProductCode>();
 
-            _database.Products.Add(product);
-            await _database.SaveChangesAsync();
+            var result = _products.Add(product);
 
-            return Ok(product);
+            return Ok(result);
         }
 
         /// <summary>

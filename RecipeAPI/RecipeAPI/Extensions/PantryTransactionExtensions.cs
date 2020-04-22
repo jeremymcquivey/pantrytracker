@@ -33,7 +33,7 @@ namespace RecipeAPI.Extensions
                               UserId = p.First().UserId,
                               ProductId = p.Key.ProductId,
                               VarietyId = p.Key.VarietyId,
-                              Quantity = p.Sum(q => q.Quantity * q.Size.ToNumber()),
+                              Quantity = Math.Round(p.Sum(q => q.Quantity * q.Size.ToNumber()),2),
                               Size = "1",
                               Unit = p.Key.Unit
                           });

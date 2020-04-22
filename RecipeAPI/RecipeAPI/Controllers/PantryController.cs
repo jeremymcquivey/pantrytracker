@@ -58,7 +58,7 @@ namespace RecipeAPI.Controllers
                                              .Select(p => new
                                              {
                                                  Header = p.First().Product.Name,
-                                                 Total = $"{p.Sum(q => q.Quantity)} {p.First().Unit}",
+                                                 Total = $"{p.Sum(q => Math.Round(q.Quantity, 2))} {p.First().Unit}",
                                                  Elements = p
                                              });
 

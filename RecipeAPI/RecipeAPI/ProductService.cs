@@ -5,11 +5,13 @@ using RecipeAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RecipeAPI
 {
     public class ProductService
     {
+        private readonly TimeSpan ValidCacheTime = TimeSpan.FromDays(1);
         private readonly Func<Dictionary<Tuple<int, int?>, string[]>>  _productDelegate;
         private readonly RecipeContext _database;
         private readonly ICacheManager _cache;
@@ -27,6 +29,21 @@ namespace RecipeAPI
             return _database.Products.SingleOrDefault(product => product.Id == id);
         }
 
+        public async Task<Product> Add(Product product)
+        {
+            product.Id = 0;
+            product.DefaultUnit ??= "each";
+            product.Varieties = new List<ProductVariety>();
+            product.Codes = new List<ProductCode>();
+
+            var newProduct = _database.Products.Add(product);
+            await _database.SaveChangesAsync();
+
+            _cache.Add("AllProducts", _productDelegate(), ValidCacheTime);
+
+            return newProduct.Entity;
+        }
+
         public ProductVariety GetVariety(int? id)
         {
             if(id.HasValue)
@@ -39,7 +56,7 @@ namespace RecipeAPI
 
         public KeyValuePair<Tuple<int, int?>, string[]> MatchProduct(string description)
         {
-            var products = _cache.Get("AllProducts", _productDelegate, TimeSpan.FromDays(1));
+            var products = _cache.Get("AllProducts", _productDelegate, ValidCacheTime);
 
             return products.Where(list => list.Value.All(q => description.Contains(q, StringComparison.CurrentCultureIgnoreCase)))
                            .OrderByDescending(p => p.Value.Length)

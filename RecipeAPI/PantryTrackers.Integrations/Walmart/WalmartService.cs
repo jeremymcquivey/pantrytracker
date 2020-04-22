@@ -44,7 +44,7 @@ namespace PantryTrackers.Integrations.Walmart
             {
                 request.BaseAddress = new Uri(BaseAPI);
                 request.DefaultRequestHeaders.Add("Accept", "application/json");
-                var response = await request.GetAsync($"items?apiKey={_clientId}&upc={code}");
+                var response = await request.GetAsync($"items?apiKey={_clientId}&upc={FormatCodeToUPC(code)}");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -84,6 +84,12 @@ namespace PantryTrackers.Integrations.Walmart
             var sizePieces = size.Split(" ");
             code.Size = sizePieces[0];
             code.Unit = sizePieces.Length > 0 ? string.Join(" ", sizePieces.Skip(1)) : string.Empty;
+        }
+
+        private string FormatCodeToUPC(string code)
+        {
+            return code.Length == 13 && code.StartsWith('0')
+                ? code.Substring(1, 12) : code;
         }
     }
 }

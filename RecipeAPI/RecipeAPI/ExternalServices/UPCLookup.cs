@@ -32,7 +32,7 @@ namespace RecipeAPI.ExternalServices
 
             _providers = new List<IProductSearch>
             {
-                //krogerService,
+                krogerService,
                 walmartService
             };
         }
@@ -47,6 +47,7 @@ namespace RecipeAPI.ExternalServices
         {
             var product = _database.ProductCodes
                                    .Include(productCode => productCode.Product)
+                                   .Include(productCode => productCode.Variety)
                                    .OrderByDescending(productCode => productCode.Code == code)
                                    .ThenByDescending(productCode => productCode.Vendor == preferredProvider)
                                    .ThenByDescending(productCode => productCode.Id)
@@ -59,10 +60,11 @@ namespace RecipeAPI.ExternalServices
 
                 if(newProduct != default)
                 {
-                    product.Brand = newProduct.Brand;
-                    product.Description = newProduct.Description;
-                    product.Size = newProduct.Size;
-                    product.Unit = newProduct.Unit;
+                    product = newProduct;
+                    if (newProduct.Product == default || newProduct.Variety == default)
+                    {
+                        AssignProduct(product);
+                    }
                 }
             }
             
