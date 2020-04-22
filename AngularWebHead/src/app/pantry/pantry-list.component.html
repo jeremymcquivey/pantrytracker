@@ -13,9 +13,9 @@
 
         <span class="line-details">
           <div *ngFor="let line of group.elements; let i = index" (click)="openDialog(line)">
-            {{line.quantity}}&nbsp;
-            {{line.unit}}&nbsp;
-            {{line.product.name}}&nbsp;
+            {{ line.quantity }}&nbsp;
+            {{ line.unit }}&nbsp;
+            {{ line.product.name }}&nbsp;
             <span *ngIf="line.variety">({{ line.variety.description }})</span>
           </div>
         </span>

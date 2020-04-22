@@ -10,6 +10,6 @@ export class AccountService {
     constructor(private _httpClient: HttpClient) { }
       
     getAllUsers(): Observable<UserProfile[]> {
-        return this._httpClient.get<UserProfile[]>(Constants.apiRoot + 'Account/Users');
+        //return this._httpClient.get<UserProfile[]>(Constants.apiRoot + 'Account/Users');
     }
 }

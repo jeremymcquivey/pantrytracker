@@ -17,9 +17,9 @@ selector: 'inventory-transaction',
 export class InventoryTransactionComponent implements OnInit {
     private _lastTransactionType: number = TransactionType.Addition;
 
+    upcDescription: string;
     productName: string;
     loadBarcode: boolean = false;
-    preassignedVariety: string;
     ProductSearchText: string;
 
     warnings: string[] = [];
@@ -73,6 +73,7 @@ export class InventoryTransactionComponent implements OnInit {
         this.ProductSearchText = "";
         this.ProductSearchDialog.SearchText = "";
         this.warnings = [];
+        this.upcDescription = null;
 
         setTimeout(() => { 
             this.autoFocusedInput.nativeElement.focus();
@@ -111,7 +112,7 @@ export class InventoryTransactionComponent implements OnInit {
                 this.Line.unit = productCode.unit;
                 this.Line.varietyId = productCode.varietyId;
                 this.Line.productId = productCode.productId;
-                this.Line.varietyId = productCode.varietyId;
+                this.upcDescription = productCode.description;
 
                 if(productCode.productId) {
                     this.getProductById(productCode.productId);
@@ -146,7 +147,7 @@ export class InventoryTransactionComponent implements OnInit {
                 if(varieties.length == 1)
                 {
                     this.Line.varietyId = varieties[0].id;
-                    this.preassignedVariety = varieties[0].description;
+                    this.SelectedVariety = varieties[0];
                     this.Line.variety = varieties[0];
                 }
             }

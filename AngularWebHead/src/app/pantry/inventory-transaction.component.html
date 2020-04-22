@@ -11,8 +11,13 @@
         <span (click)="launchScanner()"><i class="material-icons" style="cursor: pointer; vertical-align: middle;">camera_alt</i>&nbsp;<span class="expanded">Scan&nbsp;</span>Barcode</span>
         <div class="group">
             <i class="material-icons" (click)="lookupUPC()">search</i>
-            <input type="number" #barcodeInput [(ngModel)]="Line.code">
+            <input type="text" #barcodeInput [(ngModel)]="Line.code">
             <label><span class="expanded">Product Code i.e. </span>UPC/EAN </label>
+        </div>
+
+        <div class="group" *ngIf="!!upcDescription">
+            <input type="text" [ngModel]="upcDescription" [disabled]="true">
+            <label>UPC Description</label>
         </div>
 
         <div class="group">

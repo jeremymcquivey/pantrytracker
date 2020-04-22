@@ -66,6 +66,8 @@ export class ProductCode {
 
     public product: Product;
 
+    public description: string;
+
     public varietyId: number;
 
     public variety: ProductVariety;

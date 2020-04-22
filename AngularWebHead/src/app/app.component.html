@@ -9,7 +9,7 @@
             <li class="small" *ngIf="isLoggedIn" (click)="logout()" >
                 <a>Sign Out</a>
             </li>
-            <li routerLink="/" *ngIf="!isLoggedIn">
+            <li (click)="login()" *ngIf="!isLoggedIn">
                 <a>Join Free</a>
             </li>
             <li *ngIf="!isLoggedIn" (click)="login()" >
