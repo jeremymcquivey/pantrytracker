@@ -1,0 +1,26 @@
+.small {
+    display: none;
+}
+
+header .logo {
+    width: 25%;
+    left: 38%;
+    height: 100%;
+}
+    
+nav.left {
+    max-width: 38%;
+}     
+    
+nav.right {
+    display: inline-block;
+    position: absolute;
+    max-width: 38%;
+    right: 0;
+    top: 0;
+}      
+        
+nav.right img {
+    max-height: 3rem;
+    vertical-align: middle;
+}

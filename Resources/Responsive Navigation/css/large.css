@@ -1,0 +1,32 @@
+.small,.medium {
+    display: none;
+}
+
+nav ul, nav ul li {
+    height: 100%;
+}
+
+nav.left {
+    width: 50%;
+    left: 26%;
+    height: 100%;
+}
+
+nav.left img {
+    display: none;
+}
+
+nav.left ul li li {
+    display: inline-block;
+    background: transparent;
+}
+
+nav.left li.small {
+    display: none;
+}
+
+nav.left ul li li:hover {
+    background-color: rgba(55,55,55,.7);
+    transition: height .5s linear;
+    -webkit-transition: .5s linear;
+}
