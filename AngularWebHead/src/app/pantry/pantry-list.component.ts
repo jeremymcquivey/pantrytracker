@@ -14,9 +14,6 @@ export class PantryListComponent implements OnInit {
     dataSource = new MatTableDataSource<PantryLineGrouping>();
     visibleColumns = ['name'];
 
-    @ViewChild("correctionDialog")
-    public correctionDialog: InventoryCorrectionComponent;
-
     @ViewChild("inventoryTransaction")
     public transactionDialog: InventoryTransactionComponent;
 
@@ -30,11 +27,6 @@ export class PantryListComponent implements OnInit {
         this._pantryService.getCurrentInventory().subscribe(recipeData => {
             this.dataSource.data = recipeData;
         });
-    }
-
-    openDialog(line: PantryLine): void {
-        this.correctionDialog.isVisible = true;
-        this.correctionDialog.pantryLine = line;
     }
 
     addInventory(): void {

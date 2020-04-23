@@ -43,7 +43,7 @@ export class InventoryCorrectionComponent implements OnInit {
             quantity: `${updateAmount}`,
             transactionType: TransactionType.SystemAdjustment,
             varietyId: this.Line.varietyId,
-            size: 1,
+            size: this.Line.size,
         } as PantryLine;
         
         this._pantryService.updateInventory(adjustment).subscribe(lineItem => {

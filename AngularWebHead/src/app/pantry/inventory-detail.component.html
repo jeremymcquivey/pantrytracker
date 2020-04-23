@@ -8,10 +8,10 @@
       <div>
         <h4 class="group-header">{{ group.header}}</h4>
 
-        <span class="line-details">
+        <span>
           <div *ngFor="let line of group.elements">
             <div class="group">
-                <i class="material-icons">edit</i>
+                <i class="material-icons" (click)="openDialog(line)">edit</i>
                 <input type="text" #barcodeInput [ngModel]="line.quantity" [disabled]='true'>
                 <label>({{ line.size }}&nbsp;{{ line.unit }})</label>
             </div>
@@ -25,4 +25,8 @@
   <mat-row *matRowDef="let row; columns: VisibleColumns;"></mat-row>-->
 </mat-table>
 
-<inventory-correction #correctionDialog (onUpdate)="getInventory()"></inventory-correction>
+<span class="btn-box right">
+  <button class="btn btn-action" [disabled]="isBusy" routerLink='/pantry/inventory'>OK</button>
+</span>
+
+<inventory-correction #correctionDialog (onUpdate)="getSummary()"></inventory-correction>

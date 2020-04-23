@@ -63,3 +63,7 @@ mat-row {
 mat-row:first-child {
     border-top: 1px solid rgba(200,200,200,1) !important;
 }
+
+mat-cell div {
+    width: 100%;
+}

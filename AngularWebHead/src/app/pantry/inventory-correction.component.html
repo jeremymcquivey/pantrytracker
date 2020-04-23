@@ -3,7 +3,7 @@
         
         <h3>
             <span *ngIf="Line.variety">{{ Line.variety.description }}</span> 
-            {{  Line.product.name }} {{ "(" }} {{ Line.unit || "each" }} {{ ")" }}
+            {{  Line.product.name }}
         </h3>
         
         <div>How much do you actually have?</div>
@@ -14,8 +14,8 @@
         </div>
 
         <div class="group">
-            <input type="text" [(ngModel)]='Line.unit' required disabled>
-            <label>Unit</label>
+            <input type="text" value='{{ Line.size }}&nbsp;{{ Line.unit }}' required disabled>
+            <label>Package Size</label>
         </div>
 
         <span class="btn-box right">
