@@ -9,6 +9,7 @@ import { RecipeComponent } from './recipes/recipe.component';
 import { PantryListComponent } from './pantry/pantry-list.component';
 import { SigninRedirectCallbackComponent } from './home/signin-redirect-callback.component';
 import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callback.component';
+import { InventoryDetailComponent } from './pantry/inventory-detail.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: 'new-recipe', component: RecipeComponent},
     { path: 'recipe/:recipeId', component: RecipeComponent},
     { path: 'pantry/inventory', component: PantryListComponent },
+    { path: 'pantry/product/:productId', component: InventoryDetailComponent},
     { path: 'signin-callback', component: SigninRedirectCallbackComponent },
     { path: 'signout-callback', component: SignoutRedirectCallbackComponent }
 ];

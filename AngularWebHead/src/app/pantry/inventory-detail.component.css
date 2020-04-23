@@ -1,0 +1,15 @@
+.title {
+    margin: 0;
+    padding: .25rem;
+    text-align: center;
+}
+
+.group-header {
+    display: none;
+    width: 100%;
+}
+
+.line-details div {
+    cursor: pointer; 
+    padding:1em; 
+}

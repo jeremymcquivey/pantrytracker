@@ -39,6 +39,28 @@ namespace RecipeAPI.Extensions
                           });
         }
 
+        public static IEnumerable<PantryTransaction> CalculateProductTotals(this IEnumerable<PantryTransaction> transactions)
+        {
+            if (transactions == null || !transactions.Any())
+            {
+                return null;
+            }
+
+            return transactions.GroupBy(transaction => new { transaction.VarietyId, transaction.Size, transaction.Unit })
+                               .Select(group => new PantryTransaction
+                               {
+                                   VarietyId = group.Key.VarietyId,
+                                   Size = group.Key.Size,
+                                   Unit = group.Key.Unit,
+                                   Product = group.First().Product,
+                                   ProductId = group.First().ProductId,
+                                   Variety = group.First().Variety,
+                                   Quantity = group.Sum(trans => trans.Quantity)
+                               }).OrderBy(group => group.Variety?.Description)
+                                 .ThenBy(group => group.Unit)
+                                 .ThenByDescending(group => group.Size);
+        }
+
         public static IEnumerable<PantryTransaction> CalculateTotals(this IEnumerable<PantryTransaction> products, IEnumerable<Tuple<int, string>> productUnits)
         {
             if (products == null || !products.Any())

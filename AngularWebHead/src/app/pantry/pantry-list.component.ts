@@ -11,7 +11,6 @@ selector: 'pantry-list',
     styleUrls: ['pantry-list.component.css']
 })
 export class PantryListComponent implements OnInit {
-    private recipeData: PantryLineGrouping[];
     dataSource = new MatTableDataSource<PantryLineGrouping>();
     visibleColumns = ['name'];
 
@@ -29,8 +28,7 @@ export class PantryListComponent implements OnInit {
 
     getInventory(): void {
         this._pantryService.getCurrentInventory().subscribe(recipeData => {
-            this.recipeData = recipeData;
-            this.dataSource.data = this.recipeData;
+            this.dataSource.data = recipeData;
         });
     }
 

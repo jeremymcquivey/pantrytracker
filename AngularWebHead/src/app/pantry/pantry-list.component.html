@@ -9,10 +9,10 @@
     <mat-header-cell *matHeaderCellDef>Pantry Inventory</mat-header-cell>
     <mat-cell *matCellDef="let group">
       <div>
-        <h3 class="group-header">{{ group.header}} | {{ group.total }}</h3>
+        <h4 class="group-header">{{ group.header}} | {{ group.total }}</h4>
 
         <span class="line-details">
-          <div *ngFor="let line of group.elements; let i = index" (click)="openDialog(line)">
+          <div *ngFor="let line of group.elements;" routerLink="/pantry/product/{{line.productId}}">
             {{ line.quantity }}&nbsp;
             {{ line.unit }}&nbsp;
             {{ line.product.name }}&nbsp;
@@ -22,11 +22,9 @@
       
       </div>
     </mat-cell>
-  </ng-container>
+  </ng-container> 
 
   <mat-row *matRowDef="let row; columns: visibleColumns;"></mat-row>
 </mat-table>
-
-<inventory-correction #correctionDialog (onUpdate)="getInventory()"></inventory-correction>
 
 <inventory-transaction #inventoryTransaction (onUpdate)="getInventory()"></inventory-transaction>

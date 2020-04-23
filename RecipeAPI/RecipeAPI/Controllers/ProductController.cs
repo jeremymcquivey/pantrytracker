@@ -61,10 +61,7 @@ namespace RecipeAPI.Controllers
             }
 
             product.OwnerId = UserRoles.Contains("Admin") ? null : AuthenticatedUser;
-
-            var result = _products.Add(product);
-
-            return Ok(result);
+            return Ok(await _products.Add(product));
         }
 
         /// <summary>

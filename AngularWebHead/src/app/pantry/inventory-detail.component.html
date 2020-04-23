@@ -1,0 +1,28 @@
+<h3 class="title" *ngIf="isProductLoaded">How much {{ ProductName }} do I have?</h3>
+
+<mat-table [dataSource]="DataSource" style="clear: both;">
+
+   <!--Name/Description Column -->
+   <ng-container matColumnDef="name">
+    <mat-cell *matCellDef="let group">
+      <div>
+        <h4 class="group-header">{{ group.header}}</h4>
+
+        <span class="line-details">
+          <div *ngFor="let line of group.elements">
+            <div class="group">
+                <i class="material-icons">edit</i>
+                <input type="text" #barcodeInput [ngModel]="line.quantity" [disabled]='true'>
+                <label>({{ line.size }}&nbsp;{{ line.unit }})</label>
+            </div>
+          </div>
+        </span>
+      
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <mat-row *matRowDef="let row; columns: VisibleColumns;"></mat-row>-->
+</mat-table>
+
+<inventory-correction #correctionDialog (onUpdate)="getInventory()"></inventory-correction>

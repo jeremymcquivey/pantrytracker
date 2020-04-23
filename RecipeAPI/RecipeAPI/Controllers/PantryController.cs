@@ -70,6 +70,40 @@ namespace RecipeAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{pantryId}/product/{productId}/summary")]
+        public IActionResult GetProductSummary([FromRoute]int productId, [FromQuery] bool includeZeroValues = true)
+        {
+            try
+            {
+                _appInsights.TrackEvent("GetPantryProductSummary", new Dictionary<string, string> { { "IncludeZeroValues", includeZeroValues ? "true" : "false" } });
+
+                var gId = Guid.Parse(AuthenticatedUser);
+                var pantryItems = _db.Transactions.Where(p => p.UserId == gId)
+                                                  .Where(p => p.ProductId == productId)
+                                                  .Include(p => p.Variety)
+                                                  .Include(p => p.Product)
+                                                  .ToList()
+                                                  .CalculateProductTotals();
+
+                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThan(0, 0.5)) : pantryItems;
+
+                var groupedItems = otherItems.GroupBy(trans => trans.VarietyId)
+                                             .Select(p => new
+                                             {
+                                                 Header = p.First().Variety?.Description ?? "Unclassified",
+                                                 Total = 0,
+                                                 Elements = p
+                                             });
+
+                return Ok(groupedItems);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         /// <summary>
         /// Posts a new transaction to the current user's pantry.
         /// </summary>

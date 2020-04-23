@@ -22,4 +22,11 @@ export class PantryService {
             return this.httpClient.post<PantryLine>(Constants.recipeApi + 'v1/Pantry/value/transaction', adjustment, { headers: headers }).toPromise();
         }));
     }
+
+    getProductSummary(productId: number): Observable<PantryLineGrouping[]> {
+        return from(this._authService.getAccessToken().then(accessToken => {
+            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+            return this.httpClient.get<PantryLineGrouping[]>(`${Constants.recipeApi}v1/Pantry/0/product/${productId}/summary?includeZeroValues=true`, { headers: headers }).toPromise();
+        }));
+    }
 }

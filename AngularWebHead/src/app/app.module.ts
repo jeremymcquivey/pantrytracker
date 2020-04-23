@@ -42,6 +42,8 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { BarcodeReaderComponent } from './io/barcodereader.component';
 import { SigninRedirectCallbackComponent } from './home/signin-redirect-callback.component';
 import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callback.component';
+import { InventoryDetailComponent } from './pantry/inventory-detail.component';
+
 import { RoundButtonComponent } from './controls/round-button.component';
 
 @NgModule({
@@ -69,6 +71,8 @@ import { RoundButtonComponent } from './controls/round-button.component';
     BarcodeReaderComponent,
     SigninRedirectCallbackComponent,
     SignoutRedirectCallbackComponent,
+    InventoryDetailComponent,
+
     RoundButtonComponent
   ],
   imports: [
