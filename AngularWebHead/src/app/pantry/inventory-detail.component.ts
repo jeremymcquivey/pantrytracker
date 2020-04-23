@@ -14,6 +14,8 @@ selector: 'inventory-detail',
 })
 export class InventoryDetailComponent implements OnInit {
     private _product: Product;
+
+    public isBusy = false;
     public DataSource = new MatTableDataSource<PantryLineGrouping>();
 
     @ViewChild("correctionDialog")
@@ -39,19 +41,25 @@ export class InventoryDetailComponent implements OnInit {
     ngOnInit(): void {
         const productId = this._route.snapshot.params.productId;
 
+        this.isBusy = true;
         this._productService.getProduct(productId).subscribe(product => {
             this._product = product;
             this.getSummary();
         }, error => {
             console.error(error);
+        }, () => {
+            this.isBusy = false;
         });
     }
 
     getSummary() {
+        this.isBusy = true;
         this._pantryService.getProductSummary(this._product.id).subscribe(summary => {
             this.DataSource.data = summary;
         }, error => {
             console.error(error);
+        }, () => {
+            this.isBusy = false;
         });
     }
 
