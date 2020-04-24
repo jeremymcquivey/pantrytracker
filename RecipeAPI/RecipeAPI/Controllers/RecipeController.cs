@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using PantryTracker.Model.Products;
-using PantryTracker.Model.Extensions;
 
 namespace RecipeAPI.Controllers
 {

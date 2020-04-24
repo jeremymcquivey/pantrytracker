@@ -17,5 +17,8 @@ namespace RecipeAPI.Controllers
         protected string AuthenticatedUser { get => User.FindFirst(ClaimTypes.NameIdentifier).Value; }
 
         protected IEnumerable<string> UserRoles { get => User.FindAll(ClaimTypes.Role).Select(p => p.Value); }
+        /// <summary>
+        /// Retrieves all roles associated with the user in the current context.
+        /// </summary>
     }
 }

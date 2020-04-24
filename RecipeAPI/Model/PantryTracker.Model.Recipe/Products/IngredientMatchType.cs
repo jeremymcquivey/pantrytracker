@@ -2,7 +2,7 @@
 {
     public enum IngredientMatchType
     {
-        SystemMatch,
-        UserMatch
+        SystemMatch = 0,
+        UserMatch = 1
     }
 }

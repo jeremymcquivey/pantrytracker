@@ -18,8 +18,7 @@ namespace RecipeAPI.Extensions
                 return new List<PantryTransaction>();
             }
 
-            return products.Select(p => p.ToPantryTransaction())
-                           .CombineUnits();
+            return products.CombineUnits();
         }
 
         public static IEnumerable<PantryTransaction> CombineUnits(this IEnumerable<PantryTransaction> entries)
