@@ -22,6 +22,7 @@
 <div class="danger" *ngIf="error">{{error}}</div>
 
 <div class="group">
+  <i class="" routerLink='products'>List</i>
   <input type="text" [(ngModel)]="recipe.title" [disabled]="this.rawText != ''">
   <label>Title</label>
 </div>
@@ -35,8 +36,8 @@
   <i class="material-icons" style="cursor: pointer;" (click)="this.showTextPreview()">edit</i> <h3>Ingredients</h3> &nbsp;
 </div>
 
-<h4 *ngIf="ingredients.length === 0">No Ingredients</h4>
-<div class="table-container mat-elevation-z2" style="margin-top: 1em;" *ngIf="ingredients.length > 0">
+<h4 *ngIf="ingredients?.length === 0">No Ingredients</h4>
+<div class="table-container mat-elevation-z2" style="margin-top: 1em;" *ngIf="ingredients?.length > 0">
   <mat-table [dataSource]="dataSource">
 
     <!-- Name/Description Column -->
@@ -59,15 +60,15 @@
   <i class="material-icons" style="cursor: pointer;" (click)="this.showTextPreview()">edit</i> <h3>Directions</h3> &nbsp;
 </div>
 
-<h4 *ngIf="directions.length === 0">No Directions</h4>
-<div class="table-container mat-elevation-z2" *ngIf="directions.length > 0">
+<h4 *ngIf="directions?.length === 0">No Directions</h4>
+<div class="table-container mat-elevation-z2" *ngIf="directions?.length > 0">
   <mat-table [dataSource]="directionDataSource">
 
     <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
         <mat-cell *matCellDef="let direction; let i = index">
           <div style="width: 100%;">
-            <b>{{i + 1}}</b> {{direction.text}}
+            {{direction.text}}
           </div>
         </mat-cell>
       </ng-container>

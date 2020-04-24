@@ -1,60 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Constants } from '../constants';
-import { Project } from '../model/project';
 import { Observable, from } from 'rxjs';
-import { Milestone } from '../model/milestone';
-import { UserPermission } from '../model/user-permission';
-import { UserProfile } from '../model/user-profile';
-import { MilestoneStatus } from '../model/milestone-status';
 import { AuthService } from './auth.service';
-import { Recipe } from '../model/recipe';
 import { Product, ProductVariety, ProductCode } from '../model/pantryline';
 
 @Injectable()
 export class ProductService {
     constructor(private httpClient: HttpClient, private _authService: AuthService) { }
-    
-    getRecipes(): Observable<Recipe[]> {
-        return from (this._authService.getAccessToken().then(accessToken => {
-            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-            return this.httpClient.get<Recipe[]>(Constants.recipeApi + 'v1/Recipe', { headers: headers }).toPromise();
-        }));
-    }
-
-    getRecipe(recipeId: string): Observable<Recipe> {
-        return from (this._authService.getAccessToken().then(accessToken => {
-            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-            return this.httpClient.get<Recipe>(Constants.recipeApi + 'v1/Recipe/' + recipeId, { headers: headers }).toPromise();
-        }));
-    }
-
-    saveRecipe(recipe: Recipe) {
-        return from (this._authService.getAccessToken().then(accessToken => {
-            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-            
-            if(recipe.id && recipe.id !== "") {
-                return this.httpClient.put<Recipe>(Constants.recipeApi + 'v1/Recipe/' + recipe.id, recipe, { headers: headers }).toPromise();
-            }
-            return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/', recipe, { headers: headers }).toPromise();
-        }));
-    }
-    
-    submitRawText(text: String) {
-        return from (this._authService.getAccessToken().then(accessToken => {
-            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
-                                           .set('Content-Type', "application/json");
-            return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/preview/text', JSON.stringify(text), { headers: headers }).toPromise();
-        }));
-    }
-    
-    submitImage(text: String) {
-        return from (this._authService.getAccessToken().then(accessToken => {
-            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
-                                           .set('Content-Type', "application/json");
-            return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/preview/image', JSON.stringify(text.replace(/^data:image\/(png|jpg|jpeg);base64,/, "")), { headers: headers }).toPromise();
-        }));
-    }
 
     addVariety(variety: ProductVariety): Observable<ProductVariety> {
         return from (this._authService.getAccessToken().then(accessToken => {

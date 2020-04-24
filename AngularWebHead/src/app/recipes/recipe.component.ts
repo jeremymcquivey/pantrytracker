@@ -1,6 +1,5 @@
 import { OnInit, Component, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ProductService } from "../core/product.service";
 import { Recipe } from "../model/recipe";
 import { Ingredient } from "../model/ingredient";
 import { MatTableDataSource } from "@angular/material/table";
@@ -10,6 +9,7 @@ import { FileUploader } from "ng2-file-upload";
 import { TextEditorDialogComponent } from "../io/texteditor-dialog.component";
 import { UploadFileDialogComponent } from "../io/uploadfile-dialog.component";
 import { AuthService } from "../core/auth.service";
+import { RecipeService } from "../core/recipe.service";
 
 @Component({
     selector: 'app-recipe',
@@ -44,7 +44,7 @@ import { AuthService } from "../core/auth.service";
 
     constructor(
       private _route: ActivatedRoute,
-      private _projectService: ProductService,
+      private _recipeService: RecipeService,
       private _router: Router,
       public _authService: AuthService,
       public dialog: MatDialog
@@ -55,11 +55,11 @@ import { AuthService } from "../core/auth.service";
       this.isUpdate = recipeId && recipeId != "0";
 
       if(this.isUpdate) {
-        this._projectService.getRecipe(recipeId).subscribe(recipe => {
+        this._recipeService.getRecipe(recipeId).subscribe(recipe => {
           this.initWithRecipe(recipe);
         });
       }
-      else {
+      else { 
         this.ingredients = [];
         this.directions = []
         this.dataSource.data = this.ingredients;
@@ -115,7 +115,7 @@ import { AuthService } from "../core/auth.service";
         dir.index = i;
       });
 
-      this._projectService.saveRecipe(this.recipe).subscribe(recipe => {
+      this._recipeService.saveRecipe(this.recipe).subscribe(recipe => {
         this._router.navigate(['recipe/' + recipe.id]);
       }).add(() => {
         this.isBusy = false;
@@ -125,7 +125,7 @@ import { AuthService } from "../core/auth.service";
     public submitFile(updatedText: string) {
       this.hasSubmitted = true;
       this.rawText = updatedText;
-      this._projectService.submitRawText(this.rawText).subscribe(recipe => {
+      this._recipeService.submitRawText(this.rawText).subscribe(recipe => {
         this.recipe = recipe;
         recipe.id = this.recipeId;
 
@@ -140,7 +140,7 @@ import { AuthService } from "../core/auth.service";
     public processImage(img: string) {
       this.hasSubmitted = true;
       var component = this;
-      this._projectService.submitImage(img.replace(/^data:image\/(png|jpg);base64,/, "")).toPromise()
+      this._recipeService.submitImage(img.replace(/^data:image\/(png|jpg);base64,/, "")).toPromise()
         .then(function(data) {
           const recipe = data as Recipe;
           recipe.id = ({} as Recipe).id;

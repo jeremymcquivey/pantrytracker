@@ -2,9 +2,9 @@ import { Ingredient } from "./ingredient";
 import { PantryLine } from "./pantryline";
 
 export class ProductGroceryList {
-    public Matched: PantryLine[];
+    public matched: PantryLine[];
 
-    public Unmatched: Ingredient[];
+    public unmatched: Ingredient[];
 
-    public Ignored: Ingredient[];
+    public ignored: Ingredient[];
 }

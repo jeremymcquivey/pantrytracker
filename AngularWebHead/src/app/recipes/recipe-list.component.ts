@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { ProductService } from "../core/product.service";
 import { Utils } from "../core/utils";
 import { Project } from "../model/project";
 import { Recipe } from "../model/recipe";
 import { MatTableDataSource } from "@angular/material/table";
+import { RecipeService } from "../core/recipe.service";
 
 @Component({
   selector: "app-projects",
@@ -17,10 +17,10 @@ export class RecipeListComponent implements OnInit {
   projects: Project[];
   recipes: Recipe[];
 
-  constructor(private _projectService: ProductService) {}
+  constructor(private _recipeService: RecipeService) {}
 
   ngOnInit() {
-    this._projectService.getRecipes().subscribe(recipes => {
+    this._recipeService.getRecipes().subscribe(recipes => {
       this.recipes = recipes;
       this.dataSource.data = recipes;
     }, error => Utils.formatError(error));
