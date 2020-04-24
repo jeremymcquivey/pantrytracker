@@ -1,0 +1,13 @@
+<mat-table [dataSource]="MatchedDataSource">
+    <ng-container matColumnDef="name">
+        <mat-cell *matCellDef="let ingredient">
+            <div class="group">
+                <i class="">change</i>
+                <textarea [disabled]="true" style="min-height: 1.5rem;">{{ ingredient?.quantity }} {{ ingredient?.unit }} {{ ingredient?.name }}</textarea>
+                <label>{{ ingredient.plainText }} ({{ RecipeName }})</label>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <mat-row *matRowDef="let row; columns: VisibleColumns;"></mat-row>
+</mat-table>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { ProductService } from './product.service';
 import { AccountService } from './account.service';
 import { PantryService } from './pantry.service';
+import { RecipeService } from './recipe.service';
 import { AuthService } from './auth.service';
 import { AuthInterceptor } from './auth.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -17,6 +18,7 @@ import { AdminRouteGuard } from './admin-route-guard';
         AccountService,
         PantryService,
         AuthService,
+        RecipeService,
         AdminRouteGuard
     ],
 })

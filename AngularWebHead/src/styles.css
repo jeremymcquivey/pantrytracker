@@ -28,16 +28,26 @@ footer {
     display: none;
 }
 
-div.warning {
-    background-color: rgba(255, 255, 0, 0.349); 
+div.warning,
+div.danger,
+div.ok { 
     padding: 1rem; 
     margin-top: .25rem;
 }
 
+div.warning {
+    background-color: rgba(255, 255, 0, 0.349);
+    color: rgba(55,55,55,1);
+}
+
 div.danger {
-    padding: 1rem;
-    margin-top: .25rem;
-    color:rgba(158, 3, 3,1);
+    background-color:rgba(158, 3, 3,1);
+    color: color(255,255,255,1);
+}
+
+div.ok {
+    background-color: rgba(23, 156, 0,.55); 
+    color: rgba(55,55,55,1);
 }
 
 a,

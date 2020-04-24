@@ -1,0 +1,13 @@
+<mat-table [dataSource]="UnmatchedDataSource">
+    <ng-container matColumnDef="name">
+        <mat-cell *matCellDef="let ingredient">
+            <div class="group">
+                <i class="" style="display: inline-block;">ignore</i>
+                <span>{{ ingredient?.quantity }} {{ ingredient?.unit }} {{ ingredient?.name }}</span>
+                <i class="" style="float:right">search</i>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <mat-row *matRowDef="let row; columns: VisibleColumns;"></mat-row>
+</mat-table>

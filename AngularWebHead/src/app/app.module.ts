@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -43,6 +44,10 @@ import { BarcodeReaderComponent } from './io/barcodereader.component';
 import { SigninRedirectCallbackComponent } from './home/signin-redirect-callback.component';
 import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callback.component';
 import { InventoryDetailComponent } from './pantry/inventory-detail.component';
+import { RecipeProductsComponent } from './grocery/recipe-products.component';
+import { ListItemIgnoredComponent } from './grocery/list-item-ignored.component';
+import { ListItemMatchedComponent } from './grocery/list-item-matched.component';
+import { ListItemUnmatchedComponent } from './grocery/list-item-unmatched.component';
 
 import { RoundButtonComponent } from './controls/round-button.component';
 
@@ -72,6 +77,10 @@ import { RoundButtonComponent } from './controls/round-button.component';
     SigninRedirectCallbackComponent,
     SignoutRedirectCallbackComponent,
     InventoryDetailComponent,
+    RecipeProductsComponent,
+    ListItemIgnoredComponent,
+    ListItemMatchedComponent,
+    ListItemUnmatchedComponent,
 
     RoundButtonComponent
   ],
@@ -88,6 +97,7 @@ import { RoundButtonComponent } from './controls/round-button.component';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatTabsModule,
     AdminModule,
     CoreModule,
     AppRoutingModule,

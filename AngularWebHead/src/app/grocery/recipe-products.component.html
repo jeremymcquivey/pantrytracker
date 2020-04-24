@@ -1,0 +1,27 @@
+<h3 class="title" *ngIf="isRecipeLoaded">Grocery List for {{ RecipeName }} </h3>
+
+<div class="warning" *ngIf="hasUnmatchedItems">
+    You have unmatched ingredients. These items will not be added to your *automated* grocery list.<br />
+    You may also ignore these items.
+</div>
+
+<div class="ok" *ngIf="!hasUnmatchedItems">
+    Congratulations! You're ready to generate an online order with your favorite retailer!
+</div>
+
+<mat-tab-group>
+    <mat-tab label="Matched">
+        <matched-products [MatchedItems]="MatchedDataSource"></matched-products>
+    </mat-tab>
+    <mat-tab label="Unmatched" *ngIf="hasUnmatchedItems">
+        <unmatched-products [UnmatchedItems]="UnmatchedDataSource"></unmatched-products>
+    </mat-tab>
+    <mat-tab label="Ignored">
+        <ignored-products [IgnoredItems]="IgnoredDataSource"></ignored-products>
+    </mat-tab>
+</mat-tab-group>
+
+<span class="btn-box right">
+    <button class="btn btn" routerLink='/recipes'>Cancel</button>
+  <button class="btn btn-action" routerLink='/pantry/inventory'>OK</button>
+</span>
