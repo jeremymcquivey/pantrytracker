@@ -2,8 +2,8 @@
     <ng-container matColumnDef="name">
         <mat-cell *matCellDef="let ingredient">
             <div class="group">
-                <i class="">change</i>
-                <textarea [disabled]="true" style="min-height: 1.5rem;">{{ ingredient?.quantity }} {{ ingredient?.unit }} {{ ingredient?.name }}</textarea>
+                <i class="material-icons" (click)="reassignLine(ingredient)">edit</i>
+                <input type="text" [disabled]="true" style="min-height: 1.5rem;" [value]="formatIngredient(ingredient)" />
                 <label>{{ ingredient.plainText }}</label>
             </div>
         </mat-cell>

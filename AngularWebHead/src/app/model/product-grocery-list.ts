@@ -1,10 +1,9 @@
-import { Ingredient } from "./ingredient";
-import { PantryLine } from "./pantryline";
+import { RecipeProduct } from "./recipe";
 
 export class ProductGroceryList {
-    public matched: PantryLine[];
+    public matched: RecipeProduct[];
 
-    public unmatched: Ingredient[];
+    public unmatched: RecipeProduct[];
 
-    public ignored: Ingredient[];
+    public ignored: RecipeProduct[];
 }

@@ -2,9 +2,9 @@
     <ng-container matColumnDef="name">
         <mat-cell *matCellDef="let ingredient">
             <div class="group">
-                <i class="" style="display: inline-block;">ignore</i>
-                <span>{{ ingredient?.quantity }} {{ ingredient?.unit }} {{ ingredient?.name }}</span>
-                <i class="" style="float:right">search</i>
+                <i class="material-icons" (click)="reassignLine(ingredient)">edit</i>
+                <input type="text" [value]="formatIngredient(ingredient)" [disabled]="true" style="min-height: 1.5rem;" />
+                <label></label>
             </div>
         </mat-cell>
     </ng-container>

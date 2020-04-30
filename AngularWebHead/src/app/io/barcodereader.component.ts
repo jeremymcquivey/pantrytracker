@@ -27,7 +27,7 @@ export class BarcodeReaderComponent {
     @Output() onReadValue: EventEmitter<string> = new EventEmitter<string>();
 
     get deviceName(): string {
-        return this.SelectedDevice.label; //?.
+        return this.SelectedDevice?.label;
     };
 
     ngAfterViewInit() {

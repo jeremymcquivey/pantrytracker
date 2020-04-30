@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { ProductGroceryList } from '../model/product-grocery-list';
 import { from, Observable } from 'rxjs';
 import { Constants } from '../constants';
-import { Recipe } from '../model/recipe';
+import { Recipe, RecipeProductPreference } from '../model/recipe';
 
 @Injectable()
 export class RecipeService {
@@ -39,6 +39,13 @@ export class RecipeService {
                 return this.httpClient.put<Recipe>(Constants.recipeApi + 'v1/Recipe/' + recipe.id, recipe, { headers: headers }).toPromise();
             }
             return this.httpClient.post<Recipe>(Constants.recipeApi + 'v1/Recipe/', recipe, { headers: headers }).toPromise();
+        }));
+    }
+
+    setProductPreference(preference: RecipeProductPreference): Observable<RecipeProductPreference> {
+        return from (this._authService.getAccessToken().then(accessToken => {
+            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+            return this.httpClient.post<RecipeProductPreference>(Constants.recipeApi + 'v1/UserMatch', preference, { headers: headers }).toPromise();
         }));
     }
     

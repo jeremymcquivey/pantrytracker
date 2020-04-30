@@ -1,3 +1,27 @@
-<p>
-    Ola
-</p>
+<div id="dialog-modal" *ngIf="isVisible">
+    <div id="dialog-modal-content">
+        <h3 (click)="ignoreProduct($event)" *ngIf="allowIgnore"><span class="expanded">Ignore</span><i class="material-icons" style="float: right; cursor: pointer;">block</i></h3>
+
+        <hr />
+
+        <product-search (onSelected)="selectProduct($event)" *ngIf="!product"></product-search>
+
+        <div *ngIf="!!product">
+            <h3 (click)="clearProduct()">Product has been selected: {{ product.name }}  <i class="material-icons" style="float: right; cursor: pointer;">clear</i></h3>
+
+            <div class="group">
+                <select [(ngModel)]="SelectedVariety">
+                    <option [ngValue]="null">---------- No Variety --------------</option>
+                    <option *ngFor="let variety of product.varieties" [ngValue]="variety">{{ variety.description }}</option>
+                </select>
+                <label>Variety of {{ productName }}</label>
+                <add-variety [product]="product" #addVariety (onVarietyAdded)="varietyAdded($event)"></add-variety>
+            </div>
+        </div>
+
+        <span class="btn-box right">
+            <button class="btn btn" routerLink='..'>Cancel</button>
+            <button class="btn btn-action" (click)="reassignProduct()">OK</button>
+        </span>
+    </div>
+</div>

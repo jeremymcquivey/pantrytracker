@@ -1,7 +1,6 @@
-import { OnInit, Component, Input } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource }  from '@angular/material/table'
-import { RecipeService } from '../core/recipe.service';
-import { PantryLine } from '../model/pantryline';
+import { RecipeProduct } from '../model/recipe';
 
 @Component({
     selector: 'matched-products',
@@ -9,15 +8,28 @@ import { PantryLine } from '../model/pantryline';
     styleUrls: ['../controls/fancy-form.component.css']
 })
 export class ListItemMatchedComponent implements OnInit {
-    public MatchedDataSource = new MatTableDataSource<PantryLine>();
+    public MatchedDataSource = new MatTableDataSource<RecipeProduct>();
     public VisibleColumns = [ 'name' ];
 
+    @Output()
+    public onReassigned: EventEmitter<RecipeProduct> = new EventEmitter<RecipeProduct>();
+
     @Input()
-    public set MatchedItems(value: PantryLine[]) {
+    public set MatchedItems(value: RecipeProduct[]) {
         this.MatchedDataSource.data = value;
     }
 
-    constructor(private recipeService: RecipeService) { }
+    constructor() { }
 
     ngOnInit(): void { }
+
+    reassignLine(line: RecipeProduct) {
+        this.onReassigned.emit(line);
+    }
+
+    formatIngredient(ingredient: RecipeProduct): string {
+        return `${ingredient?.quantityString ?? ''} ${ingredient?.unit ?? ''} ${ingredient?.variety?.description ?? ''} ${ingredient?.product?.name ?? ''}`
+            .replace('  ', ' ')
+            .trim();
+    }
 }
