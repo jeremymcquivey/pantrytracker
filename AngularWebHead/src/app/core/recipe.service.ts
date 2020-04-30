@@ -13,7 +13,7 @@ export class RecipeService {
     getRecipeProductList(recipeId: string): Observable<ProductGroceryList> {
       return from (this._authService.getAccessToken().then(accessToken => {
           var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-          return this.httpClient.get<ProductGroceryList>(`${Constants.recipeApi}v1/Recipe/${recipeId}/products`, { headers: headers }).toPromise();
+          return this.httpClient.get<ProductGroceryList>(`${Constants.recipeApi}v1/ShoppingList/Preview/Recipe/${recipeId}`, { headers: headers }).toPromise();
       }));
     }
 

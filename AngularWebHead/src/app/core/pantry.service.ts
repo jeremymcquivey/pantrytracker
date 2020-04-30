@@ -12,21 +12,21 @@ export class PantryService {
     getCurrentInventory(): Observable<PantryLineGrouping[]> {
         return from (this._authService.getAccessToken().then(accessToken => {
             var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-            return this.httpClient.get<PantryLineGrouping[]>(Constants.recipeApi + 'v1/Pantry?includeZeroValues=true', { headers: headers }).toPromise();
+            return this.httpClient.get<PantryLineGrouping[]>(Constants.recipeApi + 'v1/Pantry/0/levelSummary?includeZeroValues=true', { headers: headers }).toPromise();
         }));
     }
 
     updateInventory(adjustment: PantryLine) {
         return from(this._authService.getAccessToken().then(accessToken => {
             var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-            return this.httpClient.post<PantryLine>(Constants.recipeApi + 'v1/Pantry/value/transaction', adjustment, { headers: headers }).toPromise();
+            return this.httpClient.post<PantryLine>(Constants.recipeApi + 'v1/PantryTransaction', adjustment, { headers: headers }).toPromise();
         }));
     }
 
     getProductSummary(productId: number): Observable<PantryLineGrouping[]> {
         return from(this._authService.getAccessToken().then(accessToken => {
             var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-            return this.httpClient.get<PantryLineGrouping[]>(`${Constants.recipeApi}v1/Pantry/0/product/${productId}/summary?includeZeroValues=true`, { headers: headers }).toPromise();
+            return this.httpClient.get<PantryLineGrouping[]>(`${Constants.recipeApi}v1/product/${productId}/levelSummary?pantryId=0&includeZeroValues=true`, { headers: headers }).toPromise();
         }));
     }
 }

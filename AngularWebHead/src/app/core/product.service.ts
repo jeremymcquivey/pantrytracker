@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Constants } from '../constants';
 import { Observable, from } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -13,7 +13,7 @@ export class ProductService {
         return from (this._authService.getAccessToken().then(accessToken => {
             var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
                                            .set('Content-Type', "application/json");
-            return this.httpClient.post<ProductVariety>(Constants.recipeApi + `v1/Product/${variety.productId}/variety`, JSON.stringify(variety), { headers: headers }).toPromise();
+            return this.httpClient.post<ProductVariety>(Constants.recipeApi + `v1/ProductVariety`, JSON.stringify(variety), { headers: headers }).toPromise();
         }));
     };
 
@@ -27,7 +27,7 @@ export class ProductService {
     getProducts(searchText: string): Observable<Product[]> {
         return from (this._authService.getAccessToken().then(accessToken => {
             var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-            return this.httpClient.get<Product[]>(Constants.recipeApi + `v1/Product?searchText=${searchText}`, { headers: headers }).toPromise();
+            return this.httpClient.get<Product[]>(Constants.recipeApi + `v1/Product/search/name/${searchText}`, { headers: headers }).toPromise();
         }));
     }
 
@@ -50,7 +50,7 @@ export class ProductService {
         return from (this._authService.getAccessToken().then(accessToken => {
             var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
                                            .set('Content-Type', "application/json");
-            return this.httpClient.post<ProductCode>(Constants.recipeApi + `v1/Product/${code.productId}/code/${code.code}`, JSON.stringify(code), { headers: headers }).toPromise();
+            return this.httpClient.post<ProductCode>(Constants.recipeApi + `v1/ProductCode`, JSON.stringify(code), { headers: headers }).toPromise();
         }));                          
     }
 }
