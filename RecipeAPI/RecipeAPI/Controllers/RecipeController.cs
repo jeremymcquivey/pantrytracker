@@ -288,14 +288,15 @@ namespace RecipeAPI.Controllers
                                     .SingleOrDefault(x => x.Id == recipeId && x.OwnerId == AuthenticatedUser);
 
             var userPreferred = _db.UserProductPreferences.Include(p => p.Product)
+                                                          .Include(p => p.Variety)
                                                           .Where(x => x.RecipeId == recipeId)
                                                           .ToList();
 
             var userProducts = _db.Products.Where(product => product.OwnerId == AuthenticatedUser)
                                            .ToList();
 
-            var ignored = new List<Ingredient>();
-            var unmatched = new List<Ingredient>();
+            var ignored = new List<RecipeProduct>();
+            var unmatched = new List<RecipeProduct>();
             var matches = new List<RecipeProduct>();
 
             foreach (var ingredient in recipe.Ingredients)
@@ -307,18 +308,27 @@ namespace RecipeAPI.Controllers
                 {
                     if (userMatch.Product == default(Product))
                     {
-                        ignored.Add(ingredient);
+                        ignored.Add(new RecipeProduct
+                        {
+                            MatchType = IngredientMatchType.UserMatch,
+                            PlainText = ingredient.Name,
+                            QuantityString = ingredient.Quantity,
+                            Unit = ingredient.Unit,
+                            Size = ingredient.SubQuantity,
+                            RecipeId = ingredient.RecipeId,
+                        });
                         continue;
                     }
 
                     matches.Add(new RecipeProduct
                     {
                         Product = userMatch.Product,
+                        Variety = userMatch.Variety,
                         RecipeId = recipeId,
                         PlainText = ingredient.Name,
                         Unit = ingredient.Unit,
-                        Quantity = ingredient.Quantity,
-                        Type = IngredientMatchType.UserMatch
+                        QuantityString = ingredient.Quantity,
+                        MatchType = IngredientMatchType.UserMatch
                     });
 
                     continue;
@@ -335,20 +345,28 @@ namespace RecipeAPI.Controllers
                         RecipeId = recipeId,
                         PlainText = ingredient.Name,
                         Unit = ingredient.Unit,
-                        Quantity = ingredient.Quantity,
-                        Type = IngredientMatchType.SystemMatch
+                        QuantityString = ingredient.Quantity,
+                        MatchType = IngredientMatchType.SystemMatch
                     });
 
                     continue;
                 }
 
-                unmatched.Add(ingredient);
+                unmatched.Add(new RecipeProduct
+                {
+                    MatchType = IngredientMatchType.SystemMatch,
+                    PlainText = ingredient.Name,
+                    QuantityString = ingredient.Quantity,
+                    Unit = ingredient.Unit,
+                    Size = ingredient.SubQuantity,
+                    RecipeId = ingredient.RecipeId,
+                });
             }
 
             return new TextProductMatch
             {
-                Unmatched = unmatched,
                 Matched = matches,
+                Unmatched = unmatched,
                 Ignored = ignored
             };
         }

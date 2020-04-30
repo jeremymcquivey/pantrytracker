@@ -13,7 +13,11 @@ namespace PantryTracker.Model.Products
         //null denotes an exclusion from the recipe.
         public int? ProductId { get; set; }
 
+        public int? VarietyId { get; set; }
+
         public virtual Product Product { get; set; }
+
+        public virtual ProductVariety Variety { get; set; }
 
         public virtual Recipe Recipe { get; set; }
     }

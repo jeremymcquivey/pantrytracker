@@ -7,8 +7,8 @@ namespace PantryTracker.Model.Products
     {
         public IEnumerable<RecipeProduct> Matched { get; set; }
 
-        public IEnumerable<Ingredient> Unmatched { get; set; }
+        public IEnumerable<RecipeProduct> Unmatched { get; set; }
 
-        public IEnumerable<Ingredient> Ignored { get; set; }
+        public IEnumerable<RecipeProduct> Ignored { get; set; }
     }
 }
