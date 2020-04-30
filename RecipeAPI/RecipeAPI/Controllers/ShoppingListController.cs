@@ -44,7 +44,7 @@ namespace RecipeAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id}/items")]
         public IActionResult GetList([FromRoute] string id)
         {
             //TODO: This validation is only temporary, while we don't support multiple pantries.
@@ -60,7 +60,7 @@ namespace RecipeAPI.Controllers
                                                 .ToList());
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("{id}/item")]
         public async Task<IActionResult> AddSingle([FromRoute] string id, [FromBody]ListItem item)
         {
@@ -85,7 +85,7 @@ namespace RecipeAPI.Controllers
             return Ok(newEntity);
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("{id}/items")]
         public async Task<IActionResult> AddBulk([FromRoute] string id, [FromBody]IEnumerable<ListItem> items)
         {
@@ -111,6 +111,36 @@ namespace RecipeAPI.Controllers
             _database.AddRange(items);
             await _database.SaveChangesAsync();
             return Ok(items);
+        }
+
+        [HttpPut]
+        [Route("{id}/item/{itemId}")]
+        public async Task<IActionResult> Update([FromRoute] string id, [FromRoute] int itemId, [FromBody] ListItem item)
+        {
+            //TODO: This validation is only temporary, while we don't support multiple pantries.
+            //Future: This validation will make sure the current user owns the pantry.
+            if (id != AuthenticatedUser)
+            {
+                return NotFound();
+            }
+
+            if (item == default)
+            {
+                return BadRequest("Include a ListItem in your payload.");
+            }
+
+            var existing = _database.GroceryListItems.AsNoTracking()
+                                                     .SingleOrDefault(p => p.Id == itemId && p.PantryId == id);
+
+            if(existing == default)
+            {
+                return NotFound();
+            }
+
+            var updatedEntity = _database.Update(item).Entity;
+            await _database.SaveChangesAsync();
+
+            return Ok(updatedEntity);
         }
 
         [HttpDelete]
