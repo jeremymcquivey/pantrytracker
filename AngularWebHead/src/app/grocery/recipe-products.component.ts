@@ -1,12 +1,14 @@
 import { OnInit, Component, ViewChild } from '@angular/core';
 import { RecipeService } from '../core/recipe.service';
-import { ProductGroceryList } from '../model/product-grocery-list';
-import { ActivatedRoute } from '@angular/router';
+import { ProductGroceryList, GroceryItem, GroceryItemStatus } from '../model/product-grocery-list';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ListItemReassignComponent } from './list-item-reassign.component';
 import { ListItemMatchedComponent } from './list-item-matched.component';
 import { ListItemIgnoredComponent } from './list-item-ignored.component';
 import { RecipeProduct, RecipeProductPreference } from '../model/recipe';
 import { ListItemUnmatchedComponent } from './list-item-unmatched.component';
+import { AuthService } from '../core/auth.service';
+import { GroceryService } from '../core/grocery.service';
 
 @Component({
     selector: 'recipe-products',
@@ -14,6 +16,7 @@ import { ListItemUnmatchedComponent } from './list-item-unmatched.component';
     styleUrls: ['../controls/fancy-form.component.css']
 })
 export class RecipeProductsComponent implements OnInit {
+    private _isBusy: boolean = false;
     private _recipeId: string;
     private _data: ProductGroceryList;
     private _recipeName: string;
@@ -53,7 +56,15 @@ export class RecipeProductsComponent implements OnInit {
         return this._recipeName;
     }
 
-    constructor(private _recipeService: RecipeService, private _route: ActivatedRoute) { }
+    public get isBusy(): boolean {
+        return this._isBusy;
+    }
+
+    constructor(private _recipeService: RecipeService, 
+                private _route: ActivatedRoute, 
+                private _router: Router,
+                private _authService: AuthService, 
+                private _groceryService: GroceryService) { }
 
     ngOnInit(): void {
         this._recipeId = this._route.snapshot.params.recipeId;
@@ -109,6 +120,37 @@ export class RecipeProductsComponent implements OnInit {
         }, error => {
             console.error(error);
         })
+    }
+
+    addMatchedItemsToShoppingList() {
+        if(this._data.matched.length <= 0) {
+            alert('there are no matched items to add.');
+        }
+
+        this._isBusy = true;
+        const listId = this._authService.authContext.userProfile.id;
+
+        const stuff = this._data.matched.map(p => ({
+            id: 0,
+            quantity: p.quantityString,
+            status: GroceryItemStatus.Active,
+            productId: p.product?.id,
+            varietyId: p.variety?.id,
+            unit: p.unit,
+            size: p.size,
+            product: null,
+            variety: null,
+            code: null
+        } as GroceryItem));
+
+        this._groceryService.addBulkItemsToList(listId, stuff)
+                            .subscribe(_ => {
+                                this._router.navigate(['grocery-list']);
+                            }, error => {
+                                console.error(error);
+                            }, () => {
+                                this._isBusy = false;
+                            });
     }
 
     private removeMatched(value: RecipeProductPreference): RecipeProduct {

@@ -1,0 +1,41 @@
+<h3 class="title">Grocery List <i class="material-icons" (click)="toggleEditMode()" style="float:right; cursor: pointer">delete_outline</i></h3>
+
+<div class="warning" *ngIf="!showTips" (click)="showTips = true;">
+    <span>
+        <i class="material-icons" style="cursor: pointer;">info_outline</i>
+        Show Tips
+    </span>
+</div>
+
+<div class="warning" *ngIf="showTips">
+    <p *ngFor="let tip of tips;" >
+        <i class="material-icons">info_outline</i> 
+        {{tip}}
+    </p>
+</div>
+
+<mat-table [dataSource]="GroceryItems">
+    <ng-container matColumnDef="name">
+        <mat-cell *matCellDef="let item" class="main">
+            <h4>{{ formatItem(item) }} <i class="material-icons" style="float:right; cursor: pointer" *ngIf="!EditMode">edit</i></h4>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="removed">
+        <mat-cell *matCellDef="let item" class="remove" (click)="removeItem(item)">
+            <i class="material-icons">clear</i>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="markPurchased">
+        <mat-cell *matCellDef="let item" class="accept" (click)="acceptItem(item)">
+            <i class="material-icons">check_circle_outline</i>
+        </mat-cell>
+    </ng-container>
+
+    <mat-row *matRowDef="let row; columns: VisibleColumns;"></mat-row>
+</mat-table>
+
+<span class="btn-box right">
+    <!--<button class="btn btn-action">Place Order</button>-->
+</span>
+
+<!--<reassign-products-dialog #reassignDialog (onProductReassigned)="onProductReassigned($event)" (onProductIgnored)="onProductIgnored($event)"></reassign-products-dialog>-->

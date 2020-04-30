@@ -1,0 +1,36 @@
+h4 {
+    width: 100%;
+}
+
+mat-cell:last-of-type {
+    padding-right: unset;
+}
+
+mat-cell.remove i,
+mat-cell.accept i {
+    width: 100%;
+    text-align: center;
+    height: 100%;
+    color: white;
+    cursor: pointer;
+}
+
+mat-cell.main {
+    flex: unset;
+    width: 100%;
+}
+
+mat-cell.remove,
+mat-cell.accept {
+    flex: unset;
+    width: 3rem;
+    margin-right: .5rem;
+}
+
+mat-cell.remove {
+    background-color: red;
+}
+
+mat-cell.accept {
+    background-color: green;
+}

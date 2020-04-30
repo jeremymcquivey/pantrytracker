@@ -23,7 +23,7 @@
 
 <span class="btn-box right">
     <button class="btn btn" routerLink='..'>Cancel</button>
-    <button class="btn btn-action">Add</button>
+    <button [disabled]="isBusy" class="btn btn-action" (click)="addMatchedItemsToShoppingList()">Add</button>
 </span>
 
 <reassign-products-dialog #reassignDialog (onProductReassigned)="onProductReassigned($event)" (onProductIgnored)="onProductIgnored($event)"></reassign-products-dialog>

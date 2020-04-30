@@ -49,6 +49,7 @@ import { ListItemIgnoredComponent } from './grocery/list-item-ignored.component'
 import { ListItemMatchedComponent } from './grocery/list-item-matched.component';
 import { ListItemUnmatchedComponent } from './grocery/list-item-unmatched.component';
 import { ListItemReassignComponent } from './grocery/list-item-reassign.component';
+import { GroceryListViewComponent } from './grocery/list-view.component';
 
 import { RoundButtonComponent } from './controls/round-button.component';
 
@@ -83,6 +84,7 @@ import { RoundButtonComponent } from './controls/round-button.component';
     ListItemMatchedComponent,
     ListItemUnmatchedComponent,
     ListItemReassignComponent,
+    GroceryListViewComponent,
 
     RoundButtonComponent
   ],

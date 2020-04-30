@@ -16,10 +16,13 @@
                 <a>Login</a>
             </li>
             <li routerLink="/recipes" *ngIf="isLoggedIn">
-                <a>My Recipes</a>
+                <a>Recipes</a>
             </li>
             <li routerLink="/pantry/inventory" *ngIf="isLoggedIn">
                 <a>My Pantry</a> 
+            </li>
+            <li routerLink="/grocery-list" *ngIf="isLoggedIn">
+                <a>Grocery List</a>
             </li>
         </ul>		
     </nav>

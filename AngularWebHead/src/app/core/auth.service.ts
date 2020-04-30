@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserManager, User, WebStorageStateStore } from 'oidc-client';
 import { Constants } from '../constants';
-import { Subject } from 'rxjs';
+import { Subject, from, Observable } from 'rxjs';
 import { SecurityContext } from '../model/authmodel';
 
 @Injectable()
@@ -92,14 +92,17 @@ export class AuthService {
   }
 
   loadSecurityContext(source: string) {
-    this.getAccessToken().then(accessToken => {
+    this.fetchSecurityContext().subscribe(context => {
+        this.authContext = new SecurityContext();
+        this.authContext.roles = context.roles;
+        this.authContext.userProfile = context.userProfile;
+    }, error => console.error(error));
+  }
+
+  fetchSecurityContext(): Observable<SecurityContext> {
+    return from (this.getAccessToken().then(accessToken => {
       var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-      this._httpClient.get<SecurityContext>(`${Constants.recipeApi}v1/User/AuthContext`, { headers: headers })
-          .subscribe(context => {
-              this.authContext = new SecurityContext();
-              this.authContext.roles = context.roles;
-              this.authContext.userProfile = context.userProfile;
-          }, error => console.error(error));
-    });
+      return this._httpClient.get<SecurityContext>(`${Constants.recipeApi}v1/User/AuthContext`, { headers: headers }).toPromise();
+    }));
   }
 }
