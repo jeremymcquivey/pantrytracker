@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
-using PantryTracker.Model.Products;
-using RecipeAPI.ExternalServices;
-using RecipeAPI.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using RecipeAPI.Models;
+using RecipeAPI.Extensions;
+using Microsoft.EntityFrameworkCore;
+using PantryTracker.Model.Extensions;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
+using System.Collections.Generic;
+using Microsoft.ApplicationInsights.Extensibility;
+using RecipeAPI.ExternalServices;
+using PantryTracker.Model.Products;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace RecipeAPI.Controllers
 {
@@ -22,6 +27,7 @@ namespace RecipeAPI.Controllers
         private readonly ProductService _products;
         private readonly RecipeContext _database;
         private readonly UPCLookup _productCodes;
+        private readonly TelemetryClient _appInsights;
 
 #pragma warning disable 1591
         public ProductController(RecipeContext database, ProductService products, UPCLookup productCodes)
@@ -29,6 +35,7 @@ namespace RecipeAPI.Controllers
             _products = products;
             _database = database;
             _productCodes = productCodes;
+            _appInsights = new TelemetryClient(TelemetryConfiguration.CreateDefault());
         }
 #pragma warning restore 1591
 
@@ -36,15 +43,56 @@ namespace RecipeAPI.Controllers
         /// Admin functionality: Returns a list of all products whose name starts with the provided string.
         /// </summary>
         [HttpGet]
-        public IActionResult Get(string searchText, int limit = 100)
+        [Route("search/name/{text}")]
+        public IActionResult Get([FromRoute] string text, int limit = 100)
         {
             return Ok(_database.Products.Include(p => p.Varieties)
                                         .Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
-                                        .Where(p => p.Name.Contains(searchText))
+                                        .Where(p => p.Name.Contains(text))
                                         .OrderBy(p => p.Name)
                                         .Take(limit));
         }
 
+        /// <summary>
+        /// Returns a single product (or null if not found) by product code i.e. UPC, EAN, etc...
+        /// </summary>
+        [HttpGet]
+        [Route("search/code/{code}")]
+        public async Task<IActionResult> GetByUpc([FromRoute]string code)
+        {
+            try
+            {
+                var product = await _productCodes.Lookup(code, ownerId: AuthenticatedUser);
+
+                if (product != default)
+                {
+                    return Ok(product);
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Returns a product with the given Id
+        /// </summary>
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetById(int id)
+        {
+            return Ok(_database.Products.Include(p => p.Codes)
+                                            .ThenInclude(c => c.Variety)
+                                        .Include(p => p.Varieties)
+                                        .SingleOrDefault(p => p.Id == id && (p.OwnerId == AuthenticatedUser || p.OwnerId == null)));
+        }
+
+        /// <summary>
+        /// Add a new product. If not an admin, this will create an 'individual' product.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromBody]Product product)
         {
@@ -100,82 +148,38 @@ namespace RecipeAPI.Controllers
             }
         }
 
-        /// <summary>
-        /// Returns a product with the given Id
-        /// </summary>
         [HttpGet]
-        [Route("{id}")]
-        public IActionResult GetById(int id)
-        {
-            return Ok(_database.Products.Include(p => p.Codes)
-                                            .ThenInclude(c => c.Variety)
-                                        .Include(p => p.Varieties)
-                                        .SingleOrDefault(p => p.Id == id && (p.OwnerId == AuthenticatedUser || p.OwnerId == null)));
-        }
-
-        /// <summary>
-        /// Returns a single product (or null if not found) by product code i.e. UPC, EAN, etc...
-        /// </summary>
-        [HttpGet]
-        [Route("search/code/{code}")]
-        public async Task<IActionResult> GetByUpc([FromRoute]string code)
+        [Route("{productId}/levelSummary")]
+        public IActionResult GetProductSummary([FromRoute]int productId, [FromQuery] string pantryId, [FromQuery] bool includeZeroValues = true)
         {
             try
             {
-                var product = await _productCodes.Lookup(code, ownerId: AuthenticatedUser);
+                _appInsights.TrackEvent("GetPantryProductSummary", new Dictionary<string, string> { { "IncludeZeroValues", includeZeroValues ? "true" : "false" } });
 
-                if(product != default)
-                {
-                    return Ok(product);
-                }
+                var gId = Guid.Parse(AuthenticatedUser);
+                var pantryItems = _database.Transactions.Where(p => p.UserId == gId)
+                                                        .Where(p => p.ProductId == productId)
+                                                        .Include(p => p.Variety)
+                                                        .Include(p => p.Product)
+                                                        .ToList()
+                                                        .CalculateProductTotals();
 
-                return NotFound();
+                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThan(0, 0.5)) : pantryItems;
+
+                var groupedItems = otherItems.GroupBy(trans => trans.VarietyId)
+                                             .Select(p => new
+                                             {
+                                                 Header = p.First().Variety?.Description ?? "Unclassified",
+                                                 Total = 0,
+                                                 Elements = p
+                                             });
+
+                return Ok(groupedItems);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        [HttpPost]
-        [Route("{id}/code/{code}")]
-        public async Task<IActionResult> AddCode([FromRoute]int id, [FromRoute]string code, [FromBody]ProductCode productCode)
-        {
-            // TODO: Verify that if a variety is speicfied that it actually belongs to that product.
-
-            if(productCode == default)
-            {
-                return BadRequest("ProductCode object is required in request body.");
-            }
-
-            if(string.IsNullOrEmpty(code) || code.Length <=4 || code.Length > 13)
-            {
-                return BadRequest("4-13 digit code is required.");
-            }
-
-            if(string.IsNullOrEmpty(productCode.Size) || string.IsNullOrEmpty(productCode.Unit))
-            {
-                return BadRequest("Size and Unit are both required.");
-            }
-
-            productCode.Id = 0;
-            productCode.ProductId = id;
-            productCode.OwnerId = UserRoles.Contains("Admin") ? null : AuthenticatedUser;
-            productCode.Code = code;
-            productCode.VendorCode = null;
-            productCode.Vendor = null;
-            productCode.Product = null;
-            productCode.Variety = null;
-
-            if (_database.ProductCodes.Any(p => p.Code == code && p.OwnerId == productCode.OwnerId))
-            {
-                return BadRequest("Duplicate code found.");
-            }
-
-            _database.ProductCodes.Add(productCode);
-            await _database.SaveChangesAsync();
-
-            return Ok(productCode);
         }
     }
 }

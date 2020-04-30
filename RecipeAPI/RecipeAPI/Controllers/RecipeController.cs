@@ -11,8 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using RecipeAPI.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using PantryTracker.Model.Products;
 
 namespace RecipeAPI.Controllers
 {
@@ -119,21 +117,6 @@ namespace RecipeAPI.Controllers
             recipe.Ingredients = recipe.Ingredients.OrderBy(i => i.Index);
             recipe.Directions = recipe.Directions.OrderBy(i => i.Index);
             return Ok(recipe);
-        }
-
-        /// <summary>
-        /// Retrieves a list of products attached to the recipe
-        /// </summary>
-        [HttpGet]
-        [Route("{id}/products")]
-        public IActionResult GetProducts([FromRoute]string id)
-        {
-            if (!Guid.TryParse(id, out Guid gId))
-            {
-                return NotFound();
-            }
-
-            return Ok(GetMatchingProducts(gId));
         }
 
         /// <summary>
@@ -280,95 +263,6 @@ namespace RecipeAPI.Controllers
             {
                 return BadRequest(ex);
             }
-        }
-
-        private TextProductMatch GetMatchingProducts(Guid recipeId)
-        {
-            var recipe = _db.Recipes.Include(x => x.Ingredients)
-                                    .SingleOrDefault(x => x.Id == recipeId && x.OwnerId == AuthenticatedUser);
-
-            var userPreferred = _db.UserProductPreferences.Include(p => p.Product)
-                                                          .Include(p => p.Variety)
-                                                          .Where(x => x.RecipeId == recipeId)
-                                                          .ToList();
-
-            var userProducts = _db.Products.Where(product => product.OwnerId == AuthenticatedUser)
-                                           .ToList();
-
-            var ignored = new List<RecipeProduct>();
-            var unmatched = new List<RecipeProduct>();
-            var matches = new List<RecipeProduct>();
-
-            foreach (var ingredient in recipe.Ingredients)
-            {
-                var userMatch = userPreferred.Where(p => ingredient.Name.Contains(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
-                                             .OrderBy(p => p.matchingText.Length)
-                                             .FirstOrDefault();
-                if (userMatch != null)
-                {
-                    if (userMatch.Product == default(Product))
-                    {
-                        ignored.Add(new RecipeProduct
-                        {
-                            MatchType = IngredientMatchType.UserMatch,
-                            PlainText = ingredient.Name,
-                            QuantityString = ingredient.Quantity,
-                            Unit = ingredient.Unit,
-                            Size = ingredient.SubQuantity,
-                            RecipeId = ingredient.RecipeId,
-                        });
-                        continue;
-                    }
-
-                    matches.Add(new RecipeProduct
-                    {
-                        Product = userMatch.Product,
-                        Variety = userMatch.Variety,
-                        RecipeId = recipeId,
-                        PlainText = ingredient.Name,
-                        Unit = ingredient.Unit,
-                        QuantityString = ingredient.Quantity,
-                        MatchType = IngredientMatchType.UserMatch
-                    });
-
-                    continue;
-                }
-
-                var potentialMatch = _products.MatchProduct(ingredient.Name);
-
-                if (potentialMatch.Key != default)
-                {
-                    matches.Add(new RecipeProduct
-                    {
-                        Product = _products.GetById(potentialMatch.Key.Item1),
-                        Variety = _products.GetVariety(potentialMatch.Key.Item2),
-                        RecipeId = recipeId,
-                        PlainText = ingredient.Name,
-                        Unit = ingredient.Unit,
-                        QuantityString = ingredient.Quantity,
-                        MatchType = IngredientMatchType.SystemMatch
-                    });
-
-                    continue;
-                }
-
-                unmatched.Add(new RecipeProduct
-                {
-                    MatchType = IngredientMatchType.SystemMatch,
-                    PlainText = ingredient.Name,
-                    QuantityString = ingredient.Quantity,
-                    Unit = ingredient.Unit,
-                    Size = ingredient.SubQuantity,
-                    RecipeId = ingredient.RecipeId,
-                });
-            }
-
-            return new TextProductMatch
-            {
-                Matched = matches,
-                Unmatched = unmatched,
-                Ignored = ignored
-            };
         }
     }
 }

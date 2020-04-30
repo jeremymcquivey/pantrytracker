@@ -7,35 +7,39 @@ using System.Threading.Tasks;
 namespace RecipeAPI.Controllers
 {
     /// <summary>
-    /// Enables management of product varieties. i.e. creamed corn vs. whole corn
     /// </summary>
-    [Route("api/v1")]
-    public class VarietyController: BaseController
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class ProductVarietyController : ControllerBase
     {
         private readonly RecipeContext _database;
 
-#pragma warning disable 1591
-        public VarietyController(RecipeContext database)
+        /// <summary>
+        /// </summary>
+        public ProductVarietyController(RecipeContext database)
         {
             _database = database;
         }
-#pragma warning restore 1591
 
         /// <summary>
         /// Adds a new variety of the given product, i.e. salted butter or unsalted butter
         /// </summary>
         [HttpPost]
-        [Route("product/{productId}/variety")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Post([FromRoute]int productId, [FromBody]ProductVariety variety)
+        public async Task<IActionResult> Post([FromBody]ProductVariety variety)
         {
             if (variety == default || string.IsNullOrEmpty(variety.Description))
             {
                 return BadRequest("A product variety must have a description");
             }
 
+            if (variety.ProductId == default)
+            {
+                return BadRequest("A product id is required");
+            }
+
             variety.Id = 0;
-            variety.ProductId = productId;
 
             _database.Add(variety);
             await _database.SaveChangesAsync();
