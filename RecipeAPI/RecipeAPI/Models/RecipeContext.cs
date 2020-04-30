@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PantryTracker.Model.Grocery;
 using PantryTracker.Model.Pantry;
 using PantryTracker.Model.Products;
 using PantryTracker.Model.Recipes;
@@ -22,6 +23,8 @@ namespace RecipeAPI.Models
         public DbSet<PantryTransaction> Transactions { get; set; }
 
         public DbSet<ProductCode> ProductCodes { get; set; }
+
+        public DbSet<ListItem> GroceryListItems { get; set; }
 
         public RecipeContext(DbContextOptions<RecipeContext> options):
             base(options)
