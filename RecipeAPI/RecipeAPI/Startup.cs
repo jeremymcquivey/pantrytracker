@@ -17,6 +17,7 @@ using PantryTracker.Model;
 using RecipeAPI.ExternalServices;
 using Microsoft.Extensions.Hosting;
 using PantryTrackers.Integrations.Walmart;
+using RecipeAPI.Services;
 
 #pragma warning disable 1591
 namespace RecipeAPI

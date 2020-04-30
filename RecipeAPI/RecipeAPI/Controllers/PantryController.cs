@@ -14,7 +14,6 @@ using Microsoft.ApplicationInsights.Extensibility;
 namespace RecipeAPI.Controllers
 {
     /// <summary>
-    /// 
     /// </summary>
     [Produces("application/json")]
     [Route("api/v1/[controller]")]

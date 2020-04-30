@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PantryTracker.Model.Grocery;
 using PantryTracker.Model.Products;
 using RecipeAPI.Models;
+using RecipeAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RecipeAPI.Controllers
 {
@@ -37,96 +40,99 @@ namespace RecipeAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(GetMatchingProducts(gId));
+            return Ok(_products.GetMatchingProducts(gId, AuthenticatedUser));
         }
 
-        private TextProductMatch GetMatchingProducts(Guid recipeId)
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetList([FromRoute] string id)
         {
-            var recipe = _database.Recipes.Include(x => x.Ingredients)
-                                          .SingleOrDefault(x => x.Id == recipeId && x.OwnerId == AuthenticatedUser);
-
-            var userPreferred = _database.UserProductPreferences.Include(p => p.Product)
-                                                          .Include(p => p.Variety)
-                                                          .Where(x => x.RecipeId == recipeId)
-                                                          .ToList();
-
-            var userProducts = _database.Products.Where(product => product.OwnerId == AuthenticatedUser)
-                                                 .ToList();
-
-            var ignored = new List<RecipeProduct>();
-            var unmatched = new List<RecipeProduct>();
-            var matches = new List<RecipeProduct>();
-
-            foreach (var ingredient in recipe.Ingredients)
+            //TODO: This validation is only temporary, while we don't support multiple pantries.
+            if(id != AuthenticatedUser)
             {
-                var userMatch = userPreferred.Where(p => ingredient.Name.Contains(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
-                                             .OrderBy(p => p.matchingText.Length)
-                                             .FirstOrDefault();
-                if (userMatch != null)
-                {
-                    if (userMatch.Product == default(Product))
-                    {
-                        ignored.Add(new RecipeProduct
-                        {
-                            MatchType = IngredientMatchType.UserMatch,
-                            PlainText = ingredient.Name,
-                            QuantityString = ingredient.Quantity,
-                            Unit = ingredient.Unit,
-                            Size = ingredient.SubQuantity,
-                            RecipeId = ingredient.RecipeId,
-                        });
-                        continue;
-                    }
-
-                    matches.Add(new RecipeProduct
-                    {
-                        Product = userMatch.Product,
-                        Variety = userMatch.Variety,
-                        RecipeId = recipeId,
-                        PlainText = ingredient.Name,
-                        Unit = ingredient.Unit,
-                        QuantityString = ingredient.Quantity,
-                        MatchType = IngredientMatchType.UserMatch
-                    });
-
-                    continue;
-                }
-
-                var potentialMatch = _products.MatchProduct(ingredient.Name);
-
-                if (potentialMatch.Key != default)
-                {
-                    matches.Add(new RecipeProduct
-                    {
-                        Product = _products.GetById(potentialMatch.Key.Item1),
-                        Variety = _products.GetVariety(potentialMatch.Key.Item2),
-                        RecipeId = recipeId,
-                        PlainText = ingredient.Name,
-                        Unit = ingredient.Unit,
-                        QuantityString = ingredient.Quantity,
-                        MatchType = IngredientMatchType.SystemMatch
-                    });
-
-                    continue;
-                }
-
-                unmatched.Add(new RecipeProduct
-                {
-                    MatchType = IngredientMatchType.SystemMatch,
-                    PlainText = ingredient.Name,
-                    QuantityString = ingredient.Quantity,
-                    Unit = ingredient.Unit,
-                    Size = ingredient.SubQuantity,
-                    RecipeId = ingredient.RecipeId,
-                });
+                return NotFound();
             }
 
-            return new TextProductMatch
+            //TODO: Combine by product and unit.
+            return Ok(_database.GroceryListItems.Where(item => item.PantryId == id && item.Status == ListItemStatus.Active)
+                                                .Include(item => item.Variety)
+                                                .Include(item => item.Product)
+                                                .ToList());
+        }
+
+        [HttpPut]
+        [Route("{id}/item")]
+        public async Task<IActionResult> AddSingle([FromRoute] string id, [FromBody]ListItem item)
+        {
+            //TODO: This validation is only temporary, while we don't support multiple pantries.
+            //Future: This validation will make sure the current user owns the pantry.
+            if (id != AuthenticatedUser)
             {
-                Matched = matches,
-                Unmatched = unmatched,
-                Ignored = ignored
-            };
+                return NotFound();
+            }
+
+            if (item == default)
+            {
+                return BadRequest("ListItem object must be present in the body.");
+            }
+
+            item.PantryId = id;
+            item.Variety = null;
+            item.Product = null;
+
+            var newEntity = _database.Add(item).Entity;
+            await _database.SaveChangesAsync();
+            return Ok(newEntity);
+        }
+
+        [HttpPut]
+        [Route("{id}/items")]
+        public async Task<IActionResult> AddBulk([FromRoute] string id, [FromBody]IEnumerable<ListItem> items)
+        {
+            //TODO: This validation is only temporary, while we don't support multiple pantries.
+            //Future: This validation will make sure the current user owns the pantry.
+            if (id != AuthenticatedUser)
+            {
+                return NotFound();
+            }
+
+            if (items.Any(item => item == default))
+            {
+                return BadRequest("ListItem object must be present in the body.");
+            }
+
+            foreach(var item in items)
+            {
+                item.PantryId = id;
+                item.Variety = null;
+                item.Product = null;
+            }
+
+            _database.AddRange(items);
+            await _database.SaveChangesAsync();
+            return Ok(items);
+        }
+
+        [HttpDelete]
+        [Route("{id}/item/{itemId}")]
+        public async Task<IActionResult> RemoveSingle([FromRoute] string id, [FromRoute] int itemId)
+        {
+            //TODO: This validation is only temporary, while we don't support multiple pantries.
+            //Future: This validation will make sure the current user owns the pantry.
+            if (id != AuthenticatedUser)
+            {
+                return NotFound();
+            }
+
+            var existing = _database.GroceryListItems.SingleOrDefault(item => item.PantryId == id && item.Id == itemId);
+
+            if(existing != default)
+            {
+                _database.Remove(existing);
+                await _database.SaveChangesAsync();
+            }
+
+            return NoContent();
         }
     }
 }

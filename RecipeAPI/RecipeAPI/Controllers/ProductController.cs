@@ -13,6 +13,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using RecipeAPI.ExternalServices;
 using PantryTracker.Model.Products;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using RecipeAPI.Services;
 
 namespace RecipeAPI.Controllers
 {
