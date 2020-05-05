@@ -81,7 +81,7 @@ namespace RecipeAPI.Extensions
         private static IEnumerable<Tuple<int, string>> SanitizeUnits(this IEnumerable<Tuple<int, string>> units)
         {
             var sanitizedUnits = new List<Tuple<int, string>>();
-            var unitAliases = new MockUnitAliasData();
+            var unitAliases = new UnitAliases();
 
             foreach (var entry in units)
             {
@@ -103,7 +103,7 @@ namespace RecipeAPI.Extensions
 
         private static IEnumerable<PantryTransaction> SanitizeUnits(this IEnumerable<PantryTransaction> entries)
         {
-            var unitAliases = new MockUnitAliasData();
+            var unitAliases = new UnitAliases();
 
             foreach (var entry in entries)
             {

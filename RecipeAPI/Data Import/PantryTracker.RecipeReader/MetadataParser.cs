@@ -40,7 +40,9 @@ namespace PantryTracker.RecipeReader
                     break;
                 }
 
-                if(sentence.Trim().ToLower().Equals("ingredients"))
+                var sanitizedLine = sentence.Trim().ToLower();
+                if(sanitizedLine.Equals("ingredients") ||
+                   sanitizedLine.Equals("ingredients:"))
                 {
                     (recipe.Ingredients as List<Ingredient>).Clear();
                     continue;

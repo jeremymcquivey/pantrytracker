@@ -10,11 +10,14 @@ namespace PantryTracker.Model.Extensions
             return Math.Abs(x - y) < acceptableVariance;
         }
 
-        public static bool IsGreaterThan(this double x, double y, double acceptableVariance)
+        public static bool IsGreaterThanOrEqualTo(this double x, double y, double acceptableVariance)
         {
-            return x - y >= acceptableVariance;
+            return (x - y) >= acceptableVariance;
         }
 
+        /// <summary>
+        /// Converts a string into a double -- mostly intendended to convert fractions.
+        /// </summary>
         public static double ToNumber(this string amount)
         {
             if (string.IsNullOrEmpty(amount))
@@ -22,16 +25,20 @@ namespace PantryTracker.Model.Extensions
                 return 0;
             }
 
+            amount = amount.Trim();
             if (double.TryParse(amount ?? "0", out double dResult))
             {
                 return dResult;
             }
 
+            var fractionParts = amount.Split('/');
+            amount = string.Join('/', fractionParts.Select(p => p.Trim()));
+
             var allParts = amount.Split(' ');
 
-            var decimalParts = allParts.Last().Split('/');
-            if (decimalParts.Length > 1 && double.TryParse(decimalParts[0], out double numerator) &&
-                                          double.TryParse(decimalParts[1], out double denominator) &&
+            var fractionPart = allParts.Last().Split('/');
+            if (fractionPart.Length > 1 && double.TryParse(fractionPart[0], out double numerator) &&
+                                          double.TryParse(fractionPart[1], out double denominator) &&
                                           denominator > 0)
             {
                 if (allParts.Length > 1 && int.TryParse(allParts.First(), out int wholeNumber))
