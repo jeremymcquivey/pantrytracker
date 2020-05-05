@@ -25,6 +25,7 @@ const routes: Routes = [
     { path: 'pantry/product/:productId', component: InventoryDetailComponent},
     { path: 'signin-callback', component: SigninRedirectCallbackComponent },
     { path: 'signout-callback', component: SignoutRedirectCallbackComponent },
+    { path: 'grocery-list', component: GroceryListViewComponent },
     { path: 'grocery-list/:listId', component: GroceryListViewComponent }
 ];
 

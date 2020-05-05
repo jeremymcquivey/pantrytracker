@@ -10,9 +10,11 @@ export class AuthService {
   private _userManager: UserManager;
   private _user: User;
   private _loginChangedSubject = new Subject<boolean>();
+  private _authContextChangedSubject = new Subject<SecurityContext>();
   authContext: SecurityContext;
 
   loginChanged = this._loginChangedSubject.asObservable();
+  authContextChanged = this._authContextChangedSubject.asObservable();
 
   constructor(private _httpClient: HttpClient) {
     var config = {
@@ -96,6 +98,7 @@ export class AuthService {
         this.authContext = new SecurityContext();
         this.authContext.roles = context.roles;
         this.authContext.userProfile = context.userProfile;
+        this._authContextChangedSubject.next(this.authContext);
     }, error => console.error(error));
   }
 
