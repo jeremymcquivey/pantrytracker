@@ -123,6 +123,10 @@ export class RecipeProductsComponent implements OnInit {
     }
 
     addMatchedItemsToShoppingList() {
+        if(this._isBusy) {
+            return;
+        }
+
         if(this._data.matched.length <= 0) {
             alert('there are no matched items to add.');
         }

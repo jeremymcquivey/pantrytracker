@@ -44,12 +44,15 @@ export class GroceryListViewComponent implements OnInit {
     constructor(private _groceryService: GroceryService, private _authService: AuthService, private _route: ActivatedRoute) { }
 
     ngOnInit(): void { 
-        this._authService.authContextChanged.subscribe(ctxt => {
-            this._listId = this._route.snapshot.params.listId ??
-                           ctxt.userProfile.id;
-    
+        if(this._route.snapshot.params.listId) {
+            this._listId = this._route.snapshot.params.listId;
             this.loadGroceryList();
-        });
+        } else {
+            this._authService.authContextChanged.subscribe(ctxt => {
+                this._listId = ctxt.userProfile.id;
+                this.loadGroceryList();
+            });
+        }
     }
 
     toggleEditMode() {
