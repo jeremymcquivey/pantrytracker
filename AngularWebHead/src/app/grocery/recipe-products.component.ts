@@ -145,7 +145,7 @@ export class RecipeProductsComponent implements OnInit {
 
         this._groceryService.addBulkItemsToList(listId, stuff)
                             .subscribe(_ => {
-                                this._router.navigate(['grocery-list']);
+                                this._router.navigate([`grocery-list/${listId}`]);
                             }, error => {
                                 console.error(error);
                             }, () => {

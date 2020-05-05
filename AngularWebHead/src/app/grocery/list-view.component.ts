@@ -3,6 +3,7 @@ import { MatTableDataSource }  from '@angular/material/table'
 import { GroceryItem, GroceryItemStatus } from '../model/product-grocery-list';
 import { GroceryService } from '../core/grocery.service';
 import { AuthService } from '../core/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'grocery-list-view',
@@ -40,15 +41,11 @@ export class GroceryListViewComponent implements OnInit {
         return this._grocerySource;
     }
 
-    constructor(private _groceryService: GroceryService, private _authService: AuthService) { }
+    constructor(private _groceryService: GroceryService, private _authService: AuthService, private _route: ActivatedRoute) { }
 
     ngOnInit(): void { 
-        //TODO: This is temporary; once we support multiple lists, we'll use legit list ids.
-        this._authService.fetchSecurityContext()
-                         .subscribe(ctxt => {
-                            this._listId = ctxt.userProfile.id;
-                            this.loadGroceryList();
-                         }, error => console.error(error));
+        this._listId = this._route.snapshot.params.listId;
+        this.loadGroceryList();
     }
 
     toggleEditMode() {
