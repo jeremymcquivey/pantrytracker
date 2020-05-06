@@ -313,7 +313,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Quantity);
             Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Unit);
 
-            //Assert.AreEqual("3", recipe.Ingredients.Single(x => x.Name.Contains("zest")).Quantity);
+            Assert.AreEqual("3", recipe.Ingredients.Single(x => x.Name.Contains("zest")).Quantity);
             Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("zest")).Unit);
 
             Assert.AreEqual("1/2", recipe.Ingredients.Single(x => x.Name.Contains("lemonade")).Quantity);

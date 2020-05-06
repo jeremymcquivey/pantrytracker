@@ -13,6 +13,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using RecipeAPI.ExternalServices;
 using PantryTracker.Model.Products;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using RecipeAPI.Services;
 
 namespace RecipeAPI.Controllers
 {
@@ -164,7 +165,7 @@ namespace RecipeAPI.Controllers
                                                         .ToList()
                                                         .CalculateProductTotals();
 
-                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThan(0, 0.5)) : pantryItems;
+                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThanOrEqualTo(0, 0.5)) : pantryItems;
 
                 var groupedItems = otherItems.GroupBy(trans => trans.VarietyId)
                                              .Select(p => new

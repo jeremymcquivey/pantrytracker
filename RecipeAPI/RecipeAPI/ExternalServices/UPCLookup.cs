@@ -6,6 +6,7 @@ using PantryTracker.Model.Products;
 using PantryTrackers.Integrations.Kroger;
 using PantryTrackers.Integrations.Walmart;
 using RecipeAPI.Models;
+using RecipeAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

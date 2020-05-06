@@ -81,7 +81,7 @@ namespace RecipeAPI.Extensions
         private static IEnumerable<Tuple<int, string>> SanitizeUnits(this IEnumerable<Tuple<int, string>> units)
         {
             var sanitizedUnits = new List<Tuple<int, string>>();
-            var unitAliases = new MockUnitAliasData();
+            var unitAliases = new UnitAliases();
 
             foreach (var entry in units)
             {
@@ -103,7 +103,7 @@ namespace RecipeAPI.Extensions
 
         private static IEnumerable<PantryTransaction> SanitizeUnits(this IEnumerable<PantryTransaction> entries)
         {
-            var unitAliases = new MockUnitAliasData();
+            var unitAliases = new UnitAliases();
 
             foreach (var entry in entries)
             {
@@ -122,37 +122,49 @@ namespace RecipeAPI.Extensions
         private static IEnumerable<PantryTransaction> ConvertUnits(this IEnumerable<PantryTransaction> entries, IEnumerable<Tuple<int, string>> productUnits)
         {
             var convertedElements = new List<PantryTransaction>();
-            var unitConversions = new MockUnitConversionData();
+            var unitConversions = new UnitConversions();
 
             foreach (var entry in entries)
             {
                 var destinationUnit = productUnits.First(productUnit => productUnit.Item1 == entry.ProductId).Item2;
+                var sanitizedUnit = (entry.Unit ?? "").Replace(".", string.Empty);
 
-                var conversion = unitConversions.Where(convert => convert.SecondaryUnit == (entry.Unit ?? "").Replace(".", string.Empty) &&
-                                                                       convert.PrimaryUnit == destinationUnit &&
-                                                                       (convert.ProductId == null || convert.ProductId == entry.ProductId))
-                                                     .OrderByDescending(c => c.ProductId)
+                var conversion = unitConversions.Where(convert => ((convert.DestinationUnit == sanitizedUnit && convert.SourceUnit == destinationUnit) ||
+                                                                    (convert.DestinationUnit == destinationUnit && convert.SourceUnit == sanitizedUnit)) &&
+                                                                       (convert.Products == null || convert.Products.Contains(entry.ProductId)))
+                                                     .OrderByDescending(c => c.Products?.Contains(entry.ProductId) ?? false)
                                                      .FirstOrDefault();
-                ConvertUnit(entry, conversion);
+
+                ConvertUnit(entry, conversion, sanitizedUnit);
                 convertedElements.Add(entry);
             }
 
             return convertedElements;
         }
 
-        private static void ConvertUnit(PantryTransaction entry, UnitConversionRate conversion)
+        private static void ConvertUnit(PantryTransaction entry, UnitConversionRate conversion, string sourceUnit)
         {
-            if (conversion == null || conversion.ConversionScale.IsApproximatelyEqual(0, 0.05))
+            if (conversion == null || conversion.ConversionScale.IsApproximatelyEqual(0, 0.01))
             {
                 Console.WriteLine($"No need to convert {entry.Unit} because it's already the requested unit or has no conversion defined.");
                 return;
             }
 
-            var convertedValue = Math.Round(entry.Quantity / conversion.ConversionScale, 2);
-            Console.WriteLine($"{entry.Quantity} {entry.Unit} of {entry.Product.Name} converted to {convertedValue} {conversion.PrimaryUnit} by dividing by {conversion.ConversionScale}");
-
-            entry.Quantity = convertedValue;
-            entry.Unit = conversion.PrimaryUnit;
+            entry.Unit = conversion.DestinationUnit;
+            if (sourceUnit == conversion.SourceUnit)
+            {
+                var convertedValue = Math.Round(entry.Quantity * conversion.ConversionScale, UnitConversions.DecimalPrecision);
+                Console.WriteLine($"{entry.Quantity} {entry.Unit} of {entry.Product.Name} converted to {convertedValue} {conversion.DestinationUnit} by multiplying by {conversion.ConversionScale}");
+                entry.Quantity = convertedValue;
+                entry.Unit = conversion.DestinationUnit;
+            }
+            else
+            {
+                var convertedValue = Math.Round(entry.Quantity / conversion.ConversionScale, UnitConversions.DecimalPrecision);
+                Console.WriteLine($"{entry.Quantity} {entry.Unit} of {entry.Product.Name} converted to {convertedValue} {conversion.SourceUnit} by dividing by {conversion.ConversionScale}");
+                entry.Quantity = convertedValue;
+                entry.Unit = conversion.SourceUnit;
+            }
         }
     }
 }

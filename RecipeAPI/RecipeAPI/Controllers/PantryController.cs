@@ -14,7 +14,6 @@ using Microsoft.ApplicationInsights.Extensibility;
 namespace RecipeAPI.Controllers
 {
     /// <summary>
-    /// 
     /// </summary>
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
@@ -51,7 +50,7 @@ namespace RecipeAPI.Controllers
                                                   .CalculateTotals(null)
                                                   .OrderBy(p => p.Product.Name);
 
-                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThan(0, 0.5)) : pantryItems;
+                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThanOrEqualTo(0, 0.5)) : pantryItems;
 
                 var groupedItems = otherItems.GroupBy(p => p.ProductId)
                                              .Select(p => new
