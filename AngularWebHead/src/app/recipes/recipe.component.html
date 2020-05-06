@@ -45,9 +45,7 @@
       <mat-header-cell *matHeaderCellDef>Ingredient</mat-header-cell>
       <mat-cell *matCellDef="let ingredient">
         <div>
-          <span>{{ingredient.quantity}}</span>&nbsp;
-          <span>{{ingredient.unit}}</span>&nbsp;
-          <span>{{ingredient.name}}</span>
+          <span>{{formatIngredient(ingredient)}}</span>
         </div>
       </mat-cell>
     </ng-container>
