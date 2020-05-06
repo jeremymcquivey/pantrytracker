@@ -95,7 +95,7 @@ namespace RecipeAPI.Services
                             PlainText = ingredient.Name,
                             QuantityString = ingredient.Quantity,
                             Unit = ingredient.Unit,
-                            Size = ingredient.SubQuantity,
+                            Size = ingredient.Size,
                             RecipeId = ingredient.RecipeId,
                         });
                         continue;
@@ -139,7 +139,7 @@ namespace RecipeAPI.Services
                     PlainText = ingredient.Name,
                     QuantityString = ingredient.Quantity,
                     Unit = ingredient.Unit,
-                    Size = ingredient.SubQuantity,
+                    Size = ingredient.Size,
                     RecipeId = ingredient.RecipeId,
                 });
             }

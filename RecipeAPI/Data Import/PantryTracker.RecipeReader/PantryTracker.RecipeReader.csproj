@@ -9,10 +9,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
-    <Folder Include="Rules\" />
     <Folder Include="Rules\RecipeRules\" />
-    <Folder Include="Rules\SentenceRules\" />
-    <Folder Include="Rules\WordRules\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Model\PantryTracker.Model.Recipe\PantryTracker.Model.csproj" />

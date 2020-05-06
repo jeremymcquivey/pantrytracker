@@ -9,9 +9,10 @@ namespace PantryTracker.RecipeReader.Rules
         {
             foreach (var word in wordList.Where(w => w.PartOfSpeech == null))
             {
-                var fractionParts = word.Contents.Split('/');
+                var newWord = SanitizeWord(word.Contents);
+                var fractionParts = newWord.Split('/');
 
-                if (double.TryParse(word.Contents, out double numericValue))
+                if (double.TryParse(newWord, out double numericValue))
                 {
                     word.PartOfSpeech = PartOfSpeech.Quantity;
                 }

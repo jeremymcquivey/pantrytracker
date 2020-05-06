@@ -1,4 +1,4 @@
-﻿namespace RecipeAPI.Models
+﻿namespace PantryTracker.Model.Meta
 {
     public class UnitsOfWeight
     {

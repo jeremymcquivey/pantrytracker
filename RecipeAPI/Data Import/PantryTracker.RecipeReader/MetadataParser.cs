@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PantryTracker.Model.Meta;
 using PantryTracker.Model.Recipes;
 using PantryTracker.RecipeReader.Rules;
 
@@ -8,9 +9,6 @@ namespace PantryTracker.RecipeReader
 {
     public class MetadataParser
     {
-        private UnitsOfTime _time =
-            new UnitsOfTime();
-
         public Recipe ExtractRecipe(string[] input)
         {
             var recipe = new Recipe()
@@ -24,6 +22,8 @@ namespace PantryTracker.RecipeReader
 
             var directions = new List<string>();
             var ingredientParser = new IngredientParser();
+            var allUnits = new UnitAliases();
+
             foreach(var sentence in input.Skip(1))
             {
                 currentLineNumber++;
@@ -48,7 +48,7 @@ namespace PantryTracker.RecipeReader
                     continue;
                 }
 
-                var ingredient = ingredientParser.ProcessSentence(sentence);
+                var ingredient = ingredientParser.ProcessSentence(sentence, allUnits);
 
                 var recentlyAddedPrepTime = false;
                 if (string.IsNullOrEmpty(recipe.PrepTime))

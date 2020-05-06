@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using PantryTracker.Model;
-using RecipeAPI.Models;
 
-namespace RecipeAPI.MockData
+namespace PantryTracker.Model.Meta
 {
     public class UnitConversions : List<UnitConversionRate>
     {

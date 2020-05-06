@@ -141,7 +141,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("cream cheese")).Unit);
 
             Assert.AreEqual("1", recipe.Ingredients.Last(x => x.Name.Contains("butter")).Quantity);
-            Assert.AreEqual(null, recipe.Ingredients.Last(x => x.Name.Contains("butter")).Unit);
+            Assert.AreEqual("cube", recipe.Ingredients.Last(x => x.Name.Contains("butter")).Unit);
 
             Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("powdered sugar")).Quantity);
             Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("powdered sugar")).Unit);
@@ -269,7 +269,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("root beer extract")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Quantity);
-            Assert.AreEqual("2 1/2", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).SubQuantity);
+            Assert.AreEqual("2 1/2", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Size);
             Assert.AreEqual("lb.", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Unit);
 
             Assert.AreEqual("5", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);

@@ -15,7 +15,7 @@ namespace PantryTracker.RecipeReader.Rules
                 var nextOfNext = wordList.SingleOrDefault(w => w.Position == word.Position + 2);
 
                 if (next?.PartOfSpeech == PartOfSpeech.Quantity &&
-                    nextOfNext?.PartOfSpeech != PartOfSpeech.SubQuantity)
+                    nextOfNext?.PartOfSpeech != PartOfSpeech.ContainerSize)
                 {
                     positionsToRemove.Add(next.Position);
                     word.Contents = $"{word.Contents}-{next.Contents}";

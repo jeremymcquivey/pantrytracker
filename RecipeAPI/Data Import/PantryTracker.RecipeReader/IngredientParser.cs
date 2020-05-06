@@ -1,14 +1,12 @@
-﻿using PantryTracker.Model.Recipes;
+﻿using PantryTracker.Model.Meta;
+using PantryTracker.Model.Recipes;
 using PantryTracker.RecipeReader.Rules;
 
 namespace PantryTracker.RecipeReader
 {
     public class IngredientParser
     {
-        private UnitsOfMeasure _unitsOfMeasure =
-            new UnitsOfMeasure();
-
-        public Ingredient ProcessSentence(string phrase)
+        public Ingredient ProcessSentence(string phrase, UnitAliases units)
         {
             if (string.IsNullOrEmpty(phrase))
                 return null;
@@ -16,14 +14,15 @@ namespace PantryTracker.RecipeReader
             var words = phrase.GetWords()
                               .DetectQuantities()
                               .CombineFractions()
-                              .FindUnits(_unitsOfMeasure)
-                              .DetectSubquantities()
+                              .FindUnits(units)
+                              .DetectContainerSize()
                               .DetectRanges()
                               .DefineNames()
-                              .RemoveUnwantedWords();
+                              .RemoveUnwantedWords()
+                              .Sanitize();
 
             return (words.ToIngredient() ?? new Ingredient())
-                         .AdjustSubQuantities();
+                         .AdjustContainerSizes();
         }
     }
 }

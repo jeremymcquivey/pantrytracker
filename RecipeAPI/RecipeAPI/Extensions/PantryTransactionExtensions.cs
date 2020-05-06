@@ -4,8 +4,8 @@ using System.Linq;
 using PantryTracker.Model;
 using PantryTracker.Model.Pantry;
 using PantryTracker.Model.Products;
-using RecipeAPI.MockData;
 using PantryTracker.Model.Extensions;
+using PantryTracker.Model.Meta;
 
 namespace RecipeAPI.Extensions
 {

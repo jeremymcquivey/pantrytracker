@@ -4,13 +4,13 @@ namespace PantryTracker.RecipeReader.Rules
 {
     public static class IngredientRules
     {
-        public static Ingredient AdjustSubQuantities(this Ingredient ingredient)
+        public static Ingredient AdjustContainerSizes(this Ingredient ingredient)
         {
             if (string.IsNullOrEmpty(ingredient.Quantity) &&
-               !string.IsNullOrEmpty(ingredient.SubQuantity))
+               !string.IsNullOrEmpty(ingredient.Size))
             {
-                ingredient.Quantity = ingredient.SubQuantity;
-                ingredient.SubQuantity = string.Empty;
+                ingredient.Quantity = ingredient.Size;
+                ingredient.Size = string.Empty;
             }
 
             return ingredient;

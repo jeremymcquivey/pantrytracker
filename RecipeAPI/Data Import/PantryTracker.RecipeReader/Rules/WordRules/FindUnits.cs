@@ -1,20 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using PantryTracker.Model.Meta;
+using System.Collections.Generic;
 using System.Linq;
-using PantryTracker.Model.Recipes;
 
 namespace PantryTracker.RecipeReader.Rules
 {
     internal static partial class EnumerableRules
     {
-        public static IEnumerable<Word> FindUnits(this IEnumerable<Word> wordList, UnitsOfMeasure units)
+        public static IEnumerable<Word> FindUnits(this IEnumerable<Word> wordList, UnitAliases units)
         {
             foreach (var word in wordList.Where(w => w.PartOfSpeech == null))
             {
-                if (units.IsUnitOfMeasure(word.Contents))
+                if (!string.IsNullOrEmpty(units.GetSanitizedUnit(word.Contents)))
                 {
                     word.PartOfSpeech = PartOfSpeech.Unit;
                 }
             }
+
             return wordList;
         }
     }
