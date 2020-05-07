@@ -68,7 +68,7 @@ import { RecipeService } from "../core/recipe.service";
     }
 
     public formatIngredient(ingredient: Ingredient): string {
-      return `${ingredient?.quantity ?? ''} ${ingredient?.subQuantity ?? ''} ${ingredient?.unit ?? ''} ${ingredient?.name ?? ''}`
+      return `${ingredient?.quantity ?? ''} ${ingredient?.size ?? ''} ${ingredient?.unit ?? ''} ${ingredient?.name ?? ''}`
         .replace('  ', ' ')
         .trim();
     }

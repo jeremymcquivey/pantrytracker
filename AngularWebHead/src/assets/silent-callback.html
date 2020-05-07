@@ -9,7 +9,7 @@
     </head>
     <body>
         <script>
-            new Oidc.UserManager().signinSilentCallback().then(_=> console.log('silent renew')).catch(error => {
+            new Oidc.UserManager().signinSilentCallback().then(_=> {}).catch(error => {
                 console.error(error);
             });
         </script>

@@ -15,7 +15,7 @@ export class TextEditorDialogComponent {
     set isVisible(value: boolean) {
         this._isVisible = value;
         setTimeout(() => { 
-            this.autoFocusElement.nativeElement.focus();
+            this.autoFocusElement?.nativeElement.focus();
         }, 0);
         
     } get isVisible(): boolean {

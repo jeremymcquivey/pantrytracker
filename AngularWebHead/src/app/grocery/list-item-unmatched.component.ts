@@ -25,7 +25,7 @@ export class ListItemUnmatchedComponent implements OnInit {
     ngOnInit(): void { }
 
     formatIngredient(ingredient: RecipeProduct): string {
-        return `${ingredient?.quantityString ?? ''} ${ingredient?.unit ?? ''} ${ingredient?.plainText}`
+        return `${ingredient?.quantityString ?? ''} ${ingredient?.size ?? ''} ${ingredient?.unit ?? ''} ${ingredient?.plainText}`
             .replace('  ', ' ');
     }
     

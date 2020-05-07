@@ -25,7 +25,7 @@ export class ListItemIgnoredComponent implements OnInit {
     ngOnInit(): void { }
 
     formatIngredient(product: RecipeProduct): string {
-        return `${product?.quantityString ?? ''} ${product?.unit ?? ''} ${product?.plainText ?? ''}`
+        return `${product?.quantityString ?? ''} ${product?.size ?? ''} ${product?.unit ?? ''} ${product?.plainText ?? ''}`
             .replace('  ', ' ');
     }
     

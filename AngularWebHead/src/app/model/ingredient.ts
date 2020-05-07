@@ -3,7 +3,7 @@ export class Ingredient
     recipeId: string;
     index: number;
     quantity: string;
-    subQuantity: string;
+    size: string;
     unit: string;
     name: string;
 }
