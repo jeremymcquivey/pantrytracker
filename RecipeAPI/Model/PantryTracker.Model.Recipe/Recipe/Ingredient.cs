@@ -12,6 +12,8 @@ namespace PantryTracker.Model.Recipes
 
         public string Size { get; set; }
 
+        public string SubQuantity { get; set; }
+
         public string Unit { get; set; }
 
         public string Name { get; set; }
