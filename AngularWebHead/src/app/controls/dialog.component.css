@@ -1,11 +1,12 @@
 #dialog-modal {
     background-color:rgba(22,22,22,0.5); 
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     z-index:50;
     left: 0;
     top: 0;
+    overflow-y: auto;
 }
 
 #dialog-modal-content {
@@ -14,6 +15,7 @@
     background-color:#FFFFFF;
     padding: 1em;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 /* Chrome, Safari, Edge, Opera */

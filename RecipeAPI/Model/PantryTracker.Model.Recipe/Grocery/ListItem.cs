@@ -1,5 +1,4 @@
 ﻿using PantryTracker.Model.Products;
-using System;
 
 namespace PantryTracker.Model.Grocery
 {
@@ -9,11 +8,11 @@ namespace PantryTracker.Model.Grocery
 
         public string PantryId { get; set; } //For now, this is user id until we support multiple 'pantries'.
 
-        public string Quantity { get; set; } = "1";
+        public string Quantity { get; set; }
 
         public string Unit { get; set; } = "";
 
-        public string Size { get; set; } = "1";
+        public string Size { get; set; }
 
         public int ProductId { get; set; }
 

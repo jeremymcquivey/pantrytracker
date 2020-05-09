@@ -108,9 +108,10 @@ namespace RecipeAPI.Services
                         RecipeId = recipeId,
                         PlainText = ingredient.Name,
                         Unit = ingredient.Unit,
+                        Size = ingredient.Size,
                         QuantityString = ingredient.Quantity,
                         MatchType = IngredientMatchType.UserMatch
-                    });
+                    }); ;
 
                     continue;
                 }
@@ -126,6 +127,7 @@ namespace RecipeAPI.Services
                         RecipeId = recipeId,
                         PlainText = ingredient.Name,
                         Unit = ingredient.Unit,
+                        Size = ingredient.Size,
                         QuantityString = ingredient.Quantity,
                         MatchType = IngredientMatchType.SystemMatch
                     });
