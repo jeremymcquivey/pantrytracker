@@ -1,0 +1,1047 @@
+[
+
+  {
+    "Page": 1,
+    "ClockwiseOrientation": 359.85,
+    "Width": 1409,
+    "Height": 1056,
+    "Unit": 0,
+    "Lines": [
+      {
+        "BoundingBox": [ 23, 24, 303, 26, 302, 79, 22, 78 ],
+        "Text": "Ham and",
+        "Words": [
+          {
+            "BoundingBox": [ 25, 25, 146, 26, 143, 79, 23, 78 ],
+            "Text": "Ham",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 187, 27, 302, 27, 299, 80, 185, 79 ],
+            "Text": "and",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 509, 32, 672, 31, 673, 52, 510, 53 ],
+        "Text": "12 slices deli ham",
+        "Words": [
+          {
+            "BoundingBox": [ 510, 33, 534, 33, 534, 53, 511, 53 ],
+            "Text": "12",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 542, 33, 595, 33, 595, 53, 542, 53 ],
+            "Text": "slices",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 599, 33, 626, 33, 626, 53, 599, 53 ],
+            "Text": "deli",
+            "Confidence": 1
+          },
+          {
+            "BoundingBox": [ 630, 33, 667, 32, 667, 53, 630, 53 ],
+            "Text": "ham",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 954, 22, 1320, 15, 1321, 45, 955, 51 ],
+        "Text": "3. Crack egg in small bowl; slide into",
+        "Words": [
+          {
+            "BoundingBox": [ 957, 22, 979, 22, 979, 50, 957, 49 ],
+            "Text": "3.",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 984, 22, 1039, 21, 1038, 50, 984, 50 ],
+            "Text": "Crack",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1044, 21, 1078, 21, 1078, 49, 1044, 50 ],
+            "Text": "egg",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1084, 21, 1104, 21, 1103, 49, 1084, 49 ],
+            "Text": "in",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1109, 20, 1161, 20, 1161, 48, 1109, 49 ],
+            "Text": "small",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1167, 19, 1219, 18, 1219, 47, 1167, 48 ],
+            "Text": "bowl;",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1225, 18, 1273, 17, 1273, 45, 1224, 46 ],
+            "Text": "slide",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1279, 17, 1320, 16, 1320, 43, 1279, 44 ],
+            "Text": "into",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 509, 65, 759, 63, 760, 88, 509, 89 ],
+        "Text": "/4 cup grated Swiss cheese",
+        "Words": [
+          {
+            "BoundingBox": [ 512, 65, 538, 66, 538, 90, 513, 89 ],
+            "Text": "/4",
+            "Confidence": 1
+          },
+          {
+            "BoundingBox": [ 543, 66, 577, 66, 577, 90, 543, 90 ],
+            "Text": "cup",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 582, 66, 639, 66, 639, 90, 582, 90 ],
+            "Text": "grated",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 644, 66, 688, 66, 688, 89, 644, 90 ],
+            "Text": "Swiss",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 693, 65, 760, 64, 758, 88, 692, 89 ],
+            "Text": "cheese",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 951, 53, 1330, 49, 1330, 79, 952, 83 ],
+        "Text": "ham cup. Repeat with remaining eggs.",
+        "Words": [
+          {
+            "BoundingBox": [ 953, 55, 995, 55, 996, 81, 954, 81 ],
+            "Text": "ham",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1004, 55, 1043, 54, 1043, 82, 1004, 81 ],
+            "Text": "cup.",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1048, 54, 1115, 53, 1116, 82, 1048, 82 ],
+            "Text": "Repeat",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1120, 53, 1161, 53, 1161, 81, 1121, 82 ],
+            "Text": "with",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1166, 53, 1271, 51, 1271, 79, 1166, 81 ],
+            "Text": "remaining",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1276, 51, 1330, 49, 1330, 77, 1276, 79 ],
+            "Text": "eggs.",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 25, 90, 310, 92, 309, 154, 24, 151 ],
+        "Text": "Egg Cups",
+        "Words": [
+          {
+            "BoundingBox": [ 29, 91, 140, 93, 140, 152, 30, 153 ],
+            "Text": "Egg",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 160, 94, 307, 95, 306, 153, 160, 152 ],
+            "Text": "Cups",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 512, 100, 586, 103, 585, 124, 511, 121 ],
+        "Text": "12 eggs",
+        "Words": [
+          {
+            "BoundingBox": [ 512, 101, 534, 102, 535, 123, 512, 123 ],
+            "Text": "12",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 543, 102, 585, 104, 585, 125, 543, 123 ],
+            "Text": "eggs",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 950, 91, 1323, 87, 1323, 118, 951, 122 ],
+        "Text": "4. Bake until whites are set and yolks",
+        "Words": [
+          {
+            "BoundingBox": [ 957, 93, 976, 93, 976, 120, 956, 120 ],
+            "Text": "4.",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 982, 93, 1028, 94, 1028, 121, 981, 121 ],
+            "Text": "Bake",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1034, 94, 1077, 94, 1076, 121, 1033, 121 ],
+            "Text": "until",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1082, 94, 1145, 93, 1144, 120, 1082, 121 ],
+            "Text": "whites",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1150, 93, 1182, 93, 1182, 120, 1150, 120 ],
+            "Text": "are",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1188, 92, 1218, 92, 1218, 120, 1187, 120 ],
+            "Text": "set",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1223, 91, 1261, 90, 1261, 119, 1223, 120 ],
+            "Text": "and",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1266, 90, 1322, 87, 1322, 118, 1266, 119 ],
+            "Text": "yolks",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 540, 134, 668, 136, 667, 159, 539, 158 ],
+        "Text": "Sweet paprika",
+        "Words": [
+          {
+            "BoundingBox": [ 543, 135, 596, 137, 595, 159, 543, 157 ],
+            "Text": "Sweet",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 600, 137, 669, 137, 668, 158, 599, 159 ],
+            "Text": "paprika",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 953, 128, 1347, 120, 1347, 148, 954, 157 ],
+        "Text": "are runny, 10-14 minutes (safe internal",
+        "Words": [
+          {
+            "BoundingBox": [ 954, 130, 983, 129, 984, 155, 954, 155 ],
+            "Text": "are",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 988, 129, 1050, 128, 1050, 154, 989, 155 ],
+            "Text": "runny,",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1055, 128, 1118, 126, 1117, 154, 1055, 154 ],
+            "Text": "10-14",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1123, 126, 1202, 124, 1202, 152, 1122, 154 ],
+            "Text": "minutes",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1207, 124, 1258, 122, 1258, 152, 1207, 152 ],
+            "Text": "(safe",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1263, 122, 1346, 120, 1345, 150, 1263, 151 ],
+            "Text": "internal",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 541, 169, 663, 171, 662, 193, 540, 192 ],
+        "Text": "Buttered toast",
+        "Words": [
+          {
+            "BoundingBox": [ 543, 170, 614, 171, 614, 193, 543, 192 ],
+            "Text": "Buttered",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 619, 171, 662, 171, 662, 193, 618, 193 ],
+            "Text": "toast",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 949, 159, 1296, 157, 1297, 185, 950, 187 ],
+        "Text": "temp. 160F). Sprinkle tops of eggs",
+        "Words": [
+          {
+            "BoundingBox": [ 952, 159, 1006, 159, 1006, 187, 952, 188 ],
+            "Text": "temp.",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1012, 159, 1081, 159, 1081, 187, 1012, 187 ],
+            "Text": "160F).",
+            "Confidence": 1
+          },
+          {
+            "BoundingBox": [ 1087, 159, 1165, 158, 1165, 186, 1086, 187 ],
+            "Text": "Sprinkle",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1171, 158, 1214, 158, 1213, 186, 1170, 186 ],
+            "Text": "tops",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1220, 158, 1238, 158, 1237, 186, 1219, 186 ],
+            "Text": "of",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1244, 158, 1296, 158, 1295, 186, 1243, 186 ],
+            "Text": "eggs",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 30, 210, 387, 213, 386, 242, 29, 239 ],
+        "Text": "Use ham slices that are thick",
+        "Words": [
+          {
+            "BoundingBox": [ 32, 212, 77, 213, 77, 239, 32, 238 ],
+            "Text": "Use",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 82, 213, 131, 214, 131, 240, 82, 239 ],
+            "Text": "ham",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 144, 214, 215, 214, 215, 241, 145, 240 ],
+            "Text": "slices",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 220, 214, 272, 214, 272, 241, 220, 241 ],
+            "Text": "that",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 277, 214, 319, 214, 319, 242, 277, 242 ],
+            "Text": "are",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 324, 213, 387, 213, 386, 242, 324, 242 ],
+            "Text": "thick",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 489, 214, 826, 212, 827, 240, 490, 241 ],
+        "Text": "1. Position rack in center of oven and",
+        "Words": [
+          {
+            "BoundingBox": [ 494, 214, 514, 214, 513, 241, 494, 241 ],
+            "Text": "1.",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 519, 214, 587, 215, 587, 242, 519, 241 ],
+            "Text": "Position",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 593, 215, 629, 215, 628, 242, 592, 242 ],
+            "Text": "rack",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 634, 215, 652, 215, 652, 241, 634, 242 ],
+            "Text": "in",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 658, 215, 713, 215, 713, 241, 657, 241 ],
+            "Text": "center",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 719, 214, 735, 214, 734, 241, 718, 241 ],
+            "Text": "of",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 740, 214, 784, 214, 783, 240, 739, 241 ],
+            "Text": "oven",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 789, 214, 827, 213, 826, 240, 788, 240 ],
+            "Text": "and",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 948, 192, 1334, 188, 1334, 216, 949, 221 ],
+        "Text": "with paprika. Serve with buttered toast.",
+        "Words": [
+          {
+            "BoundingBox": [ 951, 193, 992, 193, 991, 220, 951, 220 ],
+            "Text": "with",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 997, 193, 1075, 193, 1074, 219, 997, 220 ],
+            "Text": "paprika.",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1080, 192, 1133, 192, 1132, 219, 1079, 219 ],
+            "Text": "Serve",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1138, 192, 1179, 191, 1178, 219, 1138, 219 ],
+            "Text": "with",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1184, 191, 1269, 189, 1268, 218, 1183, 219 ],
+            "Text": "buttered",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1274, 189, 1334, 188, 1333, 217, 1273, 218 ],
+            "Text": "toast.",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 33, 246, 388, 248, 387, 276, 32, 274 ],
+        "Text": "enough to hold the eggs, but",
+        "Words": [
+          {
+            "BoundingBox": [ 35, 248, 128, 248, 127, 275, 34, 273 ],
+            "Text": "enough",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 133, 248, 157, 248, 157, 275, 132, 275 ],
+            "Text": "to",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 162, 248, 219, 248, 219, 276, 162, 275 ],
+            "Text": "hold",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 224, 248, 265, 248, 265, 276, 224, 276 ],
+            "Text": "the",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 272, 248, 340, 248, 340, 277, 272, 276 ],
+            "Text": "eggs,",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 345, 248, 387, 248, 386, 277, 345, 277 ],
+            "Text": "but",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 491, 247, 642, 245, 643, 271, 492, 274 ],
+        "Text": "preheat to 400F.",
+        "Words": [
+          {
+            "BoundingBox": [ 493, 249, 560, 248, 560, 273, 493, 273 ],
+            "Text": "preheat",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 565, 247, 583, 247, 582, 273, 565, 273 ],
+            "Text": "to",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 587, 247, 642, 246, 641, 273, 587, 273 ],
+            "Text": "400F.",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 948, 226, 1188, 225, 1189, 252, 949, 253 ],
+        "Text": "Refrigerate any leftovers.",
+        "Words": [
+          {
+            "BoundingBox": [ 951, 226, 1058, 226, 1058, 253, 951, 253 ],
+            "Text": "Refrigerate",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1063, 226, 1097, 226, 1096, 253, 1063, 253 ],
+            "Text": "any",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1102, 226, 1188, 226, 1188, 251, 1102, 253 ],
+            "Text": "leftovers.",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 34, 279, 375, 282, 374, 310, 33, 308 ],
+        "Text": "not too thick to line the tins.",
+        "Words": [
+          {
+            "BoundingBox": [ 34, 281, 75, 281, 74, 308, 34, 307 ],
+            "Text": "not",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 80, 281, 122, 281, 122, 308, 80, 308 ],
+            "Text": "too",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 127, 281, 189, 282, 189, 309, 127, 308 ],
+            "Text": "thick",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 195, 282, 220, 282, 220, 309, 194, 309 ],
+            "Text": "to",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 225, 282, 271, 282, 270, 310, 225, 310 ],
+            "Text": "line",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 276, 282, 318, 282, 317, 310, 275, 310 ],
+            "Text": "the",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 323, 282, 375, 282, 375, 310, 322, 310 ],
+            "Text": "tins.",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 491, 284, 849, 284, 849, 312, 492, 313 ],
+        "Text": "2. Coat 12-cup muffin tin with nonstick",
+        "Words": [
+          {
+            "BoundingBox": [ 495, 285, 514, 285, 514, 312, 495, 312 ],
+            "Text": "2.",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 519, 285, 564, 286, 564, 313, 519, 312 ],
+            "Text": "Coat",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 569, 286, 631, 286, 631, 313, 569, 313 ],
+            "Text": "12-cup",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 636, 286, 691, 285, 691, 313, 636, 313 ],
+            "Text": "muffin",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 696, 285, 720, 285, 720, 313, 696, 313 ],
+            "Text": "tin",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 725, 285, 763, 285, 763, 312, 726, 313 ],
+            "Text": "with",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 768, 285, 849, 284, 849, 311, 768, 312 ],
+            "Text": "nonstick",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 35, 337, 238, 338, 237, 360, 34, 358 ],
+        "Text": "HANDS-ON TIME: 10 MIN",
+        "Words": [
+          {
+            "BoundingBox": [ 36, 337, 126, 339, 126, 359, 37, 358 ],
+            "Text": "HANDS-ON",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 132, 339, 176, 339, 176, 360, 132, 360 ],
+            "Text": "TIME:",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 180, 339, 200, 339, 200, 360, 180, 360 ],
+            "Text": "10",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 204, 339, 238, 339, 237, 359, 204, 360 ],
+            "Text": "MIN",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 493, 316, 881, 315, 881, 343, 494, 345 ],
+        "Text": "cooking spray. Line each cup carefully with",
+        "Words": [
+          {
+            "BoundingBox": [ 494, 318, 564, 318, 564, 344, 494, 344 ],
+            "Text": "cooking",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 569, 318, 619, 318, 619, 344, 569, 344 ],
+            "Text": "spray.",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 624, 318, 663, 318, 663, 344, 624, 344 ],
+            "Text": "Line",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 668, 318, 711, 318, 711, 344, 668, 344 ],
+            "Text": "each",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 716, 318, 749, 317, 750, 344, 716, 344 ],
+            "Text": "cup",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 754, 317, 833, 316, 833, 344, 755, 344 ],
+            "Text": "carefully",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 838, 316, 881, 315, 881, 343, 838, 344 ],
+            "Text": "with",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 947, 309, 1341, 308, 1341, 330, 948, 331 ],
+        "Text": "PER SERVING: 380 Cal; 22 g Tot Fat; 9 g Sat Fat;",
+        "Words": [
+          {
+            "BoundingBox": [ 948, 310, 978, 310, 979, 331, 948, 331 ],
+            "Text": "PER",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 982, 310, 1063, 311, 1063, 332, 983, 331 ],
+            "Text": "SERVING:",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1067, 311, 1096, 311, 1096, 332, 1067, 332 ],
+            "Text": "380",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1100, 311, 1135, 311, 1135, 332, 1101, 332 ],
+            "Text": "Cal;",
+            "Confidence": 1
+          },
+          {
+            "BoundingBox": [ 1139, 311, 1158, 311, 1159, 332, 1139, 332 ],
+            "Text": "22",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1163, 311, 1174, 311, 1174, 332, 1163, 332 ],
+            "Text": "g",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1178, 311, 1201, 310, 1202, 331, 1178, 332 ],
+            "Text": "Tot",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1206, 310, 1237, 310, 1238, 331, 1206, 331 ],
+            "Text": "Fat;",
+            "Confidence": 1
+          },
+          {
+            "BoundingBox": [ 1242, 310, 1253, 310, 1253, 331, 1242, 331 ],
+            "Text": "9",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1257, 310, 1269, 310, 1270, 331, 1257, 331 ],
+            "Text": "g",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1274, 310, 1301, 309, 1302, 331, 1274, 331 ],
+            "Text": "Sat",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1305, 309, 1340, 309, 1341, 330, 1306, 330 ],
+            "Text": "Fat;",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 38, 358, 199, 359, 198, 379, 37, 378 ],
+        "Text": "TOTAL TIME: 25 MIN",
+        "Words": [
+          {
+            "BoundingBox": [ 38, 359, 89, 359, 89, 379, 38, 379 ],
+            "Text": "TOTAL",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 93, 359, 139, 359, 138, 379, 93, 379 ],
+            "Text": "TIME:",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 143, 359, 162, 360, 161, 379, 142, 379 ],
+            "Text": "25",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 166, 360, 200, 360, 198, 379, 165, 379 ],
+            "Text": "MIN",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 493, 346, 843, 349, 842, 376, 492, 374 ],
+        "Text": "ham slice (it\u0027s fine if some ham drapes",
+        "Words": [
+          {
+            "BoundingBox": [ 494, 347, 533, 348, 532, 374, 493, 373 ],
+            "Text": "ham",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 540, 348, 581, 349, 580, 375, 539, 374 ],
+            "Text": "slice",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 586, 349, 619, 349, 618, 375, 585, 375 ],
+            "Text": "(it\u0027s",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 624, 349, 656, 349, 655, 376, 623, 375 ],
+            "Text": "fine",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 661, 350, 673, 350, 672, 376, 660, 376 ],
+            "Text": "if",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 678, 350, 726, 350, 725, 376, 677, 376 ],
+            "Text": "some",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 731, 350, 772, 350, 771, 377, 730, 376 ],
+            "Text": "ham",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 782, 350, 844, 349, 843, 377, 781, 377 ],
+            "Text": "drapes",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 946, 332, 1374, 331, 1374, 352, 947, 354 ],
+        "Text": "0 g Trans Fat; 375 mg Cholesterol; 920 mg Sodium;",
+        "Words": [
+          {
+            "BoundingBox": [ 948, 333, 957, 333, 957, 354, 949, 354 ],
+            "Text": "0",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 961, 333, 972, 333, 973, 354, 962, 354 ],
+            "Text": "g",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 977, 333, 1019, 334, 1020, 354, 977, 354 ],
+            "Text": "Trans",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1023, 334, 1055, 334, 1055, 354, 1024, 354 ],
+            "Text": "Fat;",
+            "Confidence": 1
+          },
+          {
+            "BoundingBox": [ 1059, 334, 1086, 334, 1086, 354, 1059, 354 ],
+            "Text": "375",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1090, 334, 1119, 334, 1119, 354, 1090, 354 ],
+            "Text": "mg",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1123, 334, 1225, 333, 1225, 354, 1123, 354 ],
+            "Text": "Cholesterol;",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1229, 333, 1259, 333, 1259, 353, 1229, 354 ],
+            "Text": "920",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1263, 333, 1295, 332, 1294, 353, 1263, 353 ],
+            "Text": "mg",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1299, 332, 1374, 331, 1374, 353, 1298, 353 ],
+            "Text": "Sodium;",
+            "Confidence": 1
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 947, 354, 1306, 353, 1307, 376, 948, 377 ],
+        "Text": "17 g Carb: 2 g Fiber; 2 g Sugar; 27 g Protein",
+        "Words": [
+          {
+            "BoundingBox": [ 948, 354, 965, 354, 964, 377, 948, 377 ],
+            "Text": "17",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 969, 354, 980, 354, 980, 377, 969, 377 ],
+            "Text": "g",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 985, 354, 1032, 355, 1032, 378, 984, 377 ],
+            "Text": "Carb:",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1037, 355, 1046, 355, 1045, 378, 1036, 378 ],
+            "Text": "2",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1051, 355, 1061, 355, 1061, 378, 1050, 378 ],
+            "Text": "g",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1066, 355, 1110, 355, 1110, 378, 1065, 378 ],
+            "Text": "Fiber;",
+            "Confidence": 1
+          },
+          {
+            "BoundingBox": [ 1115, 355, 1126, 355, 1125, 378, 1114, 378 ],
+            "Text": "2",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1130, 355, 1141, 355, 1140, 378, 1130, 378 ],
+            "Text": "g",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1145, 355, 1200, 355, 1200, 377, 1145, 378 ],
+            "Text": "Sugar;",
+            "Confidence": 1
+          },
+          {
+            "BoundingBox": [ 1205, 355, 1225, 355, 1224, 377, 1204, 377 ],
+            "Text": "27",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1230, 355, 1240, 355, 1240, 377, 1229, 377 ],
+            "Text": "g",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 1245, 355, 1308, 354, 1307, 376, 1244, 377 ],
+            "Text": "Protein",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 36, 379, 121, 381, 120, 400, 35, 398 ],
+        "Text": "SERVES: 6",
+        "Words": [
+          {
+            "BoundingBox": [ 40, 380, 106, 381, 105, 399, 39, 398 ],
+            "Text": "SERVES:",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 109, 381, 121, 382, 120, 400, 108, 399 ],
+            "Text": "6",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 495, 378, 822, 380, 821, 406, 494, 405 ],
+        "Text": "over side) and sprinkle 1 tablespoon",
+        "Words": [
+          {
+            "BoundingBox": [ 497, 379, 534, 380, 533, 405, 496, 404 ],
+            "Text": "over",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 539, 380, 582, 380, 582, 405, 538, 405 ],
+            "Text": "side)",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 587, 380, 621, 380, 621, 406, 587, 405 ],
+            "Text": "and",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 626, 380, 699, 380, 698, 406, 625, 406 ],
+            "Text": "sprinkle",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 703, 380, 713, 380, 713, 406, 703, 406 ],
+            "Text": "1",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 718, 380, 821, 380, 821, 406, 718, 406 ],
+            "Text": "tablespoon",
+            "Confidence": null
+          }
+        ]
+      },
+      {
+        "BoundingBox": [ 495, 408, 801, 413, 801, 439, 494, 434 ],
+        "Text": "cheese in center of each ham cup.",
+        "Words": [
+          {
+            "BoundingBox": [ 495, 409, 558, 410, 558, 435, 495, 434 ],
+            "Text": "cheese",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 563, 411, 580, 411, 580, 435, 562, 435 ],
+            "Text": "in",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 585, 411, 641, 412, 641, 436, 585, 435 ],
+            "Text": "center",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 646, 412, 663, 412, 663, 437, 646, 436 ],
+            "Text": "of",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 668, 412, 711, 412, 711, 437, 668, 437 ],
+            "Text": "each",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 716, 412, 755, 413, 755, 438, 716, 438 ],
+            "Text": "ham",
+            "Confidence": null
+          },
+          {
+            "BoundingBox": [ 763, 413, 801, 413, 801, 439, 763, 439 ],
+            "Text": "cup.",
+            "Confidence": null
+          }
+        ]
+      }
+    ]
+  }
+]

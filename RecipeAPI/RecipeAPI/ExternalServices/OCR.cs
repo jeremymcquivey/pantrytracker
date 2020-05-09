@@ -5,6 +5,9 @@ using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using System.Threading.Tasks;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using System.Linq;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace PantryTracker.ExternalServices
 {
@@ -41,7 +44,10 @@ namespace PantryTracker.ExternalServices
                 textResult = await _client.GetReadOperationResultAsync(operationId);
             }
 
-            return (textResult?.RecognitionResults?.FirstOrDefault()?.Lines ?? new List<Line>()).Select(l => l.Text);
+            var result = textResult?.RecognitionResults?.FirstOrDefault();
+            var lines = result?.Lines ?? new List<Line>();
+            lines = ReadVerticalColumns(lines.ToList(), result?.Width ?? 0D);
+            return (lines.Select(l => l.Text));
         }
 
         private async Task<string> SubmitRequest(string imageData)
@@ -66,6 +72,26 @@ namespace PantryTracker.ExternalServices
             {
                 Endpoint = _ocrEndpoint
             };
+        }
+
+        private List<Line> ReadVerticalColumns(List<Line> lines, double width)
+        {
+            var tolerance = Math.Max(width * .1, 1);
+            Dictionary<double, List<Line>> groups = new Dictionary<double, List<Line>>();
+
+            while(lines.Any())
+            {
+                var x = lines.First().BoundingBox[0];
+                var xCols = lines.Where(l => (x - tolerance) <= l.BoundingBox[0] && l.BoundingBox[0] <= (x + tolerance));
+                groups.Add(x, new List<Line>(xCols));
+                lines.RemoveAll(p => xCols.Contains(p));
+            }
+
+            var sortedGroups = groups.OrderBy(g => g.Key);
+            lines = sortedGroups.SelectMany(g => g.Value)
+                                .ToList();
+
+            return lines;
         }
     }
 }
