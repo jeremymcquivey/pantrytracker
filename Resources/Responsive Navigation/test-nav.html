@@ -13,6 +13,7 @@
 		<script src="js/skel-layers.min.js"></script>
         <script src="js/init.js"></script>
         <noscript>-->
+        <link rel="stylesheet" type="text/css" href="css/tabs.css">
         <link rel="stylesheet" type="text/css" href="css/reset.css">
         <link rel="stylesheet" type="text/css" href="css/small.css">
         <link rel="stylesheet" type="text/css" href="css/medium.css" media="(min-width: 30rem)">
@@ -72,5 +73,45 @@
                 </ul>		
             </nav>
         </header>
+        <h3>&nbsp;</h3>
+        <div class="tab-control">
+            <div class="tab">
+                <input type="checkbox" id="tab-1" name="tab-selection" />
+                <label for="tab-1">Matched</label>
+                <div class="tab-content">
+                    <h4>Tab 1 Content Here.</h4>
+                    <p>Smaller stuff here.</p>
+                </div>
+            </div>
+            
+            <div class="tab">
+                <input type="checkbox" id="tab-2" name="tab-selection" />
+                <label for="tab-2">Unmatched</label>
+                <div class="tab-content">
+                    <h4>Tab 2 Content Here.</h4>
+                    <p>Smaller stuff here.</p>
+                </div>
+            </div>
+            
+            <div class="tab">
+                <input type="checkbox" id="tab-3" name="tab-selection" />
+                <label for="tab-3">Ignored</label>
+                <div class="tab-content">
+                    <h4>Tab 3 Content Here.</h4>
+                    <p>Smaller stuff here.</p>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        document.getElementsByName("tab-selection").forEach(p => p.addEventListener("click", function(evt) {
+            document.getElementsByName("tab-selection").forEach(q => {
+                if(q !== evt.srcElement) {
+                    q.checked = false;
+                }
+            });
+        }));
+    });
+</script>

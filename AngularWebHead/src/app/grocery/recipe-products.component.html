@@ -1,29 +1,29 @@
 <h3 class="title" *ngIf="isRecipeLoaded">Grocery List for "{{ RecipeName }}" </h3>
 
-<div class="warning" *ngIf="hasUnmatchedItems">
+<round-button float='right' altText='Add to List' buttonText='!=!' (click)="addMatchedItemsToShoppingList()"></round-button>
+<round-button routerLink='..' altText='Cancel' buttonText='x' ></round-button>
+
+<div class="warning" *ngIf="hasUnmatchedItems" style="clear:both;">
     You have unmatched ingredients. These items will not be added to your *automated* grocery list.<br />
     You may also ignore these items.
 </div>
 
-<div class="ok" *ngIf="!hasUnmatchedItems">
+<div class="ok" *ngIf="!hasUnmatchedItems" style="clear:both;">
     Congratulations! You're ready to add these products to your shopping list!
 </div>
 
-<mat-tab-group>
-    <mat-tab label="Unmatched" *ngIf="hasUnmatchedItems">
+<my-tab-group [Tabs]="tabs" [selectedTab]=0>
+    <ng-template #unmatchedContent>
         <unmatched-products #unmatchedItems [UnmatchedItems]="UnmatchedDataSource" (onReassigned)="reassignValue($event)"></unmatched-products>
-    </mat-tab>
-    <mat-tab label="Matched">
+    </ng-template>
+    
+    <ng-template #matchedContent>
         <matched-products #matchedItems [MatchedItems]="MatchedDataSource" (onReassigned)="reassignValue($event)"></matched-products>
-    </mat-tab>
-    <mat-tab label="Ignored">
+    </ng-template>
+    
+    <ng-template #ignoredContent>
         <ignored-products #ignoredItems [IgnoredItems]="IgnoredDataSource" (onReassigned)="reassignIgnoredValue($event)"></ignored-products>
-    </mat-tab>
-</mat-tab-group>
-
-<span class="btn-box right">
-    <button class="btn btn" routerLink='..'>Cancel</button>
-    <button [disabled]="isBusy" class="btn btn-action" (click)="addMatchedItemsToShoppingList()">Add</button>
-</span>
+    </ng-template>
+</my-tab-group>
 
 <reassign-products-dialog #reassignDialog (onProductReassigned)="onProductReassigned($event)" (onProductIgnored)="onProductIgnored($event)"></reassign-products-dialog>

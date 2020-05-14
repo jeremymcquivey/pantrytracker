@@ -52,6 +52,7 @@ import { ListItemReassignComponent } from './grocery/list-item-reassign.componen
 import { GroceryListViewComponent } from './grocery/list-view.component';
 
 import { RoundButtonComponent } from './controls/round-button.component';
+import { TabGroupComponent } from './controls/tab-group.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { RoundButtonComponent } from './controls/round-button.component';
     ListItemReassignComponent,
     GroceryListViewComponent,
 
-    RoundButtonComponent
+    RoundButtonComponent,
+    TabGroupComponent,
   ],
   imports: [
     ZXingScannerModule,

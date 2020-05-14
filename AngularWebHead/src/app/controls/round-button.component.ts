@@ -12,6 +12,5 @@ export class RoundButtonComponent implements OnInit {
 
     @Input() buttonText : string;
 
-    ngOnInit() {
-    }
+    ngOnInit() { }
 }

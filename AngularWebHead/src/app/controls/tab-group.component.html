@@ -1,0 +1,9 @@
+<div class="tab-control">
+    <div class="tab" *ngFor="let tab of Tabs; index as i;">
+        <input type="checkbox" id="{{tab.id}}" name="tab-selection" #tabLink (click)="tabClickHandler($event)" [checked]="cbChecked(i)" />
+        <label for="{{tab.id}}">{{ tab.title }}</label>
+        <div class="tab-content">
+            <ng-container *ngTemplateOutlet="tab.template"></ng-container>
+        </div>
+    </div>
+</div>

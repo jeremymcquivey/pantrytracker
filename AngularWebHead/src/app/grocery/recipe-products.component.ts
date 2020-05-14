@@ -1,4 +1,4 @@
-import { OnInit, Component, ViewChild } from '@angular/core';
+import { OnInit, Component, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { RecipeService } from '../core/recipe.service';
 import { ProductGroceryList, GroceryItem, GroceryItemStatus } from '../model/product-grocery-list';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { GroceryService } from '../core/grocery.service';
     templateUrl: './recipe-products.component.html',
     styleUrls: ['../controls/fancy-form.component.css']
 })
-export class RecipeProductsComponent implements OnInit {
+export class RecipeProductsComponent implements OnInit, AfterViewInit {
     private _isBusy: boolean = false;
     private _recipeId: string;
     private _data: ProductGroceryList;
@@ -23,6 +23,7 @@ export class RecipeProductsComponent implements OnInit {
 
     public VisibleColumns = [ 'name' ];
     public isRecipeLoaded = true;
+    public tabs = [];
 
     @ViewChild('reassignDialog')
     private reassignDialog: ListItemReassignComponent;
@@ -35,6 +36,15 @@ export class RecipeProductsComponent implements OnInit {
 
     @ViewChild('unmatchedItems')
     private unmatchedItems: ListItemUnmatchedComponent;
+
+    @ViewChild('matchedContent')
+    private matchedContent: TemplateRef<any>;
+
+    @ViewChild('ignoredContent')
+    private ignoredContent: TemplateRef<any>;
+
+    @ViewChild('unmatchedContent')
+    private unmatchedContent: TemplateRef<any>;
 
     public get MatchedDataSource(): RecipeProduct[] {
         return this._data?.matched ?? [];
@@ -78,6 +88,12 @@ export class RecipeProductsComponent implements OnInit {
         }, error => {
             console.error(error);
         });
+    }
+
+    ngAfterViewInit(): void {
+        this.tabs.push({ title: 'Unmatched', template: this.unmatchedContent, id: 'unmatched-tab'});
+        this.tabs.push({ title: 'Matched', template: this.matchedContent, id: 'matched-tab'});
+        this.tabs.push({ title: 'Ignored', template: this.ignoredContent, id: 'ignored-tab'});
     }
 
     reassignValue(value: RecipeProduct) {

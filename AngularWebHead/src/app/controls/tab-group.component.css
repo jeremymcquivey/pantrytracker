@@ -1,0 +1,59 @@
+.tab {
+    padding-bottom: .25em;
+}
+
+.tab input[type="checkbox"] ~ label {
+    display: inline-block;
+    width: 100%;
+    background: #555555;
+    color: #ffffff;
+    padding: .5em .25em;
+}
+
+.tab input[type="checkbox"]:checked ~ label {
+    background-color: #a8a8a8;
+    color: #ffffff;
+}
+
+.tab > input[type="checkbox"] {
+    display: none;
+}
+
+.tab-content {
+    padding-top: .5rem;
+    display: none;
+}
+
+.tab input[type="checkbox"]:checked + label + .tab-content {
+    display: block;
+}
+
+@media(min-width: 25rem)
+{
+    /*.tab-control {
+        position: relative;
+        display: flex;
+    }
+
+    .tab input[type="checkbox"] ~ label {
+        padding: .5em 1.25em;
+        border-right: 1px solid rgba(200,200,200,1);
+        background-color: #555555;
+        box-sizing: border-box;
+    }
+
+    .tab input[type="checkbox"]:checked ~ label {
+        background-color: green;
+    }
+
+    .tab input[type="checkbox"]:first-of-type ~ label:hover {
+        background-color: #a8a8a8;
+    }*/
+
+    /*.tab input[type="checkbox"]:checked + label + .tab-content {
+        position: absolute; 
+        width: 100%;
+        left: 0;
+        top: 2rem;
+    }*/
+}

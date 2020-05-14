@@ -36,6 +36,7 @@ nav ul {
 nav ul li li {
     padding: .5rem;
     background-color: rgba(55,55,55,1);
+    display: none;
 }
 
 nav ul li li:hover {
