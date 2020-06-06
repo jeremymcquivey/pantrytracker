@@ -5,7 +5,8 @@ import { ProductSearchComponent } from "./product-search.component";
 @Component({
 selector: 'product-search-dialog',
     templateUrl: 'product-search-dialog.component.html',
-    styleUrls: ['product-search-dialog.component.css']
+    styleUrls: ['product-search-dialog.component.css',
+                '../controls/dialog.component.css']
 })
 export class ProductSearchDialogComponent implements OnInit {
     public isVisible: boolean = false;
@@ -35,6 +36,7 @@ export class ProductSearchDialogComponent implements OnInit {
     }
 
     productSearch(): void {
+        this.isVisible = true;
         this.ProductSearch.productSearch();
     }
 

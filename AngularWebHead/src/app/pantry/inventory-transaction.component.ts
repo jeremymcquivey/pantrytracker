@@ -4,7 +4,6 @@ import { PantryLine, Product, ProductVariety, ProductCode, TransactionType } fro
 import { ProductService } from "../core/product.service";
 import { ProductSearchDialogComponent } from "../product/product-search-dialog.component";
 import { AddProductCodeComponent } from "../product/add-product-code.component";
-import { AddVarietyComponent } from "../product/add-variety.component";
 import { BarcodeReaderComponent } from '../io/barcodereader.component';
 
 @Component({
@@ -47,9 +46,6 @@ export class InventoryTransactionComponent implements OnInit {
     @ViewChild("productSearchDialog")
     private ProductSearchDialog: ProductSearchDialogComponent; 
 
-    @ViewChild("addVariety")
-    private addVariety: AddVarietyComponent;
-
     @ViewChild("addProductCodeDialog")
     private AddProductCodeDialog: AddProductCodeComponent;
 
@@ -68,8 +64,9 @@ export class InventoryTransactionComponent implements OnInit {
         this.Line.transactionType = this._lastTransactionType;
 
         this.Product = new Product();
-        this.productName = "";
         this.Varieties = [];
+        this.SelectedVariety = null;
+        this.productName = "";
         this.ProductSearchText = "";
         this.ProductSearchDialog.SearchText = "";
         this.warnings = [];
@@ -157,7 +154,6 @@ export class InventoryTransactionComponent implements OnInit {
     }
 
     searchProduct(): void {
-        this.ProductSearchDialog.isVisible = true;
         this.ProductSearchDialog.SearchText = this.ProductSearchText;
         this.ProductSearchDialog.productSearch();
     }
