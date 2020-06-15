@@ -1,33 +1,31 @@
-﻿using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using PantryTracker.Model;
 using PantryTracker.Model.Products;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace PantryTrackers.Integrations.Walmart
 {
     public class WalmartService : IProductSearch
     {
-        private TelemetryClient _appInsights;
         private Func<string, Task<ProductCode>> _getCodeDelegate;
 
         private const string BaseAPI = "https://api.walmartlabs.com/v1/";
         private readonly ICacheManager _cache;
         private readonly IHttpClientFactory _requestFactory;
+        private readonly ILogger<WalmartService> _logger;
         private readonly string _clientId;
 
         public string Name => "Walmart API";
 
-        public WalmartService(IHttpClientFactory requestFactory, ICacheManager cache)
+        public WalmartService(IHttpClientFactory requestFactory, ICacheManager cache, ILogger<WalmartService> logger)
         {
             _cache = cache;
             _requestFactory = requestFactory;
-            _appInsights = new TelemetryClient(TelemetryConfiguration.CreateDefault());
+            _logger = logger;
             _clientId = Environment.GetEnvironmentVariable("WalmartAPIClientSecret", EnvironmentVariableTarget.Process);
 
             _getCodeDelegate = async (string code) => await Search(code);
@@ -49,7 +47,7 @@ namespace PantryTrackers.Integrations.Walmart
                 if (!response.IsSuccessStatusCode)
                 {
                     var msg = await response.Content.ReadAsStringAsync();
-                    _appInsights.TrackEvent("Walmart API Error", new Dictionary<string, string> { { "Message", msg }, { "ErrorType", $"{ response.StatusCode }" } });
+                    _logger.LogError("Walmart API Error", new { Message = msg }, new { ErrorType = $"{ response.StatusCode }" });
                     return default;
                 }
 
@@ -59,7 +57,7 @@ namespace PantryTrackers.Integrations.Walmart
                 var singleItem = walmartItems.Items.FirstOrDefault();
                 if (singleItem == default)
                 {
-                    _appInsights.TrackEvent("Code Not Found In Walmart", new Dictionary<string, string> { { "UPC", code } });
+                    _logger.LogWarning("Code Not Found In Walmart", new { UPC = code });
                     return default;
                 }
 

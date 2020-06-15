@@ -10,6 +10,7 @@ using PantryTracker.Model.Extensions;
 using Microsoft.ApplicationInsights;
 using System.Collections.Generic;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Extensions.Logging;
 
 namespace RecipeAPI.Controllers
 {
@@ -21,15 +22,15 @@ namespace RecipeAPI.Controllers
     public class PantryController : BaseController
     {
         private readonly RecipeContext _db;
-        private readonly TelemetryClient _appInsights;
+        private readonly ILogger<PantryController> _logger;
 
 #pragma warning disable 1591
-        public PantryController(IOptions<AppSettings> config,
+        public PantryController(ILogger<PantryController> logger,
                                 RecipeContext database)
 #pragma warning restore 1591
         {
             _db = database;
-            _appInsights = new TelemetryClient(TelemetryConfiguration.CreateDefault());
+            _logger = logger;
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace RecipeAPI.Controllers
         {
             try
             {
-                _appInsights.TrackEvent("GetAllPantryItems", new Dictionary<string, string> { { "IncludeZeroValues", includeZeroValues ? "true" : "false" } });
+                _logger.LogInformation("Getting pantry level summary", new { id, includeZeroValues });
 
                 var gId = Guid.Parse(AuthenticatedUser);
                 var pantryItems = _db.Transactions.Where(p => p.UserId == gId)

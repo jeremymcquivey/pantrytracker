@@ -1,6 +1,4 @@
-﻿using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PantryTracker.Model.Products;
 using RecipeAPI.Models;
@@ -17,14 +15,12 @@ namespace RecipeAPI.Controllers
     public class ProductCodeController : BaseController
     {
         private readonly RecipeContext _database;
-        private readonly TelemetryClient _appInsights;
 
         /// <summary>
         /// </summary>
         public ProductCodeController(RecipeContext database)
         {
             _database = database;
-            _appInsights = new TelemetryClient(TelemetryConfiguration.CreateDefault());
         }
 
         /// <summary>

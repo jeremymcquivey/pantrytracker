@@ -7,13 +7,11 @@ using RecipeAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
 using PantryTracker.Model.Extensions;
 using System.Threading.Tasks;
-using Microsoft.ApplicationInsights;
-using System.Collections.Generic;
-using Microsoft.ApplicationInsights.Extensibility;
 using RecipeAPI.ExternalServices;
 using PantryTracker.Model.Products;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using RecipeAPI.Services;
+using Microsoft.Extensions.Logging;
 
 namespace RecipeAPI.Controllers
 {
@@ -25,18 +23,18 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     public class ProductController: BaseController
     {
+        private readonly ILogger<ProductController> _logger;
         private readonly ProductService _products;
         private readonly RecipeContext _database;
         private readonly UPCLookup _productCodes;
-        private readonly TelemetryClient _appInsights;
 
 #pragma warning disable 1591
-        public ProductController(RecipeContext database, ProductService products, UPCLookup productCodes)
+        public ProductController(RecipeContext database, ProductService products, UPCLookup productCodes, ILogger<ProductController> logger)
         {
+            _logger = logger;
             _products = products;
             _database = database;
             _productCodes = productCodes;
-            _appInsights = new TelemetryClient(TelemetryConfiguration.CreateDefault());
         }
 #pragma warning restore 1591
 
@@ -155,7 +153,7 @@ namespace RecipeAPI.Controllers
         {
             try
             {
-                _appInsights.TrackEvent("GetPantryProductSummary", new Dictionary<string, string> { { "IncludeZeroValues", includeZeroValues ? "true" : "false" } });
+                _logger.LogInformation("GetPantryProductSummary", new { IncludeZeroValues = includeZeroValues});
 
                 var gId = Guid.Parse(AuthenticatedUser);
                 var pantryItems = _database.Transactions.Where(p => p.UserId == gId)

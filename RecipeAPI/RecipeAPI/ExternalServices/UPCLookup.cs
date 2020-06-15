@@ -1,6 +1,7 @@
 ﻿using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PantryTracker.Model;
 using PantryTracker.Model.Products;
 using PantryTrackers.Integrations.Kroger;
@@ -19,15 +20,15 @@ namespace RecipeAPI.ExternalServices
     /// </summary>
     public class UPCLookup
     {
-        private readonly TelemetryClient _appInsights;
+        private readonly ILogger<UPCLookup> _logger;
         private readonly ProductService _products;
         private readonly RecipeContext _database;
         private readonly IList<IProductSearch> _providers;
 
         /// <summary></summary>
-        public UPCLookup(RecipeContext database, KrogerService krogerService, WalmartService walmartService, ProductService products)
+        public UPCLookup(RecipeContext database, KrogerService krogerService, WalmartService walmartService, ProductService products, ILogger<UPCLookup> logger)
         {
-            _appInsights = new TelemetryClient(TelemetryConfiguration.CreateDefault());
+            _logger = logger;
             _products = products;
             _database = database;
 
@@ -78,6 +79,7 @@ namespace RecipeAPI.ExternalServices
                     product = await provider.SearchByCodeAsync(code);
                     if (product != default)
                     {
+                        _logger.LogInformation($"{code} found on provider {provider.Name}", product);
                         AssignProduct(product);
 
                         _database.ProductCodes.Add(new ProductCode
