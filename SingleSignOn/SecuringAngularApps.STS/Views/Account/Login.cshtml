@@ -21,6 +21,11 @@
                         <form asp-route="Login">
                             <input type="hidden" asp-for="ReturnUrl" />
 
+                            @if (ViewData["LoginMessage"] != null)
+                            {
+                                <p color="green">@ViewData["LoginMessage"]</p>
+                            }
+
                             <fieldset>
                                 <div class="form-group">
                                     <label asp-for="Username"></label>

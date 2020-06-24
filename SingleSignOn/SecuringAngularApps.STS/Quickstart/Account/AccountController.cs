@@ -13,14 +13,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.Tokens;
 using SecuringAngularApps.STS.Integrations;
 using SecuringAngularApps.STS.Models;
-using SecuringAngularApps.STS.Quickstart.Account;
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace IdentityServer4.Quickstart.UI
@@ -59,10 +55,15 @@ namespace IdentityServer4.Quickstart.UI
         /// Entry point into the login workflow
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl)
+        public async Task<IActionResult> Login(string returnUrl, string passwordReset = null)
         {
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
+
+            if(!string.IsNullOrEmpty(passwordReset))
+            {
+                @ViewData["LoginMessage"] = "Your password has been reset successfully. Please login below.";
+            }
 
             if (vm.IsExternalLoginOnly)
             {
@@ -286,8 +287,9 @@ namespace IdentityServer4.Quickstart.UI
                 if (user != null)
                 {
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var encodedToken = System.Web.HttpUtility.UrlEncode(token);
                     var encodedUrl = System.Web.HttpUtility.UrlEncode(returnUrl);
-                    var linkUrl = $"{Request.Scheme}://{Request.Host}/VerifyRecovery?returnUrl={encodedUrl}?token={token}";
+                    var linkUrl = $"{Request.Scheme}://{Request.Host}/Account/VerifyRecovery?returnUrl={encodedUrl}&token={encodedToken}";
                     var clientRoot = Environment.GetEnvironmentVariable("PrincipalClientHome");
 
                     await _emailClient.SendEmail(new RecoverEmailModel
@@ -298,11 +300,59 @@ namespace IdentityServer4.Quickstart.UI
                     }, model.Email);
                 }
 
-                return Redirect($"VerifyRecovery?returnUrl={System.Web.HttpUtility.UrlEncode(returnUrl)}");
+                return Redirect($"VerifyRecovery?returnUrl={System.Web.HttpUtility.UrlEncode(returnUrl)}&email={model.Email}");
             }
             return BadRequest(ModelState);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult VerifyRecovery(string returnUrl = null, string token = null, string email = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(new VerifyRecoveryViewModel
+            {
+                Email = email,
+                Token = token
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VerifyRecovery(VerifyRecoveryViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.Email);
+
+                if (user != null)
+                {
+                    var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+                    if(result.Succeeded)
+                    {
+                        await _emailClient.SendEmail(new PasswordChangedEmailModel
+                        {
+                            clientHomeUrl = Environment.GetEnvironmentVariable("PrincipalClientHome"),
+                            username = model.Email
+                        }, model.Email);
+
+                        return Redirect($"Login?returnUrl={System.Web.HttpUtility.UrlEncode(returnUrl)}&passwordReset=success");
+                    }
+
+                    model.Error = "Token or email not valid.";
+                    return View(model);
+                }
+                else
+                {
+                    model.Error = "Token or email not valid.";
+                    return View(model);
+                }
+            }
+            return BadRequest(ModelState);
+        }
 
         /*****************************************/
         /* helper APIs for the AccountController */

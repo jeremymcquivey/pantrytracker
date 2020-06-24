@@ -45,6 +45,7 @@ namespace SecuringAngularApps.STS.Integrations
     public static class SendGridTemplates
     {
         public static string PasswordRecoveryEmailTemplate = "d-9bcd4db3b3274c66a111c14dff368736";
+        public static string PasswordChangedEmailTemplate = "d-19b0e749ebd647de998bc512e038a360";
     }
 
     public interface SendGridEmailModel
@@ -63,5 +64,14 @@ namespace SecuringAngularApps.STS.Integrations
         public string clientHomeUrl { get; set; }
 
         public string linkUrl { get; set; }
+    }
+
+    public class PasswordChangedEmailModel : SendGridEmailModel
+    {
+        public string templateId => SendGridTemplates.PasswordChangedEmailTemplate;
+
+        public string username { get; set; }
+
+        public string clientHomeUrl { get; set; }
     }
 }
