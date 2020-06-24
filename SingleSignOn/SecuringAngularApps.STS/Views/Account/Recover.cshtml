@@ -9,6 +9,10 @@
     <div class="col-md-4">
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
             <h4>Recover My Account</h4>
+            @if(ViewData["RecoveryMessage"] != null)
+            {
+                <p>@ViewData["RecoveryMessage"]</p>
+            }
             <hr />
             <div class="form-group">
                 <label asp-for="Email"></label>

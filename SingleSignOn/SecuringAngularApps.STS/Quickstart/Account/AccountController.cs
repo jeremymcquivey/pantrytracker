@@ -264,9 +264,14 @@ namespace IdentityServer4.Quickstart.UI
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Recover(string returnUrl = null, string email = null)
+        public IActionResult Recover(string returnUrl = null, string email = null, string emailSent = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+
+            if(!string.IsNullOrEmpty(emailSent))
+            {
+                ViewData["RecoveryMessage"] = $"Email sent to {email}. If this email is registered, you should receive an email shortly.";
+            }
 
             return View(new RecoverViewModel
             {
@@ -300,7 +305,7 @@ namespace IdentityServer4.Quickstart.UI
                     }, model.Email);
                 }
 
-                return Redirect($"VerifyRecovery?returnUrl={System.Web.HttpUtility.UrlEncode(returnUrl)}&email={model.Email}");
+                return Redirect($"Recover?returnUrl={System.Web.HttpUtility.UrlEncode(returnUrl)}&email={model.Email}&emailSent=success");
             }
             return BadRequest(ModelState);
         }
