@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PantryTracker.SingleSignOn.STS;
 using PantryTracker.SingleSignOn.STS.Models;
 using SecuringAngularApps.STS.Data;
+using SecuringAngularApps.STS.Integrations;
 using SecuringAngularApps.STS.Models;
 using SecuringAngularApps.STS.Quickstart.Account;
 
@@ -51,6 +53,12 @@ namespace SecuringAngularApps.STS
 
             services.AddMvc();
             services.AddTransient<IProfileService, CustomProfileService>();
+            services.AddTransient<EmailClient>();
+            services.AddHttpClient("SendGridClient", client =>
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", System.Environment.GetEnvironmentVariable("SendGridClientId"));
+                client.BaseAddress = new Uri(EmailClient.SendGridMailEndpoint);
+            });
 
             var builder = services.AddIdentityServer(options =>
                 {

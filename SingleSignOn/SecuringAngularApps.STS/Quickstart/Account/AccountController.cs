@@ -13,9 +13,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
+using SecuringAngularApps.STS.Integrations;
 using SecuringAngularApps.STS.Models;
+using SecuringAngularApps.STS.Quickstart.Account;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace IdentityServer4.Quickstart.UI
@@ -26,6 +31,7 @@ namespace IdentityServer4.Quickstart.UI
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly EmailClient _emailClient;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
@@ -34,6 +40,7 @@ namespace IdentityServer4.Quickstart.UI
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            EmailClient emailClient,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
@@ -41,6 +48,7 @@ namespace IdentityServer4.Quickstart.UI
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailClient = emailClient;
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
@@ -249,6 +257,48 @@ namespace IdentityServer4.Quickstart.UI
                 {
                     return BadRequest(result.Errors);
                 }
+            }
+            return BadRequest(ModelState);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Recover(string returnUrl = null, string email = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+
+            return View(new RecoverViewModel
+            {
+                Email = email
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Recover(RecoverViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.Email);
+
+                if (user != null)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var encodedUrl = System.Web.HttpUtility.UrlEncode(returnUrl);
+                    var linkUrl = $"{Request.Scheme}://{Request.Host}/VerifyRecovery?returnUrl={encodedUrl}?token={token}";
+                    var clientRoot = Environment.GetEnvironmentVariable("PrincipalClientHome");
+
+                    await _emailClient.SendEmail(new RecoverEmailModel
+                    {
+                        clientHomeUrl = clientRoot,
+                        username = model.Email,
+                        linkUrl = linkUrl
+                    }, model.Email);
+                }
+
+                return Redirect($"VerifyRecovery?returnUrl={System.Web.HttpUtility.UrlEncode(returnUrl)}");
             }
             return BadRequest(ModelState);
         }
