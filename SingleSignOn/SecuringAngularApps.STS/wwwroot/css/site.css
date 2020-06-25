@@ -1,82 +1,59 @@
-﻿body {
-  margin-top: 65px;
+﻿@import url('./reset.css');
+@import url('./forms.css');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300|Roboto&display=swap');
+
+html {
+    background: url('/bg.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
-.navbar-header {
-  position: relative;
-  top: -4px;
+
+body {
+    font-family: 'Roboto','Helvetica Neue',sans-serif;
 }
-.navbar-brand > .icon-banner {
-  position: relative;
-  top: -2px;
-  display: inline;
+
+h1 {
+    text-align:center;
 }
-.icon {
-  position: relative;
-  top: -10px;
+
+/** Temp Thing **/
+.login-remember {
+    visibility: hidden;
+    margin-bottom: -1rem;
 }
-.logged-out iframe {
-  display: none;
-  width: 0;
-  height: 0;
+
+.container {
+    background: #FFFFFF;
+    margin-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
-.page-consent .client-logo {
-  float: left;
+
+.logo img {
+    max-width: 100%;
 }
-.page-consent .client-logo img {
-  width: 80px;
-  height: 80px;
+
+.danger {
+    color: red;
 }
-.page-consent .consent-buttons {
-  margin-top: 25px;
+
+@media(max-width:30rem) {
+    html {
+        background: #FFFFFF;
+    }
+
+    .container {
+        width: 100%;
+    }
 }
-.page-consent .consent-form .consent-scopecheck {
-  display: inline-block;
-  margin-right: 5px;
-}
-.page-consent .consent-form .consent-description {
-  margin-left: 25px;
-}
-.page-consent .consent-form .consent-description label {
-  font-weight: normal;
-}
-.page-consent .consent-form .consent-remember {
-  padding-left: 16px;
-}
-.grants .page-header {
-  margin-bottom: 10px;
-}
-.grants .grant {
-  margin-top: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid lightgray;
-}
-.grants .grant img {
-  width: 100px;
-  height: 100px;
-}
-.grants .grant .clientname {
-  font-size: 140%;
-  font-weight: bold;
-}
-.grants .grant .granttype {
-  font-size: 120%;
-  font-weight: bold;
-}
-.grants .grant .created {
-  font-size: 120%;
-  font-weight: bold;
-}
-.grants .grant .expires {
-  font-size: 120%;
-  font-weight: bold;
-}
-.grants .grant li {
-  list-style-type: none;
-  display: inline;
-}
-.grants .grant li:after {
-  content: ', ';
-}
-.grants .grant li:last-child:after {
-  content: '';
+
+@media(min-width:30rem) {
+    .container {
+        width: 75%;
+        max-width: 40rem;
+        padding: 1.5rem;
+        margin: auto;
+        margin-top: 2rem;
+        box-shadow: 0 0.5rem 0.5rem 0 rgba(0, 0, 0, 0.2), 0 0.5rem 0.5rem 0 rgba(0, 0, 0, 0.2);
+        border-radius: .25rem;
+    }
 }

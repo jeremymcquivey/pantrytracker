@@ -1,6 +1,6 @@
 ﻿@model RecoverViewModel
 @{
-    ViewData["Title"] = "Recover Password";
+    ViewData["Title"] = "Reset Password";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -8,19 +8,28 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-            <h4>Recover My Account</h4>
-            @if(ViewData["RecoveryMessage"] != null)
+            @if (ViewData["RecoveryMessage"] != null)
             {
                 <p>@ViewData["RecoveryMessage"]</p>
             }
-            <hr />
-            <div class="form-group">
+            else
+            {
+                <p>We will send an email to your primary account with instructions on how to reset your password.</p>
+            }
+            <div class="group">
+                <input type="text" asp-for="Email" autofocus />
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn btn-default">Recover</button>
+            @if (ViewData["RecoveryMessage"] != null)
+            {
+                <button type="submit" class="btn btn-action">Resend Email</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-action">Recover</button>
+            }
         </form>
     </div>
 </div>

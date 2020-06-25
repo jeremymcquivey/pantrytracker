@@ -1,6 +1,6 @@
 ﻿@model RegisterViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Create a new account.";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -8,37 +8,37 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div class="form-group">
+            <div class="group">
+                <input type="text" asp-for="Email" class="form-control" autofocus />
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="group">
+                <input type="text" asp-for="FirstName" class="form-control" />
                 <label asp-for="FirstName"></label>
-                <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="group">
+                <input type="text" asp-for="LastName" class="form-control" />
                 <label asp-for="LastName"></label>
-                <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="group">
+                <input type="password" asp-for="Password" class="form-control" autocomplete="off"/>
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="group">
+                <input type="password" asp-for="ConfirmPassword" class="form-control" autocomplete="off"/>
                 <label asp-for="ConfirmPassword"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Register</button>
+
+            <button type="submit" class="btn btn-action">Register</button>
         </form>
     </div>
 </div>
