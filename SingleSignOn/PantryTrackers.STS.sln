@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PantryTrackers.STS", "PantryTrackers.STS.csproj", "{1D7EAE04-3646-4BB0-99CC-71E919CB5791}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D7EAE04-3646-4BB0-99CC-71E919CB5791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D7EAE04-3646-4BB0-99CC-71E919CB5791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D7EAE04-3646-4BB0-99CC-71E919CB5791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D7EAE04-3646-4BB0-99CC-71E919CB5791}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {60DE08A1-0210-42B8-8792-E0F31CD19FB6}
+	EndGlobalSection
+EndGlobal

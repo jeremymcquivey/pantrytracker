@@ -1,0 +1,72 @@
+﻿@import url('./reset.css');
+@import url('./forms.css');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300|Roboto&display=swap');
+
+html {
+    background: url('/bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+body {
+    font-family: 'Roboto','Helvetica Neue',sans-serif;
+}
+
+h1 {
+    text-align:center;
+}
+
+ul {
+    text-align: center;
+    list-style-type: none;
+}
+
+ul li {
+    padding: .5rem;
+}
+
+.center {
+    text-align: center;
+}
+
+/** Temp Thing **/
+.login-remember {
+    visibility: hidden;
+    margin-bottom: -1rem;
+}
+
+.container {
+    background: #FFFFFF;
+    margin-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.logo img {
+    max-width: 100%;
+}
+
+.danger {
+    color: red;
+}
+
+@media(max-width:30rem) {
+    html {
+        background: #FFFFFF;
+    }
+
+    .container {
+        width: 100%;
+    }
+}
+
+@media(min-width:30rem) {
+    .container {
+        width: 75%;
+        max-width: 40rem;
+        padding: 1.5rem;
+        margin: auto;
+        margin-top: 2rem;
+        box-shadow: 0 0.5rem 0.5rem 0 rgba(0, 0, 0, 0.2), 0 0.5rem 0.5rem 0 rgba(0, 0, 0, 0.2);
+        border-radius: .25rem;
+    }
+}

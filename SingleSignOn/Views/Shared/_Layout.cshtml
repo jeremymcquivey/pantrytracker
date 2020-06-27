@@ -1,0 +1,49 @@
+﻿@using IdentityServer4.Extensions
+@{
+    string name = null;
+    if (!true.Equals(ViewData["signed-out"]))
+    {
+        name = Context.User?.GetDisplayName();
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SingleSignOn | PantryTrackers</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container">
+        @if (!string.IsNullOrWhiteSpace(name))
+        {
+            <span>Hello, @name</span>  @:&nbsp;&verbar;&nbsp;
+            <a asp-action="Logout" asp-controller="Account">Sign Out</a>
+        }
+        else
+        {
+            <a asp-action="Login" asp-controller="Account">Sign In</a>
+        }
+        <br />&nbsp;
+        <a href="~/">
+            <span class="logo">
+                <img src="~/logo.png">
+            </span>
+        </a>
+
+        @RenderBody()
+
+        <p>
+            @Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+        </p>
+    </div>
+
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

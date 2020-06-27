@@ -1,0 +1,82 @@
+@model LoginViewModel
+
+<div>
+    <h1>Sign In</h1>
+    <partial name="_ValidationSummary" />
+
+    @if (Model.EnableLocalLogin)
+    {
+<form asp-route="Login">
+    @if (ViewData["LoginMessage"] != null)
+    {
+<p style="color:green">@ViewData["LoginMessage"]</p>}
+
+    <input type="hidden" asp-for="ReturnUrl" />
+
+    <div class="group">
+        <input type="text" class="form-control" placeholder="Username" asp-for="Username" autofocus>
+        <label asp-for="Username"></label>
+    </div>
+
+    <div class="group">
+        <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+        <label asp-for="Password"></label>
+    </div>
+    @if (Model.AllowRememberLogin)
+    {
+        <div class="group login-remember">
+            <input type="checkbox" asp-for="RememberLogin">
+            <label asp-for="RememberLogin">
+                <strong>Remember My Login</strong>
+            </label>
+        </div>
+    }
+    <div class="group">
+        <button class="btn btn-action" name="button" value="login">Login</button>
+    </div>
+
+    <a asp-action="Recover" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">Forgot password?</a>
+
+    <hr />
+
+    <p>
+        Don't have an account? <a asp-action="Register" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">Create an account.</a>
+    </p>
+</form>
+    }
+
+    @if (Model.VisibleExternalProviders.Any())
+    {
+        <div class="col-md-6 col-sm-6 external-providers">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">External Login</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-inline">
+                        @foreach (var provider in Model.VisibleExternalProviders)
+                        {
+                            <li>
+                                <a class="btn btn-default"
+                                    asp-controller="External"
+                                    asp-action="Challenge"
+                                    asp-route-provider="@provider.AuthenticationScheme"
+                                    asp-route-returnUrl="@Model.ReturnUrl">
+                                    @provider.DisplayName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+    {
+        <div class="alert alert-warning">
+            <strong>Invalid login request</strong>
+            There are no login schemes configured for this client.
+        </div>
+    }
+</div>
