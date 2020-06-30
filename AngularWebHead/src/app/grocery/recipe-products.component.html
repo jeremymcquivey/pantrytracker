@@ -1,7 +1,7 @@
 <h3 class="title" *ngIf="isRecipeLoaded">Grocery List for "{{ RecipeName }}" </h3>
 
-<round-button float='right' altText='Add to List' buttonText='!=!' (click)="addMatchedItemsToShoppingList()"></round-button>
-<round-button routerLink='..' altText='Cancel' buttonText='x' ></round-button>
+<i (click)="addMatchedItemsToShoppingList()" style="float:right;" class="material-icons accent big">add_shopping_cart</i>
+<i routerLink=".." style="float:left;" class="material-icons accent big">keyboard_arrow_left</i>
 
 <div class="warning" *ngIf="hasUnmatchedItems" style="clear:both;">
     You have unmatched ingredients. These items will not be added to your *automated* grocery list.<br />

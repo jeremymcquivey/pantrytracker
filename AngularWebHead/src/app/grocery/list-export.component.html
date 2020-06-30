@@ -1,0 +1,23 @@
+<h4>Confirm your purchase</h4>
+
+<mat-table [dataSource]="PurchasedItems">
+    <ng-container matColumnDef="name">
+        <mat-cell *matCellDef="let item" class="main">
+            <h4>{{ formatItem(item) }}</h4>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="removed">
+        <mat-cell *matCellDef="let item" class="remove" (click)="ignoreItem(item)">
+            <i class="material-icons">delete_outline</i>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="editPurchased">
+        <mat-cell *matCellDef="let item" class="accept" (click)="editItem(item)">
+            <i class="material-icons">edit</i>
+        </mat-cell>
+    </ng-container>
+
+    <mat-row *matRowDef="let row; columns: VisiblePurchasedColumns;"></mat-row>
+</mat-table>
+
+<inventory-transaction #inventoryTransaction (onUpdate)="removeItem($event)" (onCancel)="editCancelled()"></inventory-transaction>

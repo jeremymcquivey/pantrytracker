@@ -50,6 +50,7 @@ import { ListItemMatchedComponent } from './grocery/list-item-matched.component'
 import { ListItemUnmatchedComponent } from './grocery/list-item-unmatched.component';
 import { ListItemReassignComponent } from './grocery/list-item-reassign.component';
 import { GroceryListViewComponent } from './grocery/list-view.component';
+import { GroceryListExportComponent } from './grocery/list-export.component';
 
 import { RoundButtonComponent } from './controls/round-button.component';
 import { TabGroupComponent } from './controls/tab-group.component';
@@ -86,6 +87,7 @@ import { TabGroupComponent } from './controls/tab-group.component';
     ListItemUnmatchedComponent,
     ListItemReassignComponent,
     GroceryListViewComponent,
+    GroceryListExportComponent,
 
     RoundButtonComponent,
     TabGroupComponent,

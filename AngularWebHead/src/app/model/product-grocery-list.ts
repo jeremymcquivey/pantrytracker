@@ -33,5 +33,6 @@ export class GroceryItem {
 
 export enum GroceryItemStatus {
     Active = 0,
-    Purchased = 1
+    Purchased = 1,
+    Archived = 2
 }

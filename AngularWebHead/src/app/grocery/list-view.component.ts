@@ -15,9 +15,12 @@ export class GroceryListViewComponent implements OnInit {
     private _listId: string = 'c21e47a0-202e-44a7-a708-e31ecd3058db';
     private _groceryItems: GroceryItem[];
     private _grocerySource:MatTableDataSource<GroceryItem> = new MatTableDataSource<GroceryItem>();
+    private _purchasedSource:MatTableDataSource<GroceryItem> = new MatTableDataSource<GroceryItem>();
     private _allColumns: string[] = ["name","removed","markPurchased"];
+    private _allPurchasedColumns: string[] = ["name","undoPurchased"];
     private _nonEditColumns: string[] = ["name"]
     private _editMode: boolean = false;
+    private _isBusy: boolean = false;
 
     public showTips: boolean = false;
 
@@ -37,8 +40,16 @@ export class GroceryListViewComponent implements OnInit {
         return this._editMode ? this._allColumns : this._nonEditColumns;
     }
 
+    public get VisiblePurchasedColumns(): string[] {
+        return this._editMode ? this._allPurchasedColumns : this._nonEditColumns;
+    }
+
     public get GroceryItems(): MatTableDataSource<GroceryItem> {
         return this._grocerySource;
+    }
+
+    public get PurchasedItems(): MatTableDataSource<GroceryItem> {
+        return this._purchasedSource;
     }
 
     constructor(private _groceryService: GroceryService, private _authService: AuthService, private _route: ActivatedRoute) { }
@@ -66,29 +77,68 @@ export class GroceryListViewComponent implements OnInit {
     }
 
     removeItem(item: GroceryItem) {
+        if(this._isBusy) {
+            return;
+        }
+
+        this._isBusy = true;
         this._groceryService.removeGroceryItem(this._listId, item.id)
                             .subscribe(_ => {
                                 this.removeFromList(item);
                             }, error => {
                                 console.error(error);
+                            }, ()=>{
+                                this._isBusy = false;
                             });
     }
 
     acceptItem(item: GroceryItem) {
+        if(this._isBusy) {
+            return;
+        }
+
+        this._isBusy = true;
         item.status = GroceryItemStatus.Purchased;
         this._groceryService.updateGroceryItem(this._listId, item)
                             .subscribe(_ => {
                                 this.removeFromList(item);
+                                this.PurchasedItems.data.push(item);
+                                this.PurchasedItems.data = this.PurchasedItems.data;
                             }, error => {
                                 console.error(error);
+                            }, () => {
+                                this._isBusy = false;
+                            });
+    }
+
+    private undoItem(item: GroceryItem) {
+        if(this._isBusy) {
+            return;
+        }
+
+        this._isBusy = true;
+        item.status = GroceryItemStatus.Active;
+        this._groceryService.updateGroceryItem(this._listId, item)
+                            .subscribe(_ => {
+                                this.removeFromPurchased(item);
+                                this.GroceryItems.data.push(item);
+                                this.GroceryItems.data = this.GroceryItems.data;
+                            }, error => {
+                                console.error(error);
+                            }, () => {
+                                this._isBusy = false;
                             });
     }
 
     private loadGroceryList() {
         this._groceryService.getGroceryList(this._listId)
                             .subscribe(things => {
-                                this._groceryItems = things;
-                                this._grocerySource.data = things;
+                                const groceryThings = things.filter(p => p.status == GroceryItemStatus.Active);
+                                this._groceryItems = groceryThings;
+                                this._grocerySource.data = groceryThings;
+                                
+                                const purchasedThings = things.filter(p => p.status == GroceryItemStatus.Purchased);
+                                this._purchasedSource.data = purchasedThings;
                             });
     }
 
@@ -96,5 +146,11 @@ export class GroceryListViewComponent implements OnInit {
         const removedIndex = this._groceryItems.findIndex(p => p.id == item.id);
         this._groceryItems.splice(removedIndex, 1);
         this._grocerySource.data = this._groceryItems;
+    }
+
+    private removeFromPurchased(item: GroceryItem) {
+        const removedIndex = this._purchasedSource.data.findIndex(p => p.id == item.id);
+        this._purchasedSource.data.splice(removedIndex, 1);
+        this._purchasedSource.data = this._purchasedSource.data;
     }
 }

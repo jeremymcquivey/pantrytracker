@@ -9,6 +9,7 @@ export class Constants {
   //public static stsAuthority = 'https://pantrytrackers-identity-stage.azurewebsites.net/';
 
   public static clientId = 'pantrytrackers-ui';
+  public static clientScope = 'openid pantrytrackers-api profile';
   public static clientRoot = window.location.hostname === 'localhost' ? 
                                 'http://' + window.location.hostname + ':' + window.location.port + '/' :
                                 'https://' + window.location.hostname + '/';

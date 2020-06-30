@@ -21,7 +21,7 @@ export class AuthService {
       authority: Constants.stsAuthority,
       client_id: Constants.clientId,
       redirect_uri: `${Constants.clientRoot}signin-callback`,
-      scope: 'openid pantrytrackers-api profile',
+      scope: Constants.clientScope,
       response_type: 'id_token token',
       post_logout_redirect_uri: `${Constants.clientRoot}signout-callback`,
       userStore: new WebStorageStateStore({ store: window.localStorage }),

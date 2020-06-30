@@ -56,7 +56,7 @@
         </div>
 
         <span class="btn-box right">
-            <button class="btn" [disabled]="isBusy" (click)="dismissDialog()">Cancel</button>
+            <button class="btn" [disabled]="isBusy" (click)="dismissDialog(true)">Cancel</button>
             <button class="btn btn-action" [disabled]="isBusy" (click)="updateInventory()">Save</button>
         </span>
     </div>

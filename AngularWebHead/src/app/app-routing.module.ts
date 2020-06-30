@@ -12,6 +12,7 @@ import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callba
 import { InventoryDetailComponent } from './pantry/inventory-detail.component';
 import { RecipeProductsComponent } from './grocery/recipe-products.component';
 import { GroceryListViewComponent } from './grocery/list-view.component';
+import { GroceryListExportComponent } from './grocery/list-export.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -25,6 +26,8 @@ const routes: Routes = [
     { path: 'pantry/product/:productId', component: InventoryDetailComponent},
     { path: 'signin-callback', component: SigninRedirectCallbackComponent },
     { path: 'signout-callback', component: SignoutRedirectCallbackComponent },
+    { path: 'grocery-list/export', component: GroceryListExportComponent },
+    { path: 'grocery-list/:listId/export', component: GroceryListExportComponent },
     { path: 'grocery-list', component: GroceryListViewComponent },
     { path: 'grocery-list/:listId', component: GroceryListViewComponent }
 ];

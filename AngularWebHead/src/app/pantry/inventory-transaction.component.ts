@@ -51,6 +51,8 @@ export class InventoryTransactionComponent implements OnInit {
 
     @Output() onUpdate: EventEmitter<PantryLine> = new EventEmitter();
 
+    @Output() onCancel: EventEmitter<any> = new EventEmitter();
+
     constructor(private _pantryService: PantryService, 
                 private _productService: ProductService) {
         this.Line = new PantryLine();
@@ -77,6 +79,23 @@ export class InventoryTransactionComponent implements OnInit {
         }, 0);
     }
 
+    LaunchWithLineItem(item: PantryLine) {
+        this.isVisible = true;
+        this.Line = item;
+        this.Line.transactionType = TransactionType.Addition;
+        this.productName = "";
+        this.ProductSearchText = "";
+        this.ProductSearchDialog.SearchText = "";
+        this.warnings = [];
+        this.upcDescription = null;
+
+        this.getProductById(item.productId, (varieties) =>
+        {
+            const foundVariety = varieties.findIndex(v => v.id === item.varietyId);
+            this.SelectedVariety = foundVariety > 0 ? varieties[foundVariety] : null;
+        });
+    }
+
     updateInventory(): PantryLine {
         if(!this.Line.productId || !this.Line.size || !this.Line.quantity || !this.Line.unit)
         {
@@ -88,7 +107,7 @@ export class InventoryTransactionComponent implements OnInit {
         this._pantryService.updateInventory(this.Line).subscribe(line => {
             if(line) {
                 this.onUpdate.emit(line);
-                this.dismissDialog();
+                this.dismissDialog(false);
             }
         });
     }
@@ -112,7 +131,14 @@ export class InventoryTransactionComponent implements OnInit {
                 this.upcDescription = productCode.description;
 
                 if(productCode.productId) {
-                    this.getProductById(productCode.productId);
+                    this.getProductById(productCode.productId, (varieties) => {
+                        if(varieties.length == 1)
+                        {
+                            this.Line.varietyId = varieties[0].id;
+                            this.SelectedVariety = varieties[0];
+                            this.Line.variety = varieties[0];
+                        }
+                    });
                 }
             }
             else{
@@ -131,7 +157,7 @@ export class InventoryTransactionComponent implements OnInit {
         });
     }
 
-    getProductById(productId: number): void {
+    getProductById(productId: number, varietyCallback): void {
         this.isBusy = true;
         this._productService.getProduct(productId).subscribe(product => {
             if(product)
@@ -141,12 +167,7 @@ export class InventoryTransactionComponent implements OnInit {
                 this.productName = this.Product.name;
 
                 var varieties = this.Product.varieties.filter(p => p.id === this.Line.varietyId);
-                if(varieties.length == 1)
-                {
-                    this.Line.varietyId = varieties[0].id;
-                    this.SelectedVariety = varieties[0];
-                    this.Line.variety = varieties[0];
-                }
+                varietyCallback(varieties);
             }
 
             this.isBusy = false;
@@ -209,7 +230,10 @@ export class InventoryTransactionComponent implements OnInit {
         this.SelectedVariety = this.Varieties.find(variety => variety.id == addedVariety.id);
     }
 
-    dismissDialog(): void {
+    dismissDialog(isCancelled: boolean = false): void {
+        if(isCancelled) {
+            this.onCancel.emit();
+        }
         this.isVisible = false;
     }
 

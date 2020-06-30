@@ -23,6 +23,14 @@ footer {
     text-align: center;
 }
 
+.material-icons.accent{
+    color: rgba(56, 133, 255,1);
+}
+
+.material-icons.big {
+    font-size: 2rem;
+}
+
 .medium, 
 .large {
     display: none;

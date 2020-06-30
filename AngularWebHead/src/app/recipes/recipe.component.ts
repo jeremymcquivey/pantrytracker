@@ -140,6 +140,7 @@ import { RecipeService } from "../core/recipe.service";
 
         this.directions = recipe.directions;
         this.directionDataSource.data = this.directions;
+        this.saveRecipe();
       });
     }
 
