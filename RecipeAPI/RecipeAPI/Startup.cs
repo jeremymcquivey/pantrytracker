@@ -68,7 +68,7 @@ namespace RecipeAPI
                      {
                          options.Authority = Configuration.GetSection("Authentication:STSAuthority").Value;
                          options.RequireHttpsMetadata = false;
-                         options.Audience = "pantrytrackers-ui";
+                         options.Audience = "pantrytrackers-api";
                          options.TokenValidationParameters = new TokenValidationParameters
                          {
                              ValidateIssuerSigningKey = true,
