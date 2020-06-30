@@ -54,7 +54,7 @@ namespace RecipeAPI.Controllers
             }
 
             //TODO: Combine by product and unit.
-            return Ok(_database.GroceryListItems.Where(item => item.PantryId == id && item.Status == ListItemStatus.Active)
+            return Ok(_database.GroceryListItems.Where(item => item.PantryId == id && item.Status == (ListItemStatus.Active | ListItemStatus.Purchased))
                                                 .Include(item => item.Variety)
                                                 .Include(item => item.Product)
                                                 .ToList());
@@ -135,6 +135,11 @@ namespace RecipeAPI.Controllers
             if(existing == default)
             {
                 return NotFound();
+            }
+
+            if(item.Status == ListItemStatus.Purchased)
+            {
+                item.PurchaseDate = existing.PurchaseDate ?? DateTime.Now;
             }
 
             var updatedEntity = _database.Update(item).Entity;

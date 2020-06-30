@@ -1,4 +1,5 @@
 ﻿using PantryTracker.Model.Products;
+using System;
 
 namespace PantryTracker.Model.Grocery
 {
@@ -19,6 +20,8 @@ namespace PantryTracker.Model.Grocery
         public int? VarietyId { get; set; }
 
         public ListItemStatus Status { get; set; }
+
+        public DateTime? PurchaseDate { get; set; }
 
         public virtual Product Product { get; set; }
 
