@@ -25,7 +25,7 @@
     "@zxing/ngx-scanner": "^3.0.0",
     "core-js": "^2.5.4",
     "ng2-file-upload": "^1.4.0",
-    "oidc-client": "^1.5.4",
+    "oidc-client": "^1.10.1",
     "rxjs": "^6.5.4",
     "rxjs-compat": "^6.2.1",
     "tslib": "^1.10.0",
