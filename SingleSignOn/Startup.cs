@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
+using IdentityServer4.Services;
 
 namespace PantryTrackers
 {
@@ -31,6 +32,16 @@ namespace PantryTrackers
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllRequests", builder =>
+                {
+                    builder.AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .AllowAnyOrigin();
+                });
+            });
+
             services.Configure<AppSettings>(Configuration.GetSection("SingleSignOn"));
 
             string connectionString = Environment.GetEnvironmentVariable("ConnectionString");
@@ -43,6 +54,7 @@ namespace PantryTrackers
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            //services.AddSingleton<ICorsPolicyService, CORSService>();
             services.AddTransient<EmailClient>();
             services.AddHttpClient("SendGridClient", client =>
             {
@@ -86,6 +98,8 @@ namespace PantryTrackers
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseCors("AllRequests");
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
 
