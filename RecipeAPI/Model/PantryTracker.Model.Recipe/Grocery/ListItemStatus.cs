@@ -3,6 +3,7 @@
     public enum ListItemStatus
     {
         Active = 0,
-        Purchased = 1
+        Purchased = 1,
+        Archived = 2
     }
 }
