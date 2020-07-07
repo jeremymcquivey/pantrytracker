@@ -79,7 +79,12 @@ namespace PantryTrackers.Integrations.Walmart
 
         private void ParseSize(ProductCode code, string size)
         {
-            var sizePieces = size.Split(" ");
+            if(string.IsNullOrEmpty(size))
+            {
+                return;
+            }
+
+            var sizePieces = size?.Split(" ");
             code.Size = sizePieces[0];
             code.Unit = sizePieces.Length > 0 ? string.Join(" ", sizePieces.Skip(1)) : string.Empty;
         }

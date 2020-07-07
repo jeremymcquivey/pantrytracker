@@ -72,7 +72,6 @@ namespace RecipeAPI.ExternalServices
             
             if(product == default)
             {
-                //TODO: Break out API names into constants to make string comparison more bullet-proof.
                 foreach (var provider in _providers.Where(p => preferredProvider == null)
                                                    .OrderBy(p => p.Name.Equals(preferredProvider, StringComparison.InvariantCultureIgnoreCase)))
                 {
