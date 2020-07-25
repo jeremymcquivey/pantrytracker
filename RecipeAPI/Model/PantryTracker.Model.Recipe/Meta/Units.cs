@@ -29,5 +29,6 @@
         public const string Jigger = "jigger";
         public const string Cube = "cube";
         public const string Square = "sq";
+        public const string Dozen = "doz";
     }
 }

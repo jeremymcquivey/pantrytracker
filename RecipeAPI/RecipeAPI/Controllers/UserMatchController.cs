@@ -42,12 +42,14 @@ namespace RecipeAPI.Controllers
                 
             try
             {
-                var existing = _database.UserProductPreferences.Where(x => x.RecipeId == preference.RecipeId && x.matchingText == preference.matchingText).FirstOrDefault();
-
+                var existing = _database.UserProductPreferences.Where(x => x.RecipeId == preference.RecipeId)
+                                                               .ToList()
+                                                               .Where(x => x.matchingText.Equals(preference.matchingText, StringComparison.CurrentCultureIgnoreCase))
+                                                               .FirstOrDefault();
                 if (existing != default)
                 {
                     _database.UserProductPreferences.Remove(existing);
-                }
+                }   
 
                 preference.Product = null;
                 preference.Variety = null;

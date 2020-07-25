@@ -29,28 +29,28 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual("1", recipe.Ingredients.First().Quantity);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Quantity);
-            Assert.AreEqual("tablespoons", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
+            Assert.AreEqual("tbsp", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
             
             Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("pepper")).Quantity);
             Assert.AreEqual("pinch", recipe.Ingredients.Single(x => x.Name.Contains("pepper")).Unit);
 
             Assert.AreEqual("1/4", recipe.Ingredients.Single(x => x.Name.Contains("Cheddar cheese")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("Cheddar cheese")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("Cheddar cheese")).Unit);
 
             Assert.AreEqual("1/4", recipe.Ingredients.Single(x => x.Name.Contains("potato chips")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("potato chips")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("potato chips")).Unit);
 
             Assert.AreEqual("1 1/2", recipe.Ingredients.Single(x => x.Name.Contains("lime zest")).Quantity);
-            Assert.AreEqual("teaspoons", recipe.Ingredients.Single(x => x.Name.Contains("lime zest")).Unit);
+            Assert.AreEqual("tsp", recipe.Ingredients.Single(x => x.Name.Contains("lime zest")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("pork chops")).Quantity);
             Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("pork chops")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("olive oil")).Quantity);
-            Assert.AreEqual("teaspoons", recipe.Ingredients.Single(x => x.Name.Contains("olive oil")).Unit);
+            Assert.AreEqual("tsp", recipe.Ingredients.Single(x => x.Name.Contains("olive oil")).Unit);
 
             Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("margarine")).Quantity);
-            Assert.AreEqual("teaspoon", recipe.Ingredients.Single(x => x.Name.Contains("margarine")).Unit);
+            Assert.AreEqual("tsp", recipe.Ingredients.Single(x => x.Name.Contains("margarine")).Unit);
         }
 
         [TestMethod]
@@ -70,22 +70,22 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(6, recipe.Ingredients.Count());
 
             Assert.AreEqual("6", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Quantity);
-            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Unit);
+            Assert.AreEqual("tbsp", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Unit);
 
             Assert.AreEqual("2/3", recipe.Ingredients.Single(x => x.Name.Contains("oil")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("oil")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("oil")).Unit);
 
             Assert.AreEqual("2/3", recipe.Ingredients.Single(x => x.Name.Contains("honey")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("honey")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("honey")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Quantity);
-            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Unit);
+            Assert.AreEqual("tbsp", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Unit);
 
             Assert.AreEqual("15", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
         }
 
         [TestMethod]
@@ -105,28 +105,28 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(15, recipe.Ingredients.Count());
 
             Assert.AreEqual("3", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Quantity);
-            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Unit);
+            Assert.AreEqual("tbsp", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.First(x => x.Name.Contains("milk")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.First(x => x.Name.Contains("milk")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.First(x => x.Name.Contains("milk")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
 
             Assert.AreEqual("5", recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Quantity);
             Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Unit);
 
             Assert.AreEqual("2/3", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Unit);
 
             Assert.AreEqual("1", recipe.Ingredients.First(x => x.Name.Contains("sugar")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.First(x => x.Name.Contains("sugar")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.First(x => x.Name.Contains("sugar")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Quantity);
-            Assert.AreEqual("tsp.", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Unit);
+            Assert.AreEqual("tsp", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Unit);
 
             Assert.AreEqual("12", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
 
             Assert.AreEqual(string.Empty, recipe.Ingredients.First(x => x.Name.Contains("butter")).Quantity);
             Assert.AreEqual(null, recipe.Ingredients.First(x => x.Name.Contains("butter")).Unit);
@@ -144,7 +144,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual("cube", recipe.Ingredients.Last(x => x.Name.Contains("butter")).Unit);
 
             Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("powdered sugar")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("powdered sugar")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("powdered sugar")).Unit);
 
             Assert.AreEqual(string.Empty, recipe.Ingredients.Last(x => x.Name.Contains("milk")).Quantity);
             Assert.AreEqual(null, recipe.Ingredients.Last(x => x.Name.Contains("milk")).Unit);
@@ -167,25 +167,25 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(7, recipe.Ingredients.Count());
 
             Assert.AreEqual("1 1/3", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
 
             Assert.AreEqual("1/4", recipe.Ingredients.Single(x => x.Name.Contains("powdered milk")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("powdered milk")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("powdered milk")).Unit);
 
             Assert.AreEqual("1/2", recipe.Ingredients.Single(x => x.Name.Contains("Salt")).Quantity);
-            Assert.AreEqual("tsp.", recipe.Ingredients.Single(x => x.Name.Contains("Salt")).Unit);
+            Assert.AreEqual("tsp", recipe.Ingredients.Single(x => x.Name.Contains("Salt")).Unit);
 
             Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("Flour")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("Flour")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("Flour")).Unit);
 
             Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("SuGAr")).Quantity);
-            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("SuGAr")).Unit);
+            Assert.AreEqual("tbsp", recipe.Ingredients.Single(x => x.Name.Contains("SuGAr")).Unit);
 
             Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Quantity);
-            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Unit);
+            Assert.AreEqual("tbsp", recipe.Ingredients.Single(x => x.Name.Contains("yeast")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("vegetable oil")).Quantity);
-            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("vegetable oil")).Unit);
+            Assert.AreEqual("tbsp", recipe.Ingredients.Single(x => x.Name.Contains("vegetable oil")).Unit);
         }
 
         [TestMethod]
@@ -205,16 +205,16 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(4, recipe.Ingredients.Count());
 
             Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
 
             Assert.AreEqual("1/4", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Quantity);
-            Assert.AreEqual("tsp.", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Unit);
+            Assert.AreEqual("tsp", recipe.Ingredients.Single(x => x.Name.Contains("salt")).Unit);
 
             Assert.AreEqual("1/4", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("shortening")).Unit);
 
             Assert.AreEqual("1 1/2", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
         }
 
         [TestMethod]
@@ -240,13 +240,13 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("celery")).Unit);
 
             Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("bacon")).Quantity);
-            Assert.AreEqual("pound", recipe.Ingredients.Single(x => x.Name.Contains("bacon")).Unit);
+            Assert.AreEqual("lb", recipe.Ingredients.Single(x => x.Name.Contains("bacon")).Unit);
 
             Assert.AreEqual("1 1/2", recipe.Ingredients.Single(x => x.Name.Contains("milk")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("milk")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("milk")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("cheddar cheese")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("cheddar cheese")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("cheddar cheese")).Unit);
         }
 
         [TestMethod]
@@ -270,13 +270,13 @@ namespace Pantrytracker.RecipeReader.Tests
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Quantity);
             Assert.AreEqual("2 1/2", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Size);
-            Assert.AreEqual("lb.", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Unit);
+            Assert.AreEqual("lb", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Unit);
 
             Assert.AreEqual("5", recipe.Ingredients.Single(x => x.Name.Contains("water")).Quantity);
-            Assert.AreEqual("gallons", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
+            Assert.AreEqual("gal", recipe.Ingredients.Single(x => x.Name.Contains("water")).Unit);
 
             Assert.AreEqual("5", recipe.Ingredients.Single(x => x.Name.Contains("dry ice")).Quantity);
-            Assert.AreEqual("lb.", recipe.Ingredients.Single(x => x.Name.Contains("dry ice")).Unit);
+            Assert.AreEqual("lb", recipe.Ingredients.Single(x => x.Name.Contains("dry ice")).Unit);
         }
 
         [TestMethod]
@@ -296,31 +296,31 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(9, recipe.Ingredients.Count());
 
             Assert.AreEqual("3", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("flour")).Unit);
 
             Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("baking powder")).Quantity);
-            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("baking powder")).Unit);
+            Assert.AreEqual("tbsp", recipe.Ingredients.Single(x => x.Name.Contains("baking powder")).Unit);
 
             Assert.AreEqual("1/2", recipe.Ingredients.First(x => x.Name.Contains("salt")).Quantity);
-            Assert.AreEqual("tsp.", recipe.Ingredients.First(x => x.Name.Contains("salt")).Unit);
+            Assert.AreEqual("tsp", recipe.Ingredients.First(x => x.Name.Contains("salt")).Unit);
 
             Assert.AreEqual("1", recipe.Ingredients.First(x => x.Name.Contains("butter")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.First(x => x.Name.Contains("butter")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.First(x => x.Name.Contains("butter")).Unit);
 
             Assert.AreEqual("2", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Quantity);
-            Assert.AreEqual("cups", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("sugar")).Unit);
 
             Assert.AreEqual("4", recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Quantity);
             Assert.AreEqual(null, recipe.Ingredients.Single(x => x.Name.Contains("eggs")).Unit);
 
             Assert.AreEqual("3", recipe.Ingredients.Single(x => x.Name.Contains("zest")).Quantity);
-            Assert.AreEqual("Tbsp.", recipe.Ingredients.Single(x => x.Name.Contains("zest")).Unit);
+            Assert.AreEqual("tbsp", recipe.Ingredients.Single(x => x.Name.Contains("zest")).Unit);
 
             Assert.AreEqual("1/2", recipe.Ingredients.Single(x => x.Name.Contains("lemonade")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("lemonade")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("lemonade")).Unit);
 
             Assert.AreEqual("1", recipe.Ingredients.Single(x => x.Name.Contains("buttermilk")).Quantity);
-            Assert.AreEqual("cup", recipe.Ingredients.Single(x => x.Name.Contains("buttermilk")).Unit);
+            Assert.AreEqual("c", recipe.Ingredients.Single(x => x.Name.Contains("buttermilk")).Unit);
         }
     }
 }

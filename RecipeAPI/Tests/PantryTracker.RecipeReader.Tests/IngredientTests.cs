@@ -34,7 +34,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, ingredient.Size);
             Assert.AreEqual("2", ingredient.Quantity);
             Assert.AreEqual("flour", ingredient.Name);
-            Assert.AreEqual("tablespoons", ingredient.Unit);
+            Assert.AreEqual("tbsp", ingredient.Unit);
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual("2", ingredient.Quantity);
             Assert.AreEqual(null, ingredient.Size);
             Assert.AreEqual("heaping flour", ingredient.Name);
-            Assert.AreEqual("tablespoons", ingredient.Unit);
+            Assert.AreEqual("tbsp", ingredient.Unit);
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual("2", ingredient.Quantity);
             //Removes hyphens from words. i.e. all-purpose. Eventually this should be smart enough to look beyond this.
             Assert.AreEqual("all purpose flour", ingredient.Name);
-            Assert.AreEqual("tablespoons", ingredient.Unit);
+            Assert.AreEqual("tbsp", ingredient.Unit);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, ingredient.Size);
             Assert.AreEqual("1/2", ingredient.Quantity);
             Assert.AreEqual("flour", ingredient.Name);
-            Assert.AreEqual("tablespoons", ingredient.Unit);
+            Assert.AreEqual("tbsp", ingredient.Unit);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, ingredient.Size);
             Assert.AreEqual("2 1/2", ingredient.Quantity);
             Assert.AreEqual("flour", ingredient.Name);
-            Assert.AreEqual("tablespoons", ingredient.Unit);
+            Assert.AreEqual("tbsp", ingredient.Unit);
         }
 
         [TestMethod]
@@ -112,7 +112,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, ingredient.Size);
             Assert.AreEqual("1/4", ingredient.Quantity);
             Assert.AreEqual("shredded Cheddar cheese", ingredient.Name);
-            Assert.AreEqual("cup", ingredient.Unit);
+            Assert.AreEqual("c", ingredient.Unit);
         }
 
         [TestMethod]
@@ -123,7 +123,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, ingredient.Size);
             Assert.AreEqual("1/4", ingredient.Quantity);
             Assert.AreEqual("crushed jalapeno potato chips (such as Miss Vickie's®)", ingredient.Name);
-            Assert.AreEqual("cup", ingredient.Unit);
+            Assert.AreEqual("c", ingredient.Unit);
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, ingredient.Size);
             Assert.AreEqual("1 1/2", ingredient.Quantity);
             Assert.AreEqual("grated lime zest", ingredient.Name);
-            Assert.AreEqual("teaspoons", ingredient.Unit);
+            Assert.AreEqual("tsp", ingredient.Unit);
         }
 
         [TestMethod]
@@ -156,7 +156,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, ingredient.Size);
             Assert.AreEqual("2", ingredient.Quantity);
             Assert.AreEqual("olive oil", ingredient.Name);
-            Assert.AreEqual("teaspoons", ingredient.Unit);
+            Assert.AreEqual("tsp", ingredient.Unit);
         }
 
         [TestMethod]
@@ -167,7 +167,7 @@ namespace Pantrytracker.RecipeReader.Tests
             Assert.AreEqual(null, ingredient.Size);
             Assert.AreEqual("1", ingredient.Quantity);
             Assert.AreEqual("margarine", ingredient.Name);
-            Assert.AreEqual("teaspoon", ingredient.Unit);
+            Assert.AreEqual("tsp", ingredient.Unit);
         }
 
         [TestMethod]
@@ -177,7 +177,7 @@ namespace Pantrytracker.RecipeReader.Tests
 
             Assert.AreEqual("2", ingredient.Quantity);
             Assert.AreEqual("14.4", ingredient.Size);
-            Assert.AreEqual("oz.", ingredient.Unit);
+            Assert.AreEqual("oz", ingredient.Unit);
         }
 
         [TestMethod]
@@ -187,7 +187,18 @@ namespace Pantrytracker.RecipeReader.Tests
 
             Assert.AreEqual("2", ingredient.Quantity);
             Assert.AreEqual("14.4", ingredient.Size);
-            Assert.AreEqual("oz.", ingredient.Unit);
+            Assert.AreEqual("oz", ingredient.Unit);
+            Assert.AreEqual("jar", ingredient.Container);
+        }
+
+        [TestMethod]
+        public void DozenIsUnit()
+        {
+            var ingredient = _tree.ProcessSentence("2 dozen eggs", _allUnits);
+
+            Assert.AreEqual("2", ingredient.Quantity);
+            Assert.AreEqual(null, ingredient.Size);
+            Assert.AreEqual("doz", ingredient.Unit);
         }
     }
 }

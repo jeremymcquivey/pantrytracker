@@ -16,10 +16,11 @@ namespace PantryTracker.RecipeReader
                               .CombineFractions()
                               .FindUnits(units)
                               .DetectContainerSize()
+                              .DetectContainer()
                               .DetectRanges()
                               .DefineNames()
                               .RemoveUnwantedWords()
-                              .Sanitize();
+                              .Sanitize(units);
 
             return (words.ToIngredient() ?? new Ingredient())
                          .AdjustContainerSizes();

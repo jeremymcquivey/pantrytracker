@@ -15,6 +15,12 @@ namespace PantryTracker.Model.Products
 
         public int? VarietyId { get; set; }
 
+        public string Quantity { get; set; }
+
+        public string Size { get; set; }
+
+        public string Unit { get; set; }
+
         public virtual Product Product { get; set; }
 
         public virtual ProductVariety Variety { get; set; }

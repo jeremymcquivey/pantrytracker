@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using PantryTracker.Model.Meta;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace PantryTracker.RecipeReader.Rules
 {
@@ -24,7 +26,7 @@ namespace PantryTracker.RecipeReader.Rules
             '-'
         };
 
-        internal static IEnumerable<Word> Sanitize(this IEnumerable<Word> wordList)
+        internal static IEnumerable<Word> Sanitize(this IEnumerable<Word> wordList, UnitAliases units)
         {
             foreach(var word in wordList)
             {
@@ -32,7 +34,10 @@ namespace PantryTracker.RecipeReader.Rules
                 {
                     case PartOfSpeech.Quantity:
                     case PartOfSpeech.ContainerSize:
-                        word.Contents = SanitizeWord(word.Contents);
+                        word.Contents = SanitizeNumber(word.Contents);
+                        break;
+                    case PartOfSpeech.Unit:
+                        word.Contents = units.GetSanitizedUnit(word.Contents);
                         break;
                 }
             }
@@ -40,7 +45,7 @@ namespace PantryTracker.RecipeReader.Rules
             return wordList;
         }
 
-        internal static string SanitizeWord(string input)
+        internal static string SanitizeNumber(string input)
         {
             return new string(input.Where(c => NumericCharacters.Contains(c)).ToArray());
         }

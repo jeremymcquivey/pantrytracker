@@ -73,17 +73,13 @@ namespace RecipeAPI.Services
                                                           .Where(x => x.RecipeId == recipeId)
                                                           .ToList();
 
-            var userProducts = _database.Products.Where(product => product.OwnerId == ownerId)
-                                                 .ToList();
-
             var ignored = new List<RecipeProduct>();
             var unmatched = new List<RecipeProduct>();
             var matches = new List<RecipeProduct>();
 
             foreach (var ingredient in recipe.Ingredients)
             {
-                var userMatch = userPreferred.Where(p => ingredient.Name.Contains(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
-                                             .OrderBy(p => p.matchingText.Length)
+                var userMatch = userPreferred.Where(p => ingredient.Name.Equals(p.matchingText, StringComparison.CurrentCultureIgnoreCase))
                                              .FirstOrDefault();
                 if (userMatch != null)
                 {
@@ -93,9 +89,9 @@ namespace RecipeAPI.Services
                         {
                             MatchType = IngredientMatchType.UserMatch,
                             PlainText = ingredient.Name,
-                            QuantityString = ingredient.Quantity,
-                            Unit = ingredient.Unit,
-                            Size = ingredient.Size,
+                            QuantityString = userMatch.Quantity ?? ingredient.Quantity,
+                            Unit = userMatch.Unit ?? ingredient.Unit,
+                            Size = userMatch.Size ?? ingredient.Size,
                             RecipeId = ingredient.RecipeId,
                         });
                         continue;
@@ -107,11 +103,11 @@ namespace RecipeAPI.Services
                         Variety = userMatch.Variety,
                         RecipeId = recipeId,
                         PlainText = ingredient.Name,
-                        Unit = ingredient.Unit,
-                        Size = ingredient.Size,
-                        QuantityString = ingredient.Quantity,
+                        QuantityString = userMatch.Quantity ?? ingredient.Quantity,
+                        Unit = userMatch.Unit ?? ingredient.Unit,
+                        Size = userMatch.Size ?? ingredient.Size,
                         MatchType = IngredientMatchType.UserMatch
-                    }); ;
+                    });
 
                     continue;
                 }

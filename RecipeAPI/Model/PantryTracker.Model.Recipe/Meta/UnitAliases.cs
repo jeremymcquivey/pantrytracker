@@ -109,6 +109,9 @@ namespace PantryTracker.Model.Meta
                 new Tuple<string, string>(OtherUnits.Square, OtherUnits.Square),
                 new Tuple<string, string>(OtherUnits.Square, "square"),
 
+                new Tuple<string, string>(OtherUnits.Dozen, OtherUnits.Dozen),
+                new Tuple<string, string>(OtherUnits.Dozen, "dozen"),
+
                 new Tuple<string, string>(OtherUnits.Pinch, OtherUnits.Pinch),
                 new Tuple<string, string>(OtherUnits.Jigger, OtherUnits.Jigger),
                 new Tuple<string, string>(OtherUnits.Dash, OtherUnits.Dash),
