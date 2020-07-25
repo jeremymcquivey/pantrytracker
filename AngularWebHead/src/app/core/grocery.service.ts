@@ -17,6 +17,13 @@ export class GroceryService {
         }));
     }
 
+    addGroceryItem(listId: string, item: GroceryItem): Observable<GroceryItem> {
+        return from (this._authService.getAccessToken().then(accessToken => {
+            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+            return this._httpClient.post<GroceryItem>(Constants.recipeApi + 'v1/ShoppingList/' + listId + '/item', item, { headers: headers }).toPromise();
+        }));
+    }
+
     removeGroceryItem(listId: string, itemId: number): Observable<any> {
         return from (this._authService.getAccessToken().then(accessToken => {
             var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);

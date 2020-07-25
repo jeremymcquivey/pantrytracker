@@ -17,6 +17,8 @@
     </p>
 </div>
 
+<quick-product-add (onItemAdded)="freeformProductAdded($event)" (listId)="listId" #quickAdd></quick-product-add>
+
 <h4 *ngIf="GroceryItems.data.length == 0">Your list is empty.</h4>
 
 <mat-table [dataSource]="GroceryItems">

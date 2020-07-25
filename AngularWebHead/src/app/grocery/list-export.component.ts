@@ -39,9 +39,13 @@ export class GroceryListExportComponent implements OnInit {
     }
 
     formatItem(item: GroceryItem) {
-        return `${item?.quantity ?? 1} | ${item?.size ?? ''} ${item?.unit ?? ''} ${item?.variety?.description ?? ''} ${item?.product?.name ?? ''}`
-            .replace('  ', ' ')
-            .trim();
+        if(!!item && !!item.freeformText) {
+            return `${item.freeformText} (Attach product to import)`;
+        } else {
+            return `${item?.quantity ?? 1} | ${item?.size ?? ''} ${item?.unit ?? ''} ${item?.variety?.description ?? ''} ${item?.product?.name ?? ''}`
+                .replace('  ', ' ')
+                .trim();
+        }
     }
 
     editItem(item: GroceryItem) {

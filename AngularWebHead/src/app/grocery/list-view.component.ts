@@ -1,9 +1,10 @@
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource }  from '@angular/material/table'
 import { GroceryItem, GroceryItemStatus } from '../model/product-grocery-list';
 import { GroceryService } from '../core/grocery.service';
 import { AuthService } from '../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { QuickProductAddComponent } from './quick-add.component';
 
 @Component({
     selector: 'grocery-list-view',
@@ -11,8 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     styleUrls: ['../controls/fancy-form.component.css',
                 './list-view.component.css']
 })
-export class GroceryListViewComponent implements OnInit {
-    private _listId: string = 'c21e47a0-202e-44a7-a708-e31ecd3058db';
+export class GroceryListViewComponent implements OnInit, AfterViewInit {
+    private _listId: string;
     private _groceryItems: GroceryItem[];
     private _grocerySource:MatTableDataSource<GroceryItem> = new MatTableDataSource<GroceryItem>();
     private _purchasedSource:MatTableDataSource<GroceryItem> = new MatTableDataSource<GroceryItem>();
@@ -23,6 +24,10 @@ export class GroceryListViewComponent implements OnInit {
     private _isBusy: boolean = false;
 
     public showTips: boolean = false;
+
+    public get listId(): string {
+        return this._listId;
+    }
 
     public get tips(): string[] {
         return [
@@ -52,10 +57,18 @@ export class GroceryListViewComponent implements OnInit {
         return this._purchasedSource;
     }
 
+    @ViewChild('quickAdd') quickAdd: QuickProductAddComponent;
+
     constructor(private _groceryService: GroceryService, 
         private _authService: AuthService, 
         private _route: ActivatedRoute, 
         private _router: Router) { }
+
+    ngAfterViewInit(): void {
+        if(!!this._listId && !!this.quickAdd) {
+            this.quickAdd.listId = this._listId;
+        }
+    }
 
     ngOnInit(): void { 
         if(this._route.snapshot.params.listId) {
@@ -67,6 +80,7 @@ export class GroceryListViewComponent implements OnInit {
         } else {
             this._authService.authContextChanged.subscribe(ctxt => {
                 this._listId = ctxt.userProfile.id;
+                this.quickAdd.listId = this._listId;
                 this.loadGroceryList();
             });
         }
@@ -77,9 +91,13 @@ export class GroceryListViewComponent implements OnInit {
     }
 
     formatItem(item: GroceryItem) {
-        return `${item?.quantity ?? 1} | ${item?.size ?? ''} ${item?.unit ?? ''} ${item?.variety?.description ?? ''} ${item?.product?.name ?? ''}`
-            .replace('  ', ' ')
-            .trim();
+        if(!!item && !!item.freeformText) {
+            return item.freeformText;
+        } else {
+            return `${item?.quantity ?? 1} | ${item?.size ?? ''} ${item?.unit ?? ''} ${item?.variety?.description ?? ''} ${item?.product?.name ?? ''}`
+                .replace('  ', ' ')
+                .trim();
+        }
     }
 
     removeItem(item: GroceryItem) {
@@ -115,6 +133,11 @@ export class GroceryListViewComponent implements OnInit {
                             }, () => {
                                 this._isBusy = false;
                             });
+    }
+
+    freeformProductAdded(item: GroceryItem) {
+        this.GroceryItems.data.push(item);
+        this.GroceryItems.data = this.GroceryItems.data;
     }
 
     completeTransaction() {

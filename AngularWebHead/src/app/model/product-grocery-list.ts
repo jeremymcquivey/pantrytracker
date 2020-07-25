@@ -29,6 +29,8 @@ export class GroceryItem {
     public size: string;
 
     public code: string;
+
+    public freeformText: string;
 }
 
 export enum GroceryItemStatus {
