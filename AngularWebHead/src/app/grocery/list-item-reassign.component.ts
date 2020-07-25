@@ -24,6 +24,10 @@ export class ListItemReassignComponent implements OnInit {
         return this._isVisible;
     }
 
+    public get Line(): RecipeProduct {
+        return this._lineItem;
+    }
+
     @Input()
     public allowIgnore: boolean = true;
 

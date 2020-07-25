@@ -3,6 +3,16 @@
         <h3 (click)="ignoreProduct($event)" *ngIf="allowIgnore"><span class="expanded">Ignore</span><i class="material-icons" style="float: right; cursor: pointer;">block</i></h3>
 
         <hr />
+        
+        <div class="warning">
+            <i class="material-icons">info_outline</i>
+            <span>These settings will always apply to items on this recipe.</span>
+        </div>
+
+        <div class="warning">
+            <i class="material-icons">info_outline</i>
+            <span>To build up a reserve of commonly used items, purchase extras.</span>
+        </div>
 
         <product-search (onSelected)="selectProduct($event)" *ngIf="!product"></product-search>
 
@@ -16,6 +26,21 @@
                 </select>
                 <label>Variety of {{ productName }}</label>
                 <add-variety [product]="product" #addVariety (onVarietyAdded)="varietyAdded($event)"></add-variety>
+            </div>
+
+            <div class="group">
+                <input type="number" [(ngModel)]="Line.quantityString" step="any" required >
+                <label>Quantity</label>
+            </div>
+
+            <div class="group">
+                <input type="number" [(ngModel)]="Line.size" step="any" >
+                <label><span class="expanded">Container&nbsp;</span>Size</label>
+            </div>
+
+            <div class="group">
+                <input [(ngModel)]="Line.unit" required>
+                <label>Unit&nbsp;<span class="expanded">i.e. fl oz, lb</span></label>
             </div>
         </div>
 

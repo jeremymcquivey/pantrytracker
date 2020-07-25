@@ -13,7 +13,7 @@ export class PantryLine {
 
     public unit: string;
 
-    public size: number;
+    public size: number = 1;
 
     public code: string;
 }

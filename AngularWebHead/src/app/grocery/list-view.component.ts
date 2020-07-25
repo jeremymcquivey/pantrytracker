@@ -3,7 +3,7 @@ import { MatTableDataSource }  from '@angular/material/table'
 import { GroceryItem, GroceryItemStatus } from '../model/product-grocery-list';
 import { GroceryService } from '../core/grocery.service';
 import { AuthService } from '../core/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'grocery-list-view',
@@ -19,7 +19,7 @@ export class GroceryListViewComponent implements OnInit {
     private _allColumns: string[] = ["name","removed","markPurchased"];
     private _allPurchasedColumns: string[] = ["name","undoPurchased"];
     private _nonEditColumns: string[] = ["name"]
-    private _editMode: boolean = false;
+    private _editMode: boolean = true;
     private _isBusy: boolean = false;
 
     public showTips: boolean = false;
@@ -52,11 +52,17 @@ export class GroceryListViewComponent implements OnInit {
         return this._purchasedSource;
     }
 
-    constructor(private _groceryService: GroceryService, private _authService: AuthService, private _route: ActivatedRoute) { }
+    constructor(private _groceryService: GroceryService, 
+        private _authService: AuthService, 
+        private _route: ActivatedRoute, 
+        private _router: Router) { }
 
     ngOnInit(): void { 
         if(this._route.snapshot.params.listId) {
             this._listId = this._route.snapshot.params.listId;
+            this.loadGroceryList();
+        } else if(!!this._authService.authContext && !!this._authService.authContext.userProfile) {
+            this._listId = this._authService.authContext.userProfile.id;
             this.loadGroceryList();
         } else {
             this._authService.authContextChanged.subscribe(ctxt => {
@@ -109,6 +115,10 @@ export class GroceryListViewComponent implements OnInit {
                             }, () => {
                                 this._isBusy = false;
                             });
+    }
+
+    completeTransaction() {
+        this._router.navigate([`grocery-list/${this._listId}/export`]);
     }
 
     private undoItem(item: GroceryItem) {

@@ -36,4 +36,7 @@ export class RecipeProductPreference {
     public varietyId: number;
     public Product: Product;
     public Variety: ProductVariety;
+    public Quantity: string;
+    public Size: string;
+    public Unit: string;
 }

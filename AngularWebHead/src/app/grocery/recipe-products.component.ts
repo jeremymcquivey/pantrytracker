@@ -110,7 +110,10 @@ export class RecipeProductsComponent implements OnInit, AfterViewInit {
             recipeId: value.recipeId,
             matchingText: value.plainText,
             productId: value.productId,
-            varietyId: value.varietyId
+            varietyId: value.varietyId,
+            Unit: value.unit,
+            Size: value.size,
+            Quantity: value.quantityString
         } as RecipeProductPreference).subscribe(line => {
             let previousProduct = this.removeMatched(line) ??
                                   this.removedUnmatched(line) ??
@@ -127,7 +130,7 @@ export class RecipeProductsComponent implements OnInit, AfterViewInit {
             recipeId: value.recipeId,
             matchingText: value.plainText,
             productId: null,
-            varietyId: null
+            varietyId: null,
         } as RecipeProductPreference).subscribe(line => {
             let ignoredProduct = this.removeMatched(line) ??
                                  this.removedUnmatched(line);

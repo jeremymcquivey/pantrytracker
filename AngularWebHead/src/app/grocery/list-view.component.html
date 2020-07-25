@@ -1,6 +1,6 @@
 <h3 class="title">Grocery List 
-    <i *ngIf="EditMode" class="material-icons accent big" (click)="toggleEditMode()" style="float:right; cursor: pointer">check_box</i>
-    <i *ngIf="!EditMode" class="material-icons accent big" (click)="toggleEditMode()" style="float:right; cursor: pointer">indeterminate</i>
+    <!--<i *ngIf="EditMode" class="material-icons accent big" (click)="toggleEditMode()" style="float:right; cursor: pointer">check_box</i>
+    <i *ngIf="!EditMode" class="material-icons accent big" (click)="toggleEditMode()" style="float:right; cursor: pointer">indeterminate</i>-->
 </h3>
 
 <div class="warning" *ngIf="!showTips" (click)="showTips = true;">
@@ -27,7 +27,7 @@
     </ng-container>
     <ng-container matColumnDef="removed">
         <mat-cell *matCellDef="let item" class="remove" (click)="removeItem(item)">
-            <i class="material-icons">thumb_down</i>
+            <i class="material-icons">delete</i>
         </mat-cell>
     </ng-container>
     <ng-container matColumnDef="markPurchased">
@@ -41,7 +41,7 @@
 
 <h4 *ngIf="PurchasedItems.data.length > 0">
     Purchased Items
-    <i *ngIf="EditMode" class="material-icons accent big" routerLink="/grocery-list/export" style="float:right; cursor: pointer">verified</i>
+    <a (click)="completeTransaction()" style="float:right;">Complete Purchase</a>
 </h4>
 
 <mat-table [dataSource]="PurchasedItems">
