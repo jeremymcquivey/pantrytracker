@@ -76,6 +76,11 @@ namespace RecipeAPI.Controllers
                 return BadRequest("ListItem object must be present in the body.");
             }
 
+            if (!item.ProductId.HasValue && string.IsNullOrEmpty(item.FreeformText))
+            {
+                return BadRequest("ListItem must either be tied to a produdct id or have a freeform text value.");
+            }
+
             item.PantryId = id;
             item.Variety = null;
             item.Product = null;

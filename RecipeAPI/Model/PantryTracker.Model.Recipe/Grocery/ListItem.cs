@@ -15,7 +15,9 @@ namespace PantryTracker.Model.Grocery
 
         public string Size { get; set; }
 
-        public int ProductId { get; set; }
+        public string FreeformText { get; set; }
+
+        public int? ProductId { get; set; }
 
         public int? VarietyId { get; set; }
 
