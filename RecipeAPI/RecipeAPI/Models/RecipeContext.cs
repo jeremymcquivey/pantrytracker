@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PantryTracker.Model.Grocery;
+using PantryTracker.Model.Menu;
 using PantryTracker.Model.Pantry;
 using PantryTracker.Model.Products;
 using PantryTracker.Model.Recipes;
@@ -25,6 +26,8 @@ namespace RecipeAPI.Models
         public DbSet<ProductCode> ProductCodes { get; set; }
 
         public DbSet<ListItem> GroceryListItems { get; set; }
+
+        public DbSet<CalendarMenuEntry> MenuEntries { get; set; }
 
         public RecipeContext(DbContextOptions<RecipeContext> options):
             base(options)
@@ -82,6 +85,16 @@ namespace RecipeAPI.Models
             modelBuilder.Entity<ProductVariety>()
                 .HasOne(variety => variety.Product)
                 .WithMany(product => product.Varieties);
+
+            modelBuilder.Entity<CalendarMenuEntry>()
+                .HasKey(entry => entry.Id);
+
+            modelBuilder.Entity<CalendarMenuEntry>()
+                .HasOne(entry => entry.Recipe);
+
+            modelBuilder.Entity<CalendarMenuEntry>()
+                .HasIndex(entry => new { entry.OwnerId, entry.RecipeId, entry.Date })
+                .HasName("UniqueRecipePerDay");
         }
     }
 }
