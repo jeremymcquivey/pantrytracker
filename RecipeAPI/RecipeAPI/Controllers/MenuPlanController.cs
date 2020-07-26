@@ -1,20 +1,21 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using RecipeAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace RecipeAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [Authorize]
     [ApiController]
-    public class MenuPlan : BaseController
+    public class MenuPlanController : BaseController
     {
         private readonly RecipeContext _db;
 
 #pragma warning disable 1591
-        public MenuPlan( RecipeContext database)
+        public MenuPlanController( RecipeContext database)
 #pragma warning restore 1591
         {
             _db = database;
@@ -39,10 +40,19 @@ namespace RecipeAPI.Controllers
             try
             {
                 var gId = Guid.Parse(AuthenticatedUser);
-                var menuEntries = _db.MenuEntries.Where(p => p.OwnerId == gId)
+                var menuEntries = _db.MenuEntries.Include(p => p.Recipe)
+                                                 .Where(p => p.OwnerId == gId)
                                                  .Where(p => p.Date <= realEndDate)
                                                  .Where(p => p.Date >= realStartDate)
-                                                 .OrderBy(p => p.Date);
+                                                 .OrderBy(p => p.Date)
+                                                 .ToList();
+
+                foreach(var entry in menuEntries)
+                {
+                    entry.RecipeName = new string(entry.Recipe.Title);
+                    entry.Recipe = null;
+                }
+
                 return Ok(menuEntries);
             }
             catch (Exception ex)

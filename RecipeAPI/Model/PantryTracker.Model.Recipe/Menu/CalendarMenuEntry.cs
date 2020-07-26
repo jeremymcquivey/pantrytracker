@@ -13,6 +13,8 @@ namespace PantryTracker.Model.Menu
 
         public Guid RecipeId { get; set; }
 
+        public string RecipeName { get; set; }
+
         public DateTime Date { get; set; }
 
         public virtual Recipe Recipe { get; set; }

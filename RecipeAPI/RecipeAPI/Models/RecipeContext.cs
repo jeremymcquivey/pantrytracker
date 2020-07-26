@@ -87,6 +87,9 @@ namespace RecipeAPI.Models
                 .WithMany(product => product.Varieties);
 
             modelBuilder.Entity<CalendarMenuEntry>()
+                .Ignore(p => p.RecipeName);
+
+            modelBuilder.Entity<CalendarMenuEntry>()
                 .HasKey(entry => entry.Id);
 
             modelBuilder.Entity<CalendarMenuEntry>()
