@@ -1,0 +1,25 @@
+<date-range (startDateChanged)='dateRangeChanged($event)' (endDateChanged)='dateRangeChanged($event)' #calendarDates>
+</date-range>
+<hr />
+
+<mat-table [dataSource]="TableData" style="clear: both;">
+
+    <!--Name/Description Column -->
+    <ng-container matColumnDef="stuff">
+        <mat-cell *matCellDef="let group">
+            <div>
+                <h4> 
+                    {{ formatLongDate(group.date) }} 
+                    <i class="material-icons accept" style="float: right; cursor: pointer;">add</i>
+                </h4>
+                <div *ngIf="group.entries.length == 0">No menu is planned for today.</div>
+                <div *ngFor="let thing of group.entries">
+                    <i class="material-icons remove" style="cursor: pointer;">remove</i>
+                    {{ thing.recipeName }}
+                </div>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <mat-row *matRowDef="let row; columns: VisibleColumns;"></mat-row>-->
+</mat-table>
