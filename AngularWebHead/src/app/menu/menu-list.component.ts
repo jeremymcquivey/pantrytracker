@@ -89,9 +89,10 @@ export class MenuListComponent implements OnInit, AfterViewInit {
         if(!confirm(`This will delete ${meal.recipeName} from your menu.`)) {
             return;
         }
-
-        let index = this.TableData.data[i].entries.findIndex(p => p === meal);
-        this.TableData.data[i].entries.splice(index, 1);
+        this._menuService.deleteEntry(meal.id).subscribe(_ => {
+            let index = this.TableData.data[i].entries.findIndex(p => p === meal);
+            this.TableData.data[i].entries.splice(index, 1);
+        }, error => {}, () => {});
     }
 
     private addDays(date: Date, days: number): Date {

@@ -15,4 +15,11 @@ export class MenuService {
             return this.httpClient.get<MenuEntry[]>(Constants.recipeApi + `v1/MenuPlan?startDate=${startDate}&endDate=${endDate}`, { headers: headers }).toPromise();
         }));
     }
+
+    deleteEntry(id: number): Observable<any> {
+        return from (this._authService.getAccessToken().then(accessToken => {
+            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+            return this.httpClient.delete(Constants.recipeApi + `v1/MenuPlan/${id}`, { headers: headers }).toPromise();
+        }));
+    }
 }
