@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using RecipeAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace RecipeAPI.Controllers
 {
@@ -27,6 +28,7 @@ namespace RecipeAPI.Controllers
         [HttpGet]
         public IActionResult GetAll([FromQuery] string startDate, [FromQuery] string endDate)
         {
+            // TODO: Figure out a good limit to the range -- 60 days? This could return a lot of data otherwise.
             if(!DateTime.TryParse(startDate, out DateTime realStartDate))
             {
                 realStartDate = DateTime.Today;
@@ -59,6 +61,23 @@ namespace RecipeAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> RemoveSingle([FromRoute] int id)
+        {
+            var gId = Guid.Parse(AuthenticatedUser);
+            var existing = _db.MenuEntries.SingleOrDefault(item => item.OwnerId == gId && 
+                                                                   item.Id == id);
+
+            if (existing != default)
+            {
+                _db.Remove(existing);
+                await _db.SaveChangesAsync();
+            }
+
+            return NoContent();
         }
     }
 }
