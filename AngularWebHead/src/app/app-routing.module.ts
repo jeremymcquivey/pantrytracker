@@ -13,6 +13,7 @@ import { InventoryDetailComponent } from './pantry/inventory-detail.component';
 import { RecipeProductsComponent } from './grocery/recipe-products.component';
 import { GroceryListViewComponent } from './grocery/list-view.component';
 import { GroceryListExportComponent } from './grocery/list-export.component';
+import { MenuListComponent } from './menu/menu-list.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -29,7 +30,8 @@ const routes: Routes = [
     { path: 'grocery-list/export', component: GroceryListExportComponent },
     { path: 'grocery-list/:listId/export', component: GroceryListExportComponent },
     { path: 'grocery-list', component: GroceryListViewComponent },
-    { path: 'grocery-list/:listId', component: GroceryListViewComponent }
+    { path: 'grocery-list/:listId', component: GroceryListViewComponent },
+    { path: 'menu', component: MenuListComponent }
 ];
 
 @NgModule({

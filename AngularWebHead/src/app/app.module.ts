@@ -52,9 +52,11 @@ import { ListItemReassignComponent } from './grocery/list-item-reassign.componen
 import { GroceryListViewComponent } from './grocery/list-view.component';
 import { GroceryListExportComponent } from './grocery/list-export.component';
 import { QuickProductAddComponent } from './grocery/quick-add.component';
+import { MenuListComponent } from './menu/menu-list.component';
 
 import { RoundButtonComponent } from './controls/round-button.component';
 import { TabGroupComponent } from './controls/tab-group.component';
+import { DateRangeComponent } from './controls/date-range.component';
 
 @NgModule({
   declarations: [
@@ -90,9 +92,11 @@ import { TabGroupComponent } from './controls/tab-group.component';
     GroceryListViewComponent,
     GroceryListExportComponent,
     QuickProductAddComponent,
-    
+    MenuListComponent,
+
     RoundButtonComponent,
     TabGroupComponent,
+    DateRangeComponent
   ],
   imports: [
     ZXingScannerModule,

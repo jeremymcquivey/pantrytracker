@@ -8,6 +8,7 @@ import { AuthInterceptor } from './auth.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AdminRouteGuard } from './admin-route-guard';
 import { GroceryService } from './grocery.service';
+import { MenuService } from './menu.service'
 
 @NgModule({
     imports: [],
@@ -21,6 +22,7 @@ import { GroceryService } from './grocery.service';
         AuthService,
         RecipeService,
         GroceryService,
+        MenuService,
         AdminRouteGuard
     ],
 })

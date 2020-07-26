@@ -6,10 +6,9 @@ import { OnInit, Component, Input, ViewChild, AfterViewInit } from "@angular/cor
     styleUrls: []
 })
 export class DateRangeComponent {
-    @Input()
+    
     public startDate: Date = new Date();
 
-    @Input()
     public endDate: Date = new Date();
 
     public formatDate(date: Date): string {

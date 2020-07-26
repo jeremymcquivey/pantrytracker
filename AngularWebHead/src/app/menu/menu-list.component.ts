@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { DateRangeComponent } from "../controls/date-range.component";
 import { MatTableDataSource } from "@angular/material/table";
 import { MenuGroup, MenuEntry } from "../model/menu";
+import { MenuService } from "../core/menu.service";
 
 @Component({
     selector: 'menu-list',
@@ -9,13 +10,15 @@ import { MenuGroup, MenuEntry } from "../model/menu";
     styleUrls: ['../grocery/list-view.component.css']
 })
 export class MenuListComponent implements OnInit, AfterViewInit {
-    private numDays = 14;
+    private _numDays = 14;
     public TableData = new MatTableDataSource<MenuGroup>();
+    private _startDate: Date;
+    private _endDate: Date;
 
-    public get Days(): MenuGroup[] {
+    private get Days(): MenuGroup[] {
         let days = [];
-        for(let i = 1; i <= this.numDays; i++) {
-            let date = this.addDays(this.startDate, i);
+        for(let i = 1; i <= this._numDays; i++) {
+            let date = this.addDays(this._startDate, i);
             days.push({
                 date: date,
                 entries: this.filterByDate(date)
@@ -24,39 +27,30 @@ export class MenuListComponent implements OnInit, AfterViewInit {
         return days;
     }
 
-    public get MenuItems(): MenuEntry[] {
-        return [
-            {recipeName: 'Cheese & Crackers', date: new Date('7/26/2020')} as MenuEntry,
-            {recipeName: 'Pot Stickers', date: new Date('7/27/2020')} as MenuEntry,
-            {recipeName: 'Stuffing', date: new Date('7/27/2020')} as MenuEntry,
-            {recipeName: 'Turkey and Ham', date: new Date('7/28/2020')} as MenuEntry,
-            {recipeName: 'Other Stuff', date: new Date('7/29/2020')} as MenuEntry
-        ];
-    }
-
-    public get startDate(): Date {
-        return new Date();
-    }
-
-    public get endDate(): Date {
-        return this.addDays(this.startDate, this.numDays);
-    }
+    private _menuItems: MenuEntry[] = [];
 
     public get VisibleColumns(): string[] {
         return ['stuff'];
     };
 
+    public editMode: boolean[] = [false, false, false, false, false];
+
     @ViewChild('calendarDates') calendarDates: DateRangeComponent;
 
-    ngOnInit(): void {
+    constructor(private _menuService: MenuService) {}
 
+    ngOnInit(): void {
+        this._startDate = new Date();
+        this._endDate = this.addDays(new Date(), this._numDays);
+    }
+
+    public toggleEditMode(i: number, enabled: boolean) {
+        this.editMode[i] = enabled;
     }
 
     public filterByDate(date: Date) {
-
-        return this.MenuItems.filter(item => 
+        return this._menuItems.filter(item => 
             {
-                //console.log('date comparison', {date1: item.date, date2: date, comp: item.date == date});
                 return item.date.getFullYear() === date.getFullYear() &&
                        item.date.getMonth() === date.getMonth() &&
                        item.date.getDate() === date.getDate();
@@ -64,12 +58,42 @@ export class MenuListComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.calendarDates.startDate = this.startDate;
-        this.calendarDates.endDate = this.endDate;
+        setTimeout(() => {
+            this.calendarDates.startDate = this._startDate;
+            this.calendarDates.endDate = this._endDate;
 
-        this.TableData.data = this.Days;
+            this._menuService.getMenu(this._startDate.toLocaleDateString("en-US"), this._endDate.toLocaleDateString("en-US"))
+                .subscribe(menuItems => {
+                    for(let thing of menuItems) {
+                        thing.date = new Date(thing.date);
+                    }
+
+                    this._menuItems = menuItems;
+                    this.TableData.data = this.Days;
+                }, error => {
+                    // TODO: Do some error handling stuff.
+                }, () => {
+                    // TODO: Do some finally stuff.
+                });
+        });
     }
     
+    public addMeal(i: number) {
+        let newItem = {} as MenuEntry;
+        Object.assign(newItem, this._menuItems[0]);
+        newItem.date = this.TableData.data[i].date;
+        this.TableData.data[i].entries.push(newItem);
+    }
+
+    public removeMeal(i: number, meal: MenuEntry) {
+        if(!confirm(`This will delete ${meal.recipeName} from your menu.`)) {
+            return;
+        }
+
+        let index = this.TableData.data[i].entries.findIndex(p => p === meal);
+        this.TableData.data[i].entries.splice(index, 1);
+    }
+
     private addDays(date: Date, days: number): Date {
         let copy = new Date();
         copy.setDate(date.getDate() + days);

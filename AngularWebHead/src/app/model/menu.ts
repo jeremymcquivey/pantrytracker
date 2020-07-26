@@ -3,6 +3,8 @@ export class MenuEntry {
 
     public date: Date;
 
+    public recipeId: string;
+
     public recipeName: string;
 }
 
