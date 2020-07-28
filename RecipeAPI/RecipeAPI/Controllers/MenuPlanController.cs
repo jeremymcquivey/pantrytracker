@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using RecipeAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using PantryTracker.Model.Menu;
 
 namespace RecipeAPI.Controllers
 {
@@ -60,6 +61,36 @@ namespace RecipeAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddSingle([FromBody] CalendarMenuEntry entry)
+        {
+            if(entry == default)
+            {
+                return BadRequest("Please include a CalendarMenuEntry object in the body of the request.");
+            }
+
+            if(entry.RecipeId == null || entry.Date == default)
+            {
+                return BadRequest("Please include recipeId and date properties with your entry object.");
+            }
+
+            var gId = Guid.Parse(AuthenticatedUser);
+            entry.OwnerId = gId;
+            entry.Id = 0;
+
+            try
+            {
+                var inserted = _db.Add(entry);
+                await _db.SaveChangesAsync();
+                return Ok(inserted.Entity);
+            }
+            catch(Exception ex)
+            {
+                // TODO: Catch exception for dupes here.
+                throw;
             }
         }
 
