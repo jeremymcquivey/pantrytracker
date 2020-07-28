@@ -1,4 +1,8 @@
-<div>
-    <i>Start: </i> {{ formatDate(startDate) }} 
-    <i>End: </i> {{ formatDate(endDate) }}
+<div style="margin: 1rem; max-width:30rem;">
+    <span>
+        <i>Start: </i> <input type="date" value="{{formatHtmlDate(startDate)}}" name="range_start_input" (change)="dateRangeUpdated($event, 'start')">
+    </span>
+    <span style="float: right;">
+        <i>End: </i> <input type="date" value="{{formatHtmlDate(endDate)}}" name="range_end_input" (change)="dateRangeUpdated($event, 'end')">
+    </span>
 </div>

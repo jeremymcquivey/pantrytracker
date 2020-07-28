@@ -6,6 +6,8 @@ using RecipeAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using PantryTracker.Model.Menu;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace RecipeAPI.Controllers
 {
@@ -29,7 +31,6 @@ namespace RecipeAPI.Controllers
         [HttpGet]
         public IActionResult GetAll([FromQuery] string startDate, [FromQuery] string endDate)
         {
-            // TODO: Figure out a good limit to the range -- 60 days? This could return a lot of data otherwise.
             if(!DateTime.TryParse(startDate, out DateTime realStartDate))
             {
                 realStartDate = DateTime.Today;
@@ -38,6 +39,18 @@ namespace RecipeAPI.Controllers
             if (!DateTime.TryParse(endDate, out DateTime realEndDate))
             {
                 realEndDate = DateTime.Today.AddDays(14);
+            }
+
+            if(realEndDate < realStartDate)
+            {
+                var temp = new DateTime(realEndDate.Ticks);
+                realEndDate = realStartDate;
+                realStartDate = temp;
+            }
+
+            if ((realEndDate - realStartDate).TotalDays >= 60)
+            {
+                realEndDate = realStartDate.AddDays(60);
             }
 
             try
@@ -56,7 +69,20 @@ namespace RecipeAPI.Controllers
                     entry.Recipe = null;
                 }
 
-                return Ok(menuEntries);
+                var grouped = menuEntries.GroupBy(p => p.Date.Date)
+                                         .ToDictionary(p => p.Key, p => p.AsEnumerable());
+
+                var current = new DateTime(realStartDate.Date.Ticks); 
+                while(current <= realEndDate)
+                {
+                    if(!grouped.ContainsKey(current))
+                    {
+                        grouped.Add(current, Enumerable.Empty<CalendarMenuEntry>());
+                    }
+                    current = current.AddDays(1);
+                }
+
+                return Ok(grouped.OrderBy(p => p.Key));
             }
             catch (Exception ex)
             {
@@ -80,6 +106,7 @@ namespace RecipeAPI.Controllers
             var gId = Guid.Parse(AuthenticatedUser);
             entry.OwnerId = gId;
             entry.Id = 0;
+            entry.Date = entry.Date;
 
             try
             {

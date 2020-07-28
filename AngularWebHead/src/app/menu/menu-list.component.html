@@ -1,4 +1,4 @@
-<date-range (startDateChanged)='dateRangeChanged($event)' (endDateChanged)='dateRangeChanged($event)' #calendarDates>
+<date-range (rangeUpdated)='dateRangeChanged($event)' #calendarDates>
 </date-range>
 <hr />
 
@@ -9,16 +9,16 @@
         <mat-cell *matCellDef="let group; index as i">
             <div>
                 <h4> 
-                    {{ formatLongDate(group.date) }} 
-                    <i *ngIf="!editMode[i] && group.entries.length > 0" class="material-icons accept" style="float: right; cursor: pointer;" (click)='toggleEditMode(i, true)'>edit</i>
-                    <i *ngIf="editMode[i] && group.entries.length > 0" class="material-icons accept" style="float: right; cursor: pointer;" (click)='toggleEditMode(i, false)'>check</i>
+                    {{ formatLongDate(group.key) }} 
+                    <i *ngIf="!editMode[i] && group.value.length > 0" class="material-icons accept" style="float: right; cursor: pointer;" (click)='toggleEditMode(i, true)'>edit</i>
+                    <i *ngIf="editMode[i] && group.value.length > 0" class="material-icons accept" style="float: right; cursor: pointer;" (click)='toggleEditMode(i, false)'>check</i>
                 </h4>
-                <div *ngFor="let thing of group.entries" style="padding-bottom: 1rem;">
+                <div *ngFor="let meal of group.value" style="padding-bottom: 1rem;">
                     <i *ngIf="editMode[i]" class="material-icons remove" style="cursor: pointer; float: right; background-color: red; color: white;"
-                    (click)="removeMeal(i,thing)">remove</i>
-                    <a routerLink="/recipe/{{thing.recipeId}}">{{ thing.recipeName }}</a>
+                    (click)="removeMeal(i,meal)">remove</i>
+                    <a routerLink="/recipe/{{meal.recipeId}}">{{ meal.recipeName }}</a>
                 </div>
-                <div *ngIf="group.entries.length == 0" style="margin-bottom: 1rem;">No menu is planned for today.</div>
+                <div *ngIf="group.value.length == 0" style="margin-bottom: 1rem;">No menu is planned for today.</div>
                 <a (click)="addMeal(i)"><div><i class="material-icons remove" style="cursor: pointer; margin-bottom: 1rem;">add</i>Add meal</div></a>
             </div>
         </mat-cell>

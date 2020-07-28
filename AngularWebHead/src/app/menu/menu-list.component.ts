@@ -12,23 +12,11 @@ import { RecipeListDialogComponent } from "../recipes/recipe-list-dialog.compone
     styleUrls: ['../grocery/list-view.component.css']
 })
 export class MenuListComponent implements OnInit, AfterViewInit {
-    private _numDays = 14;
+    private _defaultNumDays = 14;
     public TableData = new MatTableDataSource<MenuGroup>();
     private _startDate: Date;
     private _endDate: Date;
     private _selectedDayForAdding: number;
-
-    private get Days(): MenuGroup[] {
-        let days = [];
-        for(let i = 1; i <= this._numDays; i++) {
-            let date = this.addDays(this._startDate, i);
-            days.push({
-                date: date,
-                entries: this.filterByDate(date)
-            } as MenuGroup);
-        }
-        return days;
-    }
 
     private _menuItems: MenuEntry[] = [];
 
@@ -45,21 +33,12 @@ export class MenuListComponent implements OnInit, AfterViewInit {
     constructor(private _menuService: MenuService) {}
 
     ngOnInit(): void {
-        this._startDate = new Date();
-        this._endDate = this.addDays(new Date(), this._numDays);
+        this._startDate = this.addDays(new Date(), 0);
+        this._endDate = this.addDays(new Date(), this._defaultNumDays);
     }
 
     public toggleEditMode(i: number, enabled: boolean) {
         this.editMode[i] = enabled;
-    }
-
-    public filterByDate(date: Date) {
-        return this._menuItems.filter(item => 
-            {
-                return item.date.getFullYear() === date.getFullYear() &&
-                       item.date.getMonth() === date.getMonth() &&
-                       item.date.getDate() === date.getDate();
-            });
     }
 
     ngAfterViewInit(): void {
@@ -67,32 +46,32 @@ export class MenuListComponent implements OnInit, AfterViewInit {
             this.calendarDates.startDate = this._startDate;
             this.calendarDates.endDate = this._endDate;
 
-            this._menuService.getMenu(this._startDate.toLocaleDateString("en-US"), this._endDate.toLocaleDateString("en-US"))
-                .subscribe(menuItems => {
-                    for(let thing of menuItems) {
-                        thing.date = new Date(thing.date);
-                    }
-
-                    this._menuItems = menuItems;
-                    this.TableData.data = this.Days;
-                }, error => {
-                    // TODO: Do some error handling stuff.
-                }, () => {
-                    // TODO: Do some finally stuff.
-                });
+            this.refreshData();
         });
+    }
+
+    private refreshData() {
+        this._menuService.getMenu(this._startDate.toLocaleDateString("en-US"), this._endDate.toLocaleDateString("en-US"))
+            .subscribe(menuItems => {
+                this._menuService.setDateObject(menuItems);
+                this.TableData.data = menuItems;
+            }, error => {
+                // TODO: Do some error handling stuff.
+            }, () => {
+                // TODO: Do some finally stuff.
+            });
     }
 
     public recipeSelected(recipe: Recipe) {
         let newItem = {
             id: 0,
-            date: this.TableData.data[this._selectedDayForAdding].date,
+            date: this.TableData.data[this._selectedDayForAdding].key,
             recipeId: recipe.id
         } as MenuEntry;
 
         this._menuService.addEntry(newItem).subscribe(meal => {
             meal.recipeName = recipe.title;
-            this.TableData.data[this._selectedDayForAdding].entries.push(meal);
+            this.TableData.data[this._selectedDayForAdding].value.push(meal);
         }, error => {}, () => {});
     }
     
@@ -107,8 +86,8 @@ export class MenuListComponent implements OnInit, AfterViewInit {
         }
 
         this._menuService.deleteEntry(meal.id).subscribe(_ => {
-            let index = this.TableData.data[i].entries.findIndex(p => p.id === meal.id);
-            this.TableData.data[i].entries.splice(index, 1);
+            let index = this.TableData.data[i].value.findIndex(p => p.id === meal.id);
+            this.TableData.data[i].value.splice(index, 1);
         }, error => {}, () => {});
     }
 
@@ -118,8 +97,10 @@ export class MenuListComponent implements OnInit, AfterViewInit {
         return copy;
     }
 
-    public dateRangeChanged(evt: object) {
-        // TODO: Handle range changes here.
+    public dateRangeChanged(evt: any) {
+        this._startDate = evt.start;
+        this._endDate = evt.end;
+        this.refreshData();
     }
 
     public formatLongDate(date: Date): string {

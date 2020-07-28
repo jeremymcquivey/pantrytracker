@@ -9,7 +9,7 @@ export class MenuEntry {
 }
 
 export class MenuGroup {
-    public date: Date;
+    public key: Date;
 
-    public entries: MenuEntry[];
+    public value: MenuEntry[];
 }
