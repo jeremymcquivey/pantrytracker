@@ -1,14 +1,14 @@
 <h3 class="title">My Recipes</h3>
 <div class="danger" *ngIf="!!error">{{error}}</div>
 
-<round-button float='right' altText='New' buttonText="+" routerLink='/new-recipe'></round-button>
+<round-button float='right' altText='New' buttonText="+" routerLink='/new-recipe' *ngIf="addButtonVisible"></round-button>
 
 <mat-table [dataSource]="dataSource" style="clear: both;">
 
   <!-- Name/Description Column -->
   <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>Stuff</mat-header-cell>
-      <mat-cell *matCellDef="let recipe" routerLink="/recipe/{{recipe.id}}">
+      <mat-cell *matCellDef="let recipe" (click)="selectRecipe(recipe)">
         <div>
           <a>{{recipe.title}}</a>
         </div>

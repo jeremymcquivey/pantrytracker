@@ -1,0 +1,9 @@
+<div id="dialog-modal" [hidden]="!isVisible">
+    <div id="dialog-modal-content">
+        <app-projects #recipeList (onRecipeSelected)="recipeSelected($event)"></app-projects>
+
+        <span class="btn-box right">
+            <button class="btn btn" (click)='dismissDialog()'>Cancel</button>
+        </span>
+    </div>
+</div>

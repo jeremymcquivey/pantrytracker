@@ -22,4 +22,11 @@ export class MenuService {
             return this.httpClient.delete(Constants.recipeApi + `v1/MenuPlan/${id}`, { headers: headers }).toPromise();
         }));
     }
+
+    addEntry(entry: MenuEntry): Observable<MenuEntry> {
+        return from (this._authService.getAccessToken().then(accessToken => {
+            var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+            return this.httpClient.post<MenuEntry>(Constants.recipeApi + 'v1/MenuPlan', entry, { headers: headers }).toPromise();
+        }));
+    }
 }

@@ -3,6 +3,8 @@ import { DateRangeComponent } from "../controls/date-range.component";
 import { MatTableDataSource } from "@angular/material/table";
 import { MenuGroup, MenuEntry } from "../model/menu";
 import { MenuService } from "../core/menu.service";
+import { Recipe } from "../model/recipe";
+import { RecipeListDialogComponent } from "../recipes/recipe-list-dialog.component";
 
 @Component({
     selector: 'menu-list',
@@ -14,6 +16,7 @@ export class MenuListComponent implements OnInit, AfterViewInit {
     public TableData = new MatTableDataSource<MenuGroup>();
     private _startDate: Date;
     private _endDate: Date;
+    private _selectedDayForAdding: number;
 
     private get Days(): MenuGroup[] {
         let days = [];
@@ -36,6 +39,8 @@ export class MenuListComponent implements OnInit, AfterViewInit {
     public editMode: boolean[] = [false, false, false, false, false];
 
     @ViewChild('calendarDates') calendarDates: DateRangeComponent;
+
+    @ViewChild('recipeList') recipeList: RecipeListDialogComponent;
 
     constructor(private _menuService: MenuService) {}
 
@@ -77,20 +82,32 @@ export class MenuListComponent implements OnInit, AfterViewInit {
                 });
         });
     }
+
+    public recipeSelected(recipe: Recipe) {
+        let newItem = {
+            id: 0,
+            date: this.TableData.data[this._selectedDayForAdding].date,
+            recipeId: recipe.id
+        } as MenuEntry;
+
+        this._menuService.addEntry(newItem).subscribe(meal => {
+            meal.recipeName = recipe.title;
+            this.TableData.data[this._selectedDayForAdding].entries.push(meal);
+        }, error => {}, () => {});
+    }
     
     public addMeal(i: number) {
-        let newItem = {} as MenuEntry;
-        Object.assign(newItem, this._menuItems[0]);
-        newItem.date = this.TableData.data[i].date;
-        this.TableData.data[i].entries.push(newItem);
+        this._selectedDayForAdding = i;
+        this.recipeList.isVisible = true;
     }
 
     public removeMeal(i: number, meal: MenuEntry) {
         if(!confirm(`This will delete ${meal.recipeName} from your menu.`)) {
             return;
         }
+
         this._menuService.deleteEntry(meal.id).subscribe(_ => {
-            let index = this.TableData.data[i].entries.findIndex(p => p === meal);
+            let index = this.TableData.data[i].entries.findIndex(p => p.id === meal.id);
             this.TableData.data[i].entries.splice(index, 1);
         }, error => {}, () => {});
     }

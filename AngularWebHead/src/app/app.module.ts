@@ -25,6 +25,7 @@ import { AdminModule } from './admin/admin.module';
 import { CoreModule } from './core/core.module';
 import { UnauthorizedComponent } from './home/unauthorized.component';
 import { RecipeComponent } from './recipes/recipe.component';
+import { RecipeListDialogComponent } from './recipes/recipe-list-dialog.component';
 import { ImageUploadComponent } from './io/imageupload.component';
 import { UploadFileDialogComponent } from './io/uploadfile-dialog.component';
 import { TxtUploadComponent } from './io/txtupload.component';
@@ -66,6 +67,7 @@ import { DateRangeComponent } from './controls/date-range.component';
     RecipeListComponent,
     UnauthorizedComponent,
     RecipeComponent,
+    RecipeListDialogComponent,
     ImageUploadComponent,
     TxtUploadComponent,
     UploadFileDialogComponent,

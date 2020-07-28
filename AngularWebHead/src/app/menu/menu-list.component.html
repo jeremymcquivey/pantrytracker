@@ -26,3 +26,4 @@
 
     <mat-row *matRowDef="let row; columns: VisibleColumns;"></mat-row>-->
 </mat-table>
+<recipe-list-dialog (onRecipeSelected)='recipeSelected($event)' #recipeList></recipe-list-dialog>
