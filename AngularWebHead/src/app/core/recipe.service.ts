@@ -10,6 +10,9 @@ import { Recipe, RecipeProductPreference } from '../model/recipe';
 export class RecipeService {
     constructor(private httpClient: HttpClient, private _authService: AuthService) { }
 
+    public sharedRecipeList: Recipe[] = [];
+    public sharedRecipeSource: string;
+
     getRecipeProductList(recipeId: string): Observable<ProductGroceryList> {
       return from (this._authService.getAccessToken().then(accessToken => {
           var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);

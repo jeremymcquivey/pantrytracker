@@ -5,10 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ListItemReassignComponent } from './list-item-reassign.component';
 import { ListItemMatchedComponent } from './list-item-matched.component';
 import { ListItemIgnoredComponent } from './list-item-ignored.component';
-import { RecipeProduct, RecipeProductPreference } from '../model/recipe';
+import { RecipeProduct, RecipeProductPreference, Recipe } from '../model/recipe';
 import { ListItemUnmatchedComponent } from './list-item-unmatched.component';
 import { AuthService } from '../core/auth.service';
 import { GroceryService } from '../core/grocery.service';
+import { TabGroupComponent } from '../controls/tab-group.component';
 
 @Component({
     selector: 'recipe-products',
@@ -17,9 +18,7 @@ import { GroceryService } from '../core/grocery.service';
 })
 export class RecipeProductsComponent implements OnInit, AfterViewInit {
     private _isBusy: boolean = false;
-    private _recipeId: string;
     private _data: ProductGroceryList;
-    private _recipeName: string;
 
     public VisibleColumns = [ 'name' ];
     public isRecipeLoaded = true;
@@ -46,6 +45,9 @@ export class RecipeProductsComponent implements OnInit, AfterViewInit {
     @ViewChild('unmatchedContent')
     private unmatchedContent: TemplateRef<any>;
 
+    @ViewChild('tabView')
+    private tabView: TabGroupComponent;
+
     public get MatchedDataSource(): RecipeProduct[] {
         return this._data?.matched ?? [];
     }
@@ -58,36 +60,75 @@ export class RecipeProductsComponent implements OnInit, AfterViewInit {
         return this._data?.ignored ?? [];
     };
 
-    public get hasUnmatchedItems(): boolean {
-        return (this._data?.unmatched?.length ?? 0) > 0;
+    public get hasMatchedItems(): boolean {
+        return (this._data?.matched?.length ?? 0) > 0;
     }
 
-    public get RecipeName(): string {
-        return this._recipeName;
+    public get hasUnmatchedItems(): boolean {
+        return (this._data?.unmatched?.length ?? 0) > 0;
     }
 
     public get isBusy(): boolean {
         return this._isBusy;
     }
 
+    public AllRecipes: Recipe[];
+    public SelectedIndex: number = 0;
+    public RecipeSource: string = '';
+
+    public get SelectedRecipe(): Recipe {
+        return this.AllRecipes && this.AllRecipes.length > 0 ?
+            this.AllRecipes[this.SelectedIndex] :
+            {} as Recipe;
+    }
+
     constructor(private _recipeService: RecipeService, 
-                private _route: ActivatedRoute, 
                 private _router: Router,
                 private _authService: AuthService, 
                 private _groceryService: GroceryService) { }
 
     ngOnInit(): void {
-        this._recipeId = this._route.snapshot.params.recipeId;
-        //TODO: Find a better way to get just the recipe name.
-        this._recipeService.getRecipe(this._recipeId).subscribe(recipe => {
-            this._recipeName = recipe.title;
-            this.isRecipeLoaded = true;
-        });
-        this._recipeService.getRecipeProductList(this._recipeId).subscribe(list => {
+        this.AllRecipes = this._recipeService.sharedRecipeList;
+        this.SelectedIndex = 0;
+
+        this.getRecipeProducts();
+    }
+
+    loadPreviousRecipe() {
+        if(this._isBusy) {
+            return;
+        }
+
+        this.SelectedIndex--;
+        this.getRecipeProducts();
+    }
+
+    loadNextRecipe() {
+        if(this._isBusy) {
+            return;
+        }
+
+        this.SelectedIndex++;
+        this.getRecipeProducts();
+    }
+
+    private getRecipeProducts() {
+        if(this._isBusy) {
+            return;
+        }
+
+        if(this.AllRecipes.length < this.SelectedIndex) {
+            return;
+        }
+
+        this._isBusy = true;
+        this._data = { unmatched: [], matched: [], ignored: [] };
+        this._recipeService.getRecipeProductList(this.AllRecipes[this.SelectedIndex].id).subscribe(list => {
             this._data = list;
+            this.tabView.selectedTab = this.hasUnmatchedItems ? 0 : 1;
         }, error => {
             console.error(error);
-        });
+        }, () => { this._isBusy = false; });
     }
 
     ngAfterViewInit(): void {
@@ -150,6 +191,10 @@ export class RecipeProductsComponent implements OnInit, AfterViewInit {
             alert('there are no matched items to add.');
         }
 
+        if(this._data.unmatched.length > 0 && !confirm('You have unmatched items that will not be added to the list.')) {
+            return;
+        }
+
         this._isBusy = true;
         const listId = this._authService.authContext.userProfile.id;
 
@@ -168,11 +213,16 @@ export class RecipeProductsComponent implements OnInit, AfterViewInit {
 
         this._groceryService.addBulkItemsToList(listId, stuff)
                             .subscribe(_ => {
-                                this._router.navigate([`grocery-list/${listId}`]);
+                                if(this.AllRecipes.length == this.SelectedIndex + 1) {
+                                    this._router.navigate([`grocery-list/${listId}`]);
+                                } else {
+                                    this._isBusy = false;
+                                    this.loadNextRecipe();
+                                }
                             }, error => {
+                                this._isBusy = false;
                                 console.error(error);
                             }, () => {
-                                this._isBusy = false;
                             });
     }
 

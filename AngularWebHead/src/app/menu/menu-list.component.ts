@@ -5,6 +5,8 @@ import { MenuGroup, MenuEntry } from "../model/menu";
 import { MenuService } from "../core/menu.service";
 import { Recipe } from "../model/recipe";
 import { RecipeListDialogComponent } from "../recipes/recipe-list-dialog.component";
+import { Router } from "@angular/router";
+import { RecipeService } from "../core/recipe.service";
 
 @Component({
     selector: 'menu-list',
@@ -30,7 +32,7 @@ export class MenuListComponent implements OnInit, AfterViewInit {
 
     @ViewChild('recipeList') recipeList: RecipeListDialogComponent;
 
-    constructor(private _menuService: MenuService) {}
+    constructor(private _menuService: MenuService, private _recipeService: RecipeService, private _router: Router) {}
 
     ngOnInit(): void {
         this._startDate = this.addDays(new Date(), 0);
@@ -112,5 +114,17 @@ export class MenuListComponent implements OnInit, AfterViewInit {
         }
 
         return date.toLocaleDateString("en-US", options);
+    }
+
+    public generateShoppingList() {
+        this._recipeService.sharedRecipeSource = 'Menu';
+        this._recipeService.sharedRecipeList = this.TableData.data.map(p => p.value)
+            .reduce(function(a,b){
+                return a.concat(b);
+            }).map<Recipe>(p => {
+                return { title: p.recipeName, id: p.recipeId } as Recipe;
+            });
+
+        this._router.navigate(['recipe/shopping-list']);
     }
 }

@@ -159,4 +159,10 @@ import { RecipeService } from "../core/recipe.service";
     public isPremium() {
       return this._authService.authContext && this._authService.authContext.userIsPremium();
     }
+
+    public generateShoppingList() {
+      this._recipeService.sharedRecipeSource = 'Recipe';
+      this._recipeService.sharedRecipeList = [{ id: this.recipeId, title: this.recipe.title } as Recipe];
+      this._router.navigate(['recipe/shopping-list']);
+    }
   }

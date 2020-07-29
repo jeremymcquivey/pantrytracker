@@ -22,7 +22,7 @@
 <div class="danger" *ngIf="error">{{error}}</div>
 
 <div class="group">
-  <i class="material-icons" routerLink='products' *ngIf="isUpdate">add_shopping_cart</i>
+  <i class="material-icons" (click)='generateShoppingList()' *ngIf="isUpdate">add_shopping_cart</i>
   <input type="text" [(ngModel)]="recipe.title" [disabled]="this.rawText != ''">
   <label>Title</label>
 </div>

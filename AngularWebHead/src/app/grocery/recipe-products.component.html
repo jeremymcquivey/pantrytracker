@@ -1,18 +1,33 @@
-<h3 class="title" *ngIf="isRecipeLoaded">Grocery List for "{{ RecipeName }}" </h3>
+<h3 class="title" *ngIf="isRecipeLoaded">Grocery List for "{{ SelectedRecipe.title }}" </h3>
 
-<i (click)="addMatchedItemsToShoppingList()" style="float:right;" class="material-icons accent big">add_shopping_cart</i>
-<i routerLink=".." style="float:left;" class="material-icons accent big">keyboard_arrow_left</i>
+<div style="text-align: center; width: 100%;" *ngIf='AllRecipes.length > 1'>
+    <i style="float:left; cursor: pointer;" class="material-icons accent big" *ngIf="SelectedIndex > 0" (click)="loadPreviousRecipe()">
+        keyboard_arrow_left
+    </i>
+    {{ this.SelectedIndex + 1 }} of {{ this.AllRecipes.length }}
+    <i style="float:right; cursor: pointer;" class="material-icons accent big" *ngIf="SelectedIndex + 1 < AllRecipes.length" (click)="loadNextRecipe()">
+        keyboard_arrow_right
+    </i>
+</div>
+
+<hr style="clear: both" />
+<div style="text-align: center; width: 100%;" *ngIf="MatchedDataSource.length > 0">
+    Add {{ MatchedDataSource.length }} matched items to your cart.<br />
+    <i (click)="addMatchedItemsToShoppingList()" class="material-icons accent big" style="text-align:center; cursor: pointer;">add_shopping_cart</i>
+</div>
+<hr />
 
 <div class="warning" *ngIf="hasUnmatchedItems" style="clear:both;">
     You have unmatched ingredients. These items will not be added to your *automated* grocery list.<br />
     You may also ignore these items.
 </div>
 
-<div class="ok" *ngIf="!hasUnmatchedItems" style="clear:both;">
+<div class="ok" *ngIf="!hasUnmatchedItems && hasMatchedItems" style="clear:both;">
     Congratulations! You're ready to add these products to your shopping list!
 </div>
 
-<my-tab-group [Tabs]="tabs" [selectedTab]=0>
+<div *ngIf="isBusy">Loading shopping list...</div>
+<my-tab-group [Tabs]="tabs" [selectedTab]=0 #tabView [hidden]="isBusy">
     <ng-template #unmatchedContent>
         <unmatched-products #unmatchedItems [UnmatchedItems]="UnmatchedDataSource" (onReassigned)="reassignValue($event)"></unmatched-products>
     </ng-template>

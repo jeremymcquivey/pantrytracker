@@ -1,5 +1,5 @@
 import { OnInit, Component, Output, EventEmitter, Input } from '@angular/core';
-import { RecipeService } from '../core/recipe.service';
+import { Location } from '@angular/common';
 import { Product, ProductVariety } from '../model/pantryline';
 import { RecipeProduct } from '../model/recipe';
 
@@ -37,7 +37,7 @@ export class ListItemReassignComponent implements OnInit {
     @Output()
     public onProductIgnored: EventEmitter<RecipeProduct> = new EventEmitter<RecipeProduct>();
 
-    constructor(private recipeService: RecipeService) { }
+    constructor(private location: Location) { }
 
     ngOnInit(): void { }
 
@@ -89,5 +89,9 @@ export class ListItemReassignComponent implements OnInit {
 
         this.onProductIgnored.emit(this._lineItem);
         this.dismissDialog();
+    }
+
+    goBack() {
+        this.location.back();
     }
 }
