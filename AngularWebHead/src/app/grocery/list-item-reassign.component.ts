@@ -91,7 +91,7 @@ export class ListItemReassignComponent implements OnInit {
         this.dismissDialog();
     }
 
-    goBack() {
-        this.location.back();
+    closeDialog() {
+        this._isVisible = true;
     }
 }
