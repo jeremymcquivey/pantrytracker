@@ -316,28 +316,28 @@ namespace PantryTracker.Model.Meta
                     SourceUnit = UnitsOfWeight.Pound,
                     ConversionScale = 4,
                     DestinationUnit = UnitsOfVolume.Cup,
-                    Products = new int[0] //Cheese
+                    Products = new int?[0] //Cheese
                 },
                 new UnitConversionRate
                 {
                     SourceUnit = UnitsOfWeight.Pound,
                     ConversionScale = 4,
                     DestinationUnit = OtherUnits.Cube,
-                    Products = new int[0] //Butter, Margarine
+                    Products = new int?[0] //Butter, Margarine
                 },
                 new UnitConversionRate
                 {
                     SourceUnit = UnitsOfVolume.Cup,
                     ConversionScale = 2,
                     DestinationUnit = OtherUnits.Cube,
-                    Products = new int[0] //Butter, Margarine
+                    Products = new int?[0] //Butter, Margarine
                 },
                 new UnitConversionRate
                 {
                     SourceUnit = UnitsOfWeight.Ounce,
                     ConversionScale = 1,
                     DestinationUnit = OtherUnits.Square,
-                    Products = new int[0] //Baking Chocolate
+                    Products = new int?[0] //Baking Chocolate
                 }
             });
         }

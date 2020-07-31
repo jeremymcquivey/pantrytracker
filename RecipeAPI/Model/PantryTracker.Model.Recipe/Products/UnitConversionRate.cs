@@ -8,6 +8,6 @@
 
         public double ConversionScale { get; set; }
 
-        public int[] Products { get; set; }
+        public int?[] Products { get; set; }
     }
 }

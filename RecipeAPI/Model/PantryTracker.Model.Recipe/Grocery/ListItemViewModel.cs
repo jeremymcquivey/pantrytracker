@@ -1,16 +1,19 @@
-﻿using PantryTracker.Model.Pantry;
-using PantryTracker.Model.Products;
+﻿using PantryTracker.Model.Products;
 using System;
 
 namespace PantryTracker.Model.Grocery
 {
-    public class ListItem: IItemQuantity
+    /// <summary>
+    /// This is a temporary class meant to leverage AutoMapper to bridge the gap between string and numeric quantity conversions
+    /// until I get around to updating the UI to do it the right way.
+    /// </summary>
+    public class ListItemViewModel
     {
         public int Id { get; set; }
 
         public string PantryId { get; set; } //For now, this is user id until we support multiple 'pantries'.
 
-        public double Quantity { get; set; }
+        public string Quantity { get; set; }
 
         public string Unit { get; set; } = "";
 

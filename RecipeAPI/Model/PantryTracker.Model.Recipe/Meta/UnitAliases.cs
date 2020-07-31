@@ -112,6 +112,12 @@ namespace PantryTracker.Model.Meta
                 new Tuple<string, string>(OtherUnits.Dozen, OtherUnits.Dozen),
                 new Tuple<string, string>(OtherUnits.Dozen, "dozen"),
 
+                new Tuple<string, string>(OtherUnits.Count, OtherUnits.Count),
+                new Tuple<string, string>(OtherUnits.Count, "count"),
+                new Tuple<string, string>(OtherUnits.Count, "each"),
+                new Tuple<string, string>(OtherUnits.Count, "ea"),
+                new Tuple<string, string>(OtherUnits.Count, "per"),
+
                 new Tuple<string, string>(OtherUnits.Pinch, OtherUnits.Pinch),
                 new Tuple<string, string>(OtherUnits.Jigger, OtherUnits.Jigger),
                 new Tuple<string, string>(OtherUnits.Dash, OtherUnits.Dash),

@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PantryTracker.Model.Grocery;
-using PantryTracker.Model.Products;
+using RecipeAPI.Extensions;
 using RecipeAPI.Models;
 using RecipeAPI.Services;
 using System;
@@ -19,11 +20,14 @@ namespace RecipeAPI.Controllers
     [Authorize]
     public class ShoppingListController : BaseController
     {
+        public IMapper _mapper { get; }
+
         private readonly RecipeContext _database;
         private readonly ProductService _products;
 
-        public ShoppingListController(RecipeContext database, ProductService products)
+        public ShoppingListController(RecipeContext database, ProductService products, IMapper mapper)
         {
+            _mapper = mapper;
             _database = database;
             _products = products;
         }
@@ -54,15 +58,17 @@ namespace RecipeAPI.Controllers
             }
 
             //TODO: Combine by product and unit.
-            return Ok(_database.GroceryListItems.Where(item => item.PantryId == id && new[] { ListItemStatus.Active, ListItemStatus.Purchased }.Contains(item.Status))
-                                                .Include(item => item.Variety)
-                                                .Include(item => item.Product)
-                                                .ToList());
+            var items = _database.GroceryListItems
+                                 .Include(item => item.Variety)
+                                 .Include(item => item.Product)
+                                 .CalculateTotals()
+                                 .ToList();
+            return Ok(items);
         }
 
         [HttpPost]
         [Route("{id}/item")]
-        public async Task<IActionResult> AddSingle([FromRoute] string id, [FromBody]ListItem item)
+        public async Task<IActionResult> AddSingle([FromRoute] string id, [FromBody]ListItemViewModel item)
         {
             //TODO: This validation is only temporary, while we don't support multiple pantries.
             //Future: This validation will make sure the current user owns the pantry.
@@ -85,14 +91,14 @@ namespace RecipeAPI.Controllers
             item.Variety = null;
             item.Product = null;
 
-            var newEntity = _database.Add(item).Entity;
+            var newEntity = _database.Add(_mapper.Map<ListItem>(item)).Entity;
             await _database.SaveChangesAsync();
             return Ok(newEntity);
         }
 
         [HttpPost]
         [Route("{id}/items")]
-        public async Task<IActionResult> AddBulk([FromRoute] string id, [FromBody]IEnumerable<ListItem> items)
+        public async Task<IActionResult> AddBulk([FromRoute] string id, [FromBody]IEnumerable<ListItemViewModel> items)
         {
             //TODO: This validation is only temporary, while we don't support multiple pantries.
             //Future: This validation will make sure the current user owns the pantry.
@@ -113,14 +119,14 @@ namespace RecipeAPI.Controllers
                 item.Product = null;
             }
 
-            _database.AddRange(items);
+            _database.AddRange(items.Select(p => _mapper.Map<ListItem>(p)));
             await _database.SaveChangesAsync();
             return Ok(items);
         }
 
         [HttpPut]
         [Route("{id}/item/{itemId}")]
-        public async Task<IActionResult> Update([FromRoute] string id, [FromRoute] int itemId, [FromBody] ListItem item)
+        public async Task<IActionResult> Update([FromRoute] string id, [FromRoute] int itemId, [FromBody] ListItemViewModel item)
         {
             //TODO: This validation is only temporary, while we don't support multiple pantries.
             //Future: This validation will make sure the current user owns the pantry.
@@ -147,7 +153,7 @@ namespace RecipeAPI.Controllers
                 item.PurchaseDate = existing.PurchaseDate ?? DateTime.Now;
             }
 
-            var updatedEntity = _database.Update(item).Entity;
+            var updatedEntity = _database.Update(_mapper.Map<ListItem>(item)).Entity;
             await _database.SaveChangesAsync();
 
             return Ok(updatedEntity);

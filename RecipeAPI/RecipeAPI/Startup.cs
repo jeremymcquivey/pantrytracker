@@ -18,6 +18,7 @@ using RecipeAPI.ExternalServices;
 using Microsoft.Extensions.Hosting;
 using PantryTrackers.Integrations.Walmart;
 using RecipeAPI.Services;
+using AutoMapper;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -86,6 +87,15 @@ namespace RecipeAPI
                 {
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ShimmingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         public void Configure(IApplicationBuilder app, IHostEnvironment env)

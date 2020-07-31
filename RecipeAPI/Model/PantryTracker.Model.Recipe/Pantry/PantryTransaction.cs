@@ -3,8 +3,30 @@ using PantryTracker.Model.Products;
 
 namespace PantryTracker.Model.Pantry
 {
-    public class PantryTransaction
+    public interface IItemQuantity
     {
+        string Unit { get; set; }
+
+        double Quantity { get; set; }
+
+        string Size { get; set; }
+
+        int? ProductId { get; set; }
+
+        int? VarietyId { get; set; }
+
+        /// <summary>
+        /// Intended to be virtual
+        /// </summary>
+        Product Product { get; set; }
+
+        ProductVariety Variety { get; set; }
+    }
+
+    public class PantryTransaction: IItemQuantity
+    {
+        public PantryTransaction() { }
+
         public int Id { get; set; }
 
         public Guid UserId { get; set; }
@@ -15,7 +37,7 @@ namespace PantryTracker.Model.Pantry
 
         public string Size { get; set; }
 
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
 
         public int? VarietyId { get; set; }
 
