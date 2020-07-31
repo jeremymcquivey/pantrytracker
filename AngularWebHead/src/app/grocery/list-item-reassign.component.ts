@@ -92,6 +92,6 @@ export class ListItemReassignComponent implements OnInit {
     }
 
     closeDialog() {
-        this._isVisible = true;
+        this._isVisible = false;
     }
 }
