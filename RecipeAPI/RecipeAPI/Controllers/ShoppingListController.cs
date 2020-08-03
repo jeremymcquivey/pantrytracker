@@ -58,12 +58,11 @@ namespace RecipeAPI.Controllers
             }
 
             //TODO: Combine by product and unit.
-            var items = _database.GroceryListItems
-                                 .Include(item => item.Variety)
-                                 .Include(item => item.Product)
-                                 .CalculateTotals()
-                                 .ToList();
-            return Ok(items);
+            return Ok(_database.GroceryListItems.Where(item => item.PantryId == id && new[] { ListItemStatus.Active, ListItemStatus.Purchased }.Contains(item.Status))
+                                    .Include(item => item.Variety)
+                                    .Include(item => item.Product)
+                                    .ToList()
+                                    .OrderBy(p => p.DisplayName));
         }
 
         [HttpPost]

@@ -98,6 +98,9 @@ namespace RecipeAPI.Models
             modelBuilder.Entity<CalendarMenuEntry>()
                 .HasIndex(entry => new { entry.OwnerId, entry.RecipeId, entry.Date })
                 .HasName("UniqueRecipePerDay");
+
+            modelBuilder.Entity<ListItem>()
+                .Ignore(p => p.DisplayName);
         }
     }
 }

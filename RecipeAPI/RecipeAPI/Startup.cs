@@ -19,6 +19,7 @@ using Microsoft.Extensions.Hosting;
 using PantryTrackers.Integrations.Walmart;
 using RecipeAPI.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 #pragma warning disable 1591
 namespace RecipeAPI
@@ -96,6 +97,12 @@ namespace RecipeAPI
 
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.Secure = CookieSecurePolicy.Always;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
@@ -113,6 +120,7 @@ namespace RecipeAPI
             app.UseCors("AllRequests");
             app.UseStaticFiles();
             app.UseSwashbuckle(env);
+            app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseMvc();
         }

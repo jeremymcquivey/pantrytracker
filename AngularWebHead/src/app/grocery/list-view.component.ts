@@ -144,7 +144,7 @@ export class GroceryListViewComponent implements OnInit, AfterViewInit {
         this._router.navigate([`grocery-list/${this._listId}/export`]);
     }
 
-    private undoItem(item: GroceryItem) {
+    public undoItem(item: GroceryItem) {
         if(this._isBusy) {
             return;
         }

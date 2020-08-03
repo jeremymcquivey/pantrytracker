@@ -29,5 +29,7 @@ namespace PantryTracker.Model.Grocery
         public virtual Product Product { get; set; }
 
         public virtual ProductVariety Variety { get; set; }
+
+        public string DisplayName { get => Product?.Name ?? FreeformText ?? "Unknown"; }
     }
 }
