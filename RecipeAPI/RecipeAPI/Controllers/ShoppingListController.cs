@@ -20,8 +20,7 @@ namespace RecipeAPI.Controllers
     [Authorize]
     public class ShoppingListController : BaseController
     {
-        public IMapper _mapper { get; }
-
+        private readonly IMapper _mapper;
         private readonly RecipeContext _database;
         private readonly ProductService _products;
 

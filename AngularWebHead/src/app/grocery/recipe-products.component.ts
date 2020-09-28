@@ -138,6 +138,7 @@ export class RecipeProductsComponent implements OnInit, AfterViewInit {
     }
 
     reassignValue(value: RecipeProduct) {
+        this.reassignDialog.allowIgnore = true;
         this.reassignDialog.launchDialog(value);
     }
 

@@ -19,5 +19,12 @@ namespace PantryTracker.Model.Recipes
         public string Container { get; set; }
 
         public string Descriptor { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Quantity ?? string.Empty} {Size ?? string.Empty} {Unit ?? string.Empty} {Name ?? string.Empty}"
+                .Replace("  ", " ")
+                .Trim();
+        }
     }
 }

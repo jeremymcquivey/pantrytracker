@@ -23,11 +23,6 @@ export class ListItemIgnoredComponent implements OnInit {
     constructor(private recipeService: RecipeService) { }
 
     ngOnInit(): void { }
-
-    formatIngredient(product: RecipeProduct): string {
-        return `${product?.quantityString ?? ''} ${product?.size ?? ''} ${product?.unit ?? ''} ${product?.plainText ?? ''}`
-            .replace('  ', ' ');
-    }
     
     reassignLine(line: RecipeProduct) {
         this.onReassigned.emit(line);

@@ -29,6 +29,7 @@ export class ListItemMatchedComponent implements OnInit {
 
     formatIngredient(ingredient: RecipeProduct): string {
         return `${ingredient?.quantityString ?? ''} ${ingredient?.size ?? ''} ${ingredient?.unit ?? ''} ${ingredient?.variety?.description ?? ''} ${ingredient?.product?.name ?? ''}`
+            .replace('  ', ' ')
             .trim();
     }
 }

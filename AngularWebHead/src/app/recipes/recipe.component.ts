@@ -68,9 +68,9 @@ import { RecipeService } from "../core/recipe.service";
     }
 
     public formatIngredient(ingredient: Ingredient): string {
-      return `${ingredient?.quantity ?? ''} ${ingredient?.size ?? ''} ${ingredient?.unit ?? ''} ${ingredient?.name ?? ''}`
-        .replace('  ', ' ')
-        .trim();
+      let something: Ingredient = new Ingredient();
+      Object.assign(something, ingredient);
+      return something.FullSentence();
     }
 
     public showFileUploader() {

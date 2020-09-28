@@ -6,4 +6,10 @@ export class Ingredient
     size: string;
     unit: string;
     name: string;
+
+    public FullSentence(): string {
+        return `${this.quantity ?? ''} ${this.size ?? ''} ${this.unit ?? ''} ${this.name ?? ''}`
+            .replace('  ', ' ')
+            .trim();
+    }
 }

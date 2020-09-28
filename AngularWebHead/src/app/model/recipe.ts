@@ -27,6 +27,12 @@ export class RecipeProduct {
     unit: string;
     variety: ProductVariety;
     varietyId: number;
+
+    public get fullDescription(): string {
+        return `${this.quantityString ?? ''} ${this.size ?? ''} ${this.unit ?? ''} ${this.plainText ?? ''}`
+            .replace('  ', ' ')
+            .trim();
+    }
 }
 
 export class RecipeProductPreference {

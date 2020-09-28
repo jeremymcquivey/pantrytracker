@@ -88,7 +88,7 @@ namespace RecipeAPI.Services
                         ignored.Add(new RecipeProduct
                         {
                             MatchType = IngredientMatchType.UserMatch,
-                            PlainText = ingredient.Name,
+                            PlainText = ingredient.ToString(),
                             QuantityString = userMatch.Quantity ?? ingredient.Quantity,
                             Unit = userMatch.Unit ?? ingredient.Unit,
                             Size = userMatch.Size ?? ingredient.Size,
@@ -102,7 +102,7 @@ namespace RecipeAPI.Services
                         Product = userMatch.Product,
                         Variety = userMatch.Variety,
                         RecipeId = recipeId,
-                        PlainText = ingredient.Name,
+                        PlainText = ingredient.ToString(),
                         QuantityString = userMatch.Quantity ?? ingredient.Quantity,
                         Unit = userMatch.Unit ?? ingredient.Unit,
                         Size = userMatch.Size ?? ingredient.Size,
@@ -121,7 +121,7 @@ namespace RecipeAPI.Services
                         Product = GetById(potentialMatch.Key.Item1),
                         Variety = GetVariety(potentialMatch.Key.Item2),
                         RecipeId = recipeId,
-                        PlainText = ingredient.Name,
+                        PlainText = ingredient.ToString(),
                         Unit = ingredient.Unit,
                         Size = ingredient.Size,
                         QuantityString = ingredient.Quantity,
@@ -134,7 +134,7 @@ namespace RecipeAPI.Services
                 unmatched.Add(new RecipeProduct
                 {
                     MatchType = IngredientMatchType.SystemMatch,
-                    PlainText = ingredient.Name,
+                    PlainText = ingredient.ToString(),
                     QuantityString = ingredient.Quantity,
                     Unit = ingredient.Unit,
                     Size = ingredient.Size,

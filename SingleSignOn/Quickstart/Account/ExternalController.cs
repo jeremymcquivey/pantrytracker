@@ -23,7 +23,6 @@ namespace PantryTrackers
     [AllowAnonymous]
     public class ExternalController : Controller
     {
-        private readonly UserManager<ApplicationUser> _users;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly ILogger<ExternalController> _logger;
