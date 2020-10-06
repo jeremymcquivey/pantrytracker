@@ -159,11 +159,11 @@ export class InventoryTransactionComponent implements OnInit {
 
     getProductById(productId: number, varietyCallback): void {
         this.isBusy = true;
-        this._productService.getProduct(productId).subscribe(product => {
-            if(product)
+        this._productService.getProduct(productId).subscribe(products => {
+            if(products.length > 0 && !!products[0])
             {
-                this.Product = product;
-                this.Varieties = product.varieties;
+                this.Product = products[0];
+                this.Varieties = products[0].varieties;
                 this.productName = this.Product.name;
 
                 var varieties = this.Product.varieties.filter(p => p.id === this.Line.varietyId);

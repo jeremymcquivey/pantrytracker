@@ -73,10 +73,10 @@ export class ProductDetailsDialogComponent {
         this.codeDataSource.data = [];
 
         this.networkIsBusy = true;
-        this._projectService.getProduct(productId).subscribe(product => {
-            this._product = product;
-            this.varietyDataSource.data = product.varieties;
-            this.codeDataSource.data = product.codes;
+        this._projectService.getProduct(productId).subscribe(products => {
+            this._product = products[0];
+            this.varietyDataSource.data = products[0].varieties;
+            this.codeDataSource.data = products[0].codes;
             this.networkIsBusy = false;
         }, error => { console.error(error); this.networkIsBusy = false; });
     }

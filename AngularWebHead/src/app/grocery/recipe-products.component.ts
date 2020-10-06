@@ -121,8 +121,14 @@ export class RecipeProductsComponent implements OnInit, AfterViewInit {
             return;
         }
 
+        if(this.AllRecipes.length == 0) {
+            this.AllRecipes = [{ title: "Unknown" } as Recipe];
+            return;
+        }
+
         this._isBusy = true;
         this._data = { unmatched: [], matched: [], ignored: [] };
+
         this._recipeService.getRecipeProductList(this.AllRecipes[this.SelectedIndex].id).subscribe(list => {
             this._data = list;
             this.tabView.selectedTab = this.hasUnmatchedItems ? 0 : 1;

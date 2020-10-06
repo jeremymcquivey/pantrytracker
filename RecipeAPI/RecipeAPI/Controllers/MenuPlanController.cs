@@ -6,8 +6,6 @@ using RecipeAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using PantryTracker.Model.Menu;
-using System.Collections.Generic;
-using System.Globalization;
 
 namespace RecipeAPI.Controllers
 {
@@ -91,7 +89,7 @@ namespace RecipeAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSingle([FromBody] CalendarMenuEntry entry)
+        public async Task<IActionResult> Add([FromBody] CalendarMenuEntry entry)
         {
             if(entry == default)
             {
@@ -123,7 +121,7 @@ namespace RecipeAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> RemoveSingle([FromRoute] int id)
+        public async Task<IActionResult> Remove([FromRoute] int id)
         {
             var gId = Guid.Parse(AuthenticatedUser);
             var existing = _db.MenuEntries.SingleOrDefault(item => item.OwnerId == gId && 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PantryTracker.Model.Products;
+using RecipeAPI.ExternalServices;
 using RecipeAPI.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +16,28 @@ namespace RecipeAPI.Controllers
     public class ProductCodeController : BaseController
     {
         private readonly RecipeContext _database;
+        private readonly UPCLookup _productCodes;
 
         /// <summary>
         /// </summary>
-        public ProductCodeController(RecipeContext database)
+        public ProductCodeController(RecipeContext database, UPCLookup productCodes)
         {
             _database = database;
+            _productCodes = productCodes;
+        }
+
+        [HttpGet]
+        [Route("{code}")]
+        public async Task<IActionResult> GetCode([FromRoute]string code)
+        {
+            var productCode = await _productCodes.Lookup(code, ownerId: AuthenticatedUser);
+
+            if (productCode != default)
+            {
+                return Ok(productCode);
+            }
+
+            return NotFound();
         }
 
         /// <summary>

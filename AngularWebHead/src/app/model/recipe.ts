@@ -1,6 +1,7 @@
 import { Ingredient } from "./ingredient";
 import { Direction } from "./direction";
 import { Product, ProductVariety } from "./pantryline";
+import { StringHelper } from "./extensions";
 
 export class Recipe
 {
@@ -17,8 +18,8 @@ export class Recipe
 }
 
 export class RecipeProduct {
+    private _plainText: string = '';
     matchType: number;
-    plainText: string;
     product: Product;
     productId: number;
     quantityString: string;
@@ -28,10 +29,15 @@ export class RecipeProduct {
     variety: ProductVariety;
     varietyId: number;
 
+    public get plainText(): string {
+        return StringHelper.TrimExcess(this._plainText);
+    } public set plainText(value: string) {
+        this._plainText = StringHelper.TrimExcess(value);
+    }
+
     public get fullDescription(): string {
-        return `${this.quantityString ?? ''} ${this.size ?? ''} ${this.unit ?? ''} ${this.plainText ?? ''}`
-            .replace('  ', ' ')
-            .trim();
+        let str = `${this.quantityString ?? ''} ${this.size ?? ''} ${this.unit ?? ''} ${!!this.variety ? this.variety.description : ''} ${!!this.product ? this.product.name : ''}`;
+        return StringHelper.TrimExcess(str);
     }
 }
 

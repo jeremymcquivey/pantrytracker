@@ -11,13 +11,13 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     [ApiController]
     [Authorize]
-    public class ProductVarietyController : ControllerBase
+    public class VarietyController : ControllerBase
     {
         private readonly RecipeContext _database;
 
         /// <summary>
         /// </summary>
-        public ProductVarietyController(RecipeContext database)
+        public VarietyController(RecipeContext database)
         {
             _database = database;
         }

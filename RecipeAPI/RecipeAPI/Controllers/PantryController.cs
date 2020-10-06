@@ -7,9 +7,6 @@ using RecipeAPI.Models;
 using RecipeAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
 using PantryTracker.Model.Extensions;
-using Microsoft.ApplicationInsights;
-using System.Collections.Generic;
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Logging;
 
 namespace RecipeAPI.Controllers
@@ -37,7 +34,7 @@ namespace RecipeAPI.Controllers
         /// Returns all inventory items belonging to the current user.
         /// </summary>
         [HttpGet]
-        [Route("{id}/levelSummary")]
+        [Route("{id}")]
         public IActionResult GetAll([FromRoute]string id, [FromQuery] bool includeZeroValues = false)
         {
             try
@@ -58,6 +55,40 @@ namespace RecipeAPI.Controllers
                                              {
                                                  Header = p.First().Product?.Name,
                                                  Total = $"{p.Sum(q => Math.Round(q.Quantity, 2))} {p.First().Unit}",
+                                                 Elements = p
+                                             });
+
+                return Ok(groupedItems);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("{id}/product/{productId}")]
+        public IActionResult GetProductSummary([FromRoute] int productId, [FromQuery] string id, [FromQuery] bool includeZeroValues = true)
+        {
+            try
+            {
+                _logger.LogInformation("GetPantryProductSummary", new { IncludeZeroValues = includeZeroValues });
+
+                var gId = Guid.Parse(AuthenticatedUser);
+                var pantryItems = _db.Transactions.Where(p => p.UserId == gId)
+                                                        .Where(p => p.ProductId == productId)
+                                                        .Include(p => p.Variety)
+                                                        .Include(p => p.Product)
+                                                        .ToList()
+                                                        .CalculateProductTotals();
+
+                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThanOrEqualTo(0, 0.5)) : pantryItems;
+
+                var groupedItems = otherItems.GroupBy(trans => trans.VarietyId)
+                                             .Select(p => new
+                                             {
+                                                 Header = p.First().Variety?.Description ?? "Unclassified",
+                                                 Total = 0,
                                                  Elements = p
                                              });
 

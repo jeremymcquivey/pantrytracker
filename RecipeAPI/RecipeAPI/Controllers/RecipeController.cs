@@ -30,8 +30,7 @@ namespace RecipeAPI.Controllers
         private readonly RecipeContext _db;
 
 #pragma warning disable 1591
-        public RecipeController(IOptions<AppSettings> config,
-                                RecipeContext database,
+        public RecipeController(RecipeContext database,
                                 ProductService products,
 								IOCRService ocrService)
 #pragma warning restore 1591
@@ -264,6 +263,21 @@ namespace RecipeAPI.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+
+        /// <summary>
+        /// Retrieves a list of products attached to the recipe
+        /// </summary>
+        [HttpGet]
+        [Route("{id}/products")]
+        public IActionResult GetProducts([FromRoute] string id)
+        {
+            if (!Guid.TryParse(id, out Guid gId))
+            {
+                return NotFound();
+            }
+
+            return Ok(_products.GetMatchingProducts(gId, AuthenticatedUser));
         }
     }
 }

@@ -1,3 +1,5 @@
+import { StringHelper } from "./extensions";
+
 export class Ingredient
 {
     recipeId: string;
@@ -8,8 +10,7 @@ export class Ingredient
     name: string;
 
     public FullSentence(): string {
-        return `${this.quantity ?? ''} ${this.size ?? ''} ${this.unit ?? ''} ${this.name ?? ''}`
-            .replace('  ', ' ')
-            .trim();
+        let str = `${this.quantity ?? ''} ${this.size ?? ''} ${this.unit ?? ''} ${this.name ?? ''}`.trim();
+        return StringHelper.TrimExcess(str);
     }
 }

@@ -42,8 +42,8 @@ export class InventoryDetailComponent implements OnInit {
         const productId = this._route.snapshot.params.productId;
 
         this.isBusy = true;
-        this._productService.getProduct(productId).subscribe(product => {
-            this._product = product;
+        this._productService.getProduct(productId).subscribe(products => {
+            this._product = products[0];
             this.getSummary();
         }, error => {
             console.error(error);

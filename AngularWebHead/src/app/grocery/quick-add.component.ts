@@ -32,8 +32,8 @@ export class QuickProductAddComponent {
         } as GroceryItem;
 
         this.networkIsBusy = true;
-        this._groceryService.addGroceryItem(this.listId, item).subscribe(newItem => {
-            this.onItemAdded.emit(newItem);
+        this._groceryService.addBulkItemsToList(this.listId, [item]).subscribe(newItems => {
+            this.onItemAdded.emit(newItems[0]);
             this.resetForm();
         }, error => { 
             console.error(error);

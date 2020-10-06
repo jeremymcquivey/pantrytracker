@@ -20,13 +20,14 @@ export class ListItemUnmatchedComponent implements OnInit {
         this.UnmatchedDataSource.data = value;
     }
 
-    constructor(private recipeService: RecipeService) { }
+    constructor() { }
 
     ngOnInit(): void { }
 
     formatIngredient(ingredient: RecipeProduct): string {
-        return `${ingredient?.quantityString ?? ''} ${ingredient?.size ?? ''} ${ingredient?.unit ?? ''} ${ingredient?.plainText}`
-            .replace('  ', ' ');
+        const boxed = new RecipeProduct();
+        Object.assign(boxed, ingredient);
+        return boxed.plainText;
     }
     
     reassignLine(line: RecipeProduct) {

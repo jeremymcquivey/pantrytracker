@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PantryTracker.Model.Grocery;
-using RecipeAPI.Extensions;
 using RecipeAPI.Models;
 using RecipeAPI.Services;
 using System;
@@ -31,21 +30,6 @@ namespace RecipeAPI.Controllers
             _products = products;
         }
 
-        /// <summary>
-        /// Retrieves a list of products attached to the recipe
-        /// </summary>
-        [HttpGet]
-        [Route("preview/recipe/{id}")]
-        public IActionResult GetProducts([FromRoute]string id)
-        {
-            if (!Guid.TryParse(id, out Guid gId))
-            {
-                return NotFound();
-            }
-
-            return Ok(_products.GetMatchingProducts(gId, AuthenticatedUser));
-        }
-
         [HttpGet]
         [Route("{id}/items")]
         public IActionResult GetList([FromRoute] string id)
@@ -65,36 +49,6 @@ namespace RecipeAPI.Controllers
         }
 
         [HttpPost]
-        [Route("{id}/item")]
-        public async Task<IActionResult> AddSingle([FromRoute] string id, [FromBody]ListItemViewModel item)
-        {
-            //TODO: This validation is only temporary, while we don't support multiple pantries.
-            //Future: This validation will make sure the current user owns the pantry.
-            if (id != AuthenticatedUser)
-            {
-                return NotFound();
-            }
-
-            if (item == default)
-            {
-                return BadRequest("ListItem object must be present in the body.");
-            }
-
-            if (!item.ProductId.HasValue && string.IsNullOrEmpty(item.FreeformText))
-            {
-                return BadRequest("ListItem must either be tied to a produdct id or have a freeform text value.");
-            }
-
-            item.PantryId = id;
-            item.Variety = null;
-            item.Product = null;
-
-            var newEntity = _database.Add(_mapper.Map<ListItem>(item)).Entity;
-            await _database.SaveChangesAsync();
-            return Ok(newEntity);
-        }
-
-        [HttpPost]
         [Route("{id}/items")]
         public async Task<IActionResult> AddBulk([FromRoute] string id, [FromBody]IEnumerable<ListItemViewModel> items)
         {
@@ -110,7 +64,12 @@ namespace RecipeAPI.Controllers
                 return BadRequest("ListItem object must be present in the body.");
             }
 
-            foreach(var item in items)
+            if (items.Any(item => !item.ProductId.HasValue && string.IsNullOrEmpty(item.FreeformText)))
+            {
+                return BadRequest("ListItem must either be tied to a produdct id or have a freeform text value.");
+            }
+
+            foreach (var item in items)
             {
                 item.PantryId = id;
                 item.Variety = null;

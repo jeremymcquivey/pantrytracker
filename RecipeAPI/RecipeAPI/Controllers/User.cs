@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using IdentityModel;
 using RecipeAPI.Models;
 using PantryTracker.Model.Auth;
 using System.Security.Claims;

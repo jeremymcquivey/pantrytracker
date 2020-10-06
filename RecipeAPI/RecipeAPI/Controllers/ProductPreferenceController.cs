@@ -13,14 +13,14 @@ namespace RecipeAPI.Controllers
     [Authorize]
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
-    public class UserMatchController: BaseController
+    public class ProductPreferenceController: BaseController
     {
         private RecipeContext _database;
 
         /// <summary>
         /// </summary>
         /// <param name="database"></param>
-        public UserMatchController(RecipeContext database)
+        public ProductPreferenceController(RecipeContext database)
         {
             _database = database;
         }

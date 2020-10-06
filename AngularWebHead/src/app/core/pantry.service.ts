@@ -12,7 +12,7 @@ export class PantryService {
     getCurrentInventory(): Observable<PantryLineGrouping[]> {
         return from (this._authService.getAccessToken().then(accessToken => {
             var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-            return this.httpClient.get<PantryLineGrouping[]>(Constants.recipeApi + 'v1/Pantry/0/levelSummary?includeZeroValues=false', { headers: headers }).toPromise();
+            return this.httpClient.get<PantryLineGrouping[]>(Constants.recipeApi + 'v1/Pantry/0?includeZeroValues=false', { headers: headers }).toPromise();
         }));
     }
 
@@ -26,7 +26,7 @@ export class PantryService {
     getProductSummary(productId: number): Observable<PantryLineGrouping[]> {
         return from(this._authService.getAccessToken().then(accessToken => {
             var headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-            return this.httpClient.get<PantryLineGrouping[]>(`${Constants.recipeApi}v1/product/${productId}/levelSummary?pantryId=0&includeZeroValues=true`, { headers: headers }).toPromise();
+            return this.httpClient.get<PantryLineGrouping[]>(`${Constants.recipeApi}v1/Pantry/0/product/${productId}?includeZeroValues=true`, { headers: headers }).toPromise();
         }));
     }
 }

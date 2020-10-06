@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Products\" />
     <Folder Include="Pantry\" />
     <Folder Include="Extensions\" />
   </ItemGroup>

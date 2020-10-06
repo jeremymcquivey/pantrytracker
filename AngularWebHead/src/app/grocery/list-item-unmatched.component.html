@@ -3,7 +3,7 @@
         <mat-cell *matCellDef="let ingredient">
             <div class="group">
                 <i class="material-icons" (click)="reassignLine(ingredient)">edit</i>
-                <input type="text" [value]="ingredient.plainText" [disabled]="true" style="min-height: 1.5rem;" />
+                <input type="text" [value]="formatIngredient(ingredient)" [disabled]="true" style="min-height: 1.5rem;" />
                 <label></label>
             </div>
         </mat-cell>

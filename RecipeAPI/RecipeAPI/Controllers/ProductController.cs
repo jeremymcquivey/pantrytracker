@@ -3,9 +3,7 @@ using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using RecipeAPI.Models;
-using RecipeAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
-using PantryTracker.Model.Extensions;
 using System.Threading.Tasks;
 using RecipeAPI.ExternalServices;
 using PantryTracker.Model.Products;
@@ -23,7 +21,6 @@ namespace RecipeAPI.Controllers
     [Route("api/v1/[controller]")]
     public class ProductController: BaseController
     {
-        private readonly ILogger<ProductController> _logger;
         private readonly ProductService _products;
         private readonly RecipeContext _database;
         private readonly UPCLookup _productCodes;
@@ -31,7 +28,6 @@ namespace RecipeAPI.Controllers
 #pragma warning disable 1591
         public ProductController(RecipeContext database, ProductService products, UPCLookup productCodes, ILogger<ProductController> logger)
         {
-            _logger = logger;
             _products = products;
             _database = database;
             _productCodes = productCodes;
@@ -40,53 +36,28 @@ namespace RecipeAPI.Controllers
 
         /// <summary>
         /// Admin functionality: Returns a list of all products whose name starts with the provided string.
+        /// TODO: Make these return types consistent [i.e. return a list of products].
         /// </summary>
         [HttpGet]
-        [Route("search/name/{text}")]
-        public IActionResult Get([FromRoute] string text, int limit = 100)
+        [Route("{text}")]
+        public async Task<IActionResult> Get([FromRoute] string text, [FromQuery] ProductSearchType identifierType, [FromQuery]int limit = 100)
         {
-            return Ok(_database.Products.Include(p => p.Varieties)
-                                        .Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
-                                        .Where(p => p.Name.Contains(text))
-                                        .OrderBy(p => p.Name)
-                                        .Take(limit));
-        }
-
-        /// <summary>
-        /// Returns a single product (or null if not found) by product code i.e. UPC, EAN, etc...
-        /// </summary>
-        [HttpGet]
-        [Route("search/code/{code}")]
-        public async Task<IActionResult> GetByUpc([FromRoute]string code)
-        {
-            try
+            switch(identifierType)
             {
-                var product = await _productCodes.Lookup(code, ownerId: AuthenticatedUser);
-
-                if (product != default)
-                {
-                    return Ok(product);
-                }
-
-                return NotFound();
+                case ProductSearchType.Description:
+                    return Ok(_database.Products.Include(p => p.Varieties)
+                                                .Where(p => p.OwnerId == null || p.OwnerId == AuthenticatedUser)
+                                                .Where(p => p.Name.Contains(text))
+                                                .OrderBy(p => p.Name)
+                                                .Take(limit));
+                case ProductSearchType.RowId:
+                default:
+                    int.TryParse(text, out int id);
+                    return Ok(_database.Products.Include(p => p.Codes)
+                                                    .ThenInclude(c => c.Variety)
+                                                .Include(p => p.Varieties)
+                                                .Where(p => p.Id == id && (p.OwnerId == AuthenticatedUser || p.OwnerId == null)));
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Returns a product with the given Id
-        /// </summary>
-        [HttpGet]
-        [Route("{id}")]
-        public IActionResult GetById(int id)
-        {
-            return Ok(_database.Products.Include(p => p.Codes)
-                                            .ThenInclude(c => c.Variety)
-                                        .Include(p => p.Varieties)
-                                        .SingleOrDefault(p => p.Id == id && (p.OwnerId == AuthenticatedUser || p.OwnerId == null)));
         }
 
         /// <summary>
@@ -127,7 +98,6 @@ namespace RecipeAPI.Controllers
                                              .Include(p => p.Codes)
                                              .Include(p => p.Varieties)
                                              .SingleOrDefault(r => r.Id == id && (r.OwnerId == null || r.OwnerId == AuthenticatedUser));
-
             if (existing == default)
             {
                 return NotFound();
@@ -144,40 +114,6 @@ namespace RecipeAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex);
-            }
-        }
-
-        [HttpGet]
-        [Route("{productId}/levelSummary")]
-        public IActionResult GetProductSummary([FromRoute]int productId, [FromQuery] string pantryId, [FromQuery] bool includeZeroValues = true)
-        {
-            try
-            {
-                _logger.LogInformation("GetPantryProductSummary", new { IncludeZeroValues = includeZeroValues});
-
-                var gId = Guid.Parse(AuthenticatedUser);
-                var pantryItems = _database.Transactions.Where(p => p.UserId == gId)
-                                                        .Where(p => p.ProductId == productId)
-                                                        .Include(p => p.Variety)
-                                                        .Include(p => p.Product)
-                                                        .ToList()
-                                                        .CalculateProductTotals();
-
-                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThanOrEqualTo(0, 0.5)) : pantryItems;
-
-                var groupedItems = otherItems.GroupBy(trans => trans.VarietyId)
-                                             .Select(p => new
-                                             {
-                                                 Header = p.First().Variety?.Description ?? "Unclassified",
-                                                 Total = 0,
-                                                 Elements = p
-                                             });
-
-                return Ok(groupedItems);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
             }
         }
     }

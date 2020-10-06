@@ -26,7 +26,9 @@ namespace RecipeAPI.Services
 
         public Product GetById(int id)
         {
-            return _database.Products.SingleOrDefault(product => product.Id == id);
+            return _database.Products
+                            .Include(product => product.Varieties)
+                            .SingleOrDefault(product => product.Id == id);
         }
 
         public async Task<Product> Add(Product product)
@@ -99,7 +101,7 @@ namespace RecipeAPI.Services
 
                     matches.Add(new RecipeProduct
                     {
-                        Product = userMatch.Product,
+                        Product = GetById(userMatch.ProductId.Value),
                         Variety = userMatch.Variety,
                         RecipeId = recipeId,
                         PlainText = ingredient.ToString(),
