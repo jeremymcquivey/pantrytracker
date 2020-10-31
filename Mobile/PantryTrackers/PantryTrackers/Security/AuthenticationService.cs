@@ -41,16 +41,14 @@ namespace PantryTrackers.Security
             };
 
             var account = AccountStore.Create().FindAccountsForService("AuthServer");
-            //if (account != null && account.Any())
-            if(false)
+            if (account != null && account.Any())
+            //if(false)
             {
                 using(var client = _clientFactory.CreateClient())
                 { 
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {AuthAccount.Properties["access_token"]}");
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.First().Properties["access_token"]}");
                 }
 
-                AuthAccount = account.First();
-                //await _navService.NavigateAsync("NavigationPage/MainPage");
             }
             else
             {
@@ -70,17 +68,17 @@ namespace PantryTrackers.Security
             if (e.IsAuthenticated)
             {
                 AuthAccount = e.Account;
-                /*using(var client = _clientFactory.CreateClient())
-                {
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {AuthAccount.Properties["access_token"]}");
-                }*/
 
-                await AccountStore.Create().SaveAsync(e.Account, "AuthServer");
-                //await _navService.NavigateAsync("NavigationPage/MainPage");
                 var context = await GetAuthContext();
 
                 if(!string.IsNullOrEmpty(context?.UserProfile?.Id))
                 {
+                    AuthAccount.Properties.Add(nameof(UserProfile.FirstName).ToLower(), context.UserProfile.FirstName ?? "Annonymous");
+                    AuthAccount.Properties.Add(nameof(UserProfile.LastName).ToLower(), context.UserProfile.LastName ?? "User");
+                    AuthAccount.Properties.Add(nameof(UserProfile.Id).ToLower(), context.UserProfile.Id);
+                    AuthAccount.Properties.Add(nameof(UserProfile.Email).ToLower(), context.UserProfile.Email ?? "default@user");
+
+                    await AccountStore.Create().SaveAsync(e.Account, "AuthServer");
                     SuccessfulAuthentication.Invoke(this, new EventArgs());
                 }
                 else

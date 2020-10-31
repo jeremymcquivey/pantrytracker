@@ -1,20 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:views="clr-namespace:PantryTrackers.Views.Recipes"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
-             x:Class="PantryTrackers.Views.MainPage"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="PantryTrackers.Views.Recipes.RecipeListPage"
              Title="{Binding Title}">
 
     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-        <Label Text="Welcome to Xamarin Forms and Prism!" />
-        <Label Text="{Binding Name, StringFormat='Name = {0}'}"
+        <Label Text="{Binding Name, StringFormat='Recipe Management'}"
                HorizontalOptions="Center" />
-        <Label Text="Primary colors" />
-        <BoxView Color="Red" />
-        <BoxView Color="Yellow" />
-        <BoxView Color="Blue" />
-        <Label Text="Secondary colors" />
+
+        <views:RecipeListView BindingContext="{Binding Recipes}" ItemSelected="RecipeListView_ItemSelected"></views:RecipeListView>
     </StackLayout>
 
 </ContentPage>

@@ -3,23 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="PantryTrackers.Views.Menu">
+             mc:Ignorable="d"
+             x:Class="PantryTrackers.Views.Recipes.RecipeDetailPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Main Menu"
+            <Label Text="Recipe Detail"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-
-            <Button Clicked="Button_Clicked" Text="Recipes"></Button>
-            <Button Clicked="Button_Clicked" Text="Pantry"></Button>
-            <Button Clicked="Button_Clicked" Text="Menu Plan"></Button>
-            <Button Clicked="Button_Clicked" Text="Grocery List"></Button>
-            <Label>--------------</Label>
-            <Button Clicked="Button_Clicked" Text="Admin"></Button>
-            <Button Clicked="Button_Clicked" Text="Sign Out"></Button>
+            <Label Text="{Binding Path=Recipe.Description, StringFormat='Description: {0}'}"></Label>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,6 +1,8 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using PantryTrackers.Config;
 using Prism;
 using Prism.Ioc;
 
@@ -9,6 +11,8 @@ namespace PantryTrackers.Droid
     [Activity(Label = "PantryTrackers", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        public static Context Context => Application.Context;
+
         protected override void OnCreate(Bundle bundle)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -26,7 +30,7 @@ namespace PantryTrackers.Droid
     {
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // Register any platform specific implementations
+            containerRegistry.Register<IPlatformConfig, PlatformConfig>();
         }
     }
 }

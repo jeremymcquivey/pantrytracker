@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -32,6 +33,15 @@
     <Compile Update="Startup.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Update="Views\Recipes\RecipeListPage.xaml.cs">
+      <DependentUpon>RecipeListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Recipes\RecipeListCard.xaml.cs">
+      <DependentUpon>RecipeListCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Upgrade.xaml.cs">
+      <DependentUpon>Upgrade.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Unauthorized.xaml.cs">
       <DependentUpon>Unauthorized.xaml</DependentUpon>
     </Compile>
@@ -42,6 +52,18 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Menu.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Recipes\RecipeDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Recipes\RecipeListView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Recipes\RecipeListCard.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Upgrade.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Unauthorized.xaml">

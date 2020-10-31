@@ -7,7 +7,7 @@ using System.Text;
 
 namespace PantryTrackers.ViewModels
 {
-    public class ViewModelBase : BindableBase, INavigationAware, IDestructible
+    public class ViewModelBase : BindableBase, IDestructible
     {
         protected INavigationService NavigationService { get; private set; }
 
@@ -21,21 +21,6 @@ namespace PantryTrackers.ViewModels
         public ViewModelBase(INavigationService navigationService)
         {
             NavigationService = navigationService;
-        }
-
-        public virtual void OnNavigatedFrom(INavigationParameters parameters)
-        {
-            
-        }
-
-        public virtual void OnNavigatedTo(INavigationParameters parameters)
-        {
-            
-        }
-
-        public virtual void OnNavigatingTo(INavigationParameters parameters)
-        {
-            
         }
 
         public virtual void Destroy()

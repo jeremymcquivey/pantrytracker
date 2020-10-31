@@ -7,6 +7,9 @@ using Xamarin.Forms.Xaml;
 using PantryTrackers.Security;
 using Prism.Unity;
 using System;
+using Prism.Navigation;
+using PantryTrackers.Models.Meta;
+using PantryTrackers.Views.Recipes;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PantryTrackers
@@ -15,6 +18,7 @@ namespace PantryTrackers
     {
         private AuthenticationService _authService;
         private bool _isAuthenticating;
+        private MetadataService _metadataService;
 
         public App() : this(null) { }
 
@@ -23,7 +27,7 @@ namespace PantryTrackers
         protected override async void OnInitialized()
         {
             InitializeComponent();
-            await NavigationService.NavigateAsync("/MainPage");
+            await NavigationService.NavigateAsync("/Menu");
         }
 
         protected override async void OnStart()
@@ -36,8 +40,28 @@ namespace PantryTrackers
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            _authService.Authenticate();
-            _isAuthenticating = true;
+            _metadataService = Container.Resolve<MetadataService>();
+            _metadataService.VersionIncompatible += (src, evt) =>
+            {
+                Application.Current.Dispatcher.BeginInvokeOnMainThread(async () =>
+                {
+                    _isAuthenticating = false;
+                    var navParams = new NavigationParameters();
+                    navParams.Add("Stuff", new VersionMetadata
+                    {
+                        MinVersionCode = 125,
+                        MinVersionName = "5.0"
+                    });
+                    await NavigationService.NavigateAsync("/Upgrade", navParams);
+                });
+            };
+
+            _metadataService.VersionCompatible += (src, evt) =>
+            {
+                _authService.Authenticate();
+                _isAuthenticating = true;
+            };
+            await  _metadataService.CheckVersion();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -75,12 +99,15 @@ namespace PantryTrackers
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<RecipeListPage, RecipeListPageViewModel>();
             containerRegistry.RegisterForNavigation<Unauthorized, UnauthorizedViewModel>();
             containerRegistry.RegisterForNavigation<Error, ErrorViewModel>();
-            containerRegistry.RegisterForNavigation<Views.Menu>();
+            containerRegistry.RegisterForNavigation<Views.Menu, MenuViewModel>();
+            containerRegistry.RegisterForNavigation<Upgrade, UpgradeViewModel>();
+            containerRegistry.RegisterForNavigation<RecipeDetailPage, RecipeDetailPageViewModel>();
 
             containerRegistry.Register<AuthenticationService>();
+            containerRegistry.Register<MetadataService>();
         }
 
         protected override void OnSleep()
