@@ -11,12 +11,9 @@ namespace PantryTrackers.ViewModels
     public class RecipeListPageViewModel : ViewModelBase
     {
         private readonly INavigationService _nav;
-        private readonly IEnumerable<Account> accounts = null;
 
         private BindableCollection<Recipe> _recipes;
         private Command _loadRecipeDetailsCommand;
-
-        public string Name => accounts?.FirstOrDefault()?.Properties["firstname"] ?? "Annonymous";
 
         public Command LoadRecipeDetailsCommand => _loadRecipeDetailsCommand ??= new Command<Recipe>(async (recipe) =>
         {
@@ -38,9 +35,6 @@ namespace PantryTrackers.ViewModels
             : base (navigationService)
         {
             Title = "Main Page";
-
-            accounts = AccountStore.Create().FindAccountsForService("AuthServer");
-            RaisePropertyChanged(nameof(Name));
             _nav = navigationService;
         }
     }

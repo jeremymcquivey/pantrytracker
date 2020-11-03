@@ -8,7 +8,7 @@
              Title="{Binding Title}">
 
     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-        <Label Text="{Binding Name, StringFormat='Recipe Management'}"
+        <Label Text="Recipe Management"
                HorizontalOptions="Center" />
 
         <views:RecipeListView BindingContext="{Binding Recipes}" ItemSelected="RecipeListView_ItemSelected"></views:RecipeListView>

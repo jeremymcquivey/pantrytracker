@@ -2,7 +2,10 @@
 {
     public class AuthContext
     {
-        public string[] roles;
+        public System.DateTime Expires;
+
+        public string[] Roles;
+
         public UserProfile UserProfile;
     }
 }

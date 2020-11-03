@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using PantryTrackers.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using Xamarin.Forms;
 using Newtonsoft.Json;
+using Xamarin.Essentials;
 
 namespace PantryTrackers.Security
 {
     class AuthenticationService
     {
+        private const char RoleDelimiter = '|';
         private const string AuthContextEndpoint = "v1/User/AuthContext";
         private readonly IConfiguration _config;
         public readonly IHttpClientFactory _clientFactory;
@@ -31,7 +32,7 @@ namespace PantryTrackers.Security
             _clientFactory = factory;
         }
 
-        public void Authenticate()
+        public async void Authenticate()
         {
             var oAuth = new OAuth2AuthenticatorEx("pantrytrackers-mobile", "pantrytrackers-api",
                 new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/connect/authorize"), new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/redirect"))
@@ -40,15 +41,13 @@ namespace PantryTrackers.Security
                 ShouldEncounterOnPageLoading = false
             };
 
-            var account = AccountStore.Create().FindAccountsForService("AuthServer");
-            if (account != null && account.Any())
-            //if(false)
+            var account = await GetUserProfile();
+            if (account != null && DateTime.Now.ToUniversalTime() <= account.Expires)
             {
                 using(var client = _clientFactory.CreateClient())
                 { 
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.First().Properties["access_token"]}");
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {AuthAccount.Properties["access_token"]}");
                 }
-
             }
             else
             {
@@ -63,6 +62,23 @@ namespace PantryTrackers.Security
             return false;
         }
 
+        public static async Task<AuthContext> GetUserProfile()
+        {
+            long.TryParse(await SecureStorage.GetAsync(ClaimKeys.Expires), out long expTicks);
+            return new AuthContext
+            {
+                Expires = new DateTime(expTicks),
+                Roles = (await SecureStorage.GetAsync(ClaimKeys.Roles))?.Split(RoleDelimiter),
+                UserProfile = new UserProfile
+                {
+                    Email = await SecureStorage.GetAsync(ClaimKeys.Email),
+                    Id = await SecureStorage.GetAsync(ClaimKeys.Id),
+                    FirstName = await SecureStorage.GetAsync(ClaimKeys.FirstName),
+                    LastName = await SecureStorage.GetAsync(ClaimKeys.LastName)
+                }
+            };
+        }
+
         private async void Presenter_Completed(object sender, AuthenticatorCompletedEventArgs e)
         {
             if (e.IsAuthenticated)
@@ -73,12 +89,13 @@ namespace PantryTrackers.Security
 
                 if(!string.IsNullOrEmpty(context?.UserProfile?.Id))
                 {
-                    AuthAccount.Properties.Add(nameof(UserProfile.FirstName).ToLower(), context.UserProfile.FirstName ?? "Annonymous");
-                    AuthAccount.Properties.Add(nameof(UserProfile.LastName).ToLower(), context.UserProfile.LastName ?? "User");
-                    AuthAccount.Properties.Add(nameof(UserProfile.Id).ToLower(), context.UserProfile.Id);
-                    AuthAccount.Properties.Add(nameof(UserProfile.Email).ToLower(), context.UserProfile.Email ?? "default@user");
+                    await SecureStorage.SetAsync(ClaimKeys.Roles, string.Join(RoleDelimiter, context.Roles ?? Enumerable.Empty<string>()));
+                    await SecureStorage.SetAsync(ClaimKeys.Email, context.UserProfile.Email ?? "default@user");
+                    await SecureStorage.SetAsync(ClaimKeys.Id, context.UserProfile.Id);
+                    await SecureStorage.SetAsync(ClaimKeys.LastName, context.UserProfile.LastName ?? "User");
+                    await SecureStorage.SetAsync(ClaimKeys.FirstName, context.UserProfile.FirstName ?? "Annonymous");
+                    await SecureStorage.SetAsync(ClaimKeys.Expires, $"{context.Expires.Ticks}");
 
-                    await AccountStore.Create().SaveAsync(e.Account, "AuthServer");
                     SuccessfulAuthentication.Invoke(this, new EventArgs());
                 }
                 else

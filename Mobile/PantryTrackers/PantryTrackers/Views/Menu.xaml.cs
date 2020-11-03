@@ -1,7 +1,5 @@
 ﻿using PantryTrackers.ViewModels;
-using Prism.Navigation;
 using System;
-using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,6 +14,27 @@ namespace PantryTrackers.Views
         {
             InitializeComponent();
             _vm = BindingContext as MenuViewModel;
+
+            foreach(var menuItem in _vm.MenuItems)
+            {
+                if(string.IsNullOrEmpty(menuItem.NavigationPage))
+                {
+                    ContentLayout.Children.Add(new Label
+                    {
+                        Text = menuItem.Name
+                    });
+                }
+                else
+                {
+                    var btn = new Button
+                    {
+                        Text = menuItem.Name,
+                    };
+
+                    btn.Clicked += Button_Clicked;
+                    ContentLayout.Children.Add(btn);
+                }
+            }
         }
 
         private async void Button_Clicked(object sender, EventArgs e)

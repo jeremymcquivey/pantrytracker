@@ -10,8 +10,6 @@
 
         public string LastName { get; set; }
 
-        public bool HasLoggedIn { get; set; }
-
         public object[] UserPermissions { get; set; }
     }
 }

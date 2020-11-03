@@ -8,18 +8,11 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="PantryTrackers.Views.Menu">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout x:Name="ContentLayout">
             <Label Text="Main Menu"
-                VerticalOptions="CenterAndExpand" 
+                VerticalOptions="Start" 
                 HorizontalOptions="CenterAndExpand" />
-
-            <Button Clicked="Button_Clicked" Text="Recipes"></Button>
-            <Button Clicked="Button_Clicked" Text="Pantry"></Button>
-            <Button Clicked="Button_Clicked" Text="Menu Plan"></Button>
-            <Button Clicked="Button_Clicked" Text="Grocery List"></Button>
-            <Label>--------------</Label>
-            <Button Clicked="Button_Clicked" Text="Admin"></Button>
-            <Button Clicked="Button_Clicked" Text="Sign Out"></Button>
+            <Label Text="{Binding Account.FirstName, StringFormat='Welcome, {0}!'}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
