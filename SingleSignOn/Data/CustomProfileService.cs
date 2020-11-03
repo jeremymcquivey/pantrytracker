@@ -32,9 +32,11 @@ namespace PantryTrackers.STS.Quickstart.Account
             var nameClaim = claims.Single(c => c.Type == "name");
             claims.Remove(nameClaim);
 
+            claims.Add(new Claim(JwtClaimTypes.Id, user.Id));
             claims.Add(new Claim(JwtClaimTypes.GivenName, user.FirstName));
             claims.Add(new Claim(JwtClaimTypes.FamilyName, user.LastName));
             claims.Add(new Claim(JwtClaimTypes.Name, $"{user.FirstName} {user.LastName}"));
+            claims.Add(new Claim(JwtClaimTypes.Email, user.Email));
 
             context.IssuedClaims = claims;
         }

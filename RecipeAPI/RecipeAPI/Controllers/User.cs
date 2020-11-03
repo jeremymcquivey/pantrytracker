@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using RecipeAPI.Models;
 using PantryTracker.Model.Auth;
 using System.Security.Claims;
+using IdentityModel;
+using System.Linq;
+using System;
 
 namespace RecipeAPI.Controllers
 {
@@ -22,15 +25,21 @@ namespace RecipeAPI.Controllers
         [Route("AuthContext")]
         public IActionResult GetAuthContext()
         {
+            var identity = User.Claims;
+            long.TryParse(identity.FirstOrDefault(c => c.Type == JwtClaimTypes.Expiration)?.Value, out long expTicks);
+
             return Ok(new AuthContext
             {
+                Expires = new DateTime(expTicks),
                 UserProfile = new UserProfile
                 {
-                    Id = AuthenticatedUser,
+                    Id = identity.FirstOrDefault(c => c.Type == JwtClaimTypes.Id)?.Value,
                     FirstName = User.FindFirst(ClaimTypes.GivenName)?.Value,
+                    Email = User.FindFirst(JwtClaimTypes.PreferredUserName)?.Value,
+                    LastName = User.FindFirst(ClaimTypes.Surname)?.Value
                 },
                 Roles = UserRoles
-            });
+            }); ;
         }
     }
 }
