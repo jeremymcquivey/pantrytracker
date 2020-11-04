@@ -5,6 +5,11 @@ using Xamarin.Forms.Xaml;
 
 namespace PantryTrackers.Views
 {
+    public class MenuEventArgs: EventArgs
+    {
+        MenuItem Item { get; set; }
+    }
+
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Menu : ContentPage
     {
@@ -29,17 +34,13 @@ namespace PantryTrackers.Views
                     var btn = new Button
                     {
                         Text = menuItem.Name,
+                        Command = _vm.DoSomethingCommand,
+                        CommandParameter = menuItem
                     };
 
-                    btn.Clicked += Button_Clicked;
                     ContentLayout.Children.Add(btn);
                 }
             }
-        }
-
-        private async void Button_Clicked(object sender, EventArgs e)
-        {
-            _vm.DoSomething();
         }
     }
 }

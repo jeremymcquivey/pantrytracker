@@ -15,5 +15,7 @@ namespace PantryTrackers.Security
         internal static string FirstName = nameof(UserProfile.FirstName);
 
         internal static string LastName = nameof(UserProfile.LastName);
+
+        internal static string BearerToken = "BearerToken";
     }
 }

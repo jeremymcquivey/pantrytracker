@@ -2,10 +2,12 @@
 {
     public class AuthContext
     {
-        public System.DateTime Expires;
+        public string BearerToken { get; set; }
 
-        public string[] Roles;
+        public System.DateTime Expires { get; set; }
 
-        public UserProfile UserProfile;
+        public string[] Roles { get; set; }
+
+        public UserProfile UserProfile { get; set; }
     }
 }

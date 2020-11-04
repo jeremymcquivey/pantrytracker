@@ -2,10 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Prism.Ioc;
 using System;
-using System.ComponentModel;
-using System.Net.Http;
 using System.Reflection;
 using Unity;
 using Unity.Microsoft.DependencyInjection;

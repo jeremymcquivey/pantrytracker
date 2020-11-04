@@ -1,4 +1,5 @@
-﻿using PantryTrackers.Views.Recipes;
+﻿using PantryTrackers.Views.MenuPlan;
+using PantryTrackers.Views.Recipes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,12 @@ namespace PantryTrackers.Models.Meta
             return new List<MenuItem>
             {
                 new MenuItem { Name = "Recipes", NavigationPage = nameof(RecipeListPage) },
-                new MenuItem { Name = "Pantry", NavigationPage = nameof(RecipeListPage) },
-                new MenuItem { Name = "Menu Plan", NavigationPage = nameof(RecipeListPage) },
-                new MenuItem { Name = "Grocery List", NavigationPage = nameof(RecipeListPage) },
-                new MenuItem { Name = "--------------", NavigationPage = nameof(RecipeListPage) },
-                new MenuItem { Name = "Admin", NavigationPage = nameof(RecipeListPage), RequiredRole = "Admin" },
-                new MenuItem { Name = "Sign Out", NavigationPage = nameof(RecipeListPage) },
+                new MenuItem { Name = "Pantry", NavigationPage = null },
+                new MenuItem { Name = "Menu Plan", NavigationPage = nameof(MenuPlanPage) },
+                new MenuItem { Name = "Grocery List", NavigationPage = null },
+                new MenuItem { Name = "--------------", NavigationPage = null },
+                new MenuItem { Name = "Admin", NavigationPage = null, RequiredRole = "Admin" },
+                new MenuItem { Name = "Sign Out", NavigationPage = null },
             };
         }
     }

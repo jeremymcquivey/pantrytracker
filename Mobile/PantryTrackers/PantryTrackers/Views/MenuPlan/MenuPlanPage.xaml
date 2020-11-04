@@ -6,14 +6,10 @@
              mc:Ignorable="d"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="PantryTrackers.Views.Menu">
+             x:Class="PantryTrackers.Views.MenuPlan.MenuPlanPage">
     <ContentPage.Content>
-        <StackLayout x:Name="ContentLayout">
-            <Label Text="Main Menu"
-                VerticalOptions="Start" 
-                HorizontalOptions="CenterAndExpand" />
-            <Label Text="{Binding Account.FirstName, StringFormat='Welcome, {0}!'}" />
-            <!-- Menu Items are Dynamically Loaded -->
+        <StackLayout>
+            <Label Text="Welcome to the Menu Plan" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

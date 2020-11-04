@@ -44,10 +44,10 @@ namespace PantryTrackers.Security
             var account = await GetUserProfile();
             if (account != null && DateTime.Now.ToUniversalTime() <= account.Expires)
             {
-                using(var client = _clientFactory.CreateClient())
+                /*using(var client = _clientFactory.CreateClient())
                 { 
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {AuthAccount.Properties["access_token"]}");
-                }
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.BearerToken}");
+                }*/
             }
             else
             {
@@ -67,7 +67,8 @@ namespace PantryTrackers.Security
             long.TryParse(await SecureStorage.GetAsync(ClaimKeys.Expires), out long expTicks);
             return new AuthContext
             {
-                Expires = new DateTime(expTicks),
+                BearerToken = await SecureStorage.GetAsync(ClaimKeys.BearerToken),
+                Expires = DateTimeOffset.FromUnixTimeSeconds(expTicks).UtcDateTime,
                 Roles = (await SecureStorage.GetAsync(ClaimKeys.Roles))?.Split(RoleDelimiter),
                 UserProfile = new UserProfile
                 {
@@ -95,6 +96,7 @@ namespace PantryTrackers.Security
                     await SecureStorage.SetAsync(ClaimKeys.LastName, context.UserProfile.LastName ?? "User");
                     await SecureStorage.SetAsync(ClaimKeys.FirstName, context.UserProfile.FirstName ?? "Annonymous");
                     await SecureStorage.SetAsync(ClaimKeys.Expires, $"{context.Expires.Ticks}");
+                    await SecureStorage.SetAsync(ClaimKeys.BearerToken, AuthAccount.Properties["access_token"]);
 
                     SuccessfulAuthentication.Invoke(this, new EventArgs());
                 }

@@ -10,6 +10,9 @@ using System;
 using Prism.Navigation;
 using PantryTrackers.Models.Meta;
 using PantryTrackers.Views.Recipes;
+using System.Net.Http;
+using PantryTrackers.Services;
+using PantryTrackers.Views.MenuPlan;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PantryTrackers
@@ -106,8 +109,13 @@ namespace PantryTrackers
             containerRegistry.RegisterForNavigation<Upgrade, UpgradeViewModel>();
             containerRegistry.RegisterForNavigation<RecipeDetailPage, RecipeDetailPageViewModel>();
 
+            containerRegistry.RegisterForNavigation<MenuPlanPage, MenuPlanPageViewModel>();
+
             containerRegistry.Register<AuthenticationService>();
             containerRegistry.Register<MetadataService>();
+
+            containerRegistry.Register<RestClient>();
+            containerRegistry.RegisterInstance(new HttpClient());
         }
 
         protected override void OnSleep()
