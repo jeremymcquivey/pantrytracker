@@ -7,9 +7,17 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="PantryTrackers.Views.Pantry.PantryMainPage">
+    
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Pantry List" />
+            <ScrollView>
+                <Label Text="Stuff" />
+            </ScrollView>
+            <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
+                <Button HorizontalOptions="Start" Text="Remove" />
+                <Label Text="Pantry List" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                <Button HorizontalOptions="End" Text="Add" Command="{Binding AddInventoryCommand}" />
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
