@@ -4,7 +4,7 @@ using PantryTrackers.ViewModels;
 using PantryTrackers.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PantryTrackers.Security;
+using PantryTrackers.Common.Security;
 using Prism.Unity;
 using System;
 using Prism.Navigation;
@@ -13,6 +13,12 @@ using PantryTrackers.Views.Recipes;
 using System.Net.Http;
 using PantryTrackers.Services;
 using PantryTrackers.Views.MenuPlan;
+using PantryTrackers.Views.Pantry;
+using PantryTrackers.ViewModels.Pantry;
+using PantryTrackers.Views.NavMenu;
+using PantryTrackers.ViewModels.NavMenu;
+using PantryTrackers.Views.Errors;
+using PantryTrackers.ViewModels.Errors;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PantryTrackers
@@ -30,7 +36,7 @@ namespace PantryTrackers
         protected override async void OnInitialized()
         {
             InitializeComponent();
-            await NavigationService.NavigateAsync("/Menu");
+            await NavigationService.NavigateAsync($"/{nameof(NavMenuPage)}");
         }
 
         protected override async void OnStart()
@@ -49,12 +55,17 @@ namespace PantryTrackers
                 Application.Current.Dispatcher.BeginInvokeOnMainThread(async () =>
                 {
                     _isAuthenticating = false;
-                    var navParams = new NavigationParameters();
-                    navParams.Add("Stuff", new VersionMetadata
+                    var navParams = new NavigationParameters
                     {
-                        MinVersionCode = 125,
-                        MinVersionName = "5.0"
-                    });
+                        {
+                            "Stuff",
+                            new VersionMetadata
+                            {
+                                MinVersionCode = 125,
+                                MinVersionName = "5.0"
+                            }
+                        }
+                    };
                     await NavigationService.NavigateAsync("/Upgrade", navParams);
                 });
             };
@@ -77,7 +88,7 @@ namespace PantryTrackers
             Application.Current.Dispatcher.BeginInvokeOnMainThread(async () =>
             {
                 _isAuthenticating = false;
-                await NavigationService.NavigateAsync("/Menu");
+                await NavigationService.NavigateAsync($"/{nameof(NavMenuPage)}");
             });
         }
 
@@ -102,14 +113,17 @@ namespace PantryTrackers
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<RecipeListPage, RecipeListPageViewModel>();
             containerRegistry.RegisterForNavigation<Unauthorized, UnauthorizedViewModel>();
             containerRegistry.RegisterForNavigation<Error, ErrorViewModel>();
-            containerRegistry.RegisterForNavigation<Views.Menu, MenuViewModel>();
+            containerRegistry.RegisterForNavigation<NavMenuPage, NavMenuPageViewModel>();
             containerRegistry.RegisterForNavigation<Upgrade, UpgradeViewModel>();
+
             containerRegistry.RegisterForNavigation<RecipeDetailPage, RecipeDetailPageViewModel>();
+            containerRegistry.RegisterForNavigation<RecipeListPage, RecipeListPageViewModel>();
 
             containerRegistry.RegisterForNavigation<MenuPlanPage, MenuPlanPageViewModel>();
+
+            containerRegistry.RegisterForNavigation<PantryMainPage, PantryMainPageViewModel>();
 
             containerRegistry.Register<AuthenticationService>();
             containerRegistry.Register<MetadataService>();

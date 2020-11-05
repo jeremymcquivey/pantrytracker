@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PantryTrackers.Common.Controls.CardView">
+    <ContentView.Resources>
+        <ControlTemplate x:Key="CardViewControlTemplate">
+            <Frame BindingContext="{Binding Source={RelativeSource TemplatedParent}}"
+                   BackgroundColor="Red"
+                   BorderColor="Blue"
+                   CornerRadius="5"
+                   HasShadow="True"
+                   Padding="8"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+
+                <StackLayout>
+                    <Label Text="{Binding CardTitle}"
+                           FontAttributes="Bold"
+                           FontSize="Large"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start" />
+
+                    <BoxView BackgroundColor="Purple"
+                             HeightRequest="2"
+                             HorizontalOptions="Fill" />
+
+                    <Label Text="{Binding CardDescription}"
+                           VerticalTextAlignment="Start"
+                           VerticalOptions="Fill"
+                           HorizontalOptions="Fill" />
+                    
+                </StackLayout>
+            </Frame>
+        </ControlTemplate>
+    </ContentView.Resources>
+</ContentView>

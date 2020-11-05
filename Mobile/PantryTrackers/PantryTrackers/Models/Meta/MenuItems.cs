@@ -1,4 +1,6 @@
-﻿using PantryTrackers.Views.MenuPlan;
+﻿using PantryTrackers.Models.NavMenu;
+using PantryTrackers.Views.MenuPlan;
+using PantryTrackers.Views.Pantry;
 using PantryTrackers.Views.Recipes;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ namespace PantryTrackers.Models.Meta
 {
     internal static class MenuItems
     {
-        internal static IEnumerable<MenuItem> ForRoles(IEnumerable<string> roles)
+        public static IEnumerable<NavMenuItem> ForRoles(IEnumerable<string> roles)
         {
             roles ??= Enumerable.Empty<string>();
 
@@ -16,17 +18,17 @@ namespace PantryTrackers.Models.Meta
                                            roles.Contains(menuItem.RequiredRole));
         }
 
-        private static IEnumerable<MenuItem> All()
+        private static IEnumerable<NavMenuItem> All()
         {
-            return new List<MenuItem>
+            return new List<NavMenuItem>
             {
-                new MenuItem { Name = "Recipes", NavigationPage = nameof(RecipeListPage) },
-                new MenuItem { Name = "Pantry", NavigationPage = null },
-                new MenuItem { Name = "Menu Plan", NavigationPage = nameof(MenuPlanPage) },
-                new MenuItem { Name = "Grocery List", NavigationPage = null },
-                new MenuItem { Name = "--------------", NavigationPage = null },
-                new MenuItem { Name = "Admin", NavigationPage = null, RequiredRole = "Admin" },
-                new MenuItem { Name = "Sign Out", NavigationPage = null },
+                new NavMenuItem { Name = "Recipes", NavigationPage = nameof(RecipeListPage) },
+                new NavMenuItem { Name = "Pantry", NavigationPage = nameof(PantryMainPage) },
+                new NavMenuItem { Name = "Menu Plan", NavigationPage = nameof(MenuPlanPage) },
+                new NavMenuItem { Name = "Grocery List", NavigationPage = null },
+                new NavMenuItem { Name = "--------------", NavigationPage = null },
+                new NavMenuItem { Name = "Admin", NavigationPage = null, RequiredRole = "Admin" },
+                new NavMenuItem { Name = "Sign Out", NavigationPage = null },
             };
         }
     }

@@ -7,7 +7,7 @@ using System.Net;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 using Xamarin.Essentials;
-using PantryTrackers.Security;
+using PantryTrackers.Common.Security;
 
 namespace PantryTrackers.Services
 {
@@ -17,8 +17,8 @@ namespace PantryTrackers.Services
     /// </summary>
     public sealed class RestClient
     {
-        private HttpClient _client;
-        private IConfiguration _config;
+        private readonly HttpClient _client;
+        private readonly IConfiguration _config;
 
         /// <summary>
         /// url of the highest common level of the api endpoint
