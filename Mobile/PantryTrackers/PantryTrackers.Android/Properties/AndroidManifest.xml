@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.jeremymcquivey.pantrytrackers" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="24" android:targetSdkVersion="28" />
+  
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="PantryTrackers.Android" android:icon="@mipmap/ic_launcher"></application>
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+  <application android:label="PantryTrackers.Android" android:icon="@mipmap/ic_launcher"></application>
 </manifest>

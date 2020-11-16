@@ -15,7 +15,6 @@ namespace PantryTrackers.ViewModels
     public class RecipeListPageViewModel : ViewModelBase
     {
         private readonly INavigationService _nav;
-        private readonly RestClient _client;
         private BindableCollection<Recipe> _recipes;
         private Command _loadRecipeDetailsCommand;
 
@@ -36,15 +35,14 @@ namespace PantryTrackers.ViewModels
         });
 
         public RecipeListPageViewModel(INavigationService navigationService, RestClient client) 
-            : base (navigationService)
+            : base (navigationService, client)
         {
-            Title = "Main Page";
+            //Title = "Main Page";
             _nav = navigationService;
-            _client = client;
              
             Task.Run(async () =>
             {
-                var result = await _client.MakeRequest<object>(new Uri("v1/MenuPlan?startDate=2020-11-03&endDate=2020-11-17", UriKind.Relative), HttpMethod.Get);
+                var result = await Client.MakeRequest<object>(new Uri("v1/MenuPlan?startDate=2020-11-03&endDate=2020-11-17", UriKind.Relative), HttpMethod.Get);
                 var obj = await result.GetDeserializedContent<object>();
             });
         }

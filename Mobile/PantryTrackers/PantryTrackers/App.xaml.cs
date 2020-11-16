@@ -19,6 +19,8 @@ using PantryTrackers.Views.NavMenu;
 using PantryTrackers.ViewModels.NavMenu;
 using PantryTrackers.Views.Errors;
 using PantryTrackers.ViewModels.Errors;
+using PantryTrackers.Controls;
+using PantryTrackers.Controls.ViewModel;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PantryTrackers
@@ -26,8 +28,8 @@ namespace PantryTrackers
     public partial class App
     {
         private AuthenticationService _authService;
-        private bool _isAuthenticating;
         private MetadataService _metadataService;
+        private bool _isAuthenticating;
 
         public App() : this(null) { }
 
@@ -36,7 +38,7 @@ namespace PantryTrackers
         protected override async void OnInitialized()
         {
             InitializeComponent();
-            await NavigationService.NavigateAsync($"/{nameof(NavMenuPage)}");
+            await NavigationService.NavigateAsync($"/{nameof(Unauthorized)}");
         }
 
         protected override async void OnStart()
@@ -113,6 +115,8 @@ namespace PantryTrackers
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<BarcodeScannerPage, BarcodeScannerPageViewModel>();
+
             containerRegistry.RegisterForNavigation<Unauthorized, UnauthorizedViewModel>();
             containerRegistry.RegisterForNavigation<Error, ErrorViewModel>();
             containerRegistry.RegisterForNavigation<NavMenuPage, NavMenuPageViewModel>();
@@ -129,7 +133,7 @@ namespace PantryTrackers
             containerRegistry.Register<AuthenticationService>();
             containerRegistry.Register<MetadataService>();
 
-            containerRegistry.Register<RestClient>();
+            containerRegistry.RegisterSingleton<RestClient>();
             containerRegistry.RegisterInstance(new HttpClient());
         }
 

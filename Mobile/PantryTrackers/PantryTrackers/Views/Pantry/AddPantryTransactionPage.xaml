@@ -12,7 +12,7 @@
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand" />
                 
-                <Button HorizontalOptions="End" Text="Barcode"/>
+                <Button HorizontalOptions="End" Text="Barcode" Command="{Binding LaunchBarcodeScannerCommand}"/>
             </StackLayout>
             
             <StackLayout>

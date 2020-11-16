@@ -1,4 +1,5 @@
 ﻿using PantryTrackers.Models.Recipes;
+using PantryTrackers.Services;
 using Prism.Navigation;
 
 namespace PantryTrackers.ViewModels
@@ -8,15 +9,16 @@ namespace PantryTrackers.ViewModels
         public Recipe Recipe { get; private set; }
 
         public RecipeDetailPageViewModel(INavigationService navigationService):
-            base(navigationService)
+            base(navigationService, null)
         {
 
         }
+        public override void OnNavigatedFrom(INavigationParameters parameters) { base.OnNavigatedTo(parameters); }
 
-        public void OnNavigatedFrom(INavigationParameters parameters) { }
-
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
+            base.OnNavigatedTo(parameters);
+
             if(parameters.ContainsKey("Recipe"))
             {
                 Recipe = parameters["Recipe"] as Recipe;

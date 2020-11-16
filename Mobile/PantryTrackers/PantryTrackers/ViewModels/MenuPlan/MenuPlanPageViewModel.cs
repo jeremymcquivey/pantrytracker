@@ -1,15 +1,13 @@
-﻿using Prism.Navigation;
+﻿using PantryTrackers.Services;
+using Prism.Navigation;
 
 namespace PantryTrackers.ViewModels
 {
     public class MenuPlanPageViewModel: ViewModelBase
     {
-        private readonly INavigationService _navService;
-
         public MenuPlanPageViewModel(INavigationService navigationService)
-            : base(navigationService)
+            : base(navigationService, null)
         { 
-            _navService = navigationService;
         }
     }
 }

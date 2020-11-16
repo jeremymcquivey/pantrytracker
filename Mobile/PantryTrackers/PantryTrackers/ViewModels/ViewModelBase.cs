@@ -1,31 +1,50 @@
-﻿using Prism.Commands;
+﻿using PantryTrackers.Services;
 using Prism.Mvvm;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PantryTrackers.ViewModels
 {
-    public class ViewModelBase : BindableBase, IDestructible
+    public class ViewModelBase : BindableBase, INavigatedAware
     {
         protected INavigationService NavigationService { get; private set; }
 
-        private string _title;
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
+        protected RestClient Client { get; private set; }
 
-        public ViewModelBase(INavigationService navigationService)
+        public ViewModelBase(INavigationService navigationService, RestClient client)
         {
             NavigationService = navigationService;
+            Client = client;
         }
 
-        public virtual void Destroy()
+        public virtual void OnNavigatedFrom(INavigationParameters parameters)
         {
-            
+            if (Client != default)
+            {
+                Client.OnBadRequestErrorOccurred -= OnNetworkErrorOccurred;
+                Client.OnForbiddenResponse -= OnNetworkErrorOccurred;
+                Client.OnNotFoundResponse -= OnNetworkErrorOccurred;
+                Client.OnServerErrorOccurred -= OnNetworkErrorOccurred;
+                Client.OnServiceUnavailable -= OnNetworkErrorOccurred;
+                Client.OnUnauthorizedResponse -= OnNetworkErrorOccurred;
+            }
+        }
+
+        public virtual void OnNavigatedTo(INavigationParameters parameters)
+        {
+            if (Client != default)
+            {
+                Client.OnBadRequestErrorOccurred += OnNetworkErrorOccurred;
+                Client.OnForbiddenResponse += OnNetworkErrorOccurred;
+                Client.OnNotFoundResponse += OnNetworkErrorOccurred;
+                Client.OnServerErrorOccurred += OnNetworkErrorOccurred;
+                Client.OnServiceUnavailable += OnNetworkErrorOccurred;
+                Client.OnUnauthorizedResponse += OnNetworkErrorOccurred;
+            }
+        }
+
+        protected virtual void OnNetworkErrorOccurred(object sender, System.Net.Http.HttpResponseMessage e)
+        {
+            // TODO: Handle bad requests here.
         }
     }
 }

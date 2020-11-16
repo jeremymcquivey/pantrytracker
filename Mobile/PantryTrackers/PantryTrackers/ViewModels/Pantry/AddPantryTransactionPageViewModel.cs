@@ -1,18 +1,37 @@
-﻿using PantryTrackers.Models;
+﻿using PantryTrackers.Controls;
+using PantryTrackers.Models;
+using PantryTrackers.Services;
 using Prism.Navigation;
+using Xamarin.Forms;
 
 namespace PantryTrackers.ViewModels.Pantry
 {
-    public class AddPantryTransactionPageViewModel: ViewModelBase
+    public class AddPantryTransactionPageViewModel : ViewModelBase
     {
         private PantryTransaction _transaction;
+        private Command _launchBarcodeScannerCommand;
+        private readonly INavigationService _navService;
 
-        public PantryTransaction Transaction { get => _transaction; set { _transaction = value; RaisePropertyChanged(nameof(Transaction)); } }
+        public Command LaunchBarcodeScannerCommand => _launchBarcodeScannerCommand ??=
+            new Command(async () => 
+            { 
+                await _navService.NavigateAsync(nameof(BarcodeScannerPage)); 
+            });
+
+        public PantryTransaction Transaction 
+        { 
+            get => _transaction; 
+            set 
+            { 
+                _transaction = value; 
+                RaisePropertyChanged(nameof(Transaction)); 
+            } 
+        }
 
         public AddPantryTransactionPageViewModel(INavigationService navigationService):
-            base(navigationService)
+            base(navigationService, null)
         {
-
+            _navService = navigationService;
         }
     }
 }

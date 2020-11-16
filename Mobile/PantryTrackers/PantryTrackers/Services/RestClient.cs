@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using Microsoft.Extensions.Configuration;
-using System.Net.Http.Headers;
 using Xamarin.Essentials;
 using PantryTrackers.Common.Security;
+using System.Net.Http.Headers;
 
 namespace PantryTrackers.Services
 {
@@ -19,6 +19,13 @@ namespace PantryTrackers.Services
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _config;
+
+        internal event EventHandler<HttpResponseMessage> OnUnauthorizedResponse; // 401 response
+        internal event EventHandler<HttpResponseMessage> OnForbiddenResponse; // 403 response
+        internal event EventHandler<HttpResponseMessage> OnNotFoundResponse; // 404 response
+        internal event EventHandler<HttpResponseMessage> OnBadRequestErrorOccurred; // other 400-level responses
+        internal event EventHandler<HttpResponseMessage> OnServiceUnavailable; // 503 response
+        internal event EventHandler<HttpResponseMessage> OnServerErrorOccurred; // other 500-level responses
 
         /// <summary>
         /// url of the highest common level of the api endpoint
@@ -66,30 +73,70 @@ namespace PantryTrackers.Services
                 }
 
                 // if (isLongRunning) { Client.Timeout = System.Threading.Timeout.InfiniteTimeSpan; }
-                return await _client?.SendAsync(request);
+                var response = await _client?.SendAsync(request);
+                
+                if(response.IsSuccessStatusCode)
+                {
+                    return response;
+                }
+
+                return ProcessError(response);
             }
             catch (HttpRequestException ex)
             {
                 if (null != ex.InnerException && ex.InnerException.GetType() == typeof(WebException))
                 {
-                    throw new Exception("Lost internet connection");
-                    //throw new LostNetworkConnectionException();
+                    return ProcessError(new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent(ex.InnerException.Message)
+                    });
                 }
                 else
                 {
-                    return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                    return ProcessError(new HttpResponseMessage(HttpStatusCode.InternalServerError)
                     {
                         Content = new StringContent(ex.Message)
-                    };
+                    });
                 }
             }
             catch (Exception ex)
             {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                return ProcessError(new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent(ex.Message)
-                };
+                });
             }
+        }
+
+        private HttpResponseMessage ProcessError(HttpResponseMessage response)
+        {
+            // TODO: Log network request failure;
+
+            switch (response.StatusCode)
+            {
+               case HttpStatusCode.BadRequest:
+                    OnBadRequestErrorOccurred?.Invoke(this, response);
+                    break;
+                case HttpStatusCode.NotFound:
+                case HttpStatusCode.Gone:
+                    OnNotFoundResponse?.Invoke(this, response);
+                    break;
+                case HttpStatusCode.ServiceUnavailable:
+                    OnServiceUnavailable?.Invoke(this, response);
+                    break;
+                case HttpStatusCode.Unauthorized:
+                    OnUnauthorizedResponse?.Invoke(this, response);
+                    break;
+                case HttpStatusCode.Forbidden:
+                    OnForbiddenResponse?.Invoke(this, response);
+                    break;
+                case HttpStatusCode.InternalServerError:
+                default:
+                    OnServerErrorOccurred?.Invoke(this, response);
+                    break;
+            }
+
+            return response;
         }
 
         /*protected async Task<MemoryStream> DownloadFile(Uri uri, HttpMethod type, string filename, string mimeType, Dictionary<string, string> requestHeaders = null, object content = null)

@@ -2,6 +2,7 @@
 using PantryTrackers.Common.Security.Models;
 using PantryTrackers.Models.NavMenu;
 using PantryTrackers.Models.Recipes;
+using PantryTrackers.Services;
 using Prism.Navigation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -30,8 +31,8 @@ namespace PantryTrackers.ViewModels.NavMenu
             await _navService.NavigateAsync(item.NavigationPage);
         });
 
-        public NavMenuPageViewModel(INavigationService navigationService)
-            : base(navigationService) 
+        public NavMenuPageViewModel(INavigationService navigationService, RestClient client)
+            : base(navigationService, client)
         {
             _navService = navigationService;
             Task.Run(async () => { Account = (await AuthenticationService.GetUserProfile()).UserProfile; RaisePropertyChanged(nameof(Account)); });

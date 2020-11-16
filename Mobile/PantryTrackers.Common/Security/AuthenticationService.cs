@@ -44,6 +44,7 @@ namespace PantryTrackers.Common.Security
             var account = await GetUserProfile();
             if (account != null && DateTime.Now.ToUniversalTime() <= account.Expires)
             {
+                SuccessfulAuthentication?.Invoke(this, new EventArgs());
                 /*using(var client = _clientFactory.CreateClient())
                 { 
                     client.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.BearerToken}");

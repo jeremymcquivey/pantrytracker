@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PantryTrackers.Controls.BarcodeScannerPage"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms">
+    
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--<zxing:ZXingScannerView Grid.Row="0"
+                                    MinimumHeightRequest="200"
+                                    MinimumWidthRequest="200"
+                                    ScanResultCommand="{Binding BarcodeScanResultCommand}"
+                                    IsScanning="false" /> -->
+
+            <StackLayout Grid.Row="1">
+                <Entry Text="{Binding ManualTextInput}" Keyboard="Numeric" Placeholder="Manual Barcode Entry"></Entry>
+                <Button Text="Submit" Command="{Binding ManualScanResultCommand}"></Button>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

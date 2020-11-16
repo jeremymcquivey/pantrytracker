@@ -3,6 +3,7 @@ using Prism.Navigation;
 using PantryTrackers.Models.Meta;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using PantryTrackers.Services;
 
 namespace PantryTrackers.ViewModels.Errors
 {
@@ -35,15 +36,16 @@ namespace PantryTrackers.ViewModels.Errors
         }
 
         public UpgradeViewModel(INavigationService navigationService, IPlatformConfig config)
-            : base(navigationService) 
+            : base(navigationService, null) 
         {
             _config = config;
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters) { }
+        public override void OnNavigatedFrom(INavigationParameters parameters) { base.OnNavigatedTo(parameters); }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
+            base.OnNavigatedTo(parameters);
             if(parameters.ContainsKey("Stuff"))
             {
                 var stuff = parameters["Stuff"] as VersionMetadata;

@@ -20,6 +20,9 @@ namespace PantryTrackers.Droid
 
             base.OnCreate(bundle);
 
+            // 3rd party initializations
+            ZXing.Net.Mobile.Forms.Android.Platform.Init();
+
             Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App(new AndroidInitializer()));
             Xamarin.Auth.Presenters.XamarinAndroid.AuthenticationConfiguration.Init(this, bundle);

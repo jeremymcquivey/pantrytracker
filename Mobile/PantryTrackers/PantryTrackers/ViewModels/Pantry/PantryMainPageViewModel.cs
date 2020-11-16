@@ -1,4 +1,5 @@
-﻿using PantryTrackers.Views.Pantry;
+﻿using PantryTrackers.Services;
+using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
 using Xamarin.Forms;
 
@@ -15,7 +16,7 @@ namespace PantryTrackers.ViewModels.Pantry
         });
 
         public PantryMainPageViewModel(INavigationService navigationService):
-            base(navigationService)
+            base(navigationService, null)
         {
             _navigationService = navigationService;
         }

@@ -10686,6 +10686,9 @@ namespace PantryTrackers.Droid
 			global::Xamarin.Forms.Platform.Resource.Styleable.View_paddingEnd = global::PantryTrackers.Droid.Resource.Styleable.View_paddingEnd;
 			global::Xamarin.Forms.Platform.Resource.Styleable.View_paddingStart = global::PantryTrackers.Droid.Resource.Styleable.View_paddingStart;
 			global::Xamarin.Forms.Platform.Resource.Styleable.View_theme = global::PantryTrackers.Droid.Resource.Styleable.View_theme;
+			global::ZXing.Net.Mobile.Forms.Android.Resource.Layout.zxingscanneractivitylayout = global::PantryTrackers.Droid.Resource.Layout.zxingscanneractivitylayout;
+			global::ZXing.Net.Mobile.Forms.Android.Resource.Layout.zxingscannerfragmentlayout = global::PantryTrackers.Droid.Resource.Layout.zxingscannerfragmentlayout;
+			global::ZXing.Net.Mobile.Forms.Android.Resource.String.library_name = global::PantryTrackers.Droid.Resource.String.library_name;
 			global::ZXing.Mobile.Resource.Id.contentFrame = global::PantryTrackers.Droid.Resource.Id.contentFrame;
 			global::ZXing.Mobile.Resource.Layout.zxingscanneractivitylayout = global::PantryTrackers.Droid.Resource.Layout.zxingscanneractivitylayout;
 			global::ZXing.Mobile.Resource.Layout.zxingscannerfragmentlayout = global::PantryTrackers.Droid.Resource.Layout.zxingscannerfragmentlayout;

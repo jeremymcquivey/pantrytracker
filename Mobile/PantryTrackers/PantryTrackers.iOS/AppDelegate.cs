@@ -22,6 +22,10 @@ namespace PantryTrackers.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            //3rd party initializations
+            ZXing.Net.Mobile.Forms.iOS.Platform.Init();
+
             LoadApplication(new App(new iOSInitializer()));
 
             return base.FinishedLaunching(app, options);
