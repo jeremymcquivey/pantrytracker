@@ -1,6 +1,6 @@
-﻿using PantryTrackers.Services;
-using PantryTrackers.Views.Pantry;
+﻿using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace PantryTrackers.ViewModels.Pantry
@@ -9,6 +9,13 @@ namespace PantryTrackers.ViewModels.Pantry
     {
         private Command _addInventoryCommand;
         private readonly INavigationService _navigationService;
+
+        public Command SomeCommand => new Command(() =>
+        {
+            PantryLines = new List<object> { new { }, new { }, new { } };
+        });
+
+        public IEnumerable<object> PantryLines { get; private set; } = new List<object> { new { Name = "Old 1" }, new { Name = "Old 2" } };
 
         public Command AddInventoryCommand => _addInventoryCommand ??= new Command(async () =>
         {

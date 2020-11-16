@@ -35,7 +35,8 @@ namespace PantryTrackers.Common.Security
         public async void Authenticate()
         {
             var oAuth = new OAuth2AuthenticatorEx("pantrytrackers-mobile", "pantrytrackers-api",
-                new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/connect/authorize"), new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/redirect"))
+                new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/connect/authorize"), 
+                new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/redirect"))
             {
                 AccessTokenUrl = new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/connect/token"),
                 ShouldEncounterOnPageLoading = false
@@ -45,10 +46,6 @@ namespace PantryTrackers.Common.Security
             if (account != null && DateTime.Now.ToUniversalTime() <= account.Expires)
             {
                 SuccessfulAuthentication?.Invoke(this, new EventArgs());
-                /*using(var client = _clientFactory.CreateClient())
-                { 
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.BearerToken}");
-                }*/
             }
             else
             {
@@ -56,11 +53,6 @@ namespace PantryTrackers.Common.Security
                 presenter.Completed += Presenter_Completed;
                 presenter.Login(oAuth);
             }
-        }
-
-        public async Task<bool> IsAuthenticated()
-        {
-            return false;
         }
 
         public static async Task<AuthContext> GetUserProfile()

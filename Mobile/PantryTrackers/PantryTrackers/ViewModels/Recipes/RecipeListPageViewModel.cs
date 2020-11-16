@@ -37,7 +37,6 @@ namespace PantryTrackers.ViewModels
         public RecipeListPageViewModel(INavigationService navigationService, RestClient client) 
             : base (navigationService, client)
         {
-            //Title = "Main Page";
             _nav = navigationService;
              
             Task.Run(async () =>

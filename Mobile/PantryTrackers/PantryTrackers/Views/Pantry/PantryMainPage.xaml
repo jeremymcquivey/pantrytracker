@@ -18,6 +18,17 @@
                 <Label Text="Pantry List" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
                 <Button HorizontalOptions="End" Text="Add" Command="{Binding AddInventoryCommand}" />
             </StackLayout>
+            <ListView ItemsSource="{Binding PantryLines}"
+                      SelectionMode="None"
+                      RefreshCommand="{Binding SomeCommand}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding Name, StringFormat='Minimum supported version: {0}'}"></Label>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
