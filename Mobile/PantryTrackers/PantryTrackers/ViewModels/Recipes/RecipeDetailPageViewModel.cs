@@ -1,5 +1,4 @@
 ﻿using PantryTrackers.Models.Recipes;
-using PantryTrackers.Services;
 using Prism.Navigation;
 
 namespace PantryTrackers.ViewModels

@@ -12,6 +12,11 @@ namespace PantryTrackers.Common.Extensions
         {
             try
             {
+                if(!response.IsSuccessStatusCode)
+                {
+                    return default;
+                }
+
                 if(useString)
                 {
                     var str = await response.Content.ReadAsStringAsync();

@@ -1,31 +1,61 @@
-﻿using PantryTrackers.Views.Pantry;
+﻿using PantryTrackers.Common.Extensions;
+using PantryTrackers.Common.Security;
+using PantryTrackers.Models;
+using PantryTrackers.Services;
+using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Net.Http;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace PantryTrackers.ViewModels.Pantry
 {
-    public class PantryMainPageViewModel: ViewModelBase
+    public class PantryMainPageViewModel : ViewModelBase
     {
         private Command _addInventoryCommand;
         private readonly INavigationService _navigationService;
 
         public Command SomeCommand => new Command(() =>
         {
-            PantryLines = new List<object> { new { }, new { }, new { } };
+            //ProductGroups = new List<ProductGroup>();
         });
 
-        public IEnumerable<object> PantryLines { get; private set; } = new List<object> { new { Name = "Old 1" }, new { Name = "Old 2" } };
+        public ObservableCollection<ProductGroup> ProductGroups { get; } =
+            new ObservableCollection<ProductGroup>();
 
         public Command AddInventoryCommand => _addInventoryCommand ??= new Command(async () =>
         {
             await _navigationService.NavigateAsync(nameof(AddPantryTransactionPage));
         });
 
-        public PantryMainPageViewModel(INavigationService navigationService):
-            base(navigationService, null)
+        public PantryMainPageViewModel(INavigationService navigationService, RestClient client):
+            base(navigationService, client)
         {
             _navigationService = navigationService;
+        }
+
+        public override async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            // TODO: Eventually, when we support multiple pantries, this will be the pantry requested.
+            // For now, though, this is the user Id.
+            var pantryId = await SecureStorage.GetAsync(ClaimKeys.Id);
+            var url = $"v1/Pantry/{pantryId}?includeZeroValues=false";
+            var response = await Client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
+            var data = await response.GetDeserializedContent<IEnumerable<ProductGroup>>();
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                ProductGroups.Clear();
+                foreach (var group in data)
+                {
+                    ProductGroups.Add(group);
+                }
+            });
         }
     }
 }
