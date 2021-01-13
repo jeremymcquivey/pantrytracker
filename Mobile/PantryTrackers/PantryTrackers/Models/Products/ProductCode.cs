@@ -24,9 +24,9 @@ namespace PantryTrackers.Models.Products
 
         public string VendorCode { get; set; }
 
-        public string ProductId { get; set; }
+        public int ProductId { get; set; }
 
-        public string VarietyId { get; set; }
+        public int? VarietyId { get; set; }
 
         public Product Product { get; set; }
 

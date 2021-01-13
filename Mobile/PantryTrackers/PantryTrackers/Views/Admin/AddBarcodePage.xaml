@@ -25,7 +25,15 @@
             <Label Text="Unit" />
             <Entry Placeholder="Unit" Text="{Binding Code.Unit}" IsEnabled="{Binding CanEditCode}" />
 
+            <Label Text="Assigned Product" />
+            <StackLayout Orientation="Horizontal">
+                <Entry Placeholder="Select a Product" Text="{Binding Code.Product.Name}" IsEnabled="false" />
+                <Button Text="Edit" Command="{Binding EditProductCommand}"></Button>
+            </StackLayout>
+            
             <Button BackgroundColor="PaleGreen" Text="Save" IsVisible="{Binding CanEditCode}" Command="{Binding SaveCodeCommand}"></Button>
+
+            <Button BackgroundColor="AliceBlue" Text="Clear" IsVisible="{Binding CanEditCode}" Command="{Binding ClearCommand}"></Button>
             
             <Button Text="Barcode Scanner" Command="{Binding LaunchBarcodeScannerCommand}"></Button>
         </StackLayout>

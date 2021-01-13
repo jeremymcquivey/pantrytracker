@@ -1,6 +1,8 @@
 ﻿using PantryTrackers.Controls;
+using PantryTrackers.Models;
 using PantryTrackers.Models.Products;
 using PantryTrackers.Services;
+using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -14,7 +16,9 @@ namespace PantryTrackers.ViewModels.Admin
 
         private ProductCode _code;
         private Command _launchBarcodeScannerCommand;
+        private Command _editProductCommand;
         private Command _saveCodeCommand;
+        private Command _clearCommand;
 
         public bool CanEditCode => string.IsNullOrEmpty(Code?.Vendor);
 
@@ -49,6 +53,23 @@ namespace PantryTrackers.ViewModels.Admin
                 //todo: else an error occurred.
             });
 
+        public Command ClearCommand => _clearCommand ??=
+            new Command(() =>
+            {
+                Code = new ProductCode();
+            });
+
+        public Command EditProductCommand => _editProductCommand ??=
+            new Command(async () =>
+            {
+                var navParams = new NavigationParameters
+                {
+                    { "SelectedProduct", Code?.Product }
+                };
+
+                await _navService.NavigateAsync(nameof(ProductSearchPage));
+            });
+
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
@@ -74,6 +95,14 @@ namespace PantryTrackers.ViewModels.Admin
                         return;
                     }
                 });
+            }
+
+            if (parameters.ContainsKey("SelectedProduct") && parameters["SelectedProduct"].GetType() == typeof(Product))
+            {
+                Code.Product = (Product)parameters["SelectedProduct"];
+                Code.ProductId = Code.Product?.Id ?? 0;
+
+                RaisePropertyChanged(nameof(Code));
             }
         }
 

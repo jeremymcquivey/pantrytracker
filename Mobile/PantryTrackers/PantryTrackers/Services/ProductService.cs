@@ -1,4 +1,5 @@
 ﻿using PantryTrackers.Common.Extensions;
+using PantryTrackers.Models;
 using PantryTrackers.Models.Products;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,14 @@ namespace PantryTrackers.Services
         {
             var url = $"v1/ProductCode/{productText}";
             var response = await _client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
-            return await response.GetDeserializedContent<ProductCode>();
+            return await response.GetDeserializedContent<ProductCode>(useString: true);
+        }
+
+        public async Task<IEnumerable<Product>> SearchByText(string productText)
+        {
+            var url = $"v1/Product/{productText}?identifierType=2";
+            var response = await _client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
+            return await response.GetDeserializedContent<IEnumerable<Product>>();
         }
 
         public async Task<ProductCode> Save(ProductCode code)
