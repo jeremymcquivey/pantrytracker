@@ -1,4 +1,5 @@
 ﻿using PantryTrackers.Models.NavMenu;
+using PantryTrackers.Views.Admin;
 using PantryTrackers.Views.MenuPlan;
 using PantryTrackers.Views.Pantry;
 using PantryTrackers.Views.Recipes;
@@ -27,7 +28,7 @@ namespace PantryTrackers.Models.Meta
                 new NavMenuItem { Name = "Menu Plan", NavigationPage = nameof(MenuPlanPage) },
                 new NavMenuItem { Name = "Grocery List", NavigationPage = null },
                 new NavMenuItem { Name = "--------------", NavigationPage = null },
-                new NavMenuItem { Name = "Admin", NavigationPage = null, RequiredRole = "Admin" },
+                new NavMenuItem { Name = "Admin", NavigationPage = nameof(AddBarcodePage), RequiredRole = "Admin" },
                 new NavMenuItem { Name = "Sign Out", NavigationPage = null },
             };
         }

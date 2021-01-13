@@ -17,9 +17,11 @@ namespace PantryTrackers.ViewModels.NavMenu
 
         public UserProfile Account { private set; get; }
 
+        public string[] Roles = new string[0];
+
         public Recipe Recipe { get; private set; }
 
-        public IEnumerable<NavMenuItem> MenuItems => Models.Meta.MenuItems.ForRoles(new List<string> { "Admin", "Premium" });
+        public IEnumerable<NavMenuItem> MenuItems => Models.Meta.MenuItems.ForRoles(Roles);
 
         public Command DoSomethingCommand => _doSomethingcommand ??= new Command<NavMenuItem>(async (item) =>
         {
@@ -35,7 +37,16 @@ namespace PantryTrackers.ViewModels.NavMenu
             : base(navigationService, client)
         {
             _navService = navigationService;
-            Task.Run(async () => { Account = (await AuthenticationService.GetUserProfile()).UserProfile; RaisePropertyChanged(nameof(Account)); });
+            Task.Run(async () => 
+            {
+                var authContext = await AuthenticationService.GetUserProfile();
+
+                Roles = authContext?.Roles ?? new string[0];
+                RaisePropertyChanged(nameof(MenuItems));
+
+                Account = authContext?.UserProfile;
+                RaisePropertyChanged(nameof(Account));
+            });
         }
     }
 }

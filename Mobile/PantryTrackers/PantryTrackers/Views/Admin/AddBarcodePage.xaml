@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="Manage Barcodes"
+             x:Class="PantryTrackers.Views.Admin.AddBarcodePage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label IsVisible="{Binding CanEditCode, Converter={StaticResource InverseBoolConverter}}">Why is this form disabled?</Label>
+
+            <Label Text="Product Code" />
+            <Entry Placeholder="Product Code" Text="{Binding Code.Code}" IsEnabled="{Binding CanEditCode}" />
+
+            <Label Text="Brand" />
+            <Entry Placeholder="Brand" Text="{Binding Code.Brand}" IsEnabled="{Binding CanEditCode}" />
+
+            <Label Text="Description" />
+            <Entry Placeholder="Description" Text="{Binding Code.Description}" IsEnabled="{Binding CanEditCode}" />
+            
+            <Label Text="Size" />
+            <Entry Placeholder="Size" Text="{Binding Code.Size}" IsEnabled="{Binding CanEditCode}" />
+            
+            <Label Text="Unit" />
+            <Entry Placeholder="Unit" Text="{Binding Code.Unit}" IsEnabled="{Binding CanEditCode}" />
+
+            <Button BackgroundColor="PaleGreen" Text="Save" IsVisible="{Binding CanEditCode}" Command="{Binding SaveCodeCommand}"></Button>
+            
+            <Button Text="Barcode Scanner" Command="{Binding LaunchBarcodeScannerCommand}"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

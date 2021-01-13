@@ -28,6 +28,16 @@ namespace PantryTrackers.ViewModels.Pantry
             } 
         }
 
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            if(parameters.ContainsKey("BarcodeScanResult"))
+            {
+                // We have a barcode result
+            }
+        }
+
         public AddPantryTransactionPageViewModel(INavigationService navigationService):
             base(navigationService, null)
         {

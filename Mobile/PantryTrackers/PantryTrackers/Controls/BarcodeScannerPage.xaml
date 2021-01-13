@@ -13,11 +13,13 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!--<zxing:ZXingScannerView Grid.Row="0"
+            <zxing:ZXingScannerView Grid.Row="0"
                                     MinimumHeightRequest="200"
                                     MinimumWidthRequest="200"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="FillAndExpand"
                                     ScanResultCommand="{Binding BarcodeScanResultCommand}"
-                                    IsScanning="false" /> -->
+                                    IsScanning="true" />
 
             <StackLayout Grid.Row="1">
                 <Entry Text="{Binding ManualTextInput}" Keyboard="Numeric" Placeholder="Manual Barcode Entry"></Entry>

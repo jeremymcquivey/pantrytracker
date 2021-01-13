@@ -21,6 +21,8 @@ using PantryTrackers.Views.Errors;
 using PantryTrackers.ViewModels.Errors;
 using PantryTrackers.Controls;
 using PantryTrackers.Controls.ViewModel;
+using PantryTrackers.Views.Admin;
+using PantryTrackers.ViewModels.Admin;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PantryTrackers
@@ -130,10 +132,13 @@ namespace PantryTrackers
             containerRegistry.RegisterForNavigation<PantryMainPage, PantryMainPageViewModel>();
             containerRegistry.RegisterForNavigation<AddPantryTransactionPage, AddPantryTransactionPageViewModel>();
 
+            containerRegistry.RegisterForNavigation<AddBarcodePage, AddBarcodePageViewModel>();           
+            
             containerRegistry.Register<AuthenticationService>();
             containerRegistry.Register<MetadataService>();
 
             containerRegistry.RegisterSingleton<RestClient>();
+            containerRegistry.RegisterSingleton<ProductService>();
             containerRegistry.RegisterInstance(new HttpClient());
         }
 

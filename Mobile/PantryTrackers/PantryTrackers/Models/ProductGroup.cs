@@ -12,6 +12,11 @@ namespace PantryTrackers.Models
         public IEnumerable<PantryLine> Elements { get; set; }
     }
 
+    public class Product
+    {
+        public string Name { get; set; }
+    }
+
     public class PantryLine
     {
 
