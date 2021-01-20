@@ -1,0 +1,1 @@
+This is an azure function designed to generate signed headers for use with Walmart.IO Affiliate APIs. Eventually this should either include most walmart api functionality, be converted to .net code, or be further secured to minimize interception or hijacking of API credentials.
