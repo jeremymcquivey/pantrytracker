@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PantryTrackers.Integrations.Kroger
+﻿namespace PantryTrackers.Integrations.Kroger
 {
     public class KrogerAuthToken
     {
