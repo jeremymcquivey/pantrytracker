@@ -48,6 +48,9 @@
     <Compile Update="Views\Errors\Unauthorized.xaml.cs">
       <DependentUpon>Unauthorized.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Pantry\AddProductPage.xaml.cs">
+      <DependentUpon>AddProductPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
