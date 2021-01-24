@@ -17,6 +17,8 @@ namespace PantryTrackers.Models
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public string DefaultUnit { get; set; }
     }
 
     public class PantryLine

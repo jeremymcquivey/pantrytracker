@@ -22,7 +22,7 @@ namespace PantryTrackers.Controls.ViewModel
             });
         });
 
-        public Command ManualScanResultCommand() => _manualScanResultCommand ??= new Command(() =>
+        public Command ManualScanResultCommand => _manualScanResultCommand ??= new Command(() =>
         {
             if (ManualTextInput.Length < 10)
             {

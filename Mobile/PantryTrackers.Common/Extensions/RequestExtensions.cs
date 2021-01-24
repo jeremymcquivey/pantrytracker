@@ -14,7 +14,7 @@ namespace PantryTrackers.Common.Extensions
             {
                 if(!response.IsSuccessStatusCode)
                 {
-                    return default;
+                    throw new Exception(await response.Content.ReadAsStringAsync());
                 }
 
                 if(useString)

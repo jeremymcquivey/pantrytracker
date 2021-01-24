@@ -28,10 +28,23 @@ namespace PantryTrackers.Services
         {
             var url = $"v1/Product/{productText}?identifierType=2";
             var response = await _client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
-            return await response.GetDeserializedContent<IEnumerable<Product>>();
+            return await response.GetDeserializedContent<IEnumerable<Product>>(useString: true);
         }
 
-        public async Task<ProductCode> Save(ProductCode code)
+        public async Task<Product> Save(Product product)
+        {
+            if (product.Id > 0)
+            {
+                //todo: not supported yet.
+                return null;
+            }
+
+            var url = $"v1/Product";
+            var response = await _client.MakeRequest(new Uri(url, UriKind.Relative), HttpMethod.Post, content: product, isSecure: true);
+            return await response.GetDeserializedContent<Product>();
+        }
+
+        public async Task<ProductCode> SaveCode(ProductCode code)
         {
             if(code.Id > 0)
             {

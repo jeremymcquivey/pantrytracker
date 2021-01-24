@@ -10,7 +10,10 @@
             <Label Text="Product Name" />
             <Entry Placeholder="Product Name" Text="{Binding SearchText}" />
 
-            <Button Text="Search" Command="{Binding ProductSearchCommand}"></Button>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Search" Command="{Binding ProductSearchCommand}"></Button>
+                <Button Text="New" Command="{Binding NewProductCommand}" HorizontalOptions="EndAndExpand"></Button>
+            </StackLayout>
 
             <!-- Search Results -->
             <ListView x:Name="ItemSearchResults" SelectionMode="Single" SelectedItem="{Binding SelectedProduct}">
