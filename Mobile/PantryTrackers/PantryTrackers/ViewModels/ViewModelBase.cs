@@ -6,9 +6,24 @@ namespace PantryTrackers.ViewModels
 {
     public class ViewModelBase : BindableBase, INavigatedAware
     {
+        private bool _isNetworkBusy;
+
         protected INavigationService NavigationService { get; private set; }
 
         protected RestClient Client { get; private set; }
+
+        public bool IsNetworkBusy
+        {
+            get => _isNetworkBusy;
+            protected set
+            {
+                _isNetworkBusy = value;
+                RaisePropertyChanged(nameof(IsNetworkBusy));
+                OnCommandCanExecuteChanged();
+            }
+        }
+
+        public bool CanExecute() => !IsNetworkBusy;
 
         public ViewModelBase(INavigationService navigationService, RestClient client)
         {
@@ -41,6 +56,8 @@ namespace PantryTrackers.ViewModels
                 Client.OnUnauthorizedResponse += OnNetworkErrorOccurred;
             }
         }
+
+        public virtual void OnCommandCanExecuteChanged() { }
 
         protected virtual void OnNetworkErrorOccurred(object sender, System.Net.Http.HttpResponseMessage e)
         {

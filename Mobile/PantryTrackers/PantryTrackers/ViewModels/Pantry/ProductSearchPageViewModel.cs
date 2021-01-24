@@ -4,6 +4,7 @@ using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace PantryTrackers.ViewModels.Pantry
@@ -19,6 +20,7 @@ namespace PantryTrackers.ViewModels.Pantry
         private Command _productSearchCommand;
         private Command<Product> _productSelectedCommand;
         private Product _selectedProduct;
+        private bool _hasSearchResults = true;
 
         public Product SelectedProduct
         {
@@ -32,18 +34,30 @@ namespace PantryTrackers.ViewModels.Pantry
 
         public string SearchText { get; set; }
 
+        public bool HasSearchResults
+        {
+            get => _hasSearchResults;
+            private set
+            {
+                _hasSearchResults = value;
+                RaisePropertyChanged(nameof(HasSearchResults));
+            }
+        }
+
         public Command ProductSearchCommand => _productSearchCommand ??=
             new Command(async () =>
             {
                 if(string.IsNullOrEmpty(SearchText))
                 {
-                    //todo: disable button if search text is empty.
                     return;
                 }
 
+                IsNetworkBusy = true;
                 var results = await _products.SearchByText(SearchText);
                 OnProductSearchReturned?.Invoke(this, results);
-            });
+                HasSearchResults = results.Any();
+                IsNetworkBusy = false;
+            }, CanExecute);
 
         public Command<Product> ProductSelectedCommand => _productSelectedCommand ??=
             new Command<Product>(async product =>
@@ -53,7 +67,7 @@ namespace PantryTrackers.ViewModels.Pantry
                     { "SelectedProduct", product }
                 };
                 await _navService.GoBackAsync(navParams);
-            });
+            }, (p) => CanExecute());
 
         public Command NewProductCommand => _newProductCommand ??=
             new Command(async () =>
@@ -64,7 +78,7 @@ namespace PantryTrackers.ViewModels.Pantry
                 };
 
                 await _navService.NavigateAsync(nameof(AddProductPage), navParams);
-            });
+            }, CanExecute);
 
         public ProductSearchPageViewModel(INavigationService navigationService, ProductService products) :
             base(navigationService, null)
@@ -82,6 +96,15 @@ namespace PantryTrackers.ViewModels.Pantry
                 var addedProduct = (Product)parameters["NewProduct"];
                 OnProductSearchReturned?.Invoke(this, new List<Product> { addedProduct });
             }
+        }
+
+        public override void OnCommandCanExecuteChanged()
+        {
+            base.OnCommandCanExecuteChanged();
+
+            ProductSelectedCommand.ChangeCanExecute();
+            NewProductCommand.ChangeCanExecute();
+            ProductSearchCommand.ChangeCanExecute();
         }
     }
 }

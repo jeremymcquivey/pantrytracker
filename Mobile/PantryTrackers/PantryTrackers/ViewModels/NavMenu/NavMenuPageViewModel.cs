@@ -30,7 +30,7 @@ namespace PantryTrackers.ViewModels.NavMenu
                 return;
             }
 
-            await _navService.NavigateAsync(item.NavigationPage);
+            await _navService.NavigateAsync($"NavigationPage/{item.NavigationPage}");
         });
 
         public NavMenuPageViewModel(INavigationService navigationService, RestClient client)

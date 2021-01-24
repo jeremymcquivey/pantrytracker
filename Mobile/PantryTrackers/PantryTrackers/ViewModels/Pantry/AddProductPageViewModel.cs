@@ -10,6 +10,20 @@ namespace PantryTrackers.ViewModels.Pantry
         private Product _product;
         private Command _saveProductCommand;
         private ProductService _productService;
+        private string _errorMessage;
+
+        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            private set
+            {
+                _errorMessage = value;
+                RaisePropertyChanged(nameof(ErrorMessage));
+                RaisePropertyChanged(nameof(HasErrorMessage));
+            }
+        }
 
         public Product Product
         {
@@ -24,6 +38,9 @@ namespace PantryTrackers.ViewModels.Pantry
         public Command SaveProductCommand => _saveProductCommand ??=
             new Command(async () =>
             {
+                IsNetworkBusy = true;
+                ErrorMessage = string.Empty;
+
                 var newProduct = await _productService.Save(Product);
                 if(newProduct != default)
                 {
@@ -32,11 +49,14 @@ namespace PantryTrackers.ViewModels.Pantry
                         { "NewProduct", newProduct }
                     };
 
+                    IsNetworkBusy = false;
                     await NavigationService.GoBackAsync(navParams);
                     return;
                 }
-                //todo: show error message.
-            });
+
+                IsNetworkBusy = false;
+                ErrorMessage = "Product did not save.";
+            }, CanExecute);
 
         public AddProductPageViewModel(INavigationService navigationService,
                                        ProductService productService,
@@ -54,6 +74,13 @@ namespace PantryTrackers.ViewModels.Pantry
             {
                 Name = parameters.ContainsKey("ProductName") ? (string)parameters["ProductName"] : string.Empty
             };
+        }
+
+        public override void OnCommandCanExecuteChanged()
+        {
+            base.OnCommandCanExecuteChanged();
+
+            SaveProductCommand.ChangeCanExecute();
         }
     }
 }

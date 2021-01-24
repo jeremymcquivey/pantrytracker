@@ -1,27 +1,28 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PantryTrackers.Views.Pantry.AddProductPage">
+             x:Class="PantryTrackers.Views.Pantry.AddProductPage"
+             Title="New Product">
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Add Product" 
-                    HorizontalOptions="CenterAndExpand" />
-            <Frame>
-                <Frame.Content>
-                    <ScrollView>
-                        <StackLayout>
-                            <Label Text="Product Name" />
-                            <Entry Placeholder="Product Name" Text="{Binding Product.Name}" />
+        <Frame>
+            <Frame.Content>
+                <ScrollView>
+                    <StackLayout>
+                        <Label Style="{StaticResource LabelError}" Text="{Binding ErrorMessage}" IsVisible="{Binding HasErrorMessage}"></Label>
 
-                            <Label Text="Default Unit" />
-                            <Entry Placeholder="Default Unit" Text="{Binding Product.DefaultUnit}" />
+                        <Label Text="Name" />
+                        <Entry Placeholder="Product Name" Text="{Binding Product.Name}" />
 
-                            <Button Text="Save" Command="{Binding SaveProductCommand}"></Button>
+                        <Label Text="Unit" />
+                        <Entry Placeholder="Default Unit" Text="{Binding Product.DefaultUnit}" />
 
-                        </StackLayout>
-                    </ScrollView>
-                </Frame.Content>
-            </Frame>
-        </StackLayout>
+                        <Button Text="Save" Command="{Binding SaveProductCommand}" IsEnabled="{Binding IsNetworkBusy, Converter={StaticResource InverseBoolConverter}}"></Button>
+                        <ActivityIndicator IsRunning="true" IsVisible="{Binding IsNetworkBusy}"/>
+
+                    </StackLayout>
+                </ScrollView>
+            </Frame.Content>
+        </Frame>
     </ContentPage.Content>
 </ContentPage>

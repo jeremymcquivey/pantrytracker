@@ -10,7 +10,55 @@
 		<!-- Application resource dictionary -->
         <ResourceDictionary>
             <convert:InverseBoolConverter x:Key="InverseBoolConverter" />
-            
+
+            <!-- Text Colors -->
+            <Color x:Key="MainColor">#179C01</Color>
+            <Color x:Key="MainTextColor">#737373</Color>
+            <Color x:Key="TextColorDark">#FFFFFFFF</Color><!--100% Opacity -->
+            <Color x:Key="TextWarningColor">#E0FF02</Color>
+            <Color x:Key="TextErrorColor">#FF0602</Color>
+
+            <!-- Component Colors -->
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource MainColor}"></Setter>
+                <Setter Property="TextColor" Value="{StaticResource TextColorDark}" />
+            </Style>
+
+            <Style TargetType="ActivityIndicator">
+                <Setter Property="Color" Value="{StaticResource MainColor}"></Setter>
+            </Style>
+
+            <Style x:Key="LabelWarning" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource MainTextColor}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource TextWarningColor}" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="FontSize" Value="Medium" />
+            </Style>
+
+            <Style x:Key="LabelError" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextColorDark}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource TextErrorColor}" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="FontSize" Value="Medium" />
+            </Style>
+
+            <Style x:Key="ListLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource MainTextColor}" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Start" />
+                <Setter Property="FontSize" Value="Medium" />
+            </Style>
+
+            <!-- Page Styles -->
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource MainColor}" />
+                <Setter Property="BarTextColor" Value="{StaticResource TextColorDark}" />
+            </Style>
+
         </ResourceDictionary>
 	</Application.Resources>
 </prism:PrismApplication>
