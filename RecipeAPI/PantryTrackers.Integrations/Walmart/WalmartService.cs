@@ -119,7 +119,7 @@ namespace PantryTrackers.Integrations.Walmart
                         { "PrivateKeyVersion", int.Parse(Environment.GetEnvironmentVariable("WalmartAPIPrivateKeyVersion", EnvironmentVariableTarget.Process)) }
                     };
 
-                    var response = await request.PostAsync($"HttpExample", new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json"));
+                    var response = await request.PostAsync($"SignedHeaders", new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json"));
 
                     if (!response.IsSuccessStatusCode)
                     {
