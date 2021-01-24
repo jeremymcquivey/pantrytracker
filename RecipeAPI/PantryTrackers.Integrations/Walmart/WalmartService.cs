@@ -18,7 +18,7 @@ namespace PantryTrackers.Integrations.Walmart
 
         private const string oAuthKey = "WalmartAuthToken";
         private const string BaseAPI = "https://developer.api.walmart.com/api-proxy/service/affil/product/v2/";
-        private const string AuthBaseURI = "https://walmart-signature-generator.azurewebsites.net/api/";
+        private const string AuthBaseURI = "https://pantrytracker-walmart-signature-generator.azurewebsites.net/api/";
         private readonly ICacheManager _cache;
         private readonly IHttpClientFactory _requestFactory;
         private readonly ILogger<WalmartService> _logger;
