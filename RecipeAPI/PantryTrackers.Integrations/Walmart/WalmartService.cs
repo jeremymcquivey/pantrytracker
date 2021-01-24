@@ -6,18 +6,22 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Text;
 
 namespace PantryTrackers.Integrations.Walmart
 {
     public class WalmartService : IProductSearch
     {
         private Func<string, Task<ProductCode>> _getCodeDelegate;
+        private Func<Task<WalmartAuthToken>> _getTokenDelegate;
 
-        private const string BaseAPI = "https://api.walmartlabs.com/v1/";
+        private const string oAuthKey = "WalmartAuthToken";
+        private const string BaseAPI = "https://developer.api.walmart.com/api-proxy/service/affil/product/v2/";
+        private const string AuthBaseURI = "https://pantrytracker-walmart-signature-generator.azurewebsites.net/api/";
         private readonly ICacheManager _cache;
         private readonly IHttpClientFactory _requestFactory;
         private readonly ILogger<WalmartService> _logger;
-        private readonly string _clientId;
 
         public string Name => "Walmart API";
 
@@ -26,8 +30,8 @@ namespace PantryTrackers.Integrations.Walmart
             _cache = cache;
             _requestFactory = requestFactory;
             _logger = logger;
-            _clientId = Environment.GetEnvironmentVariable("WalmartAPIClientSecret", EnvironmentVariableTarget.Process);
 
+            _getTokenDelegate = async () => await GetAuthToken();
             _getCodeDelegate = async (string code) => await Search(code);
         }
 
@@ -38,11 +42,17 @@ namespace PantryTrackers.Integrations.Walmart
 
         private async Task<ProductCode> Search(string code)
         {
+            var authToken = await _cache.GetAsync(oAuthKey, _getTokenDelegate, TimeSpan.FromMinutes(2));
+
             using (var request = _requestFactory.CreateClient())
             {
                 request.BaseAddress = new Uri(BaseAPI);
-                request.DefaultRequestHeaders.Add("Accept", "application/json");
-                var response = await request.GetAsync($"items?apiKey={_clientId}&upc={FormatCodeToUPC(code)}");
+                request.DefaultRequestHeaders.Add("WM_SEC.KEY_VERSION", "1");
+                request.DefaultRequestHeaders.Add("WM_CONSUMER.ID", authToken.ConsumerId);
+                request.DefaultRequestHeaders.Add("WM_CONSUMER.INTIMESTAMP", $"{authToken.TimeStamp}");
+                request.DefaultRequestHeaders.Add("WM_SEC.AUTH_SIGNATURE", $"{authToken.Signature}");
+
+                var response = await request.GetAsync($"items?upc={FormatCodeToUPC(code)}");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -93,6 +103,40 @@ namespace PantryTrackers.Integrations.Walmart
         {
             return code.Length == 13 && code.StartsWith('0')
                 ? code.Substring(1, 12) : code;
+        }
+
+        private async Task<WalmartAuthToken> GetAuthToken()
+        {
+            using (var request = _requestFactory.CreateClient())
+            {
+                try
+                {
+                    request.BaseAddress = new Uri(AuthBaseURI);
+
+                    var requestBody = new Dictionary<string, object>
+                    {
+                        { "ConsumerID", Environment.GetEnvironmentVariable("WalmartAPIConsumerId", EnvironmentVariableTarget.Process) },
+                        { "PrivateKeyVersion", int.Parse(Environment.GetEnvironmentVariable("WalmartAPIPrivateKeyVersion", EnvironmentVariableTarget.Process)) }
+                    };
+
+                    var response = await request.PostAsync($"SignedHeaders", new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json"));
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var responseMessage = await response.Content.ReadAsStringAsync();
+                        //TODO: Log into AppInsights event, but don't impede progress.
+                        return default;
+                    }
+
+                    var rawJson = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<WalmartAuthToken>(rawJson);
+                }
+                catch (Exception)
+                {
+                    //TODO: Log into AppInsights event, but don't impede progress.
+                    return default;
+                }
+            }
         }
     }
 }

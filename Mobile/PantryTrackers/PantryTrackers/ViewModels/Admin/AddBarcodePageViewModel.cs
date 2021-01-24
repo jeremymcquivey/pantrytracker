@@ -24,7 +24,7 @@ namespace PantryTrackers.ViewModels.Admin
 
         public ProductCode Code 
         { 
-            get => _code; 
+            get => _code ??= new ProductCode(); 
             private set
             {
                 _code = value;
@@ -43,7 +43,7 @@ namespace PantryTrackers.ViewModels.Admin
             new Command(async () =>
             {
                 //Todo: validate form input.
-                var newCode = await _products.Save(Code);
+                var newCode = await _products.SaveCode(Code);
 
                 if(newCode != default)
                 {

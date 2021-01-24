@@ -134,6 +134,7 @@ namespace PantryTrackers
 
             containerRegistry.RegisterForNavigation<AddBarcodePage, AddBarcodePageViewModel>();
             containerRegistry.RegisterForNavigation<ProductSearchPage, ProductSearchPageViewModel>();
+            containerRegistry.RegisterForNavigation<AddProductPage, AddProductPageViewModel>();
 
             containerRegistry.Register<AuthenticationService>();
             containerRegistry.Register<MetadataService>();

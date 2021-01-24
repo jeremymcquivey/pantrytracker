@@ -18,11 +18,9 @@ import java.util.Optional;
  */
 public class Function {
 	/**
-     * This function listens at endpoint "/api/HttpExample". Two ways to invoke it using "curl" command in bash:
-     * 1. curl -d "HTTP Body" {your host}/api/HttpExample
-     * 2. curl "{your host}/api/HttpExample?name=HTTP%20Query"
+     * This function listens at endpoint "/api/SignedHeaders". Two ways to invoke it using "curl" command in bash:
      */
-    @FunctionName("HttpExample")
+    @FunctionName("SignedHeaders")
     public HttpResponseMessage run(
             @HttpTrigger(
                 name = "req",
@@ -49,10 +47,7 @@ public class Function {
             }
 
             WalmartSignature output = new SignatureGenerator().getSignature(consumerId, privateKeyVersion, privateKey);
-            String bodyValue = output.toJsonString();
-            //String bodyValue = output.Signature + "\n" + output.TimeStamp + "\n";
-    
-            return request.createResponseBuilder(HttpStatus.OK).body(bodyValue).build();
+            return request.createResponseBuilder(HttpStatus.OK).body(output.toJsonString()).build();
         }
         catch(ParseException ex) {
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Invalid Request Body -- Must be { \"ConsumerId\":\"String\", \"PrivateKeyVersion\":\"Integer\" }").build();
