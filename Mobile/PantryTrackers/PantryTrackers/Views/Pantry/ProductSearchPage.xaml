@@ -4,29 +4,61 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="PantryTrackers.Views.Pantry.ProductSearchPage">
+             x:Class="PantryTrackers.Views.Pantry.ProductSearchPage"
+             Title="Product Search">
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Product Name" />
-            <Entry Placeholder="Product Name" Text="{Binding SearchText}" />
+        <Frame>
+            <Frame.Content>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Placeholder="Product Name"
+                               Text="{Binding SearchText}"
+                               HorizontalOptions="FillAndExpand" />
 
-            <StackLayout Orientation="Horizontal">
-                <Button Text="Search" Command="{Binding ProductSearchCommand}"></Button>
-                <Button Text="New" Command="{Binding NewProductCommand}" HorizontalOptions="EndAndExpand"></Button>
-            </StackLayout>
+                        <Button Text="Search"
+                                Command="{Binding ProductSearchCommand}"
+                                HorizontalOptions="End"
+                                IsEnabled="{Binding IsNetworkBusy, Converter={d:StaticResource InverseBoolConverter}}">
 
-            <!-- Search Results -->
-            <ListView x:Name="ItemSearchResults" SelectionMode="Single" SelectedItem="{Binding SelectedProduct}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout>
-                                <Label Text="{Binding Name}"></Label>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+                        </Button>
+                    </StackLayout>
+
+                    <ActivityIndicator IsVisible="{Binding IsNetworkBusy}" IsRunning="True"></ActivityIndicator>
+                    <Label Style="{d:StaticResource LabelWarning}"
+                           Text="No Search Results"
+                           IsVisible="{Binding HasSearchResults, Converter={d:StaticResource InverseBoolConverter}}"></Label>
+
+                    <ScrollView>
+
+                        <!-- Search Results -->
+                        <ListView x:Name="ItemSearchResults"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedProduct}"
+                                    VerticalOptions="FillAndExpand"
+                                    HasUnevenRows="True">
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Margin="15">
+                                            <Label Text="{Binding Name}" Style="{d:StaticResource ListLabel}"></Label>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <ListView.Footer>
+                                <Button Text="Add New"
+                                        HorizontalOptions="EndAndExpand"
+                                        Command="{Binding NewProductCommand}"
+                                        IsEnabled="{Binding IsNetworkBusy, Converter={d:StaticResource InverseBoolConverter}}">
+                                </Button>
+                            </ListView.Footer>
+                        </ListView>
+                    </ScrollView>
+                </StackLayout>
+            </Frame.Content>
+        </Frame>
     </ContentPage.Content>
 </ContentPage>

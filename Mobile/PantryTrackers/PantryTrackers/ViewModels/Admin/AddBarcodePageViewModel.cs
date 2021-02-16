@@ -19,12 +19,23 @@ namespace PantryTrackers.ViewModels.Admin
         private Command _editProductCommand;
         private Command _saveCodeCommand;
         private Command _clearCommand;
+        private bool _showMessage;
 
         public bool CanEditCode => string.IsNullOrEmpty(Code?.Vendor);
 
-        public ProductCode Code 
+        public bool ShowMessage
+        {
+            get => _showMessage;
+            set
+            {
+                _showMessage = value;
+                RaisePropertyChanged(nameof(ShowMessage));
+            }
+        }
+
+        public ProductCode Code
         { 
-            get => _code ??= new ProductCode(); 
+            get => _code ??= new ProductCode();
             private set
             {
                 _code = value;
@@ -36,12 +47,15 @@ namespace PantryTrackers.ViewModels.Admin
         public Command LaunchBarcodeScannerCommand => _launchBarcodeScannerCommand ??=
             new Command(async () =>
             {
+                IsNetworkBusy = true;
                 await _navService.NavigateAsync(nameof(BarcodeScannerPage));
-            });
+                IsNetworkBusy = false;
+            }, CanExecute);
 
         public Command SaveCodeCommand => _saveCodeCommand ??=
             new Command(async () =>
             {
+                IsNetworkBusy = true;
                 //Todo: validate form input.
                 var newCode = await _products.SaveCode(Code);
 
@@ -49,26 +63,37 @@ namespace PantryTrackers.ViewModels.Admin
                 {
                     Code = newCode;
                 }
-
+                IsNetworkBusy = false;
                 //todo: else an error occurred.
-            });
+            }, CanExecute);
 
         public Command ClearCommand => _clearCommand ??=
             new Command(() =>
             {
+                IsNetworkBusy = true;
                 Code = new ProductCode();
-            });
+                IsNetworkBusy = false;
+            }, CanExecute);
 
         public Command EditProductCommand => _editProductCommand ??=
             new Command(async () =>
             {
+                IsNetworkBusy = true;
                 var navParams = new NavigationParameters
                 {
                     { "SelectedProduct", Code?.Product }
                 };
 
                 await _navService.NavigateAsync(nameof(ProductSearchPage));
-            });
+                IsNetworkBusy = false;
+            }, CanExecute);
+
+        public AddBarcodePageViewModel(INavigationService navigationService, ProductService products) :
+            base(navigationService, null)
+        {
+            _navService = navigationService;
+            _products = products;
+        }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -76,6 +101,9 @@ namespace PantryTrackers.ViewModels.Admin
 
             if (parameters.ContainsKey("BarcodeScanResult") && parameters["BarcodeScanResult"].GetType() == typeof(string))
             {
+                ShowMessage = false;
+                IsNetworkBusy = true;
+
                 Task.Run(async () =>
                 {
                     var searchText = (string)parameters["BarcodeScanResult"];
@@ -84,6 +112,10 @@ namespace PantryTrackers.ViewModels.Admin
                     if(result != default)
                     {
                         Code = result;
+                        await Device.InvokeOnMainThreadAsync(() =>
+                        {
+                            IsNetworkBusy = false;
+                        });
                     }
                     else
                     {
@@ -91,7 +123,12 @@ namespace PantryTrackers.ViewModels.Admin
                         {
                             Code = searchText
                         };
-                        // todo: show error message that code was not found.
+
+                        await Device.InvokeOnMainThreadAsync(() =>
+                        {
+                            ShowMessage = true;
+                            IsNetworkBusy = false;
+                        });
                         return;
                     }
                 });
@@ -106,11 +143,14 @@ namespace PantryTrackers.ViewModels.Admin
             }
         }
 
-        public AddBarcodePageViewModel(INavigationService navigationService, ProductService products) :
-            base(navigationService, null)
+        public override void OnCommandCanExecuteChanged()
         {
-            _navService = navigationService;
-            _products = products;
+            base.OnCommandCanExecuteChanged();
+
+            ClearCommand.ChangeCanExecute();
+            LaunchBarcodeScannerCommand.ChangeCanExecute();
+            EditProductCommand.ChangeCanExecute();
+            SaveCodeCommand.ChangeCanExecute();
         }
     }
 }

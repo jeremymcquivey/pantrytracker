@@ -16,12 +16,17 @@ namespace PantryTrackers.Views.Pantry
         public ProductSearchPage()
         {
             InitializeComponent();
+
+            ItemSearchResults.ItemsSource = new Product[]
+            {
+                new Product{ Name = "" }
+            };
         }
 
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-
+            
             _model = (ProductSearchPageViewModel)BindingContext;
 
             if (_model != default)
@@ -30,7 +35,7 @@ namespace PantryTrackers.Views.Pantry
             }
         }
 
-        private void ProductSearchReturned(object sender, IEnumerable<Models.Product> e)
+        private void ProductSearchReturned(object sender, IEnumerable<Product> e)
         {
             ItemSearchResults.ItemsSource = new Product[0];
             if (e?.Any() ?? false)

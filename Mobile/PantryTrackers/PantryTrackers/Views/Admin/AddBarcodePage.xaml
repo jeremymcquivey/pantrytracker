@@ -7,35 +7,78 @@
              Title="Manage Barcodes"
              x:Class="PantryTrackers.Views.Admin.AddBarcodePage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label IsVisible="{Binding CanEditCode, Converter={StaticResource InverseBoolConverter}}">Why is this form disabled?</Label>
+        <Frame>
+            <Frame.Content>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Style="{d:StaticResource LabelWarning}"
+                               Text="3rd Party Data -- Not Editable"
+                               HorizontalOptions="FillAndExpand"
+                               IsVisible="{Binding CanEditCode, Converter={d:StaticResource InverseBoolConverter}}"></Label>
 
-            <Label Text="Product Code" />
-            <Entry Placeholder="Product Code" Text="{Binding Code.Code}" IsEnabled="{Binding CanEditCode}" />
+                        <Label Style="{d:StaticResource LabelWarning}"
+                               Text="Barcode Not Found"
+                               HorizontalOptions="FillAndExpand"
+                               IsVisible="{Binding ShowMessage}"></Label>
 
-            <Label Text="Brand" />
-            <Entry Placeholder="Brand" Text="{Binding Code.Brand}" IsEnabled="{Binding CanEditCode}" />
+                        <ActivityIndicator IsRunning="true" IsVisible="{Binding IsNetworkBusy}"/>
+                    </StackLayout>
 
-            <Label Text="Description" />
-            <Entry Placeholder="Description" Text="{Binding Code.Description}" IsEnabled="{Binding CanEditCode}" />
+                    <ScrollView>
+                        <StackLayout>
+                            <Label Text="UPC" />
+                            <StackLayout Orientation="Horizontal">
+                                <Entry Placeholder="UPC"
+                                       Text="{Binding Code.Code}"
+                                       IsEnabled="{Binding CanEditCode}"
+                                       HorizontalOptions="FillAndExpand"/>
+                
+                                <Button Text="Scan"
+                                        Command="{Binding LaunchBarcodeScannerCommand}"></Button>
+
+                            </StackLayout>
+
+                            <Label Text="Brand" />
+                            <Entry Placeholder="Brand" Text="{Binding Code.Brand}" IsEnabled="{Binding CanEditCode}" />
+
+                            <Label Text="Description" />
+                            <Entry Placeholder="Description" Text="{Binding Code.Description}" IsEnabled="{Binding CanEditCode}" />
             
-            <Label Text="Size" />
-            <Entry Placeholder="Size" Text="{Binding Code.Size}" IsEnabled="{Binding CanEditCode}" />
+                            <Label Text="Size" />
+                            <Entry Placeholder="Size" Text="{Binding Code.Size}" IsEnabled="{Binding CanEditCode}" />
             
-            <Label Text="Unit" />
-            <Entry Placeholder="Unit" Text="{Binding Code.Unit}" IsEnabled="{Binding CanEditCode}" />
+                            <Label Text="Unit" />
+                            <Entry Placeholder="Unit" Text="{Binding Code.Unit}" IsEnabled="{Binding CanEditCode}" />
 
-            <Label Text="Assigned Product" />
-            <StackLayout Orientation="Horizontal">
-                <Entry Placeholder="Select a Product" Text="{Binding Code.Product.Name}" IsEnabled="false" />
-                <Button Text="Edit" Command="{Binding EditProductCommand}"></Button>
-            </StackLayout>
-            
-            <Button BackgroundColor="PaleGreen" Text="Save" IsVisible="{Binding CanEditCode}" Command="{Binding SaveCodeCommand}"></Button>
+                            <Label Text="Assigned Product" />
 
-            <Button BackgroundColor="AliceBlue" Text="Clear" IsVisible="{Binding CanEditCode}" Command="{Binding ClearCommand}"></Button>
-            
-            <Button Text="Barcode Scanner" Command="{Binding LaunchBarcodeScannerCommand}"></Button>
-        </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Entry Placeholder="Select a Product"
+                                       Text="{Binding Code.Product.Name}"
+                                       HorizontalOptions="FillAndExpand"
+                                       IsEnabled="false" />
+
+                                <Button Text="Edit"
+                                        Command="{Binding EditProductCommand}"></Button>
+
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Button Text="Save"
+                                        HorizontalOptions="FillAndExpand"
+                                        Command="{Binding SaveCodeCommand}"></Button>
+
+                                <Button Style="{d:StaticResource AltButton}"
+                                        Text="Clear"
+                                        HorizontalOptions="FillAndExpand"
+                                        IsVisible="{Binding CanEditCode}"
+                                        Command="{Binding ClearCommand}"></Button>
+
+                            </StackLayout>
+                        </StackLayout>
+                    </ScrollView>
+                </StackLayout>
+            </Frame.Content>
+        </Frame>
     </ContentPage.Content>
 </ContentPage>

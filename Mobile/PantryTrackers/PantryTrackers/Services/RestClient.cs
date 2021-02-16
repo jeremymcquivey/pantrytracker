@@ -31,7 +31,7 @@ namespace PantryTrackers.Services
         /// url of the highest common level of the api endpoint
         /// i.e. https://example.domain.com/api
         /// </summary>
-        protected Uri BaseApiUrl { get; }
+        public Uri BaseApiUrl { get; }
 
         /// <summary>
         /// Constructor for the RestClient object

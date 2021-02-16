@@ -4,6 +4,7 @@
              x:Class="PantryTrackers.Controls.BarcodeScannerPage"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
+             Title="Scan Product Barcode"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms">
     
     <ContentPage.Content>
