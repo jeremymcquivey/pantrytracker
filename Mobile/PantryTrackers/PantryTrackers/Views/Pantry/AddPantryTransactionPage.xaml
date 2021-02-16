@@ -4,42 +4,41 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             Title="Add Inventory"
              x:Class="PantryTrackers.Views.Pantry.AddPantryTransactionPage">
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Add Inventory" 
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="CenterAndExpand" />
-                
-                <Button HorizontalOptions="End" Text="Barcode" Command="{Binding LaunchBarcodeScannerCommand}"/>
-            </StackLayout>
-            
-            <StackLayout>
-                <Frame>
-                    <Frame.Content>
-                        <ScrollView>
-                            <StackLayout>
-                                <Label Text="Product Code" />
-                                <Entry Placeholder="Product Code" Text="{Binding ProductCode}" />
+            <Frame>
+                <Frame.Content>
+                    <ScrollView>
+                        <StackLayout>
+                            <Button HorizontalOptions="EndAndExpand" Text="Barcode" Command="{Binding LaunchBarcodeScannerCommand}"/>
 
-                                <Label Text="Product Name" />
-                                <Entry Placeholder="Product Name" Text="{Binding ProductName}" IsEnabled="False" />
-
-                                <Label Text="Quantity" />
-                                <Entry Placeholder="Quantity" Text="{Binding Quantity}" Keyboard="Numeric" />
-
-                                <Label Text="Package Size" />
-                                <Entry Placeholder="Package Size" Text="{Binding ContainerSize}" Keyboard="Numeric" />
-
-                                <Label Text="Unit" />
-                                <Entry Placeholder="Unit" Text="{Binding Unit}" />
-
+                            <StackLayout Orientation="Horizontal">
+                                <Label HorizontalOptions="FillAndExpand" Style="{StaticResource LabelWarning}" Text="{Binding WarningMessage}" IsVisible="{Binding HasWarningMessage}"></Label>
+                                <Button Text="Add" IsVisible="{Binding HasWarningMessage}"></Button>
                             </StackLayout>
-                        </ScrollView>
-                    </Frame.Content>
-                </Frame>
-            </StackLayout>
+
+                            <Label Text="Product Code" />
+                            <Entry Placeholder="Product Code" Text="{Binding Transaction.ProductCode}" />
+
+                            <Label Text="Product Name" />
+                            <Entry Placeholder="Product Name" Text="{Binding Transaction.ProductName}" IsEnabled="False" />
+
+                            <Label Text="Quantity" />
+                            <Entry Placeholder="Quantity" Text="{Binding Transaction.Quantity}" Keyboard="Numeric" />
+
+                            <Label Text="Package Size" />
+                            <Entry Placeholder="Package Size" Text="{Binding Transaction.ContainerSize}" Keyboard="Numeric" />
+
+                            <Label Text="Unit" />
+                            <Entry Placeholder="Unit" Text="{Binding Transaction.Unit}" />
+                                
+                            <Button Text="Save" Command="{Binding SaveTransactionCommand}" IsEnabled="{Binding IsNetworkBusy, Converter={StaticResource InverseBoolConverter}}"></Button>
+                        </StackLayout>
+                    </ScrollView>
+                </Frame.Content>
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

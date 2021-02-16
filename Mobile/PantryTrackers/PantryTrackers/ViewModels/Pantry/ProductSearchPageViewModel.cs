@@ -21,6 +21,7 @@ namespace PantryTrackers.ViewModels.Pantry
         private Command<Product> _productSelectedCommand;
         private Product _selectedProduct;
         private bool _hasSearchResults = true;
+        private string _searchText;
 
         public Product SelectedProduct
         {
@@ -32,7 +33,18 @@ namespace PantryTrackers.ViewModels.Pantry
             }
         }
 
-        public string SearchText { get; set; }
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                RaisePropertyChanged(nameof(SearchText));
+                RaisePropertyChanged(nameof(HasSearchText));
+            }
+        }
+
+        public bool HasSearchText => !string.IsNullOrEmpty(SearchText);
 
         public bool HasSearchResults
         {
@@ -62,6 +74,11 @@ namespace PantryTrackers.ViewModels.Pantry
         public Command<Product> ProductSelectedCommand => _productSelectedCommand ??=
             new Command<Product>(async product =>
             {
+                if(string.IsNullOrEmpty(product?.Name))
+                {
+                    return;
+                }
+
                 var navParams = new NavigationParameters
                 {
                     { "SelectedProduct", product }
@@ -72,12 +89,14 @@ namespace PantryTrackers.ViewModels.Pantry
         public Command NewProductCommand => _newProductCommand ??=
             new Command(async () =>
             {
+                IsNetworkBusy = true;
                 var navParams = new NavigationParameters
                 {
                     { "ProductName", SearchText }
                 };
 
                 await _navService.NavigateAsync(nameof(AddProductPage), navParams);
+                IsNetworkBusy = false;
             }, CanExecute);
 
         public ProductSearchPageViewModel(INavigationService navigationService, ProductService products) :

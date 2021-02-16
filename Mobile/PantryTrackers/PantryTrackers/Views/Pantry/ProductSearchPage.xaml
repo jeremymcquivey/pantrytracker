@@ -10,36 +10,33 @@
     <ContentPage.Content>
         <Frame>
             <Frame.Content>
-                <ScrollView>
-                    <StackLayout>
-                        <Label Style="{d:StaticResource LabelWarning}"
-                               Text="No Search Results"
-                               IsVisible="{Binding HasSearchResults, Converter={d:StaticResource InverseBoolConverter}}"></Label>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Placeholder="Product Name"
+                               Text="{Binding SearchText}"
+                               HorizontalOptions="FillAndExpand" />
 
-                        <StackLayout Orientation="Horizontal">
-                            <Entry Placeholder="Product Name"
-                                   Text="{Binding SearchText}"
-                                   HorizontalOptions="FillAndExpand" />
+                        <Button Text="Search"
+                                Command="{Binding ProductSearchCommand}"
+                                HorizontalOptions="End"
+                                IsEnabled="{Binding IsNetworkBusy, Converter={d:StaticResource InverseBoolConverter}}">
 
-                            <Button Text="Search"
-                                    Command="{Binding ProductSearchCommand}"
-                                    HorizontalOptions="End"
-                                    IsEnabled="{Binding IsNetworkBusy, Converter={d:StaticResource InverseBoolConverter}}">
+                        </Button>
+                    </StackLayout>
 
-                            </Button>
-                        </StackLayout>
+                    <ActivityIndicator IsVisible="{Binding IsNetworkBusy}" IsRunning="True"></ActivityIndicator>
+                    <Label Style="{d:StaticResource LabelWarning}"
+                           Text="No Search Results"
+                           IsVisible="{Binding HasSearchResults, Converter={d:StaticResource InverseBoolConverter}}"></Label>
 
-                        <Button Text="Add New" Command="{Binding NewProductCommand}" IsEnabled="{Binding IsNetworkBusy, Converter={d:StaticResource InverseBoolConverter}}"></Button>
-
-                        <ActivityIndicator IsVisible="{Binding IsNetworkBusy}" IsRunning="True"></ActivityIndicator>
+                    <ScrollView>
 
                         <!-- Search Results -->
                         <ListView x:Name="ItemSearchResults"
-                                  SelectionMode="Single"
-                                  SelectedItem="{Binding SelectedProduct}"
-                                  VerticalOptions="FillAndExpand"
-                                  HasUnevenRows="True"
-                                  IsVisible="{Binding HasSearchResults}">
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedProduct}"
+                                    VerticalOptions="FillAndExpand"
+                                    HasUnevenRows="True">
 
                             <ListView.ItemTemplate>
                                 <DataTemplate>
@@ -50,10 +47,17 @@
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
-                        </ListView>
 
-                    </StackLayout>
-                </ScrollView>
+                            <ListView.Footer>
+                                <Button Text="Add New"
+                                        HorizontalOptions="EndAndExpand"
+                                        Command="{Binding NewProductCommand}"
+                                        IsEnabled="{Binding IsNetworkBusy, Converter={d:StaticResource InverseBoolConverter}}">
+                                </Button>
+                            </ListView.Footer>
+                        </ListView>
+                    </ScrollView>
+                </StackLayout>
             </Frame.Content>
         </Frame>
     </ContentPage.Content>

@@ -2,16 +2,16 @@
 {
     public class PantryTransaction
     {
-        string ProductCode { get; set; }
+        public string ProductCode { get; set; }
 
-        string ProductId { get; set; }
+        public int? ProductId { get; set; }
 
-        string ProductName { get; set; }
+        public string ProductName { get; set; }
 
-        string Quantity { get; set; }
+        public string Quantity { get; set; }
 
-        decimal ContainerSize { get; set; }
+        public string ContainerSize { get; set; }
 
-        string Unit { get; set; }
+        public string Unit { get; set; }
     }
 }

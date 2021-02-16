@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "998729781851",
+    "project_id": "pantrytrackers",
+    "storage_bucket": "pantrytrackers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998729781851:android:e76eaf08d126202b07a57e",
+        "android_client_info": {
+          "package_name": "com.jeremymcquivey.pantrytrackers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998729781851-mteamcud1n61vcc4i81svbsjh7b540c6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAta5-MjLWVoCTXPuKM_0L_kuLHBnz8o7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998729781851-mteamcud1n61vcc4i81svbsjh7b540c6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -55,12 +55,15 @@ namespace RecipeAPI.ExternalServices
                                                                   (productCode.OwnerId == null || productCode.OwnerId == ownerId));
             if(product != default && product.Vendor != null)
             {
+                var originalId = product.Id;
                 var provider = _providers.Single(p => p.Name == product.Vendor);
                 var newProduct = await provider.SearchByCodeAsync(code);
 
                 if(newProduct != default)
                 {
                     product = newProduct;
+                    product.Id = originalId;
+
                     if (newProduct.Product == default || newProduct.Variety == default)
                     {
                         AssignProduct(product);

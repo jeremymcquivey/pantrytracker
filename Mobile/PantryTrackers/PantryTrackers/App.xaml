@@ -24,6 +24,10 @@
                 <Setter Property="TextColor" Value="{StaticResource TextColorDark}" />
             </Style>
 
+            <Style TargetType="Button" x:Key="AltButton">
+                <Setter Property="BackgroundColor" Value="{StaticResource TextErrorColor}"></Setter>
+            </Style>
+
             <Style TargetType="ActivityIndicator">
                 <Setter Property="Color" Value="{StaticResource MainColor}"></Setter>
             </Style>

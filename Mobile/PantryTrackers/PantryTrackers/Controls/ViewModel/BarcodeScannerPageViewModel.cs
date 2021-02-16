@@ -1,5 +1,5 @@
-﻿using PantryTrackers.Services;
-using PantryTrackers.ViewModels;
+﻿using PantryTrackers.ViewModels;
+using Prism;
 using Prism.Navigation;
 using Xamarin.Forms;
 using ZXing;
@@ -16,11 +16,16 @@ namespace PantryTrackers.Controls.ViewModel
 
         public Command<Result> BarcodeScanResultCommand => _barcodeScanResultCommand ??= new Command<Result>((result) =>
         {
-            _navService.GoBackAsync(new NavigationParameters
+            Device.InvokeOnMainThreadAsync(async () =>
             {
-                { "BarcodeScanResult", result.Text }
+                IsNetworkBusy = true;
+                await _navService.GoBackAsync(new NavigationParameters
+                {
+                    { "BarcodeScanResult", result.Text }
+                });
+                IsNetworkBusy = false;
             });
-        });
+        }, _ => CanExecute());
 
         public Command ManualScanResultCommand => _manualScanResultCommand ??= new Command(() =>
         {
@@ -29,13 +34,24 @@ namespace PantryTrackers.Controls.ViewModel
                 return;
             }
 
-            BarcodeScanResultCommand.Execute(new Result(ManualTextInput, new byte[0], null, BarcodeFormat.UPC_A));
-        });
+            if(BarcodeScanResultCommand.CanExecute(null))
+            {
+                BarcodeScanResultCommand.Execute(new Result(ManualTextInput, new byte[0], null, BarcodeFormat.UPC_A));
+            }
+        }, CanExecute);
 
         public BarcodeScannerPageViewModel(INavigationService navigationService):
             base(navigationService, null)
         {
             _navService = navigationService;
+        }
+
+        public override void OnCommandCanExecuteChanged()
+        {
+            base.OnCommandCanExecuteChanged();
+
+            ManualScanResultCommand.ChangeCanExecute();
+            BarcodeScanResultCommand.ChangeCanExecute();
         }
     }
 }

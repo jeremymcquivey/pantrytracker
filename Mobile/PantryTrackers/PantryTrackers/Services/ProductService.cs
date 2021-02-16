@@ -48,13 +48,13 @@ namespace PantryTrackers.Services
         {
             if(code.Id > 0)
             {
-                //todo: not supported yet.
-                return null;
+                var putResponse = await _client.MakeRequest(new Uri($"v1/ProductCode/{code.Id}", UriKind.Relative), HttpMethod.Put, content: code, isSecure: true);
+                return await putResponse.GetDeserializedContent<ProductCode>();
             }
 
             var url = $"v1/ProductCode";
-            var response = await _client.MakeRequest(new Uri(url, UriKind.Relative), HttpMethod.Post, content: code, isSecure: true);
-            return await response.GetDeserializedContent<ProductCode>();
+            var postResponse = await _client.MakeRequest(new Uri(url, UriKind.Relative), HttpMethod.Post, content: code, isSecure: true);
+            return await postResponse.GetDeserializedContent<ProductCode>();
         }
     }
 }
