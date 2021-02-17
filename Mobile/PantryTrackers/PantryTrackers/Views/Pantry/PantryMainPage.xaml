@@ -6,14 +6,14 @@
              mc:Ignorable="d"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
+             Title="PantryList"
              x:Class="PantryTrackers.Views.Pantry.PantryMainPage">
 
     <ContentPage.Content>
-        <StackLayout Padding="10, 0">
+        <StackLayout Padding="10, 5, 10, 0">
             <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
-                <Button HorizontalOptions="Start" Text="Remove" />
-                <Label Text="Pantry List" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
-                <Button HorizontalOptions="End" Text="Add" Command="{Binding AddInventoryCommand}" />
+                <Button HorizontalOptions="Start" Text="Remove" Command="{Binding RemoveInventoryCommand}" />
+                <Button HorizontalOptions="EndAndExpand" Text="Add" Command="{Binding AddInventoryCommand}" />
             </StackLayout>
             <ListView ItemsSource="{Binding ProductGroups}"
                       SelectionMode="None"

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -16,6 +17,7 @@ namespace PantryTrackers.ViewModels.Pantry
     public class PantryMainPageViewModel : ViewModelBase
     {
         private Command _addInventoryCommand;
+        private Command _removeInventoryCommand;
         private readonly INavigationService _navigationService;
 
         public Command SomeCommand => new Command(() =>
@@ -28,8 +30,16 @@ namespace PantryTrackers.ViewModels.Pantry
 
         public Command AddInventoryCommand => _addInventoryCommand ??= new Command(async () =>
         {
+            IsNetworkBusy = true;
             await _navigationService.NavigateAsync(nameof(AddPantryTransactionPage));
-        });
+            IsNetworkBusy = false;
+        }, CanExecute);
+
+        public Command RemoveInventoryCommand => _removeInventoryCommand ??= new Command(async () =>
+        {
+            IsNetworkBusy = false;
+            await Task.Run(() => { });
+        }, CanExecute);
 
         public PantryMainPageViewModel(INavigationService navigationService, RestClient client):
             base(navigationService, client)
@@ -56,6 +66,14 @@ namespace PantryTrackers.ViewModels.Pantry
                     ProductGroups.Add(group);
                 }
             });
+        }
+
+        public override void OnCommandCanExecuteChanged()
+        {
+            base.OnCommandCanExecuteChanged();
+
+            AddInventoryCommand.ChangeCanExecute();
+            RemoveInventoryCommand.ChangeCanExecute();
         }
     }
 }

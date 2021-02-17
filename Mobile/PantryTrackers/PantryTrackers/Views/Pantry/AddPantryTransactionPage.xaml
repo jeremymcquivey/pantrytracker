@@ -14,6 +14,8 @@
                         <StackLayout>
                             <Button HorizontalOptions="EndAndExpand" Text="Barcode" Command="{Binding LaunchBarcodeScannerCommand}"/>
 
+                            <ActivityIndicator IsEnabled="True" IsVisible="{Binding IsNetworkBusy}" />
+
                             <StackLayout Orientation="Horizontal">
                                 <Label HorizontalOptions="FillAndExpand" Style="{StaticResource LabelWarning}" Text="{Binding WarningMessage}" IsVisible="{Binding HasWarningMessage}"></Label>
                                 <Button Text="Add" IsVisible="{Binding HasWarningMessage}"></Button>

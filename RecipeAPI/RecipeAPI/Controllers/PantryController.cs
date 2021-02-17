@@ -45,16 +45,17 @@ namespace RecipeAPI.Controllers
                 var pantryItems = _db.Transactions.Where(p => p.UserId == gId)
                                                   .Include(p => p.Product)
                                                   .Include(p => p.Variety)
-                                                  .CalculateTotals(null)
+                                                  .CalculateTotals()
                                                   .OrderBy(p => p.Product?.Name);
 
-                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThanOrEqualTo(0, 0.5)) : pantryItems;
+                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity > 0) : pantryItems;
 
                 var groupedItems = otherItems.GroupBy(p => p.ProductId)
                                              .Select(p => new
                                              {
                                                  Header = p.First().Product?.Name,
-                                                 Total = $"{p.Sum(q => Math.Round(q.Quantity, 2))} {p.First().Unit}",
+                                                 Count = p.Sum(q => q.Quantity),
+                                                 Total = $"{p.Sum(q => q.TotalAmount)} {p.First().Unit}",
                                                  Elements = p
                                              });
 
@@ -82,7 +83,7 @@ namespace RecipeAPI.Controllers
                                                         .ToList()
                                                         .CalculateProductTotals();
 
-                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity.IsGreaterThanOrEqualTo(0, 0.5)) : pantryItems;
+                var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity > 0) : pantryItems;
 
                 var groupedItems = otherItems.GroupBy(trans => trans.VarietyId)
                                              .Select(p => new

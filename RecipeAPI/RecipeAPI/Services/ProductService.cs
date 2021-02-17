@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PantryTracker.Model.Extensions;
 
 namespace RecipeAPI.Services
 {
@@ -93,7 +94,7 @@ namespace RecipeAPI.Services
                             PlainText = ingredient.ToString(),
                             QuantityString = userMatch.Quantity ?? ingredient.Quantity,
                             Unit = userMatch.Unit ?? ingredient.Unit,
-                            Size = userMatch.Size ?? ingredient.Size,
+                            Size = userMatch.Size.ToNumber(defaultValue: null) ?? ingredient.Size.ToNumber(defaultValue: 1).Value,
                             RecipeId = ingredient.RecipeId,
                         });
                         continue;
@@ -107,7 +108,7 @@ namespace RecipeAPI.Services
                         PlainText = ingredient.ToString(),
                         QuantityString = userMatch.Quantity ?? ingredient.Quantity,
                         Unit = userMatch.Unit ?? ingredient.Unit,
-                        Size = userMatch.Size ?? ingredient.Size,
+                        Size = userMatch.Size.ToNumber(defaultValue: null) ?? ingredient.Size.ToNumber(defaultValue: 1).Value,
                         MatchType = IngredientMatchType.UserMatch
                     });
 
@@ -125,7 +126,7 @@ namespace RecipeAPI.Services
                         RecipeId = recipeId,
                         PlainText = ingredient.ToString(),
                         Unit = ingredient.Unit,
-                        Size = ingredient.Size,
+                        Size = ingredient.Size.ToNumber().Value,
                         QuantityString = ingredient.Quantity,
                         MatchType = IngredientMatchType.SystemMatch
                     });
@@ -139,7 +140,7 @@ namespace RecipeAPI.Services
                     PlainText = ingredient.ToString(),
                     QuantityString = ingredient.Quantity,
                     Unit = ingredient.Unit,
-                    Size = ingredient.Size,
+                    Size = ingredient.Size.ToNumber().Value,
                     RecipeId = ingredient.RecipeId,
                 });
             }

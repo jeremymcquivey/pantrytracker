@@ -18,7 +18,7 @@ namespace PantryTracker.Model.Extensions
         /// <summary>
         /// Converts a string into a double -- mostly intendended to convert fractions.
         /// </summary>
-        public static double ToNumber(this string amount, double defaultValue = 0)
+        public static double? ToNumber(this string amount, double? defaultValue = 0)
         {
             if (string.IsNullOrEmpty(amount))
             {

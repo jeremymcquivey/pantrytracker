@@ -15,22 +15,47 @@ namespace PantryTrackers.ViewModels.Pantry
         private string _warningMessage;
         private readonly INavigationService _navService;
         private readonly ProductService _products;
+        private readonly PantryService _pantry;
 
         public Command LaunchBarcodeScannerCommand => _launchBarcodeScannerCommand ??=
             new Command(async () => 
             { 
                 await _navService.NavigateAsync(nameof(BarcodeScannerPage)); 
-            });
+            }, CanExecute);
 
         public Command SaveTransactionCommand => _saveTransactionCommand ??=
             new Command(async () =>
             {
-                // Save Transaction
-                await _navService.GoBackAsync(new NavigationParameters
+                IsNetworkBusy = true;
+                WarningMessage = string.Empty;
+
+                // TODO: Validate at least quantity and product id.
+
+                await Task.Run(async () =>
                 {
-                    { "NewTransaction", Transaction }
+                    var transaction = await _pantry.Save(Transaction);
+                    if(transaction != default)
+                    {
+                        await Device.InvokeOnMainThreadAsync(async () =>
+                        {
+                            IsNetworkBusy = false;
+                            await _navService.GoBackAsync(new NavigationParameters
+                            {
+                                { "NewTransaction", Transaction }
+                            });
+                        });
+                    }
+                    else
+                    {
+                        await Device.InvokeOnMainThreadAsync(() =>
+                        {
+                            // TODO Probably validation or technical error.
+                            IsNetworkBusy = false;
+                            WarningMessage = "Save didn't happen.";
+                        });
+                    }
                 });
-            });
+            }, CanExecute);
 
         public string WarningMessage
         {
@@ -63,16 +88,18 @@ namespace PantryTrackers.ViewModels.Pantry
                 WarningMessage = string.Empty;
                 await Task.Run(async () =>
                 {
-                    var product = await _products.Search((string)parameters["BarcodeScanResult"]);
-                    if (product != default)
+                    var productCode = await _products.Search((string)parameters["BarcodeScanResult"]);
+                    var product = productCode?.ProductId != default ? await _products.ById(productCode.ProductId) : default;
+
+                    if (productCode != default)
                     {
                         Transaction = new PantryTransaction
                         {
                             ProductCode = (string)parameters["BarcodeScanResult"],
-                            ContainerSize = product.Size,
-                            Unit = product.Unit,
-                            ProductId = product.Product?.Id,
-                            ProductName = product.Product?.Name
+                            ContainerSize = productCode.Size,
+                            Unit = productCode.Unit,
+                            ProductId = productCode.ProductId,
+                            ProductName = product?.Name
                         };
                     }
                     else
@@ -89,11 +116,20 @@ namespace PantryTrackers.ViewModels.Pantry
         }
 
         public AddPantryTransactionPageViewModel(INavigationService navigationService,
-            ProductService products):
+            ProductService products,
+            PantryService pantry):
             base(navigationService, null)
         {
             _navService = navigationService;
             _products = products;
+            _pantry = pantry;
+        }
+
+        public override void OnCommandCanExecuteChanged()
+        {
+            base.OnCommandCanExecuteChanged();
+            SaveTransactionCommand.ChangeCanExecute();
+            LaunchBarcodeScannerCommand.ChangeCanExecute();
         }
     }
 }

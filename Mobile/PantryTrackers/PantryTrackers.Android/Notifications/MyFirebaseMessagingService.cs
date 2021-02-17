@@ -39,7 +39,7 @@ namespace PantryTrackers.Droid.Notifications
 
             var notificationBuilder = new NotificationCompat.Builder(this)
                         .SetContentTitle(title)
-                        .SetSmallIcon(Resource.Drawable.ic_launcher)
+                        //.SetSmallIcon(Resource.Drawable.ic_launcher)
                         .SetContentText(messageBody)
                         .SetAutoCancel(true)
                         .SetShowWhen(false)

@@ -7,9 +7,11 @@ namespace PantryTracker.Model.Pantry
     {
         string Unit { get; set; }
 
-        double Quantity { get; set; }
+        int Quantity { get; set; }
 
-        string Size { get; set; }
+        double Size { get; set; }
+
+        double TotalAmount { get; set; }
 
         int? ProductId { get; set; }
 
@@ -31,11 +33,13 @@ namespace PantryTracker.Model.Pantry
 
         public Guid UserId { get; set; }
 
-        public double Quantity { get; set; } = 1;
+        public int Quantity { get; set; } = 1;
 
         public string Unit { get; set; } = "";
 
-        public string Size { get; set; }
+        public double Size { get; set; }
+
+        public double TotalAmount { get; set; }
 
         public int? ProductId { get; set; }
 

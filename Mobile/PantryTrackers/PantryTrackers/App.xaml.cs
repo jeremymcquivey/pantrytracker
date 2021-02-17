@@ -141,6 +141,7 @@ namespace PantryTrackers
 
             containerRegistry.RegisterSingleton<RestClient>();
             containerRegistry.RegisterSingleton<ProductService>();
+            containerRegistry.RegisterSingleton<PantryService>();
             containerRegistry.RegisterInstance(new HttpClient());
         }
 
