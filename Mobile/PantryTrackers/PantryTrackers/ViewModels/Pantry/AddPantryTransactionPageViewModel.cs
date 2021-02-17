@@ -1,7 +1,10 @@
 ﻿using System.Threading.Tasks;
 using PantryTrackers.Controls;
 using PantryTrackers.Models;
+using PantryTrackers.Models.Products;
 using PantryTrackers.Services;
+using PantryTrackers.Views.Admin;
+using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
 using Xamarin.Forms;
 
@@ -12,15 +15,38 @@ namespace PantryTrackers.ViewModels.Pantry
         private PantryTransaction _transaction;
         private Command _launchBarcodeScannerCommand;
         private Command _saveTransactionCommand;
+        private Command _addNewBarcodeCommand;
+        private Command _editProductCommand;
         private string _warningMessage;
         private readonly INavigationService _navService;
         private readonly ProductService _products;
         private readonly PantryService _pantry;
 
+        public Command EditProductCommand => _editProductCommand ??=
+            new Command(async () =>
+            {
+                IsNetworkBusy = true;
+                await _navService.NavigateAsync(nameof(ProductSearchPage));
+                IsNetworkBusy = false;
+            }, CanExecute);
+
+        public Command AddNewBarcodeCommand => _addNewBarcodeCommand ??=
+            new Command(async () =>
+            {
+                IsNetworkBusy = true;
+                await _navService.NavigateAsync(nameof(AddBarcodePage), new NavigationParameters
+                {
+                    { "ProductCode", Transaction.ProductCode },
+                });
+                IsNetworkBusy = false;
+            }, CanExecute);
+
         public Command LaunchBarcodeScannerCommand => _launchBarcodeScannerCommand ??=
-            new Command(async () => 
-            { 
-                await _navService.NavigateAsync(nameof(BarcodeScannerPage)); 
+            new Command(async () =>
+            {
+                IsNetworkBusy = true;
+                await _navService.NavigateAsync(nameof(BarcodeScannerPage));
+                IsNetworkBusy = false;
             }, CanExecute);
 
         public Command SaveTransactionCommand => _saveTransactionCommand ??=
@@ -83,6 +109,37 @@ namespace PantryTrackers.ViewModels.Pantry
         {
             base.OnNavigatedTo(parameters);
 
+            if(parameters.ContainsKey("SelectedProduct"))
+            {
+                var newProduct = parameters["SelectedProduct"] as Product;
+                if(newProduct != default)
+                {
+                    Transaction.ProductId = newProduct.Id;
+                    Transaction.ProductName = newProduct.Name;
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        RaisePropertyChanged(nameof(Transaction));
+                    });
+                }
+            }
+
+            if(parameters.ContainsKey("AddedCode"))
+            {
+                var newCode = parameters["AddedCode"] as ProductCode;
+                if(newCode != default)
+                {
+                    WarningMessage = string.Empty;
+                    Transaction = new PantryTransaction
+                    {
+                        ProductCode = newCode.Code,
+                        Size = newCode.Size,
+                        Unit = newCode.Unit,
+                        ProductId = newCode.ProductId,
+                        ProductName = newCode?.Product?.Name
+                    };
+                }
+            }
+
             if(parameters.ContainsKey("BarcodeScanResult"))
             {
                 WarningMessage = string.Empty;
@@ -96,7 +153,7 @@ namespace PantryTrackers.ViewModels.Pantry
                         Transaction = new PantryTransaction
                         {
                             ProductCode = (string)parameters["BarcodeScanResult"],
-                            ContainerSize = productCode.Size,
+                            Size = productCode.Size,
                             Unit = productCode.Unit,
                             ProductId = productCode.ProductId,
                             ProductName = product?.Name
@@ -130,6 +187,8 @@ namespace PantryTrackers.ViewModels.Pantry
             base.OnCommandCanExecuteChanged();
             SaveTransactionCommand.ChangeCanExecute();
             LaunchBarcodeScannerCommand.ChangeCanExecute();
+            AddNewBarcodeCommand.ChangeCanExecute();
+            EditProductCommand.ChangeCanExecute();
         }
     }
 }

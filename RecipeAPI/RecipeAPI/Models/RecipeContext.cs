@@ -43,7 +43,7 @@ namespace RecipeAPI.Models
 
             modelBuilder.Entity<Product>()
                 .Property(product => product.QuantityDisplayMode)
-                .HasDefaultValue(ProductDisplayMode.Each);
+                .HasDefaultValue(ProductDisplayMode.PurchaseQuantity);
 
             modelBuilder.Entity<Ingredient>()
                 .HasKey(ingredient => new { ingredient.RecipeId, ingredient.Index });

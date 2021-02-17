@@ -29,11 +29,13 @@
                                     <Label Text="{Binding Header}"
                                            HorizontalOptions="Start"
                                            FontSize="Medium"
+                                           FontAttributes="Bold"
                                            VerticalOptions="CenterAndExpand" Margin="0, 10"></Label>
 
                                     <Label Text="{Binding Total}" 
                                            FontSize="Medium"
                                            HorizontalOptions="EndAndExpand"
+                                           FontAttributes="Bold"
                                            VerticalOptions="CenterAndExpand" Margin="0, 10"></Label>
 
                                 </StackLayout>

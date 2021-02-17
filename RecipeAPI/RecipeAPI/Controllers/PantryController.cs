@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using RecipeAPI.Models;
 using RecipeAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
-using PantryTracker.Model.Extensions;
 using Microsoft.Extensions.Logging;
+using PantryTracker.Model.Products;
 
 namespace RecipeAPI.Controllers
 {
@@ -45,20 +44,22 @@ namespace RecipeAPI.Controllers
                 var pantryItems = _db.Transactions.Where(p => p.UserId == gId)
                                                   .Include(p => p.Product)
                                                   .Include(p => p.Variety)
-                                                  .CalculateTotals()
+                                                  .CalculateTotals(null)
                                                   .OrderBy(p => p.Product?.Name);
-
+                
                 var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity > 0) : pantryItems;
 
                 var groupedItems = otherItems.GroupBy(p => p.ProductId)
                                              .Select(p => new
                                              {
                                                  Header = p.First().Product?.Name,
-                                                 Count = p.Sum(q => q.Quantity),
-                                                 Total = $"{p.Sum(q => q.TotalAmount)} {p.First().Unit}",
+                                                 DisplayMode = p.First().Product?.QuantityDisplayMode ?? ProductDisplayMode.PurchaseQuantity,
+                                                 Total =
+                                                    (p.First().Product?.QuantityDisplayMode ?? ProductDisplayMode.PurchaseQuantity) == ProductDisplayMode.PurchaseQuantity ?
+                                                    $"{p.Sum(q => q.Quantity)} ct" :
+                                                    $"{p.Sum(q => q.TotalAmount)} {p.First().Unit}",
                                                  Elements = p
-                                             });
-
+                                             }) ;
                 return Ok(groupedItems);
             }
             catch (Exception ex)
@@ -77,11 +78,11 @@ namespace RecipeAPI.Controllers
 
                 var gId = Guid.Parse(AuthenticatedUser);
                 var pantryItems = _db.Transactions.Where(p => p.UserId == gId)
-                                                        .Where(p => p.ProductId == productId)
-                                                        .Include(p => p.Variety)
-                                                        .Include(p => p.Product)
-                                                        .ToList()
-                                                        .CalculateProductTotals();
+                                                  .Where(p => p.ProductId == productId)
+                                                  .Include(p => p.Variety)
+                                                  .Include(p => p.Product)
+                                                  .ToList()
+                                                  .CalculateProductTotals();
 
                 var otherItems = !includeZeroValues ? pantryItems.Where(p => p.Quantity > 0) : pantryItems;
 
@@ -92,7 +93,6 @@ namespace RecipeAPI.Controllers
                                                  Total = 0,
                                                  Elements = p
                                              });
-
                 return Ok(groupedItems);
             }
             catch (Exception ex)

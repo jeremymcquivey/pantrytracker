@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace PantryTrackers.Models
 {
     public class ProductGroup
     {
         public string Header { get; set; }
-        
+
         public string Total { get; set; }
 
         public IEnumerable<PantryLine> Elements { get; set; }

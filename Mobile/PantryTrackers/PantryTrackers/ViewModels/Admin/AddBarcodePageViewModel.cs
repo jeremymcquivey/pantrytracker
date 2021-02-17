@@ -61,7 +61,14 @@ namespace PantryTrackers.ViewModels.Admin
 
                 if(newCode != default)
                 {
+                    var product = Code.Product;
                     Code = newCode;
+                    newCode.Product = product;
+
+                    await _navService.GoBackAsync(new NavigationParameters
+                    {
+                        { "AddedCode", newCode }
+                    });
                 }
                 IsNetworkBusy = false;
                 //todo: else an error occurred.
@@ -98,6 +105,14 @@ namespace PantryTrackers.ViewModels.Admin
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
+
+            if(parameters.ContainsKey("ProductCode") && parameters["ProductCode"].GetType() == typeof(string))
+            {
+                Code = new ProductCode
+                {
+                    Code = (string)parameters["ProductCode"]
+                };
+            }
 
             if (parameters.ContainsKey("BarcodeScanResult") && parameters["BarcodeScanResult"].GetType() == typeof(string))
             {

@@ -20,7 +20,7 @@ namespace RecipeAPI.Extensions
             return products.CombineUnits();
         }
 
-        public static IEnumerable<T> CombineUnits<T> (this IEnumerable<T> entries) where T : IItemQuantity 
+        public static IEnumerable<T> CombineUnits<T> (this IEnumerable<T> entries, bool secondaryRun = false) where T : IItemQuantity 
         {
             return entries.GroupBy(x => new { x.ProductId, x.VarietyId, x.Unit })
                           .Select(p =>
@@ -31,9 +31,9 @@ namespace RecipeAPI.Extensions
                               item.ProductId = p.Key.ProductId;
                               item.VarietyId = p.Key.VarietyId;
                               item.Unit = p.Key.Unit;
+                              item.TotalAmount = secondaryRun ? p.Sum(p => p.TotalAmount) : Math.Round(p.Sum(q => q.Quantity * q.Size), 2);
                               item.Quantity = p.Sum(q => q.Quantity);
                               item.Size = 1;
-                              item.TotalAmount = Math.Round(p.Sum(q => q.Quantity * q.Size), 2);
                               return item;
                           });
         }
@@ -77,7 +77,7 @@ namespace RecipeAPI.Extensions
             return products.SanitizeUnits()
                            .CombineUnits()
                            .ConvertUnits(productUnits.SanitizeUnits())
-                           .CombineUnits();
+                           .CombineUnits(secondaryRun: true);
         }
 
         private static IEnumerable<Tuple<int?, string>> SanitizeUnits(this IEnumerable<Tuple<int?, string>> units)
@@ -156,16 +156,16 @@ namespace RecipeAPI.Extensions
             entry.Unit = conversion.DestinationUnit;
             if (sourceUnit == conversion.SourceUnit)
             {
-                var convertedValue = Math.Round(entry.Size * conversion.ConversionScale, UnitConversions.DecimalPrecision);
-                Console.WriteLine($"{entry.Quantity} {entry.Unit} converted to {convertedValue} {conversion.DestinationUnit} by multiplying by {conversion.ConversionScale}");
-                entry.Size = convertedValue;
+                var convertedValue = Math.Round(entry.TotalAmount * conversion.ConversionScale, UnitConversions.DecimalPrecision);
+                Console.WriteLine($"{entry.TotalAmount} {entry.Unit} converted to {convertedValue} {conversion.DestinationUnit} by multiplying by {conversion.ConversionScale}");
+                entry.TotalAmount = convertedValue;
                 entry.Unit = conversion.DestinationUnit;
             }
             else
             {
-                var convertedValue = Math.Round(entry.Size / conversion.ConversionScale, UnitConversions.DecimalPrecision);
-                Console.WriteLine($"{entry.Quantity} {entry.Unit} converted to {convertedValue} {conversion.SourceUnit} by dividing by {conversion.ConversionScale}");
-                entry.Size = convertedValue;
+                var convertedValue = Math.Round(entry.TotalAmount / conversion.ConversionScale, UnitConversions.DecimalPrecision);
+                Console.WriteLine($"{entry.TotalAmount} {entry.Unit} converted to {convertedValue} {conversion.SourceUnit} by dividing by {conversion.ConversionScale}");
+                entry.TotalAmount = convertedValue;
                 entry.Unit = conversion.SourceUnit;
             }
         }

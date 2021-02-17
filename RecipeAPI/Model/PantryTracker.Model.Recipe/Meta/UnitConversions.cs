@@ -310,6 +310,14 @@ namespace PantryTracker.Model.Meta
                     DestinationUnit = UnitsOfVolume.Quart
                 },
 
+                // **** "Other" Conversions **** \\
+                new UnitConversionRate
+                {
+                    SourceUnit = OtherUnits.Dozen,
+                    ConversionScale = 12,
+                    DestinationUnit = OtherUnits.Count
+                },
+
                 // **** Product Specific Conversions **** \\
                 new UnitConversionRate
                 {

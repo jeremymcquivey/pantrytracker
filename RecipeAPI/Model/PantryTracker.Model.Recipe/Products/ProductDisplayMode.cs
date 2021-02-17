@@ -2,8 +2,8 @@
 {
     public static class ProductDisplayMode
     {
-        public const int Each = 1;
+        public const int PurchaseQuantity = 1;
 
-        public const int Units = 2;
+        public const int ActualUnits = 2;
     }
 }

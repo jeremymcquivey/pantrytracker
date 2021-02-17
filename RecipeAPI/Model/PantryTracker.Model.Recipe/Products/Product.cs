@@ -12,6 +12,8 @@ namespace PantryTracker.Model.Products
 
         public string OwnerId { get; set; }
 
+        public int QuantityDisplayMode { get; set; }
+
         public virtual IEnumerable<ProductVariety> Varieties { get; set; }
 
         public virtual IEnumerable<ProductCode> Codes { get; set; }

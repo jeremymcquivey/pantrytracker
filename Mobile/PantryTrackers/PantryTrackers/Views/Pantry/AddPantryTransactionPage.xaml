@@ -18,20 +18,23 @@
 
                             <StackLayout Orientation="Horizontal">
                                 <Label HorizontalOptions="FillAndExpand" Style="{StaticResource LabelWarning}" Text="{Binding WarningMessage}" IsVisible="{Binding HasWarningMessage}"></Label>
-                                <Button Text="Add" IsVisible="{Binding HasWarningMessage}"></Button>
+                                <Button Text="Add" IsVisible="{Binding HasWarningMessage}" Command="{Binding AddNewBarcodeCommand}"></Button>
                             </StackLayout>
 
                             <Label Text="Product Code" />
                             <Entry Placeholder="Product Code" Text="{Binding Transaction.ProductCode}" />
 
                             <Label Text="Product Name" />
-                            <Entry Placeholder="Product Name" Text="{Binding Transaction.ProductName}" IsEnabled="False" />
+                            <StackLayout Orientation="Horizontal">
+                                <Entry HorizontalOptions="FillAndExpand" Placeholder="Product Name" Text="{Binding Transaction.ProductName}" IsEnabled="False" />
+                                <Button HorizontalOptions="End" Text="Edit" Command="{Binding EditProductCommand}"></Button>
+                            </StackLayout>
 
                             <Label Text="Quantity" />
                             <Entry Placeholder="Quantity" Text="{Binding Transaction.Quantity}" Keyboard="Numeric" />
 
                             <Label Text="Package Size" />
-                            <Entry Placeholder="Package Size" Text="{Binding Transaction.ContainerSize}" Keyboard="Numeric" />
+                            <Entry Placeholder="Package Size" Text="{Binding Transaction.Size}" Keyboard="Numeric" />
 
                             <Label Text="Unit" />
                             <Entry Placeholder="Unit" Text="{Binding Transaction.Unit}" />
