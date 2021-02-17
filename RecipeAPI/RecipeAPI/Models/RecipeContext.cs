@@ -71,6 +71,9 @@ namespace RecipeAPI.Models
             modelBuilder.Entity<PantryTransaction>()
                 .HasIndex(nameof(PantryTransaction.UserId));
 
+            modelBuilder.Entity<PantryTransaction>()
+                .Ignore(trans => trans.TotalAmount);
+
             modelBuilder.Entity<ProductCode>()
                 .HasKey(code => code.Id);
 

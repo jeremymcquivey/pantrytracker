@@ -3,6 +3,7 @@ using PantryTrackers.Models;
 using PantryTrackers.Models.Products;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace PantryTrackers.Services
 {
     internal class ProductService
     {
+        private const int ProductSearchTypeId = 1;
+        private const int ProductSearchTypeName = 2;
         private readonly RestClient _client;
 
         public ProductService(RestClient client)
@@ -17,18 +20,23 @@ namespace PantryTrackers.Services
             _client = client;
         }
 
+        public async Task<Product> ById(int id)
+        {
+            return (await SearchByText($"{id}", idType: ProductSearchTypeId)).FirstOrDefault();
+        }
+
         public async Task<ProductCode> Search(string productText)
         {
             var url = $"v1/ProductCode/{productText}";
             var response = await _client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
-            return await response.GetDeserializedContent<ProductCode>(useString: true);
+            return await response.GetDeserializedContent<ProductCode>();
         }
 
-        public async Task<IEnumerable<Product>> SearchByText(string productText)
+        public async Task<IEnumerable<Product>> SearchByText(string productText, int idType = ProductSearchTypeName)
         {
-            var url = $"v1/Product/{productText}?identifierType=2";
+            var url = $"v1/Product/{productText}?identifierType={idType}";
             var response = await _client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
-            return await response.GetDeserializedContent<IEnumerable<Product>>(useString: true);
+            return await response.GetDeserializedContent<IEnumerable<Product>>();
         }
 
         public async Task<Product> Save(Product product)

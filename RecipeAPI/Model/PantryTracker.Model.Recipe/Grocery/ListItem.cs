@@ -10,11 +10,13 @@ namespace PantryTracker.Model.Grocery
 
         public string PantryId { get; set; } //For now, this is user id until we support multiple 'pantries'.
 
-        public double Quantity { get; set; }
+        public int Quantity { get; set; }
 
         public string Unit { get; set; } = "";
 
-        public string Size { get; set; }
+        public double Size { get; set; }
+
+        public double TotalAmount { get; set; }
 
         public string FreeformText { get; set; }
 
