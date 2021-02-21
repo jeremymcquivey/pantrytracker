@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PantryTrackers.ViewModels.NavMenu"
+             x:Class="PantryTrackers.Views.NavMenu.AdminMenuPage"
+             Title="Admin Menu">
+
+    <ContentPage.Content>
+        <StackLayout x:Name="ContentLayout">
+            <ListView ItemsSource="{Binding MenuItems}"
+                      SelectionMode="None"
+                      Margin="0, 10, 0, 0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Button Text="{Binding Name}"
+                                    Margin="0, 5, 0, 0"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:AdminMenuPageViewModel}}, Path=DoSomethingCommand}"
+                                    CommandParameter="{Binding}" />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

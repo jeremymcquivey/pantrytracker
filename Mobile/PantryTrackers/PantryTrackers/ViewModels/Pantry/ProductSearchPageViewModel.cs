@@ -67,7 +67,7 @@ namespace PantryTrackers.ViewModels.Pantry
                 IsNetworkBusy = true;
                 var results = await _products.SearchByText(SearchText);
                 OnProductSearchReturned?.Invoke(this, results);
-                HasSearchResults = results.Any();
+                HasSearchResults = results?.Any() ?? false;
                 IsNetworkBusy = false;
             }, CanExecute);
 

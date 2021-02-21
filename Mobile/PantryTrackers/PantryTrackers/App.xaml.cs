@@ -1,7 +1,6 @@
 ﻿using Prism;
 using Prism.Ioc;
 using PantryTrackers.ViewModels;
-using PantryTrackers.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PantryTrackers.Common.Security;
@@ -119,9 +118,11 @@ namespace PantryTrackers
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<BarcodeScannerPage, BarcodeScannerPageViewModel>();
 
+            containerRegistry.RegisterForNavigation<NavMenuPage, NavMenuPageViewModel>();
+            containerRegistry.RegisterForNavigation<AdminMenuPage, AdminMenuPageViewModel>();
+
             containerRegistry.RegisterForNavigation<Unauthorized, UnauthorizedViewModel>();
             containerRegistry.RegisterForNavigation<Error, ErrorViewModel>();
-            containerRegistry.RegisterForNavigation<NavMenuPage, NavMenuPageViewModel>();
             containerRegistry.RegisterForNavigation<Upgrade, UpgradeViewModel>();
 
             containerRegistry.RegisterForNavigation<RecipeDetailPage, RecipeDetailPageViewModel>();
