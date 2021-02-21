@@ -18,6 +18,7 @@ namespace PantryTrackers.ViewModels.Pantry
     {
         private Command _addInventoryCommand;
         private Command _removeInventoryCommand;
+        private readonly PantryService _pantry;
         private readonly INavigationService _navigationService;
 
         public Command SomeCommand => new Command(() =>
@@ -41,9 +42,10 @@ namespace PantryTrackers.ViewModels.Pantry
             await Task.Run(() => { });
         }, CanExecute);
 
-        public PantryMainPageViewModel(INavigationService navigationService, RestClient client):
-            base(navigationService, client)
+        public PantryMainPageViewModel(INavigationService navigationService, PantryService pantry):
+            base(navigationService, null)
         {
+            _pantry = pantry;
             _navigationService = navigationService;
         }
 
@@ -54,9 +56,13 @@ namespace PantryTrackers.ViewModels.Pantry
             // TODO: Eventually, when we support multiple pantries, this will be the pantry requested.
             // For now, though, this is the user Id.
             var pantryId = await SecureStorage.GetAsync(ClaimKeys.Id);
-            var url = $"v1/Pantry/{pantryId}?includeZeroValues=false";
-            var response = await Client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
-            var data = await response.GetDeserializedContent<IEnumerable<ProductGroup>>();
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                IsNetworkBusy = true;
+            });
+
+            var data = await _pantry.GetSummary(pantryId);
 
             await Device.InvokeOnMainThreadAsync(() =>
             {
@@ -65,6 +71,7 @@ namespace PantryTrackers.ViewModels.Pantry
                 {
                     ProductGroups.Add(group);
                 }
+                IsNetworkBusy = false;
             });
         }
 

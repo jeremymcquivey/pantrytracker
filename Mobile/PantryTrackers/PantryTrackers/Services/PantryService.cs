@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using PantryTrackers.Common.Extensions;
@@ -23,6 +24,13 @@ namespace PantryTrackers.Services
             var url = $"v1/PantryTransaction/?pantryId={pantryId}";
             var response = await _client.MakeRequest(new Uri(url, UriKind.Relative), HttpMethod.Post, content: transaction, isSecure: true);
             return await response.GetDeserializedContent<PantryTransaction>();
+        }
+
+        public async Task<IEnumerable<ProductGroup>> GetSummary(string pantryId)
+        {
+            var url = $"v1/Pantry/{pantryId}?includeZeroValues=false";
+            var response = await _client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
+            return await response.GetDeserializedContent<IEnumerable<ProductGroup>>();
         }
     }
 }

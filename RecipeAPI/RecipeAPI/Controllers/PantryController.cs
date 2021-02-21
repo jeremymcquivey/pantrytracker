@@ -59,7 +59,7 @@ namespace RecipeAPI.Controllers
                                                     $"{p.Sum(q => q.Quantity)} ct" :
                                                     $"{p.Sum(q => q.TotalAmount)} {p.First().Unit}",
                                                  Elements = p
-                                             }) ;
+                                             });
                 return Ok(groupedItems);
             }
             catch (Exception ex)
