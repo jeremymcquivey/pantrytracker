@@ -4,6 +4,7 @@ using PantryTrackers.Common.Security;
 using PantryTrackers.Common.Security.Models;
 using PantryTrackers.Models;
 using PantryTrackers.Models.NavMenu;
+using PantryTrackers.Models.Products;
 using PantryTrackers.Models.Recipes;
 using PantryTrackers.Services;
 using PantryTrackers.Views.Pantry;
@@ -59,10 +60,7 @@ namespace PantryTrackers.ViewModels.NavMenu
             {
                 Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    await _navService.NavigateAsync($"{nameof(AddProductPage)}", new NavigationParameters
-                    {
-                        { "ExistingProduct", parameters["SelectedProdut"] }
-                    });
+                    await _navService.NavigateAsync($"{nameof(AddProductPage)}", parameters);
                 });
             }
         }

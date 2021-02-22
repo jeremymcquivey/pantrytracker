@@ -1,4 +1,4 @@
-﻿using PantryTrackers.Models;
+﻿using PantryTrackers.Models.Products;
 using PantryTrackers.Services;
 using PantryTrackers.Views.Pantry;
 using Prism.Navigation;

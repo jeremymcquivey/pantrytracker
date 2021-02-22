@@ -41,14 +41,18 @@ namespace PantryTrackers.Services
 
         public async Task<Product> Save(Product product)
         {
+            var url = $"v1/Product";
+            HttpResponseMessage response;
+
             if (product.Id > 0)
             {
-                //todo: not supported yet.
-                return null;
+                response = await _client.MakeRequest(new Uri($"{url}/{product.Id}", UriKind.Relative), HttpMethod.Put, content: product, isSecure: true);
+            }
+            else
+            {
+                response = await _client.MakeRequest(new Uri(url, UriKind.Relative), HttpMethod.Post, content: product, isSecure: true);
             }
 
-            var url = $"v1/Product";
-            var response = await _client.MakeRequest(new Uri(url, UriKind.Relative), HttpMethod.Post, content: product, isSecure: true);
             return await response.GetDeserializedContent<Product>();
         }
 

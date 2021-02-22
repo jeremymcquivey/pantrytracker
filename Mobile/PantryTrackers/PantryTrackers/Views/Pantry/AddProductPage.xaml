@@ -17,6 +17,9 @@
                         <Label Text="Unit" />
                         <Entry Placeholder="Default Unit" Text="{Binding Product.DefaultUnit}" />
 
+                        <Label Text="Unit Display" />
+                        <Picker SelectedItem="{Binding SelectedUnitDisplay}" ItemsSource="{Binding UnitDisplayOptions}" />
+
                         <Button Text="Save" Command="{Binding SaveProductCommand}" IsEnabled="{Binding IsNetworkBusy, Converter={StaticResource InverseBoolConverter}}"></Button>
                         <ActivityIndicator IsRunning="true" IsVisible="{Binding IsNetworkBusy}"/>
 

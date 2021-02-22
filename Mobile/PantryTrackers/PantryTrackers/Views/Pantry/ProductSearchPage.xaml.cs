@@ -1,4 +1,4 @@
-﻿using PantryTrackers.Models;
+﻿using PantryTrackers.Models.Products;
 using PantryTrackers.ViewModels.Pantry;
 using System.Collections.Generic;
 using System.Linq;

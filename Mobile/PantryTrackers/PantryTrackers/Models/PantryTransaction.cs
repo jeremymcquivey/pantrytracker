@@ -1,4 +1,6 @@
-﻿namespace PantryTrackers.Models
+﻿using PantryTrackers.Models.Products;
+
+namespace PantryTrackers.Models
 {
     public class PantryTransaction
     {
