@@ -10,6 +10,7 @@ using PantryTracker.Model.Products;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using RecipeAPI.Services;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace RecipeAPI.Controllers
 {
@@ -36,11 +37,10 @@ namespace RecipeAPI.Controllers
 
         /// <summary>
         /// Admin functionality: Returns a list of all products whose name starts with the provided string.
-        /// TODO: Make these return types consistent [i.e. return a list of products].
         /// </summary>
         [HttpGet]
         [Route("{text}")]
-        public async Task<IActionResult> Get([FromRoute] string text, [FromQuery] ProductSearchType identifierType, [FromQuery]int limit = 100)
+        public async Task<ActionResult<IEnumerable<Product>>> Get([FromRoute] string text, [FromQuery] ProductSearchType identifierType, [FromQuery]int limit = 100)
         {
             switch(identifierType)
             {
@@ -64,7 +64,7 @@ namespace RecipeAPI.Controllers
         /// Add a new product. If not an admin, this will create an 'individual' product.
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromBody]Product product)
+        public async Task<ActionResult<Product>> AddProduct([FromBody]Product product)
         {
             //TODO: Do a duplicate check.
             if(product == default)
@@ -80,14 +80,14 @@ namespace RecipeAPI.Controllers
             product.OwnerId = UserRoles.Contains("Admin") ? null : AuthenticatedUser;
             return Ok(await _products.Add(product));
         }
-
+        
         /// <summary>
         /// Admin functionality: Update the information stored about a given product.
         /// </summary>
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateProduct([FromRoute]int id, [FromBody]Product product)
+        public async Task<ActionResult<Product>> UpdateProduct([FromRoute]int id, [FromBody]Product product)
         {
             if (!ModelState.IsValid)
             {

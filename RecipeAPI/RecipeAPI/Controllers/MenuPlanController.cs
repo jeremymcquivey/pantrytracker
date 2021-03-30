@@ -6,6 +6,7 @@ using RecipeAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using PantryTracker.Model.Menu;
+using System.Collections.Generic;
 
 namespace RecipeAPI.Controllers
 {
@@ -27,7 +28,7 @@ namespace RecipeAPI.Controllers
         /// Returns all calendar menu entries for current user.
         /// </summary>
         [HttpGet]
-        public IActionResult GetAll([FromQuery] string startDate, [FromQuery] string endDate)
+        public ActionResult<IEnumerable<CalendarMenuEntry>> GetAll([FromQuery] string startDate, [FromQuery] string endDate)
         {
             if(!DateTime.TryParse(startDate, out DateTime realStartDate))
             {
@@ -89,7 +90,7 @@ namespace RecipeAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CalendarMenuEntry entry)
+        public async Task<ActionResult<CalendarMenuEntry>> Add([FromBody] CalendarMenuEntry entry)
         {
             if(entry == default)
             {
@@ -121,7 +122,7 @@ namespace RecipeAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> Remove([FromRoute] int id)
+        public async Task<ActionResult> Remove([FromRoute] int id)
         {
             var gId = Guid.Parse(AuthenticatedUser);
             var existing = _db.MenuEntries.SingleOrDefault(item => item.OwnerId == gId && 
