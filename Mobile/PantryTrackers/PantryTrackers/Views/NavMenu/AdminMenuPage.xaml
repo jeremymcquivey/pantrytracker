@@ -16,7 +16,7 @@
                             <Button Text="{Binding Name}"
                                     Margin="0, 5, 0, 0"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type local:AdminMenuPageViewModel}}, Path=DoSomethingCommand}"
-                                    CommandParameter="{Binding}" />
+                                    CommandParameter="{Binding .}" />
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

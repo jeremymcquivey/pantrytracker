@@ -4,9 +4,10 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:local="clr-namespace:PantryTrackers.ViewModels.Pantry"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms" xmlns:pantry="clr-namespace:PantryTrackers.Views.Pantry"
              prism:ViewModelLocator.AutowireViewModel="True"
-             Title="PantryList"
+             Title="My Pantry"
              x:Class="PantryTrackers.Views.Pantry.PantryMainPage">
 
     <ContentPage.Content>
@@ -15,16 +16,22 @@
                 <Button HorizontalOptions="Start" Text="Remove" Command="{Binding RemoveInventoryCommand}" />
                 <Button HorizontalOptions="EndAndExpand" Text="Add" Command="{Binding AddInventoryCommand}" />
             </StackLayout>
-            <ActivityIndicator IsRunning="true" IsVisible="{Binding IsNetworkBusy}" VerticalOptions="End" />
 
             <ListView ItemsSource="{Binding ProductGroups}"
                       SelectionMode="None"
                       HasUnevenRows="True"
+                    IsPullToRefreshEnabled="True"
+                    IsRefreshing="{Binding IsNetworkBusy, Mode=OneWay}"
                       RefreshCommand="{Binding SomeCommand}">
                 
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Command="{Binding Source={RelativeSource AncestorType={x:Type local:PantryMainPageViewModel}}, Path=SomeCommand}"
+                                          CommandParameter="{Binding .}"
+                                          Text="{Binding Header, StringFormat='Add {0} to List'}" />
+                             </ViewCell.ContextActions>
                             <StackLayout>
                                 <StackLayout Orientation="Horizontal">
                                     
