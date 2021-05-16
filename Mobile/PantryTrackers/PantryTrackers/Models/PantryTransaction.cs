@@ -1,4 +1,5 @@
-﻿using PantryTrackers.Models.Products;
+﻿using PantryTrackers.Models.Meta.Enums;
+using PantryTrackers.Models.Products;
 
 namespace PantryTrackers.Models
 {
@@ -17,6 +18,8 @@ namespace PantryTrackers.Models
         public string Unit { get; set; }
 
         public double TotalAmount { get; set; }
+
+        public int TransactionType { get; set; } = TransactionTypes.Addition;
 
         public string ToString(int displayMode) 
         {

@@ -1,6 +1,7 @@
 ﻿using PantryTrackers.Common.Extensions;
 using PantryTrackers.Common.Security;
 using PantryTrackers.Models;
+using PantryTrackers.Models.Meta.Enums;
 using PantryTrackers.Services;
 using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
@@ -38,8 +39,14 @@ namespace PantryTrackers.ViewModels.Pantry
 
         public Command RemoveInventoryCommand => _removeInventoryCommand ??= new Command(async () =>
         {
+            IsNetworkBusy = true;
+            var navParams = new NavigationParameters
+            {
+                { "TransactionType", TransactionTypes.Usage }
+            };
+
+            await _navigationService.NavigateAsync(nameof(AddPantryTransactionPage), navParams);
             IsNetworkBusy = false;
-            await Task.Run(() => { });
         }, CanExecute);
 
         public PantryMainPageViewModel(INavigationService navigationService, PantryService pantry):

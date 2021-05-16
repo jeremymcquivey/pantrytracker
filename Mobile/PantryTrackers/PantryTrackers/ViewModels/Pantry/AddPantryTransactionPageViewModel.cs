@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using PantryTrackers.Controls;
 using PantryTrackers.Models;
+using PantryTrackers.Models.Meta.Enums;
 using PantryTrackers.Models.Products;
 using PantryTrackers.Services;
 using PantryTrackers.Views.Admin;
@@ -21,6 +22,7 @@ namespace PantryTrackers.ViewModels.Pantry
         private readonly INavigationService _navService;
         private readonly ProductService _products;
         private readonly PantryService _pantry;
+        private int _transactionType = TransactionTypes.Usage;
 
         public Command EditProductCommand => _editProductCommand ??=
             new Command(async () =>
@@ -59,6 +61,7 @@ namespace PantryTrackers.ViewModels.Pantry
 
                 await Task.Run(async () =>
                 {
+                    Transaction.TransactionType = _transactionType;
                     var transaction = await _pantry.Save(Transaction);
                     if(transaction != default)
                     {
@@ -80,7 +83,7 @@ namespace PantryTrackers.ViewModels.Pantry
                             WarningMessage = "Save didn't happen.";
                         });
                     }
-                });
+                }); 
             }, CanExecute);
 
         public string WarningMessage
@@ -97,7 +100,7 @@ namespace PantryTrackers.ViewModels.Pantry
 
         public PantryTransaction Transaction 
         { 
-            get => _transaction; 
+            get => _transaction ?? (_transaction = new PantryTransaction()); 
             set 
             { 
                 _transaction = value; 
@@ -169,6 +172,11 @@ namespace PantryTrackers.ViewModels.Pantry
                         WarningMessage = "Product not found.";
                     }
                 });
+            }
+
+            if(parameters.ContainsKey("TransactionType"))
+            {
+                _transactionType = (int)parameters["TransactionType"];
             }
         }
 

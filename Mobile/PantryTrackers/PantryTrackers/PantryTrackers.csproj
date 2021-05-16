@@ -93,4 +93,7 @@
     <ProjectReference Include="..\..\PantryTrackers.Common\PantryTrackers.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Meta\Enums\" />
+  </ItemGroup>
 </Project>
