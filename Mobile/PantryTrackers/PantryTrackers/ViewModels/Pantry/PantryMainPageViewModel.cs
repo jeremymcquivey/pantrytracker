@@ -4,6 +4,7 @@ using PantryTrackers.Models.Meta.Enums;
 using PantryTrackers.Services;
 using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -15,12 +16,15 @@ namespace PantryTrackers.ViewModels.Pantry
         private Command _addInventoryCommand;
         private Command _removeInventoryCommand;
         private Command _addItemToListCommand;
-        private Command _someCommand;
+        private Command _refreshDataCommand;
 
         private readonly PantryService _pantry;
         private readonly INavigationService _navigationService;
 
-        public Command SomeCommand => _someCommand ??= new Command(async () =>
+        public ObservableCollection<ProductGroup> ProductGroups { get; } =
+            new ObservableCollection<ProductGroup>();
+
+        public Command RefreshDataCommand => _refreshDataCommand ??= new Command(async () =>
         {
             // TODO: Eventually, when we support multiple pantries, this will be the pantry requested.
             // For now, though, this is the user Id.
@@ -32,24 +36,16 @@ namespace PantryTrackers.ViewModels.Pantry
             });
 
             var data = await _pantry.GetSummary(pantryId);
-
             await Device.InvokeOnMainThreadAsync(() =>
             {
-                ProductGroups.Clear();
-                foreach (var group in data)
-                {
-                    ProductGroups.Add(group);
-                }
                 IsNetworkBusy = false;
+                RepopulateData(data);
             });
         }, CanExecute);
 
-        public ObservableCollection<ProductGroup> ProductGroups { get; } =
-            new ObservableCollection<ProductGroup>();
-
         public Command AddItemToListCommand => _addItemToListCommand ??= new Command((myParam) =>
         {
-            SomeCommand.Execute(null);
+
         });
 
         public Command AddInventoryCommand => _addInventoryCommand ??= new Command(async () =>
@@ -78,20 +74,37 @@ namespace PantryTrackers.ViewModels.Pantry
             _navigationService = navigationService;
         }
 
-        public override async void OnNavigatedTo(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
-            SomeCommand.Execute(null);
+            if(RefreshDataCommand.CanExecute(null))
+            {
+                RefreshDataCommand.Execute(null);
+            }
         }
-
+        
         public override void OnCommandCanExecuteChanged()
         {
             base.OnCommandCanExecuteChanged();
 
             AddInventoryCommand.ChangeCanExecute();
             RemoveInventoryCommand.ChangeCanExecute();
-            SomeCommand.ChangeCanExecute();
+            RefreshDataCommand.ChangeCanExecute();
             AddItemToListCommand.ChangeCanExecute();
+        }
+
+        private void RepopulateData(IEnumerable<ProductGroup> data)
+        {
+            ProductGroups.Clear();
+            if (data == null)
+            {
+                return;
+            }
+
+            foreach (var group in data)
+            {
+                ProductGroups.Add(group);
+            }
         }
     }
 }

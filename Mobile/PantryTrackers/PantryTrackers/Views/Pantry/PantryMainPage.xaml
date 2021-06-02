@@ -4,10 +4,11 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             xmlns:local="clr-namespace:PantryTrackers.ViewModels.Pantry"
+             xmlns:local="clr-namespace:PantryTrackers.Views.Pantry"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms" xmlns:pantry="clr-namespace:PantryTrackers.Views.Pantry"
              prism:ViewModelLocator.AutowireViewModel="True"
              Title="My Pantry"
+             x:Name="contentPage"
              x:Class="PantryTrackers.Views.Pantry.PantryMainPage">
 
     <ContentPage.Content>
@@ -20,17 +21,19 @@
             <ListView ItemsSource="{Binding ProductGroups}"
                       SelectionMode="None"
                       HasUnevenRows="True"
-                    IsPullToRefreshEnabled="True"
-                    IsRefreshing="{Binding IsNetworkBusy, Mode=OneWay}"
-                      RefreshCommand="{Binding SomeCommand}">
+                      IsPullToRefreshEnabled="True"
+                      IsRefreshing="{Binding IsNetworkBusy, Mode=OneWay}"
+                      RefreshCommand="{Binding RefreshDataCommand}">
                 
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.ContextActions>
-                                <MenuItem Command="{Binding Source={RelativeSource AncestorType={x:Type local:PantryMainPageViewModel}}, Path=SomeCommand}"
+                                <MenuItem 
+                                          Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.AddItemToListCommand}"
                                           CommandParameter="{Binding .}"
                                           Text="{Binding Header, StringFormat='Add {0} to List'}" />
+
                              </ViewCell.ContextActions>
                             <StackLayout>
                                 <StackLayout Orientation="Horizontal">
