@@ -25,6 +25,8 @@ namespace PantryTrackers.ViewModels
 
         public bool CanExecute() => !IsNetworkBusy;
 
+        public bool CanExecute<T>(T obj) => CanExecute();
+
         public ViewModelBase(INavigationService navigationService, RestClient client)
         {
             NavigationService = navigationService;

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms" 
              xmlns:convert="clr-namespace:PantryTrackers.Common.Converters;assembly=PantryTrackers.Common"
+             xmlns:convert2="clr-namespace:PantryTrackers.Converters"
              x:Class="PantryTrackers.App">
     
 	<Application.Resources>
@@ -10,6 +11,8 @@
 		<!-- Application resource dictionary -->
         <ResourceDictionary>
             <convert:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <convert2:PurchaseStatusToTextDecorationConverter x:Key="ItemStatusToDecorationConverter" />
+            <convert2:PurchaseStatusToBackgroundColorConverter x:Key="ItemStatusToColorConverter" />
 
             <!-- Text Colors -->
             <Color x:Key="MainColor">#179C01</Color>

@@ -22,6 +22,8 @@ using PantryTrackers.Controls;
 using PantryTrackers.Controls.ViewModel;
 using PantryTrackers.Views.Admin;
 using PantryTrackers.ViewModels.Admin;
+using PantryTrackers.Views.GroceryList;
+using PantryTrackers.ViewModels.GroceryList;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PantryTrackers
@@ -44,13 +46,13 @@ namespace PantryTrackers
 
         protected override async void OnStart()
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             Startup.Init(Container.GetContainer());
             _authService = Container.Resolve<AuthenticationService>();
             _authService.SuccessfulAuthentication += SuccessfulAuthentication;
             _authService.UnsuccessfulAuthentication += UnsuccessfulAuthentication;
             _authService.SystemAuthenticationError += Error;
-
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             _metadataService = Container.Resolve<MetadataService>();
             _metadataService.VersionIncompatible += (src, evt) =>
@@ -137,12 +139,15 @@ namespace PantryTrackers
             containerRegistry.RegisterForNavigation<ProductSearchPage, ProductSearchPageViewModel>();
             containerRegistry.RegisterForNavigation<AddProductPage, AddProductPageViewModel>();
 
+            containerRegistry.RegisterForNavigation<GroceryListMainPage, GroceryListMainPageViewModel>();
+
             containerRegistry.Register<AuthenticationService>();
             containerRegistry.Register<MetadataService>();
 
             containerRegistry.RegisterSingleton<RestClient>();
             containerRegistry.RegisterSingleton<ProductService>();
             containerRegistry.RegisterSingleton<PantryService>();
+            containerRegistry.RegisterSingleton<GroceryListService>();
             containerRegistry.RegisterInstance(new HttpClient());
         }
 

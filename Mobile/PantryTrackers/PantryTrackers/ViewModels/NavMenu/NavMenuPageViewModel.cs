@@ -13,7 +13,7 @@ namespace PantryTrackers.ViewModels.NavMenu
     public class NavMenuPageViewModel : ViewModelBase
     {
         private readonly INavigationService _navService;
-        private Command<NavMenuItem> _doSomethingcommand;
+        private Command<NavMenuItem> _selectMenuItemCommand;
 
         public UserProfile Account { private set; get; }
 
@@ -23,15 +23,17 @@ namespace PantryTrackers.ViewModels.NavMenu
 
         public IEnumerable<NavMenuItem> MenuItems => Models.Meta.MenuItems.ForRoles(Roles);
 
-        public Command DoSomethingCommand => _doSomethingcommand ??= new Command<NavMenuItem>(async (item) =>
+        public Command SelectMenuItemCommand => _selectMenuItemCommand ??= new Command<NavMenuItem>(async (item) =>
         {
+            IsNetworkBusy = true;
             if(string.IsNullOrEmpty(item.NavigationPage))
             {
                 return;
             }
 
             await _navService.NavigateAsync($"NavigationPage/{item.NavigationPage}");
-        });
+            IsNetworkBusy = false;
+        }, (menuItem) => CanExecute(menuItem));
 
         public NavMenuPageViewModel(INavigationService navigationService, RestClient client)
             : base(navigationService, client)
@@ -47,6 +49,13 @@ namespace PantryTrackers.ViewModels.NavMenu
                 Account = authContext?.UserProfile;
                 RaisePropertyChanged(nameof(Account));
             });
+        }
+
+        public override void OnCommandCanExecuteChanged()
+        {
+            SelectMenuItemCommand.ChangeCanExecute();
+
+            base.OnCommandCanExecuteChanged();
         }
     }
 }

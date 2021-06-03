@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using PantryTrackers.Common.Security;
 using PantryTrackers.Common.Security.Models;
-using PantryTrackers.Models;
 using PantryTrackers.Models.NavMenu;
 using PantryTrackers.Models.Products;
 using PantryTrackers.Models.Recipes;
@@ -16,7 +15,7 @@ namespace PantryTrackers.ViewModels.NavMenu
     public class AdminMenuPageViewModel : ViewModelBase
     {
         private readonly INavigationService _navService;
-        private Command<NavMenuItem> _doSomethingcommand;
+        private Command<NavMenuItem> _selectMenuItemCommand;
 
         public UserProfile Account { private set; get; }
 
@@ -26,7 +25,7 @@ namespace PantryTrackers.ViewModels.NavMenu
 
         public IEnumerable<NavMenuItem> MenuItems => Models.Meta.MenuItems.Admin();
 
-        public Command DoSomethingCommand => _doSomethingcommand ??= new Command<NavMenuItem>(async (item) =>
+        public Command SelectMenuItemCommand => _selectMenuItemCommand ??= new Command<NavMenuItem>(async (item) =>
         {
             if (string.IsNullOrEmpty(item.NavigationPage))
             {
@@ -34,7 +33,7 @@ namespace PantryTrackers.ViewModels.NavMenu
             }
 
             await _navService.NavigateAsync($"{item.NavigationPage}");
-        });
+        }, (navMenuItem)=> CanExecute(navMenuItem));
 
         public AdminMenuPageViewModel(INavigationService navigationService, RestClient client)
             : base(navigationService, client)
@@ -63,6 +62,13 @@ namespace PantryTrackers.ViewModels.NavMenu
                     await _navService.NavigateAsync($"{nameof(AddProductPage)}", parameters);
                 });
             }
+        }
+
+        public override void OnCommandCanExecuteChanged()
+        {
+            base.OnCommandCanExecuteChanged();
+
+            SelectMenuItemCommand.ChangeCanExecute();
         }
     }
 }

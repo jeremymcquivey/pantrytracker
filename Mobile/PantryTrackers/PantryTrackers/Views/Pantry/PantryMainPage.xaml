@@ -4,7 +4,6 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             xmlns:local="clr-namespace:PantryTrackers.Views.Pantry"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms" xmlns:pantry="clr-namespace:PantryTrackers.Views.Pantry"
              prism:ViewModelLocator.AutowireViewModel="True"
              Title="My Pantry"

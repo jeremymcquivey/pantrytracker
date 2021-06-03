@@ -95,5 +95,9 @@
 
   <ItemGroup>
     <Folder Include="Models\Meta\Enums\" />
+    <Folder Include="ViewModels\GroceryList\" />
+    <Folder Include="Views\GroceryList\" />
+    <Folder Include="Models\GroceryList\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
 </Project>
