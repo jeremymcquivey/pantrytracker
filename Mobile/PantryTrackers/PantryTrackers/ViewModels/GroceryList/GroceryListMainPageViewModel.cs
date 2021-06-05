@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using PantryTrackers.Common;
 using PantryTrackers.Common.Security;
 using PantryTrackers.Models.GroceryList;
 using PantryTrackers.Services;
@@ -19,9 +21,9 @@ namespace PantryTrackers.ViewModels.GroceryList
         private GroceryListService _groceryList;
         private INavigationService _navigationService;
 
-        public ObservableCollection<GroceryListItem> ListItems { get; } =
-            new ObservableCollection<GroceryListItem>();
-
+        public ObservableCollection<PageTypeGroup<GroceryListItem>> ListItems { get; } =
+            new ObservableCollection<PageTypeGroup<GroceryListItem>>();
+        
         public Command RefreshDataCommand => _refreshDataCommand ??= new Command(async () =>
         {
             IsNetworkBusy = true;
@@ -31,21 +33,30 @@ namespace PantryTrackers.ViewModels.GroceryList
             await Task.Run(async () =>
             {
                 var list = await _groceryList.GetList(listId);
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    IsNetworkBusy = false;
-                });
 
                 if(list == null)
                 {
                     return;
                 }
 
-                ListItems.Clear();
-                foreach(var item in list.Where(item => item.Status == GroceryListItemStatus.Active || item.Status == GroceryListItemStatus.Purchased))
+                var groupedList = list.Where(item => item.Status != GroceryListItemStatus.Archived)
+                                      .OrderBy(item => item.Status)
+                                      .GroupBy(item => item.Status)
+                                      .Select(group => new PageTypeGroup<GroceryListItem>(group)
+                                        {
+                                            Title = $"{group.Key}",
+                                            ShortName = $"{group.Key}",
+                                        });
+
+                Device.BeginInvokeOnMainThread(() =>
                 {
-                    ListItems.Add(item);
-                }
+                    IsNetworkBusy = false;
+                    ListItems.Clear();
+                    foreach (var group in groupedList)
+                    {
+                        ListItems.Add(group);
+                    }
+                });
             });
         }, CanExecute);
 
@@ -63,13 +74,28 @@ namespace PantryTrackers.ViewModels.GroceryList
                 item.Status = GroceryListItemStatus.Purchased;
                 item.PurchaseDate = DateTime.Now;
                 var newItem = await _groceryList.SaveItem(listId, item) ?? item;
-                
+
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     IsNetworkBusy = false;
-                    var index = ListItems.IndexOf(item);
-                    ListItems.RemoveAt(index);
-                    ListItems.Insert(index, newItem);
+
+                    var activeGroup = ListItems.FirstOrDefault(group => group.Title == $"{GroceryListItemStatus.Active}");
+                    var inactiveGroup = ListItems.FirstOrDefault(group => group.Title == $"{GroceryListItemStatus.Purchased}");
+                    var itemIndex = activeGroup?.IndexOf(item);
+
+                    if (activeGroup != default && itemIndex.HasValue)
+                    {
+                        activeGroup.RemoveAt(itemIndex.Value);
+                        if (inactiveGroup == default)
+                        {
+                            ListItems.Add(new PageTypeGroup<GroceryListItem>(new List<GroceryListItem>())
+                            {
+                                Title = $"{GroceryListItemStatus.Purchased}",
+                                ShortName = $"{GroceryListItemStatus.Purchased}"
+                            });
+                        }
+                        inactiveGroup.Add(newItem);
+                    }
                 });
             });
         }, CanExecute);

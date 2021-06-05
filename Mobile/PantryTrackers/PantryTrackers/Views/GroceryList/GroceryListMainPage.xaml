@@ -17,9 +17,21 @@
             <ListView ItemsSource="{Binding ListItems}"
                       SelectionMode="None"
                       HasUnevenRows="True"
+                      IsGroupingEnabled="True"
                       IsPullToRefreshEnabled="True"
                       IsRefreshing="{Binding IsNetworkBusy, Mode=OneWay}"
                       RefreshCommand="{Binding RefreshDataCommand}">
+
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding Title}" 
+                                   FontSize="Large"
+                                   FontAttributes="Bold"
+                                   TextColor="Green" />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
