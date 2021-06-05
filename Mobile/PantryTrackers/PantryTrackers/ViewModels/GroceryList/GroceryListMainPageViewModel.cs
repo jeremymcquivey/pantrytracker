@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +18,6 @@ namespace PantryTrackers.ViewModels.GroceryList
         private Command<GroceryListItem> _markItemAsPurchasedCommand;
 
         private GroceryListService _groceryList;
-        private INavigationService _navigationService;
 
         public ObservableCollection<PageTypeGroup<GroceryListItem>> ListItems { get; } =
             new ObservableCollection<PageTypeGroup<GroceryListItem>>();
@@ -110,7 +108,6 @@ namespace PantryTrackers.ViewModels.GroceryList
                base(navigationService, null)
         {
             _groceryList = groceryList;
-            _navigationService = navigationService;
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)

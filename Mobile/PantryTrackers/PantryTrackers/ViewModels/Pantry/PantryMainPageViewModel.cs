@@ -19,7 +19,6 @@ namespace PantryTrackers.ViewModels.Pantry
         private Command _refreshDataCommand;
 
         private readonly PantryService _pantry;
-        private readonly INavigationService _navigationService;
 
         public ObservableCollection<ProductGroup> ProductGroups { get; } =
             new ObservableCollection<ProductGroup>();
@@ -51,7 +50,7 @@ namespace PantryTrackers.ViewModels.Pantry
         public Command AddInventoryCommand => _addInventoryCommand ??= new Command(async () =>
         {
             IsNetworkBusy = true;
-            await _navigationService.NavigateAsync(nameof(AddPantryTransactionPage));
+            await NavigationService.NavigateAsync(nameof(AddPantryTransactionPage));
             IsNetworkBusy = false;
         }, CanExecute);
 
@@ -63,7 +62,7 @@ namespace PantryTrackers.ViewModels.Pantry
                 { "TransactionType", TransactionTypes.Usage }
             };
 
-            await _navigationService.NavigateAsync(nameof(AddPantryTransactionPage), navParams);
+            await NavigationService.NavigateAsync(nameof(AddPantryTransactionPage), navParams);
             IsNetworkBusy = false;
         }, CanExecute);
 
@@ -71,7 +70,6 @@ namespace PantryTrackers.ViewModels.Pantry
             base(navigationService, null)
         {
             _pantry = pantry;
-            _navigationService = navigationService;
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
