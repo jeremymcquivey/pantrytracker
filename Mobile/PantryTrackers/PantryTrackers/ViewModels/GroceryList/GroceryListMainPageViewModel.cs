@@ -83,12 +83,18 @@ namespace PantryTrackers.ViewModels.GroceryList
                     var inactiveGroup = ListItems.FirstOrDefault(group => group.Title == $"{GroceryListItemStatus.Purchased}");
                     var itemIndex = activeGroup?.IndexOf(item);
 
-                    if (activeGroup != default && itemIndex.HasValue)
+                    if (activeGroup != default && itemIndex.Value >= 0)
                     {
                         activeGroup.RemoveAt(itemIndex.Value);
+
+                        if(activeGroup.Count == 0)
+                        {
+                            ListItems.Remove(activeGroup);
+                        }
+
                         if (inactiveGroup == default)
                         {
-                            ListItems.Add(new PageTypeGroup<GroceryListItem>(new List<GroceryListItem>())
+                            ListItems.Add(new PageTypeGroup<GroceryListItem>(new ObservableCollection<GroceryListItem>())
                             {
                                 Title = $"{GroceryListItemStatus.Purchased}",
                                 ShortName = $"{GroceryListItemStatus.Purchased}"

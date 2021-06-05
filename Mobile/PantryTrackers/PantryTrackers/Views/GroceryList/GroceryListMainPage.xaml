@@ -51,7 +51,6 @@
                                              BackgroundColor="{Binding Status, Converter={d:StaticResource ItemStatusToColorConverter}}">
 
                                    <Label Text="{Binding SizeText}"
-                                          IsVisible="{Binding IsFreeform, Converter={d:StaticResource InverseBoolConverter}}"
                                           TextDecorations="{Binding Status, Converter={d:StaticResource ItemStatusToDecorationConverter}}"
                                           HorizontalOptions="Start"
                                           FontSize="Medium"
