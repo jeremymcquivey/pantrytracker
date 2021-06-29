@@ -149,7 +149,7 @@ namespace PantryTrackers.ViewModels.Pantry
                 await Task.Run(async () =>
                 {
                     var productCode = await _products.Search((string)parameters["BarcodeScanResult"]);
-                    var product = productCode?.ProductId != default ? await _products.ById(productCode.ProductId) : default;
+                    var product = productCode?.ProductId.HasValue ?? false ? await _products.ById(productCode.ProductId.Value) : default;
 
                     if (productCode != default)
                     {

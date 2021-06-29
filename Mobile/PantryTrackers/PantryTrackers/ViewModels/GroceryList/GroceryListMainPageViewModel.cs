@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using PantryTrackers.Common;
 using PantryTrackers.Common.Security;
+using PantryTrackers.Models;
 using PantryTrackers.Models.GroceryList;
 using PantryTrackers.Services;
+using PantryTrackers.Views.GroceryList;
 using Prism.Navigation;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -16,12 +18,34 @@ namespace PantryTrackers.ViewModels.GroceryList
     {
         private Command _refreshDataCommand;
         private Command<GroceryListItem> _markItemAsPurchasedCommand;
+        private Command _addGroceryItemCommand;
+        private Command<GroceryListItem> _saveNewListEntryCommand;
 
         private GroceryListService _groceryList;
 
         public ObservableCollection<PageTypeGroup<GroceryListItem>> ListItems { get; } =
             new ObservableCollection<PageTypeGroup<GroceryListItem>>();
-        
+
+        public Command AddGroceryItemCommand => _addGroceryItemCommand ??= new Command(async () =>
+        {
+            IsNetworkBusy = true;
+            await NavigationService.NavigateAsync(nameof(AddGroceryListItemPage));
+            IsNetworkBusy = false;
+        }, CanExecute);
+
+        public Command<GroceryListItem> SaveNewListEntryCommand => _saveNewListEntryCommand ??= new Command<GroceryListItem>(async (newListEntry) =>
+        {
+            var listId = await SecureStorage.GetAsync(ClaimKeys.Id);
+            var newItem = await _groceryList.SaveItem(listId, newListEntry);
+
+            if(newItem?.Id != default)
+            {
+                await Application.Current.MainPage.DisplayAlert("Success", $"{newListEntry.DisplayName} added to list", "OK");
+                RefreshDataCommand.Execute(null);
+            }
+
+        }, CanExecute);
+
         public Command RefreshDataCommand => _refreshDataCommand ??= new Command(async () =>
         {
             IsNetworkBusy = true;
@@ -112,7 +136,30 @@ namespace PantryTrackers.ViewModels.GroceryList
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            if(RefreshDataCommand.CanExecute(null))
+            if (parameters.ContainsKey("NewGroceryListEntry") && parameters["NewGroceryListEntry"].GetType() == typeof(GroceryListItem))
+            {
+                SaveNewListEntryCommand.Execute(parameters["NewGroceryListEntry"]);
+            }
+
+            if (parameters.ContainsKey("PantryTransaction") && parameters["PantryTransaction"].GetType() == typeof(PantryTransaction))
+            {
+                if (SaveNewListEntryCommand.CanExecute(null))
+                {
+                    var product = parameters["PantryTransaction"] as PantryTransaction;
+                    SaveNewListEntryCommand.Execute(new GroceryListItem
+                    {
+                        ProductId = product.ProductId,
+                        DisplayName = product.ProductName,
+                        Quantity = 1,
+                        Size = 1,
+                        Status = GroceryListItemStatus.Active,
+                        Unit = product.Unit,
+                        VarietyId = product.Variety?.Id
+                    });
+                }
+            }
+
+            if (RefreshDataCommand.CanExecute(null))
             {
                 RefreshDataCommand.Execute(null);
             }
@@ -124,6 +171,8 @@ namespace PantryTrackers.ViewModels.GroceryList
         {
             base.OnCommandCanExecuteChanged();
             RefreshDataCommand.ChangeCanExecute();
+            AddGroceryItemCommand.ChangeCanExecute();
+            SaveNewListEntryCommand.ChangeCanExecute();
         }
     }
 }

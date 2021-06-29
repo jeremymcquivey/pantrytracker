@@ -13,27 +13,36 @@
     <ContentPage.Content>
         <StackLayout Padding="10, 5, 10, 0">
             <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
-                <Button HorizontalOptions="Start" Text="Remove" Command="{Binding RemoveInventoryCommand}" />
-                <Button HorizontalOptions="EndAndExpand" Text="Add" Command="{Binding AddInventoryCommand}" />
+                <Button HorizontalOptions="Start" Text="Remove" Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.RemoveInventoryCommand}" />
+                <Button HorizontalOptions="EndAndExpand" Text="Add" Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.AddInventoryCommand}" />
             </StackLayout>
 
-            <ListView ItemsSource="{Binding ProductGroups}"
+            <ListView ItemsSource="{Binding  Source={x:Reference contentPage}, Path=BindingContext.ProductGroups}"
                       SelectionMode="None"
                       HasUnevenRows="True"
                       IsPullToRefreshEnabled="True"
-                      IsRefreshing="{Binding IsNetworkBusy, Mode=OneWay}"
-                      RefreshCommand="{Binding RefreshDataCommand}">
-                
+                      IsGroupingEnabled="True"
+                      IsRefreshing="{Binding Source={x:Reference contentPage}, Path=BindingContext.IsNetworkBusy}"
+                      RefreshCommand="{Binding Source={x:Reference contentPage}, Path=BindingContext.RefreshDataCommand}">
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding Title}"
+                                   FontSize="Large"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource MainColor}"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.ContextActions>
-                                <MenuItem 
-                                          Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.AddItemToListCommand}"
+                                <MenuItem Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.AddItemToListCommand}"
                                           CommandParameter="{Binding .}"
                                           Text="{Binding Header, StringFormat='Add {0} to List'}" />
 
-                             </ViewCell.ContextActions>
+                            </ViewCell.ContextActions>
                             <StackLayout>
                                 <StackLayout Orientation="Horizontal">
                                     

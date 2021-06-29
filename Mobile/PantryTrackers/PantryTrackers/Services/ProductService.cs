@@ -1,5 +1,4 @@
 ﻿using PantryTrackers.Common.Extensions;
-using PantryTrackers.Models;
 using PantryTrackers.Models.Products;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PantryTrackers.Services
 {
-    internal class ProductService
+    public class ProductService
     {
         private const int ProductSearchTypeId = 1;
         private const int ProductSearchTypeName = 2;

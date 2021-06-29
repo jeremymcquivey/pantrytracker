@@ -20,7 +20,7 @@
 
         public string VendorCode { get; set; }
 
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
 
         public int? VarietyId { get; set; }
 

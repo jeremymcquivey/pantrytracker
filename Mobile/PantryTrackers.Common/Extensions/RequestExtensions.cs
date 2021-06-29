@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace PantryTrackers.Common.Extensions
 {
@@ -32,6 +33,8 @@ namespace PantryTrackers.Common.Extensions
             }
             catch(Exception ex)
             {
+                // TODO: Only show user-friendly errors. System-level or sensitive errors should be logged then genericized.
+                await Application.Current.MainPage.DisplayAlert($"{response.StatusCode} Error", ex.Message, "OK");
                 // TODO: Log exception here.
                 return default;
             }

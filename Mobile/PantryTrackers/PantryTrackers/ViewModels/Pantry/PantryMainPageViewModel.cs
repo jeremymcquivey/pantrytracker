@@ -1,11 +1,14 @@
+using PantryTrackers.Common;
 using PantryTrackers.Common.Security;
 using PantryTrackers.Models;
 using PantryTrackers.Models.Meta.Enums;
 using PantryTrackers.Services;
+using PantryTrackers.Views.GroceryList;
 using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -15,13 +18,14 @@ namespace PantryTrackers.ViewModels.Pantry
     {
         private Command _addInventoryCommand;
         private Command _removeInventoryCommand;
-        private Command _addItemToListCommand;
+        private Command<ProductGroup> _addItemToListCommand;
         private Command _refreshDataCommand;
 
         private readonly PantryService _pantry;
+        private readonly GroceryListService _groceryList;
 
-        public ObservableCollection<ProductGroup> ProductGroups { get; } =
-            new ObservableCollection<ProductGroup>();
+        public ObservableCollection<PageTypeGroup<ProductGroup>> ProductGroups { get; } =
+            new ObservableCollection<PageTypeGroup<ProductGroup>>();
 
         public Command RefreshDataCommand => _refreshDataCommand ??= new Command(async () =>
         {
@@ -42,9 +46,12 @@ namespace PantryTrackers.ViewModels.Pantry
             });
         }, CanExecute);
 
-        public Command AddItemToListCommand => _addItemToListCommand ??= new Command((myParam) =>
+        public Command<ProductGroup> AddItemToListCommand => _addItemToListCommand ??= new Command<ProductGroup>(async (myParam) =>
         {
-
+            await NavigationService.NavigateAsync(nameof(GroceryListMainPage), new NavigationParameters
+            {
+                { "PantryTransaction", myParam.Elements.First() }
+            });
         });
 
         public Command AddInventoryCommand => _addInventoryCommand ??= new Command(async () =>
@@ -57,19 +64,19 @@ namespace PantryTrackers.ViewModels.Pantry
         public Command RemoveInventoryCommand => _removeInventoryCommand ??= new Command(async () =>
         {
             IsNetworkBusy = true;
-            var navParams = new NavigationParameters
+            await NavigationService.NavigateAsync(nameof(AddPantryTransactionPage), new NavigationParameters
             {
                 { "TransactionType", TransactionTypes.Usage }
-            };
+            });
 
-            await NavigationService.NavigateAsync(nameof(AddPantryTransactionPage), navParams);
             IsNetworkBusy = false;
         }, CanExecute);
 
-        public PantryMainPageViewModel(INavigationService navigationService, PantryService pantry):
+        public PantryMainPageViewModel(INavigationService navigationService, PantryService pantry, GroceryListService groceryList):
             base(navigationService, null)
         {
             _pantry = pantry;
+            _groceryList = groceryList;
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
@@ -99,9 +106,12 @@ namespace PantryTrackers.ViewModels.Pantry
                 return;
             }
 
-            foreach (var group in data)
-            {
-                ProductGroups.Add(group);
+            foreach (var group in data.GroupBy(p => p.Header.ToUpper().First(x => char.IsLetter(x))))
+            {   
+                ProductGroups.Add(new PageTypeGroup<ProductGroup>(group)
+                {
+                    Title = $"{char.ToUpper(group.Key)}"
+                });
             }
         }
     }

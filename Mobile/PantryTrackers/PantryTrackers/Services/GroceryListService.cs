@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using PantryTrackers.Common.Extensions;
@@ -32,9 +33,10 @@ namespace PantryTrackers.Services
 
             if (item.Id == default)
             {
-                // create new.
-                //item.Id = int.MaxValue;
-                return item;
+                var url = $"v1/ShoppingList/{listId}/items";
+                var response = await _client.MakeRequest(new Uri(url, UriKind.Relative), HttpMethod.Post, content: new List<GroceryListItem> { item }, isSecure: true);
+                var responseBody = await response.GetDeserializedContent<IEnumerable<GroceryListItem>>(useString: true);
+                return responseBody.First();
             }
             else
             {

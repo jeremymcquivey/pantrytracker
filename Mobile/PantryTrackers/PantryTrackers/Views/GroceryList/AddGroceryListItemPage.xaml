@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="AddToList"
+    Title="Add To List"
+    x:Class="PantryTrackers.Views.GroceryList.AddGroceryListItemPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="BC" Command="{Binding LaunchBarcodeScannerCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout Margin="10, 10">
+            <StackLayout Orientation="Horizontal">
+                <Entry Placeholder="Product Search"
+                       HorizontalOptions="FillAndExpand"/>
+                <Button Text="S" HorizontalOptions="End"></Button>
+
+            </StackLayout>
+            <Label Text="Freeform"></Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

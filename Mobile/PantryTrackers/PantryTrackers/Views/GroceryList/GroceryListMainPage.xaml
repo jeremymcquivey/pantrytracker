@@ -12,7 +12,7 @@
     <ContentPage.Content>
         <StackLayout Padding="10, 5, 10, 0">
             <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
-                <Button HorizontalOptions="EndAndExpand" Text="Add"  />
+                <Button HorizontalOptions="EndAndExpand" Text="Add" Command="{Binding AddGroceryItemCommand}" />
             </StackLayout>
             <ListView ItemsSource="{Binding ListItems}"
                       SelectionMode="None"
@@ -43,7 +43,7 @@
 
                                 <MenuItem Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.MarkItemAsPurchasedCommand}"
                                           CommandParameter="{Binding .}"
-                                          Text="{Binding SizeText, StringFormat='{0} Purchased'}" />
+                                          Text="{Binding SizeText, StringFormat='Purchased {0}'}" />
 
                             </ViewCell.ContextActions>
                             <StackLayout>
