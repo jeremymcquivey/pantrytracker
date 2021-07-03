@@ -18,8 +18,9 @@ namespace PantryTrackers.ViewModels.GroceryList
     {
         private Command _refreshDataCommand;
         private Command<GroceryListItem> _markItemAsPurchasedCommand;
-        private Command _addGroceryItemCommand;
         private Command<GroceryListItem> _saveNewListEntryCommand;
+        private Command<GroceryListItem> _removeItemCommand;
+        private Command _addGroceryItemCommand;
 
         private GroceryListService _groceryList;
 
@@ -128,6 +129,26 @@ namespace PantryTrackers.ViewModels.GroceryList
             });
         }, CanExecute);
 
+        public Command<GroceryListItem> RemoveItemCommand => _removeItemCommand ??= new Command<GroceryListItem>(async (item) =>
+        {
+            IsNetworkBusy = true;
+            var listId = await SecureStorage.GetAsync(ClaimKeys.Id);
+            await Task.Run(async () =>
+            {
+                if(await _groceryList.RemoveItem(listId, item))
+                {
+                    var group = ListItems.FirstOrDefault(p => p.Contains(item));
+                    if(group != default)
+                    {
+                        group.Remove(item);
+                    }
+                }
+
+            });
+
+            IsNetworkBusy = false;
+        }, CanExecute);
+
         public GroceryListMainPageViewModel(INavigationService navigationService, GroceryListService groceryList) :
                base(navigationService, null)
         {
@@ -152,6 +173,7 @@ namespace PantryTrackers.ViewModels.GroceryList
                         DisplayName = product.ProductName,
                         Quantity = 1,
                         Size = 1,
+                        Container = product.Container,
                         Status = GroceryListItemStatus.Active,
                         Unit = product.Unit,
                         VarietyId = product.Variety?.Id
@@ -173,6 +195,7 @@ namespace PantryTrackers.ViewModels.GroceryList
             RefreshDataCommand.ChangeCanExecute();
             AddGroceryItemCommand.ChangeCanExecute();
             SaveNewListEntryCommand.ChangeCanExecute();
+            RemoveItemCommand.ChangeCanExecute();
         }
     }
 }

@@ -57,7 +57,10 @@ namespace PantryTrackers.ViewModels.Pantry
         public Command AddInventoryCommand => _addInventoryCommand ??= new Command(async () =>
         {
             IsNetworkBusy = true;
-            await NavigationService.NavigateAsync(nameof(AddPantryTransactionPage));
+            await NavigationService.NavigateAsync(nameof(AddPantryTransactionPage), new NavigationParameters
+            {
+                { "TransactionType", TransactionTypes.Addition }
+            });
             IsNetworkBusy = false;
         }, CanExecute);
 
@@ -68,7 +71,6 @@ namespace PantryTrackers.ViewModels.Pantry
             {
                 { "TransactionType", TransactionTypes.Usage }
             });
-
             IsNetworkBusy = false;
         }, CanExecute);
 

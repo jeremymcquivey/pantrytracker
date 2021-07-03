@@ -86,6 +86,21 @@ namespace PantryTrackers.ViewModels.Pantry
                 }); 
             }, CanExecute);
 
+        public string DisplayModeText
+        {
+            get
+            {
+                switch(_transactionType)
+                {
+                    case TransactionTypes.Addition:
+                        return "Add";
+                    case TransactionTypes.Usage:
+                    default:
+                        return "Remove";
+                }
+            }
+        }
+
         public string WarningMessage
         {
             get => _warningMessage;
@@ -177,6 +192,7 @@ namespace PantryTrackers.ViewModels.Pantry
             if(parameters.ContainsKey("TransactionType"))
             {
                 _transactionType = (int)parameters["TransactionType"];
+                RaisePropertyChanged(nameof(DisplayModeText));
             }
         }
 

@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             Title="Add Inventory"
+             Title="{Binding DisplayModeText, StringFormat='{0} Inventory'}"
              x:Class="PantryTrackers.Views.Pantry.AddPantryTransactionPage">
     <ContentPage.Content>
         <StackLayout>
@@ -38,6 +38,9 @@
 
                             <Label Text="Unit" />
                             <Entry Placeholder="Unit" Text="{Binding Transaction.Unit}" />
+
+                            <Label Text="Container" />
+                            <Entry Placeholder="Container" Text="{Binding Transaction.Container}" />
                                 
                             <Button Text="Save" Command="{Binding SaveTransactionCommand}" IsEnabled="{Binding IsNetworkBusy, Converter={StaticResource InverseBoolConverter}}"></Button>
                         </StackLayout>

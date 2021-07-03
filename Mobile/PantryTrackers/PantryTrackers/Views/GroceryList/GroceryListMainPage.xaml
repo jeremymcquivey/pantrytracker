@@ -37,13 +37,14 @@
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.ContextActions>
-                                <MenuItem CommandParameter="{Binding .}"
-                                          Text="Remove"
-                                          IsDestructive="True"/>
-
                                 <MenuItem Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.MarkItemAsPurchasedCommand}"
                                           CommandParameter="{Binding .}"
                                           Text="{Binding SizeText, StringFormat='Purchased {0}'}" />
+
+                                <MenuItem Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.RemoveItemCommand}"
+                                          CommandParameter="{Binding .}"
+                                          Text="Remove"
+                                          IsDestructive="True"/>
 
                             </ViewCell.ContextActions>
                             <StackLayout>
@@ -58,7 +59,7 @@
                                           VerticalOptions="CenterAndExpand"
                                           Margin="0, 10"></Label>
 
-                                   <Label Text="{Binding Quantity}"
+                                   <Label Text="{Binding QuantityString}"
                                           IsVisible="{Binding HasQuantity}"
                                           TextDecorations="{Binding Status, Converter={d:StaticResource ItemStatusToDecorationConverter}}"
                                           FontSize="Medium"

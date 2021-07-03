@@ -13,6 +13,8 @@ namespace PantryTrackers.Models
 
         public string Quantity { get; set; }
 
+        public string Container { get; set; }
+
         public string Size { get; set; }
 
         public string Unit { get; set; }
@@ -26,10 +28,10 @@ namespace PantryTrackers.Models
             switch(displayMode)
             {
                 case ProductDisplayMode.EachUnit:
-                    return $"{ Variety?.Description ?? ProductName } {Quantity} ct";
+                    return $"{ Variety?.Description ?? ProductName } {Quantity} { Container ?? "ct" }";
                 case ProductDisplayMode.PurchaseQuantity:
                 default:
-                    return $"{ Variety?.Description ?? ProductName } {TotalAmount} { Unit }";
+                    return $"{ Variety?.Description ?? ProductName } {TotalAmount} { Unit } {(!string.IsNullOrEmpty(Container) ? $"({Quantity} {Container})": "")}";
             }
         }
 

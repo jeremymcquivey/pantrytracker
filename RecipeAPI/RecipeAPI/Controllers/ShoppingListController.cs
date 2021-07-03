@@ -99,7 +99,6 @@ namespace RecipeAPI.Controllers
 
             var existing = _database.GroceryListItems.AsNoTracking()
                                                      .SingleOrDefault(p => p.Id == itemId && p.PantryId == id);
-
             if(existing == default)
             {
                 return NotFound();

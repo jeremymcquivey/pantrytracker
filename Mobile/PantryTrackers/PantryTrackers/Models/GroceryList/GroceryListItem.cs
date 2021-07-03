@@ -29,7 +29,11 @@ namespace PantryTrackers.Models.GroceryList
 
         public int? Quantity { get; set; }
 
+        public string QuantityString => HasQuantity ? $"{Quantity} {Container}" : string.Empty;
+
         public string Unit { get; set; }
+
+        public string Container { get; set; }
 
         public decimal? Size { get; set; }
 

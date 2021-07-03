@@ -24,6 +24,13 @@ namespace PantryTrackers.Services
             return await response.GetDeserializedContent<IEnumerable<GroceryListItem>>();
         }
 
+        public async Task<bool> RemoveItem(string listId, GroceryListItem item)
+        {
+            var url = $"v1/ShoppingList/{listId}/item/{item.Id}";
+            var response = await _client.MakeRequest<GroceryListItem>(new Uri(url, UriKind.Relative), HttpMethod.Delete, isSecure: true);
+            return response.IsSuccessStatusCode;
+        }
+
         public async Task<GroceryListItem> SaveItem(string listId, GroceryListItem item)
         {
             if (item == null)

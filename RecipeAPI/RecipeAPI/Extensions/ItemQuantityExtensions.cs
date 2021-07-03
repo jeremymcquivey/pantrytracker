@@ -22,12 +22,13 @@ namespace RecipeAPI.Extensions
 
         public static IEnumerable<T> CombineUnits<T> (this IEnumerable<T> entries, bool secondaryRun = false) where T : IItemQuantity 
         {
-            return entries.GroupBy(x => new { x.ProductId, x.VarietyId, x.Unit })
+            return entries.GroupBy(x => new { x.ProductId, x.VarietyId, x.Unit, x.Container })
                           .Select(p =>
                           {
                               var item = (T)Activator.CreateInstance(typeof(T));
                               item.Product = p.First().Product;
                               item.Variety = p.First().Variety;
+                              item.Container = p.Key.Container;
                               item.ProductId = p.Key.ProductId;
                               item.VarietyId = p.Key.VarietyId;
                               item.Unit = p.Key.Unit;
@@ -45,13 +46,14 @@ namespace RecipeAPI.Extensions
                 return null;
             }
 
-            return transactions.GroupBy(transaction => new { transaction.VarietyId, transaction.Size, transaction.Unit })
+            return transactions.GroupBy(transaction => new { transaction.VarietyId, transaction.Size, transaction.Unit, transaction.Container })
                                .Select(group =>
                                {
                                    var newTransaction = (T)Activator.CreateInstance(typeof(T));
                                    newTransaction.VarietyId = group.Key.VarietyId;
                                    newTransaction.Size = group.Key.Size;
                                    newTransaction.Unit = group.Key.Unit;
+                                   newTransaction.Container = group.Key.Container;
                                    newTransaction.Product = group.First().Product;
                                    newTransaction.ProductId = group.First().ProductId;
                                    newTransaction.Variety = group.First().Variety;
