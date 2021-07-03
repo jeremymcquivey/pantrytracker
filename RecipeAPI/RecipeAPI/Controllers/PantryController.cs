@@ -56,7 +56,7 @@ namespace RecipeAPI.Controllers
                                                  DisplayMode = p.First().Product?.QuantityDisplayMode ?? ProductDisplayMode.PurchaseQuantity,
                                                  Total =
                                                     (p.First().Product?.QuantityDisplayMode ?? ProductDisplayMode.PurchaseQuantity) == ProductDisplayMode.PurchaseQuantity ?
-                                                    $"{p.Sum(q => q.Quantity)} ct" :
+                                                    $"{p.Sum(q => q.Quantity)} item{(p.Sum(q => q.Quantity) > 1 ? "s" : "")}" :
                                                     $"{p.Sum(q => q.TotalAmount)} {p.First().Unit}",
                                                  Elements = p
                                              });
