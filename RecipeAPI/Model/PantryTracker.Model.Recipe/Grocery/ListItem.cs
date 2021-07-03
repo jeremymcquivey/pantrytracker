@@ -12,6 +12,8 @@ namespace PantryTracker.Model.Grocery
 
         public int Quantity { get; set; }
 
+        public string Container { get; set; } = "";
+
         public string Unit { get; set; } = "";
 
         public double Size { get; set; }

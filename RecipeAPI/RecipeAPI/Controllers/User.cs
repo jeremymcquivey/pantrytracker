@@ -9,6 +9,9 @@ using System;
 
 namespace RecipeAPI.Controllers
 {
+    /// <summary>
+    /// Manages user accounts
+    /// </summary>
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
     [Authorize]
@@ -16,11 +19,16 @@ namespace RecipeAPI.Controllers
     {
         private readonly RecipeContext _context;
 
+        /// <summary>
+        /// </summary>
         public UserController(RecipeContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Retrieves the user's core profile
+        /// </summary>
         [HttpGet]
         [Route("AuthContext")]
         public IActionResult GetAuthContext()

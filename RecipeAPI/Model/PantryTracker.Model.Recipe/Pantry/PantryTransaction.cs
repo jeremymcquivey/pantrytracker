@@ -5,6 +5,8 @@ namespace PantryTracker.Model.Pantry
 {
     public interface IItemQuantity
     {
+        string Container { get; set; }
+
         string Unit { get; set; }
 
         int Quantity { get; set; }
@@ -34,6 +36,8 @@ namespace PantryTracker.Model.Pantry
         public Guid UserId { get; set; }
 
         public int Quantity { get; set; } = 1;
+
+        public string Container { get; set; } = "";
 
         public string Unit { get; set; } = "";
 
