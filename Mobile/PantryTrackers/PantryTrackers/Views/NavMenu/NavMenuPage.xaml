@@ -7,10 +7,15 @@
              xmlns:local="clr-namespace:PantryTrackers.ViewModels.NavMenu"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
+             BackgroundColor="White"
              x:Class="PantryTrackers.Views.NavMenu.NavMenuPage">
     <ContentPage.Content>
         <StackLayout x:Name="ContentLayout">
-            <Label Text="{Binding Account.FirstName, StringFormat='Welcome, {0}!'}" />
+            <Label Text="{Binding Account.FirstName, StringFormat='Welcome, {0}!'}"
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize="Subtitle"
+                   FontAttributes="Bold"
+                   Margin="0,10" />
             <ListView ItemsSource="{Binding MenuItems}"
                       SelectionMode="None">
                 <ListView.ItemTemplate>

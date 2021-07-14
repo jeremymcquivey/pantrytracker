@@ -2,6 +2,7 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     x:Name="AddToList"
     Title="Add To List"
     x:Class="PantryTrackers.Views.GroceryList.AddGroceryListItemPage">
@@ -13,11 +14,33 @@
         <StackLayout Margin="10, 10">
             <StackLayout Orientation="Horizontal">
                 <Entry Placeholder="Product Search"
+                       Text="{Binding SearchText}"
                        HorizontalOptions="FillAndExpand"/>
-                <Button Text="S" HorizontalOptions="End"></Button>
-
+                <Button Text="S" HorizontalOptions="End" Command="{Binding ProductFromTextSearch}"></Button>
             </StackLayout>
-            <Label Text="Freeform"></Label>
+            <StackLayout IsVisible="{Binding Item.IsFreeform, Converter={d:StaticResource InverseBoolConverter}}">
+                <StackLayout Orientation="Horizontal">
+                    <Entry Text="{Binding Item.Quantity}" Keyboard="Numeric" WidthRequest="50" />
+                    <Label Text="{Binding Item.DisplayName, StringFormat='Product Selected: {0}'}" VerticalTextAlignment="Center" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Size:"  VerticalTextAlignment="Center"/>
+                    <Entry Text="{Binding Item.Size}" Keyboard ="Numeric" HorizontalOptions="FillAndExpand" />
+                    <Label Text="Unit:"  VerticalTextAlignment="Center"/>
+                    <Entry Text="{Binding Item.Unit}" HorizontalOptions="FillAndExpand" />
+                </StackLayout>
+            </StackLayout>
+
+            <Label Text="Or Freeform" />
+            <StackLayout>
+                <Entry Placeholder="What's on your list?"
+                       HorizontalOptions="FillAndExpand"
+                       Text="{Binding Item.FreeformText}" />
+            </StackLayout>
+            <Button HorizontalOptions="End"
+                    VerticalOptions="EndAndExpand"
+                    Command="{Binding SaveListItemCommand}"
+                    Text="Save" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
