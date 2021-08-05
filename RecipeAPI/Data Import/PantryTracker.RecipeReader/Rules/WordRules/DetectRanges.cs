@@ -9,7 +9,7 @@ namespace PantryTracker.RecipeReader.Rules
         {
             var positionsToRemove = new List<int>();
             foreach (var word in wordList.Where(x => x.PartOfSpeech == PartOfSpeech.Quantity ||
-                                                    x.PartOfSpeech == PartOfSpeech.Fraction))
+                                                     x.PartOfSpeech == PartOfSpeech.Fraction))
             {
                 var next = wordList.SingleOrDefault(w => w.Position == word.Position + 1);
                 var nextOfNext = wordList.SingleOrDefault(w => w.Position == word.Position + 2);
