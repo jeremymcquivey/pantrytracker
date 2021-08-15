@@ -9,11 +9,17 @@
     mc:Ignorable="d"
     Title="My Grocery List">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddGroceryItemCommand}">
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout Padding="10, 5, 10, 0">
-            <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
-                <Button HorizontalOptions="EndAndExpand" Text="Add" Command="{Binding AddGroceryItemCommand}" />
-            </StackLayout>
+            <Label BackgroundColor="Yellow"
+                   HorizontalOptions="CenterAndExpand"
+                   Text="Hint: Long press to select an item." />
+
             <ListView ItemsSource="{Binding ListItems}"
                       SelectionMode="None"
                       HasUnevenRows="True"
@@ -37,8 +43,7 @@
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.ContextActions>
-                                <MenuItem Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.MarkItemAsPurchasedCommand}"
-                                          CommandParameter="{Binding .}"
+                                <MenuItem Clicked="MenuItem_Clicked"
                                           Text="{Binding SizeText, StringFormat='Purchased {0}'}" />
 
                                 <MenuItem Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.RemoveItemCommand}"

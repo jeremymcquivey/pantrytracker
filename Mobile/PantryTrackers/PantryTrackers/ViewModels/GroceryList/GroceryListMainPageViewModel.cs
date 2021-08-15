@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,8 +7,10 @@ using PantryTrackers.Common;
 using PantryTrackers.Common.Security;
 using PantryTrackers.Models;
 using PantryTrackers.Models.GroceryList;
+using PantryTrackers.Models.Meta.Enums;
 using PantryTrackers.Services;
 using PantryTrackers.Views.GroceryList;
+using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -21,6 +24,7 @@ namespace PantryTrackers.ViewModels.GroceryList
         private Command<GroceryListItem> _saveNewListEntryCommand;
         private Command<GroceryListItem> _removeItemCommand;
         private Command _addGroceryItemCommand;
+        private Command<GroceryListItem> _updateQuantityCommand;
 
         private GroceryListService _groceryList;
 
@@ -31,6 +35,18 @@ namespace PantryTrackers.ViewModels.GroceryList
         {
             IsNetworkBusy = true;
             await NavigationService.NavigateAsync(nameof(AddGroceryListItemPage));
+            IsNetworkBusy = false;
+        }, CanExecute);
+
+        public Command<GroceryListItem> UpdateQuantityCommand => _updateQuantityCommand ??= new Command<GroceryListItem>(async (item) => {
+            IsNetworkBusy = true;
+
+            await NavigationService.NavigateAsync(nameof(AddPantryTransactionPage), new NavigationParameters
+            {
+                { "TransactionType", TransactionTypes.Addition },
+                { "ShoppingListPurchase", item }
+            });
+
             IsNetworkBusy = false;
         }, CanExecute);
 
@@ -104,11 +120,11 @@ namespace PantryTrackers.ViewModels.GroceryList
 
                     var activeGroup = ListItems.FirstOrDefault(group => group.Title == $"{GroceryListItemStatus.Active}");
                     var inactiveGroup = ListItems.FirstOrDefault(group => group.Title == $"{GroceryListItemStatus.Purchased}");
-                    var itemIndex = activeGroup?.IndexOf(item);
+                    var itemToRemove = activeGroup?.SingleOrDefault(activeItem => item.Id == activeItem.Id);
 
-                    if (activeGroup != default && itemIndex.Value >= 0)
+                    if (activeGroup != default && itemToRemove != default)
                     {
-                        activeGroup.RemoveAt(itemIndex.Value);
+                        activeGroup.Remove(itemToRemove);
 
                         if(activeGroup.Count == 0)
                         {
@@ -181,6 +197,24 @@ namespace PantryTrackers.ViewModels.GroceryList
                 }
             }
 
+            if (parameters.ContainsKey("NewTransaction") && parameters.ContainsKey("ListItem"))
+            {
+                var item = parameters["ListItem"] as GroceryListItem;
+                var transaction = parameters["NewTransaction"] as PantryTransaction;
+                int.TryParse(transaction.Quantity, out int numericQuantity);
+                decimal.TryParse(transaction.Size, out decimal numericSize);
+
+                item.Container = transaction.Container;
+                item.DisplayName = transaction.ProductName;
+                item.ProductId = transaction.ProductId;
+                item.Quantity = numericQuantity == default ? item.Quantity : numericQuantity;
+                item.Size = numericSize;
+                item.Unit = transaction.Unit;
+                item.VarietyId = transaction.VarietyId;
+
+                MarkItemAsPurchasedCommand.Execute(item);
+            }
+
             if (RefreshDataCommand.CanExecute(null))
             {
                 RefreshDataCommand.Execute(null);
@@ -192,6 +226,7 @@ namespace PantryTrackers.ViewModels.GroceryList
         public override void OnCommandCanExecuteChanged()
         {
             base.OnCommandCanExecuteChanged();
+            MarkItemAsPurchasedCommand.ChangeCanExecute();
             RefreshDataCommand.ChangeCanExecute();
             AddGroceryItemCommand.ChangeCanExecute();
             SaveNewListEntryCommand.ChangeCanExecute();

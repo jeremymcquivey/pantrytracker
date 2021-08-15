@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using PantryTrackers.Controls;
 using PantryTrackers.Models;
+using PantryTrackers.Models.GroceryList;
 using PantryTrackers.Models.Meta.Enums;
 using PantryTrackers.Models.Products;
 using PantryTrackers.Services;
@@ -23,6 +24,7 @@ namespace PantryTrackers.ViewModels.Pantry
         private readonly ProductService _products;
         private readonly PantryService _pantry;
         private int _transactionType = TransactionTypes.Usage;
+        private GroceryListItem _listItem = null;
 
         public Command EditProductCommand => _editProductCommand ??=
             new Command(async () =>
@@ -68,10 +70,17 @@ namespace PantryTrackers.ViewModels.Pantry
                         await Device.InvokeOnMainThreadAsync(async () =>
                         {
                             IsNetworkBusy = false;
-                            await _navService.GoBackAsync(new NavigationParameters
+                            var navParms = new NavigationParameters
                             {
-                                { "NewTransaction", Transaction }
-                            });
+                                { "NewTransaction", Transaction },
+                            };
+
+                            if(_listItem != null)
+                            {
+                                navParms.Add("ListItem", _listItem);
+                            }
+
+                            await _navService.GoBackAsync(navParms);
                         });
                     }
                     else
@@ -126,8 +135,9 @@ namespace PantryTrackers.ViewModels.Pantry
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
+            _listItem = null;
 
-            if(parameters.ContainsKey("SelectedProduct"))
+            if (parameters.ContainsKey("SelectedProduct"))
             {
                 var newProduct = parameters["SelectedProduct"] as Product;
                 if(newProduct != default)
@@ -193,6 +203,24 @@ namespace PantryTrackers.ViewModels.Pantry
             {
                 _transactionType = (int)parameters["TransactionType"];
                 RaisePropertyChanged(nameof(DisplayModeText));
+            }
+
+            if(parameters.ContainsKey("ShoppingListPurchase"))
+            {
+                _listItem = parameters["ShoppingListPurchase"] as GroceryListItem;
+
+                Transaction = new PantryTransaction
+                {
+                    ProductCode = string.Empty,
+                    Size = $"{_listItem.Size}",
+                    Unit = _listItem.Unit,
+                    ProductId = _listItem.ProductId,
+                    ProductName = _listItem.DisplayName,
+                    Container = _listItem.Container,
+                    Quantity = _listItem.QuantityString,
+                    VarietyId = _listItem.VarietyId,
+                    TransactionType = TransactionTypes.Addition
+                };
             }
         }
 

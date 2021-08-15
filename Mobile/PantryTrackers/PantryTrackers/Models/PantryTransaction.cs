@@ -35,6 +35,8 @@ namespace PantryTrackers.Models
             }
         }
 
+        public int? VarietyId { get; set; }
+
         public ProductVariety Variety { get; set; }
     }
 }
