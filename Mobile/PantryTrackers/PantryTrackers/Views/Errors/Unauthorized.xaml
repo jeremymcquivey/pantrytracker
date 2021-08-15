@@ -1,12 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              x:Class="PantryTrackers.Views.Errors.Unauthorized">
     <ContentPage.Content>
-        <Label Text="Unauthorized"
+        <StackLayout>
+            <StackLayout>
+                <Label Text="Unauthorized; Please login."
+                    VerticalOptions="CenterAndExpand" 
+                    HorizontalOptions="CenterAndExpand"
+                    IsVisible="{Binding LoginSuccessful, Converter={d:StaticResource InverseBoolConverter}}" />
+
+                <Button Command="{Binding LoginCommand}"
+                        Text="Login" />
+            </StackLayout>
+
+        <Label Text="Finishing up the login process"
             VerticalOptions="CenterAndExpand" 
-            HorizontalOptions="CenterAndExpand" />
+            HorizontalOptions="CenterAndExpand"
+            IsVisible="{Binding LoginSuccessful}"/>
+
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

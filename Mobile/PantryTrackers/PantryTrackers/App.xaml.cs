@@ -102,7 +102,9 @@ namespace PantryTrackers
             Application.Current.Dispatcher.BeginInvokeOnMainThread(async () =>
             {
                 _isAuthenticating = false;
-                await NavigationService.NavigateAsync("/Unauthorized");
+                await NavigationService.NavigateAsync("/Unauthorized", new NavigationParameters {
+                    { "SuccessfulLogin", false }
+                });
             });
         }
 
@@ -142,7 +144,7 @@ namespace PantryTrackers
             containerRegistry.RegisterForNavigation<GroceryListMainPage, GroceryListMainPageViewModel>();
             containerRegistry.RegisterForNavigation<AddGroceryListItemPage, AddGroceryListItemPageViewModel>();
 
-            containerRegistry.Register<AuthenticationService>();
+            containerRegistry.RegisterSingleton<AuthenticationService>();
             containerRegistry.Register<MetadataService>();
 
             containerRegistry.RegisterSingleton<RestClient>();

@@ -34,11 +34,13 @@ namespace PantryTrackers.Common.Security
 
         public async void Authenticate()
         {
+            var authUri = _config.GetSection("Endpoints").GetValue<string>("AuthenticationUrl");
             var oAuth = new OAuth2AuthenticatorEx("pantrytrackers-mobile", "pantrytrackers-api",
-                new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/connect/authorize"), 
-                new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/redirect"))
+                new Uri($"{authUri}connect/authorize"), 
+                new Uri($"{authUri}redirect"))
             {
-                AccessTokenUrl = new Uri("https://pantrytrackers-identity-dev.azurewebsites.net/connect/token"),
+                Title = _config.GetSection("Messages").GetValue<string>("LoginMessage"),
+                AccessTokenUrl = new Uri($"{authUri}connect/token"),
                 ShouldEncounterOnPageLoading = false
             };
 
