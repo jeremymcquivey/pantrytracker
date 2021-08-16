@@ -10,7 +10,7 @@ namespace PantryTracker.RecipeReader.Rules
             foreach (var word in wordList.Where(w => w.PartOfSpeech == PartOfSpeech.Unit))
             {
                 var size = wordList.Where(w => w.PartOfSpeech == PartOfSpeech.Quantity &&
-                                                         w.Position <= word.Position - 1);
+                                               w.Position <= word.Position - 1);
                 if(size.Count() >= 2)
                 {
                     size.Last().PartOfSpeech = PartOfSpeech.ContainerSize;

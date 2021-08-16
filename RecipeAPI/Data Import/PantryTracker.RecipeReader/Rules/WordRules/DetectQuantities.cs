@@ -17,7 +17,7 @@ namespace PantryTracker.RecipeReader.Rules
                     word.PartOfSpeech = PartOfSpeech.Quantity;
                 }
                 else if (fractionParts.Length == 2 && int.TryParse(fractionParts[0], out int numerator)
-                                              && int.TryParse(fractionParts[1], out int denomenator))
+                                                   && int.TryParse(fractionParts[1], out int denomenator))
                 {
                     word.PartOfSpeech = PartOfSpeech.Fraction;
                 }
