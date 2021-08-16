@@ -12,6 +12,7 @@
                 <Frame.Content>
                     <ScrollView>
                         <StackLayout>
+                            <Label BackgroundColor="Red" TextColor="White" IsVisible="{Binding HasError}" Text="{Binding ErrorMessage}"></Label>
                             <Button HorizontalOptions="EndAndExpand" Text="Barcode" Command="{Binding LaunchBarcodeScannerCommand}"/>
 
                             <ActivityIndicator IsEnabled="true" IsVisible="{Binding IsNetworkBusy}" />

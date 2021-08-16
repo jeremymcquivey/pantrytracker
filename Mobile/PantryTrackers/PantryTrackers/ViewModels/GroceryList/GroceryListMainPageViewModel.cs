@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,15 +20,19 @@ namespace PantryTrackers.ViewModels.GroceryList
     {
         private Command _refreshDataCommand;
         private Command<GroceryListItem> _markItemAsPurchasedCommand;
+        private Command<GroceryListItem> _markItemAsImportedCommand;
+        private Command<GroceryListItem> _updateQuantityCommand;
         private Command<GroceryListItem> _saveNewListEntryCommand;
         private Command<GroceryListItem> _removeItemCommand;
         private Command _addGroceryItemCommand;
-        private Command<GroceryListItem> _updateQuantityCommand;
 
         private GroceryListService _groceryList;
 
         public ObservableCollection<PageTypeGroup<GroceryListItem>> ListItems { get; } =
             new ObservableCollection<PageTypeGroup<GroceryListItem>>();
+
+        public PageTypeGroup<GroceryListItem> ImportedItems { get; } =
+            new PageTypeGroup<GroceryListItem> { Title = "Imported This Trip" };
 
         public Command AddGroceryItemCommand => _addGroceryItemCommand ??= new Command(async () =>
         {
@@ -95,6 +98,7 @@ namespace PantryTrackers.ViewModels.GroceryList
                     {
                         ListItems.Add(group);
                     }
+                    ListItems.Add(ImportedItems);
                 });
             });
         }, CanExecute);
@@ -140,6 +144,46 @@ namespace PantryTrackers.ViewModels.GroceryList
                             });
                         }
                         inactiveGroup.Add(newItem);
+                    }
+                });
+            });
+        }, CanExecute);
+
+        public Command<GroceryListItem> MarkItemAsImportedCommand => _markItemAsImportedCommand ??= new Command<GroceryListItem>(async (item) =>
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            IsNetworkBusy = true;
+            var listId = await SecureStorage.GetAsync(ClaimKeys.Id);
+            await Task.Run(async () =>
+            {
+                var oldStatus = item.Status;
+                item.Status = GroceryListItemStatus.Archived;
+                item.PurchaseDate = DateTime.Now;
+                var newItem = await _groceryList.SaveItem(listId, item) ?? item;
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    IsNetworkBusy = false;
+                    var activeGroup = oldStatus == GroceryListItemStatus.Active ?
+                                      ListItems.FirstOrDefault(group => group.Title == $"{GroceryListItemStatus.Active}") :
+                                      ListItems.FirstOrDefault(group => group.Title == $"{GroceryListItemStatus.Purchased}");
+
+                    var itemToRemove = activeGroup?.SingleOrDefault(activeItem => item.Id == activeItem.Id);
+
+                    if (activeGroup != default && itemToRemove != default)
+                    {
+                        activeGroup.Remove(itemToRemove);
+
+                        if (activeGroup.Count == 0)
+                        {
+                            ListItems.Remove(activeGroup);
+                        }
+
+                        ImportedItems.Add(itemToRemove);
                     }
                 });
             });
@@ -212,7 +256,7 @@ namespace PantryTrackers.ViewModels.GroceryList
                 item.Unit = transaction.Unit;
                 item.VarietyId = transaction.VarietyId;
 
-                MarkItemAsPurchasedCommand.Execute(item);
+                MarkItemAsImportedCommand.Execute(item);
             }
 
             if (RefreshDataCommand.CanExecute(null))
@@ -227,6 +271,7 @@ namespace PantryTrackers.ViewModels.GroceryList
         {
             base.OnCommandCanExecuteChanged();
             MarkItemAsPurchasedCommand.ChangeCanExecute();
+            MarkItemAsImportedCommand.ChangeCanExecute();
             RefreshDataCommand.ChangeCanExecute();
             AddGroceryItemCommand.ChangeCanExecute();
             SaveNewListEntryCommand.ChangeCanExecute();

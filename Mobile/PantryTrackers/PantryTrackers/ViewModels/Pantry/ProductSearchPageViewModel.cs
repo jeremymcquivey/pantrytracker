@@ -115,6 +115,15 @@ namespace PantryTrackers.ViewModels.Pantry
                 var addedProduct = (Product)parameters["NewProduct"];
                 OnProductSearchReturned?.Invoke(this, new List<Product> { addedProduct });
             }
+
+            if (parameters.ContainsKey("SearchTerm"))
+            {
+                SearchText = (string)parameters["SearchTerm"];
+                if(ProductSearchCommand.CanExecute(null))
+                {
+                    ProductSearchCommand.Execute(null);
+                }
+            }
         }
 
         public override void OnCommandCanExecuteChanged()

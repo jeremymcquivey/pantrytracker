@@ -30,10 +30,14 @@ namespace PantryTrackers.Views.GroceryList
 
             Device.InvokeOnMainThreadAsync(async () =>
             {
-                var response = await DisplayActionSheet($"{text}?", null, "Cancel", new[] { "Import to Inventory", "Remove from List" });
+                var response = await DisplayActionSheet(text, null, "Cancel", ActionsAvailablePerStatus(contextItem.Status));
                 switch (response)
                 {
-                    case "Mark as Purchased":
+                    case "Import to Inventory":
+                        if (_vm.UpdateQuantityCommand.CanExecute(contextItem))
+                            _vm.UpdateQuantityCommand.Execute(contextItem);
+                        break;
+                    case "Import Later":
                         if (_vm.MarkItemAsPurchasedCommand.CanExecute(contextItem))
                             _vm.MarkItemAsPurchasedCommand.Execute(contextItem);
                         break;
@@ -41,15 +45,25 @@ namespace PantryTrackers.Views.GroceryList
                         if (_vm.RemoveItemCommand.CanExecute(contextItem))
                             _vm.RemoveItemCommand.Execute(contextItem);
                         break;
-                    case "Import to Inventory":
-                        if (_vm.UpdateQuantityCommand.CanExecute(contextItem))
-                            _vm.UpdateQuantityCommand.Execute(contextItem);
-                        break;
                     case "Cancel":
                     default:
                         break;
                 }
             });
+        }
+
+        private string[] ActionsAvailablePerStatus(GroceryListItemStatus status)
+        {
+            switch(status)
+            {
+                case GroceryListItemStatus.Active:
+                    return new[] { "Import to Inventory", "Import Later", "Remove from List" };
+                case GroceryListItemStatus.Purchased:
+                    return new[] { "Import to Inventory", "Remove from List" };
+                case GroceryListItemStatus.Archived:
+                default:
+                    return new[] { "Remove from List" };
+            }
         }
     }
 }

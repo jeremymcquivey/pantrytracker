@@ -25,12 +25,32 @@ namespace PantryTrackers.ViewModels.Pantry
         private readonly PantryService _pantry;
         private int _transactionType = TransactionTypes.Usage;
         private GroceryListItem _listItem = null;
+        private string _errorMessage;
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            private set
+            {
+                if(value != _errorMessage)
+                {
+                    _errorMessage = value;
+                    RaisePropertyChanged(nameof(ErrorMessage));
+                    RaisePropertyChanged(nameof(HasError));
+                    Validate();
+                }
+            }
+        }
+        public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
         public Command EditProductCommand => _editProductCommand ??=
             new Command(async () =>
             {
                 IsNetworkBusy = true;
-                await _navService.NavigateAsync(nameof(ProductSearchPage));
+                await _navService.NavigateAsync(nameof(ProductSearchPage), new NavigationParameters
+                {
+                    { "SearchTerm", Transaction.ProductName }
+                });
                 IsNetworkBusy = false;
             }, CanExecute);
 
@@ -93,7 +113,7 @@ namespace PantryTrackers.ViewModels.Pantry
                         });
                     }
                 }); 
-            }, CanExecute);
+            }, () => { return CanExecute() && !HasError; });
 
         public string DisplayModeText
         {
@@ -128,14 +148,13 @@ namespace PantryTrackers.ViewModels.Pantry
             set 
             { 
                 _transaction = value; 
-                RaisePropertyChanged(nameof(Transaction)); 
+                RaisePropertyChanged(nameof(Transaction));
             } 
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
-            _listItem = null;
 
             if (parameters.ContainsKey("SelectedProduct"))
             {
@@ -149,6 +168,8 @@ namespace PantryTrackers.ViewModels.Pantry
                         RaisePropertyChanged(nameof(Transaction));
                     });
                 }
+
+                Validate();
             }
 
             if(parameters.ContainsKey("AddedCode"))
@@ -222,6 +243,7 @@ namespace PantryTrackers.ViewModels.Pantry
                     TransactionType = TransactionTypes.Addition
                 };
             }
+            Validate();
         }
 
         public AddPantryTransactionPageViewModel(INavigationService navigationService,
@@ -241,6 +263,18 @@ namespace PantryTrackers.ViewModels.Pantry
             LaunchBarcodeScannerCommand.ChangeCanExecute();
             AddNewBarcodeCommand.ChangeCanExecute();
             EditProductCommand.ChangeCanExecute();
+        }
+
+        public void Validate()
+        {
+            if (Transaction.ProductId == null)
+            {
+                ErrorMessage = "You must select a valid product";
+                return;
+            }
+
+            ErrorMessage = string.Empty;
+            OnCommandCanExecuteChanged();
         }
     }
 }

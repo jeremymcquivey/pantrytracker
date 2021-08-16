@@ -108,7 +108,7 @@ namespace PantryTrackers.ViewModels.Pantry
                 return;
             }
 
-            foreach (var group in data.GroupBy(p => p.Header.ToUpper().First(x => char.IsLetter(x))))
+            foreach (var group in data.GroupBy(p => (p.Header ?? string.Empty).ToUpper().FirstOrDefault(x => char.IsLetter(x))))
             {   
                 ProductGroups.Add(new PageTypeGroup<ProductGroup>(group)
                 {

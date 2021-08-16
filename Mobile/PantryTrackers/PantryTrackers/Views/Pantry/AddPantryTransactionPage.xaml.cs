@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using PantryTrackers.ViewModels.Pantry;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PantryTrackers.Views.Pantry
