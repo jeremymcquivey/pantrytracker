@@ -37,7 +37,7 @@ namespace PantryTrackers.ViewModels.Errors
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
-
+            
             if(parameters.ContainsKey("SuccessfulLogin"))
             {
                 LoginSuccessful = (bool)parameters["SuccessfulLogin"];

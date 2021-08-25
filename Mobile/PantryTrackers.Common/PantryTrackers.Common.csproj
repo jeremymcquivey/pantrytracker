@@ -22,4 +22,10 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Enumerations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enumerations\" />
+  </ItemGroup>
 </Project>

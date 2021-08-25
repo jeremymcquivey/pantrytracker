@@ -181,6 +181,10 @@
     <BundleResource Include="Resources\Default.png" />
     <BundleResource Include="Resources\Default@2x.png" />
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
+    <BundleResource Include="Resources\FontAwesome5BrandsRegular400.otf" />
+    <BundleResource Include="Resources\FontAwesome5Regular400.otf" />
+    <BundleResource Include="Resources\FontAwesome5Solid900.otf" />
+    <BundleResource Include="Resources\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -197,7 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PantryTrackers\PantryTrackers.csproj">
-      <Project>{A682884C-CB44-4A89-B752-27BB634E0ABE}</Project>
+      <Project>{0115C82F-1F8F-409F-8E35-61D186C559A8}</Project>
       <Name>PantryTrackers</Name>
     </ProjectReference>
   </ItemGroup>

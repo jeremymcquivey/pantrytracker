@@ -111,6 +111,7 @@
     <Compile Include="Notifications\NotificationConstants.cs" />
     <Compile Include="Notifications\MyFirebaseIIDService.cs" />
     <Compile Include="Notifications\MyFirebaseMessagingService.cs" />
+    <Compile Include="Renderers\CustomNavigationPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -137,6 +138,10 @@
     <ProjectReference Include="..\PantryTrackers\PantryTrackers.csproj">
       <Project>{0115C82F-1F8F-409F-8E35-61D186C559A8}</Project>
       <Name>PantryTrackers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PantryTrackers.Common\PantryTrackers.Common.csproj">
+      <Project>{F9ABA5A4-9964-47CF-A22D-65BC9A39D8F3}</Project>
+      <Name>PantryTrackers.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +177,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Notifications\" />
+    <Folder Include="Renderers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\FontAwesomeBrands.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="Assets\FontAwesomeRegular.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="Assets\FontAwesomeSolid.otf" />
+    <AndroidAsset Include="Assets\README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

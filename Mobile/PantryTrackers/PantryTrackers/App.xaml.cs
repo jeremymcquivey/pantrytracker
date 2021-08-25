@@ -26,6 +26,10 @@ using PantryTrackers.Views.GroceryList;
 using PantryTrackers.ViewModels.GroceryList;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+[assembly: ExportFont("FontAwesomeBrands.otf", Alias = "FontAwesomeBrands")]
+[assembly: ExportFont("FontAwesomeRegular.otf", Alias = "FontAwesomeRegular")]
+[assembly: ExportFont("FontAwesomeSolid.otf", Alias = "FontAwesomeSolid")]
+
 namespace PantryTrackers
 {
     public partial class App

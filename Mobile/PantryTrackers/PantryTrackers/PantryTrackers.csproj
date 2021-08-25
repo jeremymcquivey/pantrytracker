@@ -6,10 +6,17 @@
 
   <ItemGroup>
     <None Remove="appsettings.Development.json" />
+    <None Remove="Fonts\" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fonts\FontAwesomeBrands.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fonts\FontAwesomeRegular.otf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
@@ -99,5 +106,6 @@
     <Folder Include="Views\GroceryList\" />
     <Folder Include="Models\GroceryList\" />
     <Folder Include="Converters\" />
+    <Folder Include="Fonts\" />
   </ItemGroup>
 </Project>

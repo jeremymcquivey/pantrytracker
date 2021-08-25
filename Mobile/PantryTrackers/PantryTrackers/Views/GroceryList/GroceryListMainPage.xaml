@@ -10,7 +10,7 @@
     Title="My Grocery List">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{Binding AddGroceryItemCommand}">
+        <ToolbarItem Text="Plus" Command="{Binding AddGroceryItemCommand}">
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
