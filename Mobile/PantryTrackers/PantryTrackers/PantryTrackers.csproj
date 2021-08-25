@@ -7,6 +7,7 @@
   <ItemGroup>
     <None Remove="appsettings.Development.json" />
     <None Remove="Fonts\" />
+    <None Remove="Fonts\FontAwesomeSolid.otf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +18,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Fonts\FontAwesomeRegular.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fonts\FontAwesomeSolid.otf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

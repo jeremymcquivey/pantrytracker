@@ -10,12 +10,15 @@
              x:Name="contentPage"
              x:Class="PantryTrackers.Views.Pantry.PantryMainPage">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Minus" Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.RemoveInventoryCommand}">
+        </ToolbarItem>
+        <ToolbarItem Text="Plus" Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.AddInventoryCommand}">
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout Padding="10, 5, 10, 0">
-            <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
-                <Button HorizontalOptions="Start" Text="Remove" Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.RemoveInventoryCommand}" />
-                <Button HorizontalOptions="EndAndExpand" Text="Add" Command="{Binding Source={x:Reference contentPage}, Path=BindingContext.AddInventoryCommand}" />
-            </StackLayout>
 
             <ListView ItemsSource="{Binding  Source={x:Reference contentPage}, Path=BindingContext.ProductGroups}"
                       SelectionMode="None"

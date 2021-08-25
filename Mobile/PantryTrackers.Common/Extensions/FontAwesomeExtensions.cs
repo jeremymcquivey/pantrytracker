@@ -9,6 +9,8 @@ namespace PantryTrackers.Common.Extensions
             switch(text?.ToLower() ?? string.Empty)
             {
                 case FontAwesomeSolid.Plus:
+                case FontAwesomeSolid.Minus:
+                case FontAwesomeSolid.Barcode:
                     return nameof(FontAwesomeSolid);
                 case "":
                 default:

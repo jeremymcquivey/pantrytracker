@@ -73,6 +73,7 @@ namespace App5.Droid
                 {
                     var myFont = Typeface.CreateFromAsset(Android.App.Application.Context.Assets, $"{fontType}.otf");
                     menuItem.SetTypeface(myFont, TypefaceStyle.Bold);
+                    menuItem.TextSize = 25;
                 }
             }
         }

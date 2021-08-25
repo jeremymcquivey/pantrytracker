@@ -6,6 +6,11 @@
              mc:Ignorable="d"
              Title="{Binding DisplayModeText, StringFormat='{0} Inventory'}"
              x:Class="PantryTrackers.Views.Pantry.AddPantryTransactionPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding LaunchBarcodeScannerCommand}" Text="Barcode" />
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout>
             <Frame>
@@ -13,13 +18,12 @@
                     <ScrollView>
                         <StackLayout>
                             <Label BackgroundColor="Red" TextColor="White" IsVisible="{Binding HasError}" Text="{Binding ErrorMessage}"></Label>
-                            <Button HorizontalOptions="EndAndExpand" Text="Barcode" Command="{Binding LaunchBarcodeScannerCommand}"/>
 
                             <ActivityIndicator IsEnabled="true" IsVisible="{Binding IsNetworkBusy}" />
 
                             <StackLayout Orientation="Horizontal">
                                 <Label HorizontalOptions="FillAndExpand" Style="{StaticResource LabelWarning}" Text="{Binding WarningMessage}" IsVisible="{Binding HasWarningMessage}"></Label>
-                                <Button Text="Add" IsVisible="{Binding HasWarningMessage}" Command="{Binding AddNewBarcodeCommand}"></Button>
+                                <Button Text="Plus" IsVisible="{Binding HasWarningMessage}" Command="{Binding AddNewBarcodeCommand}"></Button>
                             </StackLayout>
 
                             <Label Text="Product Code" />
@@ -28,7 +32,7 @@
                             <Label Text="Product Name" />
                             <StackLayout Orientation="Horizontal">
                                 <Entry HorizontalOptions="FillAndExpand" Placeholder="Product Name" Text="{Binding Transaction.ProductName}" IsEnabled="False" />
-                                <Button HorizontalOptions="End" Text="Edit" Command="{Binding EditProductCommand}"></Button>
+                                <Button HorizontalOptions="End" Text="&#xf303;" FontFamily="FontAwesomeSolid" Command="{Binding EditProductCommand}"></Button>
                             </StackLayout>
 
                             <Label Text="Quantity" />

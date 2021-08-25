@@ -61,7 +61,11 @@ namespace PantryTrackers.ViewModels.Pantry
             {
                 { "TransactionType", TransactionTypes.Addition }
             });
-            IsNetworkBusy = false;
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                IsNetworkBusy = false;
+            });
         }, CanExecute);
 
         public Command RemoveInventoryCommand => _removeInventoryCommand ??= new Command(async () =>
@@ -71,7 +75,11 @@ namespace PantryTrackers.ViewModels.Pantry
             {
                 { "TransactionType", TransactionTypes.Usage }
             });
-            IsNetworkBusy = false;
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                IsNetworkBusy = false;
+            });
         }, CanExecute);
 
         public PantryMainPageViewModel(INavigationService navigationService, PantryService pantry, GroceryListService groceryList):
