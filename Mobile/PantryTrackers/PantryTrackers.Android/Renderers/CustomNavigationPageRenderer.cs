@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Android.Content;
 using Android.Graphics;
-using Android.Support.V7.View.Menu;
 using Android.Support.V7.Widget;
 using App5.Droid;
 using Xamarin.Forms;
@@ -32,16 +31,16 @@ namespace App5.Droid
 
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
-
             if (disposing)
             {
                 _toolbar.ChildViewAdded -= Toolbar_ChildViewAdded;
-                foreach(var item in _menuItemViews)
+                foreach (var item in _menuItemViews)
                 {
                     item.ChildViewAdded -= TextView_ChildViewAdded;
                 }
             }
+
+            base.Dispose(disposing);
         }
 
         private void Toolbar_ChildViewAdded(object sender, ChildViewAddedEventArgs e)
@@ -65,9 +64,9 @@ namespace App5.Droid
 
         private void ChangeTextToIcon(Android.Views.View view)
         {
-            if (view.GetType().IsAssignableFrom(typeof(ActionMenuItemView)))
+            if (view.GetType() == typeof(AppCompatTextView) || view.GetType().IsSubclassOf(typeof(AppCompatTextView)))
             {
-                var menuItem = (ActionMenuItemView)view;
+                var menuItem = (AppCompatTextView)view;
                 var fontType = menuItem.Text.ToFontAwesomeFile();
 
                 if (!string.IsNullOrEmpty(fontType))
