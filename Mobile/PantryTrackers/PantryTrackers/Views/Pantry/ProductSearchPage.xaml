@@ -7,6 +7,10 @@
              x:Class="PantryTrackers.Views.Pantry.ProductSearchPage"
              Title="Product Search">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Plus" Command="{Binding NewProductCommand}" />
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <Frame>
             <Frame.Content>
@@ -16,7 +20,8 @@
                                Text="{Binding SearchText}"
                                HorizontalOptions="FillAndExpand" />
 
-                        <Button Text="Search"
+                        <Button Text="&#xf002;"
+                                FontFamily="FontAwesomeSolid"
                                 Command="{Binding ProductSearchCommand}"
                                 HorizontalOptions="End"
                                 IsEnabled="{Binding IsNetworkBusy, Converter={d:StaticResource InverseBoolConverter}}">
@@ -49,11 +54,7 @@
                             </ListView.ItemTemplate>
 
                             <ListView.Footer>
-                                <Button Text="Add New"
-                                        HorizontalOptions="EndAndExpand"
-                                        Command="{Binding NewProductCommand}"
-                                        IsEnabled="{Binding IsNetworkBusy, Converter={d:StaticResource InverseBoolConverter}}">
-                                </Button>
+                                <Label Text="" />
                             </ListView.Footer>
                         </ListView>
                     </ScrollView>

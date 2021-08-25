@@ -19,9 +19,14 @@
 
                         <Label Text="Unit Display" />
                         <Picker SelectedItem="{Binding SelectedUnitDisplay}" ItemsSource="{Binding UnitDisplayOptions}" />
+                        
+                        <ActivityIndicator IsRunning="true"
+                                           VerticalOptions="End"
+                                           IsVisible="{Binding IsNetworkBusy}"/>
 
-                        <Button Text="Save" Command="{Binding SaveProductCommand}" IsEnabled="{Binding IsNetworkBusy, Converter={StaticResource InverseBoolConverter}}"></Button>
-                        <ActivityIndicator IsRunning="true" IsVisible="{Binding IsNetworkBusy}"/>
+                        <Button Text="Save"
+                                VerticalOptions="EndAndExpand"
+                                Command="{Binding SaveProductCommand}"></Button>
 
                     </StackLayout>
                 </ScrollView>

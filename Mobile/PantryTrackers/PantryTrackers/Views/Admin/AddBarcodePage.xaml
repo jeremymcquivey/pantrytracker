@@ -6,6 +6,11 @@
              mc:Ignorable="d"
              Title="Manage Barcodes"
              x:Class="PantryTrackers.Views.Admin.AddBarcodePage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Barcode" Command="{Binding LaunchBarcodeScannerCommand}"/>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <Frame>
             <Frame.Content>
@@ -24,7 +29,7 @@
                         <ActivityIndicator IsRunning="true" IsVisible="{Binding IsNetworkBusy}"/>
                     </StackLayout>
 
-                    <ScrollView>
+                    <ScrollView VerticalOptions="FillAndExpand">
                         <StackLayout>
                             <Label Text="UPC" />
                             <StackLayout Orientation="Horizontal">
@@ -32,9 +37,6 @@
                                        Text="{Binding Code.Code}"
                                        IsEnabled="{Binding CanEditCode}"
                                        HorizontalOptions="FillAndExpand"/>
-                
-                                <Button Text="Scan"
-                                        Command="{Binding LaunchBarcodeScannerCommand}"></Button>
 
                             </StackLayout>
 
@@ -58,18 +60,23 @@
                                        HorizontalOptions="FillAndExpand"
                                        IsEnabled="false" />
 
-                                <Button Text="Edit"
+                                <Button Text="&#xf303;"
+                                        FontFamily="FontAwesomeSolid"
                                         Command="{Binding EditProductCommand}"></Button>
 
                             </StackLayout>
 
-                            <StackLayout Orientation="Horizontal">
+                            <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
+                                <Label Text="" />
+
                                 <Button Text="Save"
+                                        VerticalOptions="EndAndExpand"
                                         HorizontalOptions="FillAndExpand"
                                         Command="{Binding SaveCodeCommand}"></Button>
 
                                 <Button Style="{d:StaticResource AltButton}"
                                         Text="Clear"
+                                        VerticalOptions="EndAndExpand"
                                         HorizontalOptions="FillAndExpand"
                                         IsVisible="{Binding CanEditCode}"
                                         Command="{Binding ClearCommand}"></Button>
