@@ -19,7 +19,7 @@
                         <StackLayout>
                             <StackLayout Orientation="Horizontal">
                                 <Label BackgroundColor="Red" TextColor="White" IsVisible="{Binding HasError}" Text="{Binding ErrorMessage}" HorizontalOptions="FillAndExpand"></Label>
-                                <Button Text="&#xf201;" FontFamily="FontAwesomeSolid" IsEnabled="{Binding HasProduct}" HorizontalOptions="EndAndExpand" />
+                                <Button Text="&#xf201;" FontFamily="FontAwesomeSolid" IsEnabled="{Binding HasProduct}" HorizontalOptions="EndAndExpand" Command="{Binding ViewHistoryCommand}"/>
                             </StackLayout>
 
                             <ActivityIndicator IsEnabled="true" IsVisible="{Binding IsNetworkBusy}" />

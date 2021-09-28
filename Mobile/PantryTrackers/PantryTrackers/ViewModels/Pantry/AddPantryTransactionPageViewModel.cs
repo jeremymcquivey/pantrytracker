@@ -21,6 +21,8 @@ namespace PantryTrackers.ViewModels.Pantry
         private Command _saveTransactionCommand;
         private Command _addNewBarcodeCommand;
         private Command _editProductCommand;
+        private Command _viewHistoryCommand;
+
         private string _warningMessage;
         private readonly INavigationService _navService;
         private readonly ProductService _products;
@@ -46,6 +48,17 @@ namespace PantryTrackers.ViewModels.Pantry
         public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
         public bool HasProduct => Transaction?.ProductId.HasValue ?? false;
+
+        public Command ViewHistoryCommand => _viewHistoryCommand ??=
+            new Command(async () =>
+            {
+                IsNetworkBusy = true;
+                await _navService.NavigateAsync(nameof(ViewProductSummaryPage), new NavigationParameters
+                {
+                    { "ProductId", Transaction.ProductId }
+                });
+                IsNetworkBusy = false;
+            }, CanExecute);
 
         public Command EditProductCommand => _editProductCommand ??=
             new Command(async () =>
@@ -279,6 +292,7 @@ namespace PantryTrackers.ViewModels.Pantry
             LaunchBarcodeScannerCommand.ChangeCanExecute();
             AddNewBarcodeCommand.ChangeCanExecute();
             EditProductCommand.ChangeCanExecute();
+            ViewHistoryCommand.ChangeCanExecute();
         }
 
         public void Validate(string defaultMessage = "")
