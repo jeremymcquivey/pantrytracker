@@ -106,6 +106,11 @@ namespace PantryTrackers.Common.Security
             }
         }
 
+        public void Signout()
+        {
+            SecureStorage.RemoveAll();
+        }
+
         public async Task<AuthContext> GetAuthContext()
         {
             try

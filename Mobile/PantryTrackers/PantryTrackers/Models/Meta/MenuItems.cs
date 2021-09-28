@@ -1,5 +1,7 @@
-﻿using PantryTrackers.Models.NavMenu;
+﻿using PantryTrackers.Common.Security;
+using PantryTrackers.Models.NavMenu;
 using PantryTrackers.Views.Admin;
+using PantryTrackers.Views.Errors;
 using PantryTrackers.Views.GroceryList;
 using PantryTrackers.Views.MenuPlan;
 using PantryTrackers.Views.NavMenu;
@@ -21,7 +23,14 @@ namespace PantryTrackers.Models.Meta
             new NavMenuItem { Name = "Grocery List", NavigationPage = nameof(GroceryListMainPage) },
             new NavMenuItem { Name = "--------------", NavigationPage = null },
             new NavMenuItem { Name = "Admin", NavigationPage = nameof(AdminMenuPage), RequiredRole = "Admin" },
-            new NavMenuItem { Name = "Sign Out", NavigationPage = null }
+            new NavMenuItem { Name = "Sign Out", NavigationPage = nameof(Unauthorized), Parameters = new Prism.Navigation.NavigationParameters
+            {
+                { "SuccessfulLogin", false }
+            }, CustomMethod = () => {
+                var authService = Prism.PrismApplicationBase.Current.Container.Resolve(typeof(AuthenticationService)) as AuthenticationService;
+                authService.Signout();
+                return null;
+            } }
         };
 
         public static IEnumerable<NavMenuItem> ForRoles(IEnumerable<string> roles)

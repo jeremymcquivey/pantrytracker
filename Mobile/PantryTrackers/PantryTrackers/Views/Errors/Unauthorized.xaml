@@ -17,10 +17,10 @@
                         Text="Login" />
             </StackLayout>
 
-        <Label Text="Finishing up the login process"
-            VerticalOptions="CenterAndExpand" 
-            HorizontalOptions="CenterAndExpand"
-            IsVisible="{Binding LoginSuccessful}"/>
+            <Label Text="Finishing up the login process"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"
+                IsVisible="{Binding LoginSuccessful}"/>
 
         </StackLayout>
     </ContentPage.Content>

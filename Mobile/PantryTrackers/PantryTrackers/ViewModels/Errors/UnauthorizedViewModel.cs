@@ -27,11 +27,11 @@ namespace PantryTrackers.ViewModels.Errors
             _authService.Authenticate();
             IsNetworkBusy = false;
         }, CanExecute));
-
-        public UnauthorizedViewModel(INavigationService navService, AuthenticationService authService)
+        
+        public UnauthorizedViewModel(INavigationService navService)
             : base(navService, null)
         {
-            _authService = authService;
+            _authService = App.Current.Container.Resolve(typeof(AuthenticationService)) as AuthenticationService;
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)

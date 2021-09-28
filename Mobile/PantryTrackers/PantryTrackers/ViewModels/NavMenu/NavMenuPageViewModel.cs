@@ -26,12 +26,18 @@ namespace PantryTrackers.ViewModels.NavMenu
         public Command SelectMenuItemCommand => _selectMenuItemCommand ??= new Command<NavMenuItem>(async (item) =>
         {
             IsNetworkBusy = true;
+            if (item.CustomMethod != null)
+            {
+                item.CustomMethod();
+            }
+
             if(string.IsNullOrEmpty(item.NavigationPage))
             {
+                IsNetworkBusy = false;
                 return;
             }
 
-            await _navService.NavigateAsync($"NavigationPage/{item.NavigationPage}");
+            await _navService.NavigateAsync($"NavigationPage/{item.NavigationPage}", item.Parameters);
             IsNetworkBusy = false;
         }, (menuItem) => CanExecute(menuItem));
 
