@@ -32,5 +32,14 @@ namespace PantryTrackers.Services
             var response = await _client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
             return await response.GetDeserializedContent<IEnumerable<ProductGroup>>();
         }
+
+        public async Task<IEnumerable<ProductGroup>> GetProductSummary(int productId)
+        {
+            var pantryId = await SecureStorage.GetAsync(ClaimKeys.Id);
+            var url = $"v1/Pantry/{pantryId}/product/{productId}?includeZeroValues=false";
+            var response = await _client.MakeRequest<object>(new Uri(url, UriKind.Relative), HttpMethod.Get, isSecure: true);
+            var groups = await response.GetDeserializedContent<IEnumerable<ProductGroup>>();
+            return groups;
+        }
     }
 }

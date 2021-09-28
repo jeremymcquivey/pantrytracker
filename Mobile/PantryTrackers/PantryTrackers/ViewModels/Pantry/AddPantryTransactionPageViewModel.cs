@@ -9,6 +9,8 @@ using PantryTrackers.Views.Admin;
 using PantryTrackers.Views.Pantry;
 using Prism.Navigation;
 using Xamarin.Forms;
+using System.Linq;
+using System;
 
 namespace PantryTrackers.ViewModels.Pantry
 {
@@ -37,11 +39,13 @@ namespace PantryTrackers.ViewModels.Pantry
                     _errorMessage = value;
                     RaisePropertyChanged(nameof(ErrorMessage));
                     RaisePropertyChanged(nameof(HasError));
-                    Validate();
+                    Validate(_errorMessage);
                 }
             }
         }
         public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+
+        public bool HasProduct => Transaction?.ProductId.HasValue ?? false;
 
         public Command EditProductCommand => _editProductCommand ??=
             new Command(async () =>
@@ -76,14 +80,27 @@ namespace PantryTrackers.ViewModels.Pantry
         public Command SaveTransactionCommand => _saveTransactionCommand ??=
             new Command(async () =>
             {
-                IsNetworkBusy = true;
                 WarningMessage = string.Empty;
 
-                // TODO: Validate at least quantity and product id.
+                Validate();
+                if(!string.IsNullOrEmpty(ErrorMessage))
+                {
+                    return;
+                }
+
+                IsNetworkBusy = true;
+                ErrorMessage = string.Empty;
+                if(! await IsInventoryAvailable())
+                {
+                    ErrorMessage = "Product variation not found. Please review inventory on hand.";
+                    IsNetworkBusy = false;
+                    return;
+                }
 
                 await Task.Run(async () =>
                 {
                     Transaction.TransactionType = _transactionType;
+
                     var transaction = await _pantry.Save(Transaction);
                     if(transaction != default)
                     {
@@ -163,13 +180,12 @@ namespace PantryTrackers.ViewModels.Pantry
                 {
                     Transaction.ProductId = newProduct.Id;
                     Transaction.ProductName = newProduct.Name;
+                    RaisePropertyChanged(nameof(HasProduct));
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         RaisePropertyChanged(nameof(Transaction));
                     });
                 }
-
-                Validate();
             }
 
             if(parameters.ContainsKey("AddedCode"))
@@ -265,7 +281,7 @@ namespace PantryTrackers.ViewModels.Pantry
             EditProductCommand.ChangeCanExecute();
         }
 
-        public void Validate()
+        public void Validate(string defaultMessage = "")
         {
             if (Transaction.ProductId == null)
             {
@@ -273,8 +289,60 @@ namespace PantryTrackers.ViewModels.Pantry
                 return;
             }
 
-            ErrorMessage = string.Empty;
+            if (string.IsNullOrEmpty(Transaction.Quantity))
+            {
+                ErrorMessage = "You must have a valid quantity";
+                return;
+            }
+
+            if (string.IsNullOrEmpty(Transaction.Unit))
+            {
+                ErrorMessage = "You must have a valid unit";
+                return;
+            }
+
+            if (string.IsNullOrEmpty(Transaction.Size))
+            {
+                Transaction.Size = "1";
+            }
+
+            ErrorMessage = defaultMessage;
             OnCommandCanExecuteChanged();
+        }
+
+        public async Task<bool> IsInventoryAvailable()
+        {
+            if(_transactionType == TransactionTypes.Addition)
+            {
+                return true;
+            }
+
+            var currentInventory = (await _pantry.GetProductSummary(Transaction.ProductId.Value))
+                .SelectMany(grouping => grouping.Elements)
+                .Where(product =>
+                {
+                    decimal.TryParse(product.Size, out decimal productSize);
+                    decimal.TryParse(Transaction.Size, out decimal transactionSize);
+                    return Math.Abs(productSize - transactionSize) <= .1M;
+                })
+                .Where(product => product.Unit.ToLower() == Transaction.Unit.ToLower())
+                .FirstOrDefault();
+
+            if(default == currentInventory)
+            {
+                return false;
+            }
+
+            decimal.TryParse(currentInventory.Quantity, out decimal originalQuantity);
+            decimal.TryParse(Transaction.Quantity, out decimal newQuantity);
+
+            if(originalQuantity >= newQuantity)
+            {
+                Transaction.Container = currentInventory.Container;
+                return true;
+            }
+
+            return false;
         }
     }
 }
