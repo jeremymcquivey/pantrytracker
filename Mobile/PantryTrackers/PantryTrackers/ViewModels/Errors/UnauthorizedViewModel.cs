@@ -6,7 +6,7 @@ namespace PantryTrackers.ViewModels.Errors
 {
     public class UnauthorizedViewModel : ViewModelBase
     {
-        private AuthenticationService _authService;
+        //private AuthenticationService _authService;
         private Command _loginCommand;
         private bool _loginSuccessful;
 
@@ -24,14 +24,14 @@ namespace PantryTrackers.ViewModels.Errors
         {
             IsNetworkBusy = true;
             LoginSuccessful = true;
-            _authService.Authenticate();
+            //_authService.Authenticate();
             IsNetworkBusy = false;
         }, CanExecute));
         
         public UnauthorizedViewModel(INavigationService navService)
             : base(navService, null)
         {
-            _authService = App.Current.Container.Resolve(typeof(AuthenticationService)) as AuthenticationService;
+            //_authService = App.Current.Container.Resolve(typeof(AuthenticationService)) as AuthenticationService;
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
